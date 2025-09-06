@@ -19,6 +19,7 @@ export default function HomePage() {
 	const [loadingMovimientos, setLoadingMovimientos] = useState(false);
 	const [showScrollButton, setShowScrollButton] = useState(false);
 	const [buttonHasAppeared, setButtonHasAppeared] = useState(false);
+	const [expandedMovements, setExpandedMovements] = useState<Set<string>>(new Set());
 
 	useEffect(() => {
 		fetchLicores().then(setLicores);
@@ -151,6 +152,19 @@ export default function HomePage() {
 			// Start the animation
 			requestAnimationFrame(animateScroll);
 		}
+	};
+
+	// Function to toggle movement expansion
+	const toggleMovementExpansion = (movementId: string) => {
+		setExpandedMovements(prev => {
+			const newSet = new Set(prev);
+			if (newSet.has(movementId)) {
+				newSet.delete(movementId);
+			} else {
+				newSet.add(movementId);
+			}
+			return newSet;
+		});
 	};
 
 	// Check if there are any selected items
@@ -506,60 +520,103 @@ export default function HomePage() {
 							</div>
 						) : (
 							<div className="grid gap-4 sm:gap-6">
-								{movimientos.map((movimiento) => (
-									<div key={movimiento.id} className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:bg-white/10 transition-all duration-300">
-										<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
-											<div className="flex-1">
-												<h3 className="text-lg sm:text-xl font-medium text-accent">
-													Movement #{movimiento.id.slice(-8)}
-												</h3>
-												<span className="text-sm sm:text-base text-secondary/60 font-light">
-													{new Date(movimiento.date).toLocaleDateString('en-US', {
-														day: 'numeric',
-														month: 'long',
-														year: 'numeric',
-														hour: '2-digit',
-														minute: '2-digit'
-													})}
-												</span>
-											</div>
-											<button
-												onClick={() => window.open(`/api/movimientos/${movimiento.id}/pdf`, '_blank')}
-												className="group flex items-center gap-2 bg-accent hover:bg-accentHover text-background px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-medium transition-all duration-200 text-xs sm:text-sm hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
-												title="Download PDF Invoice"
-											>
-												<svg 
-													className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:scale-110" 
-													fill="none" 
-													stroke="currentColor" 
-													viewBox="0 0 24 24"
-												>
-													<path 
-														strokeLinecap="round" 
-														strokeLinejoin="round" 
-														strokeWidth={2.5} 
-														d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" 
-													/>
-												</svg>
-												<span className="hidden sm:inline">PDF</span>
-											</button>
-										</div>
-										
-										<div className="space-y-2">
-											{movimiento.liquors.map((licor, index) => (
-												<div key={index} className="flex justify-between items-center py-2 border-b border-white/5 last:border-b-0">
-													<div className="flex flex-col">
-														<span className="text-secondary font-medium">{licor.name}</span>
-														<span className="text-xs text-secondary/60">{licor.type}</span>
+								{movimientos.map((movimiento) => {
+									const isExpanded = expandedMovements.has(movimiento.id);
+									const hasMoreLiquors = movimiento.liquors.length > 3;
+									const displayLiquors = isExpanded ? movimiento.liquors : movimiento.liquors.slice(0, 3);
+									
+									return (
+										<div key={movimiento.id} className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl overflow-hidden hover:bg-white/10 transition-all duration-300">
+											<div className="p-4 sm:p-6">
+												<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
+													<div className="flex-1">
+														<h3 className="text-lg sm:text-xl font-medium text-accent">
+															Movement #{movimiento.id.slice(-8)}
+														</h3>
+														<span className="text-sm sm:text-base text-secondary/60 font-light">
+															{new Date(movimiento.date).toLocaleDateString('en-US', {
+																day: 'numeric',
+																month: 'long',
+																year: 'numeric',
+																hour: '2-digit',
+																minute: '2-digit'
+															})}
+														</span>
 													</div>
-													<span className="text-accent font-medium">
-														{licor.quantity} {getDisplayUnit(licor.unit, licor.quantity)}
-													</span>
+													<button
+														onClick={() => window.open(`/api/movimientos/${movimiento.id}/pdf`, '_blank')}
+														className="group flex items-center gap-2 bg-accent hover:bg-accentHover text-background px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-medium transition-all duration-200 text-xs sm:text-sm hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
+														title="Download PDF Invoice"
+													>
+														<svg 
+															className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:scale-110" 
+															fill="none" 
+															stroke="currentColor" 
+															viewBox="0 0 24 24"
+														>
+															<path 
+																strokeLinecap="round" 
+																strokeLinejoin="round" 
+																strokeWidth={2.5} 
+																d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" 
+															/>
+														</svg>
+														<span className="hidden sm:inline">PDF</span>
+													</button>
 												</div>
-											))}
+												
+												<div className="space-y-2">
+													<div 
+														className={`transition-all duration-500 ease-in-out ${
+															isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-[180px] opacity-100'
+														} overflow-hidden`}
+													>
+														{displayLiquors.map((licor, index) => (
+															<div key={`${movimiento.id}-${index}`} className="flex justify-between items-center py-2 border-b border-white/5 last:border-b-0">
+																<div className="flex flex-col">
+																	<span className="text-secondary font-medium">{licor.name}</span>
+																	<span className="text-xs text-secondary/60">{licor.type}</span>
+																</div>
+																<span className="text-accent font-medium">
+																	{licor.quantity} {getDisplayUnit(licor.unit, licor.quantity)}
+																</span>
+															</div>
+														))}
+													</div>
+													
+													{hasMoreLiquors && (
+														<button
+															onClick={() => toggleMovementExpansion(movimiento.id)}
+															className="w-full mt-3 flex items-center justify-center gap-2 py-2.5 px-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-accent/30 rounded-lg transition-all duration-300 text-secondary/80 hover:text-accent text-sm font-medium group"
+														>
+															<span>
+																{isExpanded 
+																	? `Show less` 
+																	: `Show ${movimiento.liquors.length - 3} more items`
+																}
+															</span>
+															<svg 
+																className={`w-4 h-4 transition-all duration-300 group-hover:scale-110 ${
+																	isExpanded ? 'rotate-180' : 'rotate-0'
+																}`}
+																fill="none" 
+																stroke="currentColor" 
+																viewBox="0 0 24 24"
+															>
+																<path 
+																	strokeLinecap="round" 
+																	strokeLinejoin="round" 
+																	strokeWidth={2} 
+																	d="M19 9l-7 7-7-7" 
+																/>
+															</svg>
+														</button>
+													)}
+												</div>
+											</div>
 										</div>
-									</div>
-								))}
+									);
+								})}
 							</div>
 						)}
 					</section>
