@@ -17,6 +17,7 @@ export default function HomePage() {
 	const [activeSection, setActiveSection] = useState<'seleccion' | 'historial'>('seleccion');
 	const [movimientos, setMovimientos] = useState<Movimiento[]>([]);
 	const [loadingMovimientos, setLoadingMovimientos] = useState(false);
+	const [showScrollButton, setShowScrollButton] = useState(true);
 
 	useEffect(() => {
 		fetchLicores().then(setLicores);
@@ -40,6 +41,53 @@ export default function HomePage() {
 		}
 	}, [activeSection]);
 
+	// Effect to handle scroll detection for checkout button visibility
+	useEffect(() => {
+		let ticking = false;
+		
+		const handleScroll = () => {
+			if (!ticking) {
+				requestAnimationFrame(() => {
+					const checkoutButton = document.querySelector('[data-checkout-button]');
+					if (!checkoutButton) {
+						setShowScrollButton(true);
+						ticking = false;
+						return;
+					}
+
+					const buttonRect = checkoutButton.getBoundingClientRect();
+					const windowHeight = window.innerHeight;
+					
+					// For mobile, use a smaller margin (50px), for desktop use 100px
+					const isMobile = window.innerWidth < 768;
+					const margin = isMobile ? 50 : 100;
+					
+					// Hide scroll button when checkout button is visible (with responsive margin)
+					const isCheckoutVisible = buttonRect.top < windowHeight - margin;
+					setShowScrollButton(!isCheckoutVisible);
+					
+					ticking = false;
+				});
+			}
+			ticking = true;
+		};
+
+		// Only add scroll listener when in selection mode
+		if (activeSection === 'seleccion') {
+			// Add both scroll and resize listeners for better mobile support
+			window.addEventListener('scroll', handleScroll, { passive: true });
+			window.addEventListener('resize', handleScroll, { passive: true });
+			handleScroll(); // Check initial position
+			
+			return () => {
+				window.removeEventListener('scroll', handleScroll);
+				window.removeEventListener('resize', handleScroll);
+			};
+		} else {
+			setShowScrollButton(true);
+		}
+	}, [activeSection]);
+
 	// Helper function to translate unit names for display
 	const getDisplayUnit = (unidad: string, cantidad: number) => {
 		const unitMap: Record<string, string> = {
@@ -52,6 +100,58 @@ export default function HomePage() {
 		const englishUnit = unitMap[unidad] || unidad;
 		return cantidad === 1 ? englishUnit : englishUnit + 's';
 	};
+
+	// Function to scroll to checkout section with improved animation for mobile and desktop
+	const scrollToCheckout = () => {
+		const checkoutButton = document.querySelector('[data-checkout-button]');
+		if (checkoutButton) {
+			// Get responsive offset based on screen size
+			const isMobile = window.innerWidth < 768;
+			const offset = isMobile ? 80 : 100; // Smaller offset for mobile
+			
+			// Get the position and add offset for better visual positioning
+			const buttonRect = checkoutButton.getBoundingClientRect();
+			const offsetTop = window.pageYOffset + buttonRect.top - offset;
+			
+			// Use smooth scrolling with fallback for older browsers
+			if ('scrollBehavior' in document.documentElement.style) {
+				window.scrollTo({
+					top: offsetTop,
+					behavior: 'smooth'
+				});
+			} else {
+				// Fallback for older browsers with manual smooth scroll
+				const startPosition = window.pageYOffset;
+				const distance = offsetTop - startPosition;
+				const duration = 500;
+				let start: number | null = null;
+
+				const step = (timestamp: number) => {
+					if (!start) start = timestamp;
+					const progress = timestamp - start;
+					const progressPercentage = Math.min(progress / duration, 1);
+					
+					// Easing function for smooth animation
+					const ease = progressPercentage < 0.5 
+						? 2 * progressPercentage * progressPercentage 
+						: 1 - Math.pow(-2 * progressPercentage + 2, 3) / 2;
+					
+					window.scrollTo(0, startPosition + distance * ease);
+					
+					if (progress < duration) {
+						requestAnimationFrame(step);
+					}
+				};
+				
+				requestAnimationFrame(step);
+			}
+		}
+	};
+
+	// Check if there are any selected items
+	const hasSelectedItems = Object.entries(cantidades).some(
+		([_, cantidad]) => cantidad.botellas > 0 || cantidad.cajas > 0
+	);
 
 	const handleChange = (id: string, tipo: "botellas" | "cajas", delta: number) => {
 		setCantidades((prev) => {
@@ -372,6 +472,7 @@ export default function HomePage() {
 							<button 
 								onClick={handleConfirmar}
 								disabled={submitting}
+								data-checkout-button
 								className="group flex items-center gap-3 sm:gap-4 bg-accent hover:bg-accentHover text-background px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-sm sm:text-base lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
 							>
 								<span>{submitting ? 'Processing...' : 'Confirm Movement'}</span>
@@ -437,6 +538,35 @@ export default function HomePage() {
 					</section>
 				)}
 			</main>
+			
+			{/* Floating Go to Checkout Button - Only show in liquor selection mode, when items are selected, and when checkout is not visible */}
+			{activeSection === 'seleccion' && hasSelectedItems && showScrollButton && (
+				<div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-20 transition-all duration-500 ease-in-out transform translate-y-0 opacity-100">
+					<button
+						onClick={scrollToCheckout}
+						className="group flex items-center gap-2 sm:gap-3 bg-accent hover:bg-accentHover text-background px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 rounded-full font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 text-xs sm:text-sm md:text-base border-2 border-accent hover:border-accentHover backdrop-blur-sm transform hover:-translate-y-1 active:translate-y-0"
+						aria-label="Go to checkout"
+					>
+						<span className="hidden sm:inline">Go to Checkout</span>
+						<span className="sm:hidden">Checkout</span>
+						<div className="w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center">
+							<svg 
+								className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:translate-y-0.5 group-hover:scale-110 group-active:scale-90" 
+								fill="none" 
+								stroke="currentColor" 
+								viewBox="0 0 24 24"
+							>
+								<path 
+									strokeLinecap="round" 
+									strokeLinejoin="round" 
+									strokeWidth={2.5} 
+									d="M19 14l-7 7m0 0l-7-7m7 7V3" 
+								/>
+							</svg>
+						</div>
+					</button>
+				</div>
+			)}
 			</div>
 		);
 	}
