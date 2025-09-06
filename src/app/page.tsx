@@ -14,7 +14,7 @@ export default function HomePage() {
 	const [cantidades, setCantidades] = useState<Record<string, { botellas: number; cajas: number }>>({});
 	const [searchTerm, setSearchTerm] = useState("");
 	const [submitting, setSubmitting] = useState(false);
-	const [activeSection, setActiveSection] = useState<'seleccion' | 'historial'>('seleccion');
+	const [activeSection, setActiveSection] = useState<'seleccion' | 'historial' | 'estadisticas'>('seleccion');
 	const [movimientos, setMovimientos] = useState<Movimiento[]>([]);
 	const [loadingMovimientos, setLoadingMovimientos] = useState(false);
 	const [showScrollButton, setShowScrollButton] = useState(false);
@@ -46,6 +46,12 @@ export default function HomePage() {
 		setNotifications(prev => prev.filter(notification => notification.id !== id));
 	};
 
+	// Statistics states
+	const [statisticsData, setStatisticsData] = useState<any>(null);
+	const [statisticsTimeRange, setStatisticsTimeRange] = useState<'week' | 'month' | 'year'>('month');
+	const [statisticsView, setStatisticsView] = useState<'liquor' | 'type'>('liquor');
+	const [loadingStatistics, setLoadingStatistics] = useState(false);
+
 	useEffect(() => {
 		fetchLicores().then(setLicores);
 	}, []);
@@ -62,11 +68,62 @@ export default function HomePage() {
 		}
 	};
 
+	const loadStatistics = async () => {
+		setLoadingStatistics(true);
+		try {
+			const data = await getMovimientos();
+			// Calculate statistics based on time range
+			const now = new Date();
+			let startDate = new Date();
+			
+			switch (statisticsTimeRange) {
+				case 'week':
+					startDate.setDate(now.getDate() - 7);
+					break;
+				case 'month':
+					startDate.setMonth(now.getMonth() - 1);
+					break;
+				case 'year':
+					startDate.setFullYear(now.getFullYear() - 1);
+					break;
+			}
+			
+			// Filter movements by date range
+			const filteredMovements = data.filter(movement => 
+				new Date(movement.date) >= startDate
+			);
+			
+			// Calculate statistics by liquor or type
+			const stats: Record<string, number> = {};
+			
+			filteredMovements.forEach(movement => {
+				movement.liquors.forEach(liquor => {
+					const key = statisticsView === 'liquor' ? liquor.name : liquor.type;
+					stats[key] = (stats[key] || 0) + liquor.quantity;
+				});
+			});
+			
+			// Convert to sorted array for charts and leaderboard
+			const sortedStats = Object.entries(stats)
+				.map(([name, quantity]) => ({ name, quantity }))
+				.sort((a, b) => b.quantity - a.quantity);
+			
+			setStatisticsData(sortedStats);
+		} catch (error) {
+			console.error('Error loading statistics:', error);
+		} finally {
+			setLoadingStatistics(false);
+		}
+	};
+
 	useEffect(() => {
 		if (activeSection === 'historial') {
 			loadMovimientos();
 		}
-	}, [activeSection]);
+		if (activeSection === 'estadisticas') {
+			loadStatistics();
+		}
+	}, [activeSection, statisticsTimeRange, statisticsView]);
 
 	// Effect to handle scroll detection for checkout button visibility
 	useEffect(() => {
@@ -373,6 +430,16 @@ export default function HomePage() {
 						>
 							Movement History
 						</button>
+						<button
+							onClick={() => setActiveSection('estadisticas')}
+							className={`px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-medium transition-colors border-b-2 ${
+								activeSection === 'estadisticas'
+									? 'text-accent border-accent'
+									: 'text-secondary/60 border-transparent hover:text-secondary hover:border-secondary/30'
+							}`}
+						>
+							Statistics
+						</button>
 					</div>
 				</div>
 			</nav>
@@ -568,8 +635,7 @@ export default function HomePage() {
 						</div>
 					</section>
 					</>
-				) : (
-					/* Movement History */
+				) : activeSection === 'historial' ? (
 					<section className="space-y-6 lg:space-y-8">
 						<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 lg:mb-8 gap-2">
 							<h2 className="text-xl sm:text-2xl font-light text-primary">Movement History</h2>
@@ -693,7 +759,134 @@ export default function HomePage() {
 							</div>
 						)}
 					</section>
-				)}
+				) : activeSection === 'estadisticas' ? (
+					<section className="space-y-6 lg:space-y-8">
+						{/* Statistics Header */}
+						<div className="text-center">
+							<h2 className="text-xl sm:text-2xl font-light text-primary">Statistics</h2>
+							<p className="text-secondary/60 text-sm sm:text-base mt-2">Analyze liquor consumption patterns and trends</p>
+						</div>
+
+						{/* Filter Controls */}
+						<div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center">
+							{/* Time Range Selector */}
+							<div className="flex items-center gap-2">
+								<span className="text-secondary/80 text-sm font-medium">Period:</span>
+								<div className="flex bg-cardBg border border-border rounded-lg overflow-hidden">
+									{(['week', 'month', 'year'] as const).map((range) => (
+										<button
+											key={range}
+											onClick={() => setStatisticsTimeRange(range)}
+											className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-colors ${
+												statisticsTimeRange === range
+													? 'bg-accent text-background'
+													: 'text-secondary/70 hover:text-secondary hover:bg-white/5'
+											}`}
+										>
+											{range === 'week' ? 'Week' : range === 'month' ? 'Month' : 'Year'}
+										</button>
+									))}
+								</div>
+							</div>
+
+							{/* View Type Selector */}
+							<div className="flex items-center gap-2">
+								<span className="text-secondary/80 text-sm font-medium">View:</span>
+								<div className="flex bg-cardBg border border-border rounded-lg overflow-hidden">
+									{(['liquor', 'type'] as const).map((view) => (
+										<button
+											key={view}
+											onClick={() => setStatisticsView(view)}
+											className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-colors ${
+												statisticsView === view
+													? 'bg-accent text-background'
+													: 'text-secondary/70 hover:text-secondary hover:bg-white/5'
+											}`}
+										>
+											{view === 'liquor' ? 'By Liquor' : 'By Type'}
+										</button>
+									))}
+								</div>
+							</div>
+						</div>
+
+						{loadingStatistics ? (
+							<div className="flex items-center justify-center py-12">
+								<div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin"></div>
+							</div>
+						) : statisticsData && statisticsData.length > 0 ? (
+							<div className="grid gap-6 lg:gap-8 lg:grid-cols-2">
+								{/* Chart Section */}
+								<div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6">
+									<h3 className="text-lg font-medium text-accent mb-4">Most Requested {statisticsView === 'liquor' ? 'Liquors' : 'Types'}</h3>
+									<div className="space-y-3">
+										{statisticsData.slice(0, 10).map((item: any, index: number) => {
+											const maxQuantity = statisticsData[0]?.quantity || 1;
+											const percentage = (item.quantity / maxQuantity) * 100;
+											
+											return (
+												<div key={item.name} className="relative">
+													<div className="flex justify-between items-center mb-1">
+														<span className="text-sm font-medium text-secondary truncate pr-2">{item.name}</span>
+														<span className="text-xs text-accent font-medium">{item.quantity}</span>
+													</div>
+													<div className="w-full bg-white/10 rounded-full h-2">
+														<div 
+															className="bg-gradient-to-r from-accent to-accentHover h-2 rounded-full transition-all duration-1000 ease-out"
+															style={{ width: `${percentage}%` }}
+														></div>
+													</div>
+													{index < 3 && (
+														<div className="absolute -left-2 top-0 w-1 h-8 bg-accent/20 rounded-full"></div>
+													)}
+												</div>
+											);
+										})}
+									</div>
+								</div>
+
+								{/* Leaderboard Section */}
+								<div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6">
+									<h3 className="text-lg font-medium text-accent mb-4">Leaderboard</h3>
+									<div className="space-y-2">
+										{statisticsData.slice(0, 15).map((item: any, index: number) => (
+											<div 
+												key={item.name} 
+												className={`flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
+													index < 3 
+														? 'bg-accent/10 border border-accent/20' 
+														: 'bg-white/5 hover:bg-white/10'
+												}`}
+											>
+												<div className="flex items-center gap-3">
+													<div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+														index === 0 ? 'bg-yellow-500/20 text-yellow-400' :
+														index === 1 ? 'bg-gray-400/20 text-gray-300' :
+														index === 2 ? 'bg-amber-600/20 text-amber-400' :
+														'bg-white/10 text-secondary/60'
+													}`}>
+														{index + 1}
+													</div>
+													<span className="text-sm font-medium text-secondary truncate">{item.name}</span>
+												</div>
+												<div className="flex items-center gap-2">
+													<span className="text-accent font-bold">{item.quantity}</span>
+													<span className="text-xs text-secondary/60">
+														{item.quantity === 1 ? 'unit' : 'units'}
+													</span>
+												</div>
+											</div>
+										))}
+									</div>
+								</div>
+							</div>
+						) : (
+							<div className="text-center py-12">
+								<p className="text-secondary/60">No data available for the selected period</p>
+							</div>
+						)}
+					</section>
+				) : null}
 			</main>
 			
 			{/* Floating Go to Checkout Button - Only show in liquor selection mode, when items are selected, and when checkout is not visible */}
