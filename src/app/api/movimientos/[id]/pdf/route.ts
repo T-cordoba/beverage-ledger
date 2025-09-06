@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getMovimientoById } from '../../actions';
+import { getMovimientoById } from '../../../../actions';
 import { createPDF } from './pdf';
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {

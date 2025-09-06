@@ -1,30 +1,287 @@
-import { PDFDocument, rgb } from 'pdf-lib';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import type { Movimiento } from '../../../../actions';
 
-export async function createPDF(movimiento) {
+export async function createPDF(movimiento: Movimiento): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
-  const page = doc.addPage([420, 600]);
+  const page = doc.addPage([595, 842]); // A4 size
+  const font = await doc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await doc.embedFont(StandardFonts.HelveticaBold);
 
-  // Colores
-  const bg = rgb(18/255, 0, 6/255);
-  const text = rgb(240/255, 230/255, 206/255);
+  // Casino colors
+  const darkBg = rgb(18/255, 0, 6/255);
+  const lightText = rgb(240/255, 230/255, 206/255);
   const accent = rgb(212/255, 175/255, 55/255);
+  const white = rgb(1, 1, 1);
+  const lightGray = rgb(0.95, 0.95, 0.95);
 
-  page.drawRectangle({ x: 0, y: 0, width: 420, height: 600, color: bg });
+  const pageWidth = 595;
+  const pageHeight = 842;
+  const margin = 50;
 
-  page.drawText(`Factura de Retiro`, { x: 40, y: 560, size: 24, color: accent });
-  page.drawText(`ID: ${movimiento.id}` , { x: 40, y: 530, size: 14, color: text });
-  page.drawText(`Fecha: ${movimiento.fecha}` , { x: 40, y: 510, size: 14, color: text });
-
-  let y = 480;
-  page.drawText('Licores:', { x: 40, y, size: 16, color: accent });
-  y -= 24;
-  movimiento.licores.forEach((licor) => {
-    page.drawText(
-      `${licor.nombre} (${licor.tipo}) - ${licor.cantidad} ${licor.unidad}`,
-      { x: 40, y, size: 14, color: text }
-    );
-    y -= 20;
+  // Dark background
+  page.drawRectangle({
+    x: 0,
+    y: 0,
+    width: pageWidth,
+    height: pageHeight,
+    color: darkBg,
   });
 
-  return await doc.save();
+  // Header section - clean and simple
+  // Header shadow effect
+  page.drawRectangle({
+    x: margin + 2,
+    y: pageHeight - 122,
+    width: pageWidth - 2 * margin,
+    height: 70,
+    color: rgb(0.1, 0.1, 0.1),
+  });
+  
+  // Main header background
+  page.drawRectangle({
+    x: margin,
+    y: pageHeight - 120,
+    width: pageWidth - 2 * margin,
+    height: 70,
+    color: accent,
+  });
+
+  // Title - perfectly centered horizontally and vertically
+  const titleText = 'ENCORE BEVERAGE LEDGER';
+  const titleSize = 24;
+  // More accurate width calculation for centering
+  const titleWidth = titleText.length * (titleSize * 0.55); 
+  const centerX = (pageWidth - titleWidth) / 2;
+  
+  page.drawText(titleText, {
+    x: centerX,
+    y: pageHeight - 75, // Moved down for better vertical centering
+    size: titleSize,
+    font: boldFont,
+    color: darkBg,
+  });
+
+  const subtitleText = 'Liquor Movement Invoice';
+  const subtitleSize = 14;
+  // More accurate width calculation for subtitle
+  const subtitleWidth = subtitleText.length * (subtitleSize * 0.55);
+  const subtitleCenterX = (pageWidth - subtitleWidth) / 2;
+  
+  page.drawText(subtitleText, {
+    x: subtitleCenterX,
+    y: pageHeight - 100, // Moved down to maintain proper spacing
+    size: subtitleSize,
+    font: font,
+    color: darkBg,
+  });
+
+  // Invoice details
+  const detailsStartY = pageHeight - 160;
+  
+  page.drawText('Invoice Details', {
+    x: margin,
+    y: detailsStartY,
+    size: 16,
+    font: boldFont,
+    color: accent,
+  });
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  page.drawText(`Invoice ID: ${movimiento.id}`, {
+    x: margin,
+    y: detailsStartY - 30,
+    size: 12,
+    font: font,
+    color: lightText,
+  });
+
+  page.drawText(`Date: ${formatDate(movimiento.date)}`, {
+    x: margin,
+    y: detailsStartY - 50,
+    size: 12,
+    font: font,
+    color: lightText,
+  });
+
+  page.drawText('Encore Boston Harbor Casino', {
+    x: margin,
+    y: detailsStartY - 70,
+    size: 12,
+    font: font,
+    color: lightText,
+  });
+
+  // Items table header - clean design
+  const tableStartY = detailsStartY - 120;
+  const tableHeaderHeight = 30;
+  
+  // Table header background
+  page.drawRectangle({
+    x: margin,
+    y: tableStartY - tableHeaderHeight,
+    width: pageWidth - 2 * margin,
+    height: tableHeaderHeight,
+    color: accent,
+  });
+
+  // Table headers - better positioned and visible
+  page.drawText('Item', {
+    x: margin + 15,
+    y: tableStartY - 18,
+    size: 12,
+    font: boldFont,
+    color: darkBg,
+  });
+
+  page.drawText('Type', {
+    x: margin + 200,
+    y: tableStartY - 18,
+    size: 12,
+    font: boldFont,
+    color: darkBg,
+  });
+
+  page.drawText('Quantity', {
+    x: margin + 320,
+    y: tableStartY - 18,
+    size: 12,
+    font: boldFont,
+    color: darkBg,
+  });
+
+  page.drawText('Unit', {
+    x: margin + 420,
+    y: tableStartY - 18,
+    size: 12,
+    font: boldFont,
+    color: darkBg,
+  });
+
+  // Table items
+  let currentY = tableStartY - tableHeaderHeight - 10;
+  const rowHeight = 25;
+  let totalItems = 0;
+
+  movimiento.liquors.forEach((liquor: any, index: number) => {
+    const isEvenRow = index % 2 === 0;
+    
+    // Alternate row background
+    if (isEvenRow) {
+      page.drawRectangle({
+        x: margin,
+        y: currentY - rowHeight + 5,
+        width: pageWidth - 2 * margin,
+        height: rowHeight,
+        color: rgb(0.1, 0.1, 0.1),
+      });
+    }
+
+    // Item name
+    const itemText = liquor.name.length > 22 ? liquor.name.substring(0, 22) + '...' : liquor.name;
+    page.drawText(itemText, {
+      x: margin + 15,
+      y: currentY - 10,
+      size: 10,
+      font: font,
+      color: lightText,
+    });
+
+    // Type
+    page.drawText(liquor.type, {
+      x: margin + 200,
+      y: currentY - 10,
+      size: 10,
+      font: font,
+      color: lightText,
+    });
+
+    // Quantity
+    page.drawText(liquor.quantity.toString(), {
+      x: margin + 340,
+      y: currentY - 10,
+      size: 10,
+      font: font,
+      color: lightText,
+    });
+
+    // Unit
+    const displayUnit = liquor.quantity === 1 ? liquor.unit : liquor.unit + 's';
+    page.drawText(displayUnit, {
+      x: margin + 430,
+      y: currentY - 10,
+      size: 10,
+      font: font,
+      color: lightText,
+    });
+
+    currentY -= rowHeight;
+    totalItems += liquor.quantity;
+  });
+
+  // Summary section - clean and centered
+  const summaryY = currentY - 40;
+  const summaryWidth = 200; // Fixed width for better control
+  const summaryX = pageWidth - margin - summaryWidth;
+  
+  // Summary background
+  page.drawRectangle({
+    x: summaryX,
+    y: summaryY - 30,
+    width: summaryWidth,
+    height: 30,
+    color: accent,
+  });
+
+  // Summary text - properly centered
+  const totalText = `Total Items: ${totalItems}`;
+  const totalTextSize = 12;
+  const totalTextWidth = totalText.length * (totalTextSize * 0.5);
+  const totalCenterX = summaryX + (summaryWidth - totalTextWidth) / 2;
+  
+  page.drawText(totalText, {
+    x: totalCenterX,
+    y: summaryY - 15,
+    size: totalTextSize,
+    font: boldFont,
+    color: darkBg,
+  });
+
+  // Footer
+  const footerY = 100;
+  
+  page.drawText('This document serves as a record of liquor movement', {
+    x: margin,
+    y: footerY,
+    size: 10,
+    font: font,
+    color: lightText,
+  });
+
+  page.drawText('at Encore Boston Harbor Casino.', {
+    x: margin,
+    y: footerY - 15,
+    size: 10,
+    font: font,
+    color: lightText,
+  });
+
+  page.drawText(`Generated on: ${new Date().toLocaleString('en-US')}`, {
+    x: margin,
+    y: footerY - 40,
+    size: 8,
+    font: font,
+    color: rgb(0.7, 0.7, 0.7),
+  });
+
+  return doc.save();
 }

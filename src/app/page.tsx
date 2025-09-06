@@ -509,18 +509,40 @@ export default function HomePage() {
 								{movimientos.map((movimiento) => (
 									<div key={movimiento.id} className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:bg-white/10 transition-all duration-300">
 										<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
-											<h3 className="text-lg sm:text-xl font-medium text-accent">
-												Movement #{movimiento.id.slice(-8)}
-											</h3>
-											<span className="text-sm sm:text-base text-secondary/60 font-light">
-												{new Date(movimiento.date).toLocaleDateString('en-US', {
-													day: 'numeric',
-													month: 'long',
-													year: 'numeric',
-													hour: '2-digit',
-													minute: '2-digit'
-												})}
-											</span>
+											<div className="flex-1">
+												<h3 className="text-lg sm:text-xl font-medium text-accent">
+													Movement #{movimiento.id.slice(-8)}
+												</h3>
+												<span className="text-sm sm:text-base text-secondary/60 font-light">
+													{new Date(movimiento.date).toLocaleDateString('en-US', {
+														day: 'numeric',
+														month: 'long',
+														year: 'numeric',
+														hour: '2-digit',
+														minute: '2-digit'
+													})}
+												</span>
+											</div>
+											<button
+												onClick={() => window.open(`/api/movimientos/${movimiento.id}/pdf`, '_blank')}
+												className="group flex items-center gap-2 bg-accent hover:bg-accentHover text-background px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-medium transition-all duration-200 text-xs sm:text-sm hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
+												title="Download PDF Invoice"
+											>
+												<svg 
+													className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:scale-110" 
+													fill="none" 
+													stroke="currentColor" 
+													viewBox="0 0 24 24"
+												>
+													<path 
+														strokeLinecap="round" 
+														strokeLinejoin="round" 
+														strokeWidth={2.5} 
+														d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" 
+													/>
+												</svg>
+												<span className="hidden sm:inline">PDF</span>
+											</button>
 										</div>
 										
 										<div className="space-y-2">
