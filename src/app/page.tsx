@@ -20,6 +20,8 @@ export default function HomePage() {
 	const [showScrollButton, setShowScrollButton] = useState(false);
 	const [buttonHasAppeared, setButtonHasAppeared] = useState(false);
 	const [expandedMovements, setExpandedMovements] = useState<Set<string>>(new Set());
+	const [showConfirmModal, setShowConfirmModal] = useState(false);
+	const [showCancelModal, setShowCancelModal] = useState(false);
 
 	useEffect(() => {
 		fetchLicores().then(setLicores);
@@ -194,6 +196,15 @@ export default function HomePage() {
 			return;
 		}
 
+		// Show confirmation modal instead of executing directly
+		setShowConfirmModal(true);
+	};
+
+	const executeMovement = async () => {
+		const licoresSeleccionados = Object.entries(cantidades).filter(
+			([_, cantidad]) => cantidad.botellas > 0 || cantidad.cajas > 0
+		);
+
 		setSubmitting(true);
 		try {
 			// Prepare movement data
@@ -245,7 +256,30 @@ export default function HomePage() {
 			alert('Error registering movement. Please try again.');
 		} finally {
 			setSubmitting(false);
+			setShowConfirmModal(false);
 		}
+	};
+
+	const handleCancelMovement = () => {
+		// Check if there are any selections to cancel
+		const hasSelections = Object.entries(cantidades).some(
+			([_, cantidad]) => cantidad.botellas > 0 || cantidad.cajas > 0
+		);
+
+		if (!hasSelections) {
+			alert('No items selected to cancel.');
+			return;
+		}
+
+		// Show cancel confirmation modal
+		setShowCancelModal(true);
+	};
+
+	const executeCancelMovement = () => {
+		// Clear all selections
+		setCantidades({});
+		setSearchTerm('');
+		setShowCancelModal(false);
 	};
 
 	// Filter liquors by name and type
@@ -486,13 +520,23 @@ export default function HomePage() {
 							</div>
 						)}
 						
-						{/* Floating Action Button */}
-						<div className="mt-8 lg:mt-12 flex justify-center">
+						{/* Action Buttons */}
+						<div className="mt-8 lg:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+							<button 
+								onClick={handleCancelMovement}
+								disabled={submitting}
+								className="group flex items-center justify-center gap-2 sm:gap-3 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-secondary hover:text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-sm sm:text-base lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none order-2 sm:order-1"
+							>
+								<svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+								</svg>
+								<span>Cancel Movement</span>
+							</button>
 							<button 
 								onClick={handleConfirmar}
 								disabled={submitting}
 								data-checkout-button
-								className="group flex items-center gap-3 sm:gap-4 bg-accent hover:bg-accentHover text-background px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-sm sm:text-base lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+								className="group flex items-center justify-center gap-3 sm:gap-4 bg-accent hover:bg-accentHover text-background px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-sm sm:text-base lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none order-1 sm:order-2"
 							>
 								<span>{submitting ? 'Processing...' : 'Confirm Movement'}</span>
 								<div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-background rounded-full group-hover:scale-125 transition-transform"></div>
@@ -528,9 +572,9 @@ export default function HomePage() {
 									return (
 										<div key={movimiento.id} className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl overflow-hidden hover:bg-white/10 transition-all duration-300">
 											<div className="p-4 sm:p-6">
-												<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
-													<div className="flex-1">
-														<h3 className="text-lg sm:text-xl font-medium text-accent">
+												<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
+													<div className="flex-1 min-w-0">
+														<h3 className="text-lg sm:text-xl font-medium text-accent truncate">
 															Movement #{movimiento.id.slice(-8)}
 														</h3>
 														<span className="text-sm sm:text-base text-secondary/60 font-light">
@@ -545,11 +589,11 @@ export default function HomePage() {
 													</div>
 													<button
 														onClick={() => window.open(`/api/movimientos/${movimiento.id}/pdf`, '_blank')}
-														className="group flex items-center gap-2 bg-accent hover:bg-accentHover text-background px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-medium transition-all duration-200 text-xs sm:text-sm hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
+														className="group flex items-center justify-center gap-2 bg-accent hover:bg-accentHover text-background px-4 py-2.5 sm:px-4 sm:py-2.5 rounded-lg sm:rounded-xl font-medium transition-all duration-200 text-sm hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl w-full sm:w-auto min-w-[100px] sm:min-w-[80px]"
 														title="Download PDF Invoice"
 													>
 														<svg 
-															className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:scale-110" 
+															className="w-4 h-4 flex-shrink-0 transition-transform duration-200 group-hover:scale-110" 
 															fill="none" 
 															stroke="currentColor" 
 															viewBox="0 0 24 24"
@@ -561,11 +605,11 @@ export default function HomePage() {
 																d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" 
 															/>
 														</svg>
-														<span className="hidden sm:inline">PDF</span>
+														<span className="font-medium">PDF</span>
 													</button>
 												</div>
 												
-												<div className="space-y-2">
+												<div className="space-y-2 mt-4">
 													<div 
 														className={`transition-all duration-500 ease-in-out ${
 															isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-[180px] opacity-100'
@@ -667,6 +711,77 @@ export default function HomePage() {
 							</svg>
 						</div>
 					</button>
+				</div>
+			)}
+
+			{/* Confirmation Modal */}
+			{showConfirmModal && (
+				<div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+					<div className="bg-gradient-to-br from-cardBg to-background border border-border/50 rounded-2xl p-6 sm:p-8 max-w-md w-full mx-4 shadow-2xl animate-in fade-in-0 zoom-in-95 duration-300">
+						<div className="flex items-center gap-3 mb-4">
+							<div className="w-8 h-8 bg-accent/20 rounded-full flex items-center justify-center">
+								<svg className="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+								</svg>
+							</div>
+							<h3 className="text-xl font-medium text-primary">Confirm Movement</h3>
+						</div>
+						
+						<p className="text-secondary/80 mb-6 leading-relaxed">
+							Are you sure you want to confirm this liquor movement? This action will record the selected items in the system.
+						</p>
+						
+						<div className="flex gap-3">
+							<button
+								onClick={() => setShowConfirmModal(false)}
+								className="flex-1 px-4 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-secondary hover:text-primary rounded-lg font-medium transition-all duration-200"
+							>
+								Cancel
+							</button>
+							<button
+								onClick={executeMovement}
+								disabled={submitting}
+								className="flex-1 px-4 py-2.5 bg-accent hover:bg-accentHover text-background rounded-lg font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+							>
+								{submitting ? 'Processing...' : 'Confirm'}
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
+
+			{/* Cancel Modal */}
+			{showCancelModal && (
+				<div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+					<div className="bg-gradient-to-br from-cardBg to-background border border-border/50 rounded-2xl p-6 sm:p-8 max-w-md w-full mx-4 shadow-2xl animate-in fade-in-0 zoom-in-95 duration-300">
+						<div className="flex items-center gap-3 mb-4">
+							<div className="w-8 h-8 bg-red-500/20 rounded-full flex items-center justify-center">
+								<svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+								</svg>
+							</div>
+							<h3 className="text-xl font-medium text-primary">Cancel Movement</h3>
+						</div>
+						
+						<p className="text-secondary/80 mb-6 leading-relaxed">
+							Are you sure you want to cancel this movement? All selected items will be cleared and cannot be recovered.
+						</p>
+						
+						<div className="flex gap-3">
+							<button
+								onClick={() => setShowCancelModal(false)}
+								className="flex-1 px-4 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-secondary hover:text-primary rounded-lg font-medium transition-all duration-200"
+							>
+								Keep Items
+							</button>
+							<button
+								onClick={executeCancelMovement}
+								className="flex-1 px-4 py-2.5 bg-red-500/80 hover:bg-red-500 text-white rounded-lg font-medium transition-all duration-200"
+							>
+								Clear All
+							</button>
+						</div>
+					</div>
 				</div>
 			)}
 			</div>
