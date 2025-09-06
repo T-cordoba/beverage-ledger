@@ -361,6 +361,12 @@ export default function HomePage() {
 		setSearchTerm('');
 		setShowCancelModal(false);
 		showNotification('info', 'Movement Cancelled', 'All selected items have been cleared.');
+		
+		// Scroll to top of page
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth'
+		});
 	};
 
 	// Filter liquors by name and type
@@ -394,13 +400,12 @@ export default function HomePage() {
 			<header className="border-b border-border bg-gradient-to-r from-background to-cardBg backdrop-blur-sm">
 				<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
 					<div className="flex items-center gap-3 mb-3 lg:mb-4">
-						<div className="w-2 h-2 lg:w-3 lg:h-3 bg-accent rounded-full"></div>
 						<h1 className="text-2xl sm:text-3xl lg:text-4xl font-light text-accent tracking-wide">
 							<span className="block sm:inline">Encore Beverage</span>
 							<span className="block sm:inline sm:ml-2">Ledger</span>
 						</h1>
 					</div>
-					<p className="text-secondary/80 text-sm sm:text-base lg:text-lg font-light ml-5 lg:ml-7">
+					<p className="text-secondary/80 text-sm sm:text-base lg:text-lg font-light">
 						Liquor inventory management for Encore Boston Harbor
 					</p>
 				</div>
@@ -468,7 +473,19 @@ export default function HomePage() {
 									×
 								</button>
 							) : (
-								<div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-accent/40 rounded-full"></div>
+								<svg 
+									className="w-4 h-4 sm:w-5 sm:h-5 text-accent/60" 
+									fill="none" 
+									stroke="currentColor" 
+									viewBox="0 0 24 24"
+								>
+									<path 
+										strokeLinecap="round" 
+										strokeLinejoin="round" 
+										strokeWidth={2} 
+										d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" 
+									/>
+								</svg>
 							)}
 						</div>
 					</div>
@@ -615,7 +632,7 @@ export default function HomePage() {
 						<div className="mt-8 lg:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
 							<button 
 								onClick={handleCancelMovement}
-								disabled={submitting}
+								disabled={submitting || !hasSelectedItems}
 								className="group flex items-center justify-center gap-2 sm:gap-3 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-secondary hover:text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-sm sm:text-base lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none order-2 sm:order-1"
 							>
 								<svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -625,12 +642,14 @@ export default function HomePage() {
 							</button>
 							<button 
 								onClick={handleConfirmar}
-								disabled={submitting}
+								disabled={submitting || !hasSelectedItems}
 								data-checkout-button
 								className="group flex items-center justify-center gap-3 sm:gap-4 bg-accent hover:bg-accentHover text-background px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-sm sm:text-base lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none order-1 sm:order-2"
 							>
+								<svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+								</svg>
 								<span>{submitting ? 'Processing...' : 'Confirm Movement'}</span>
-								<div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-background rounded-full group-hover:scale-125 transition-transform"></div>
 							</button>
 						</div>
 					</section>
