@@ -11,6 +11,7 @@ async function fetchLicores(): Promise<Licor[]> {
 export default function HomePage() {
 	const [licores, setLicores] = useState<Licor[]>([]);
 	const [cantidades, setCantidades] = useState<Record<string, { botellas: number; cajas: number }>>({});
+	const [searchTerm, setSearchTerm] = useState("");
 
 	useEffect(() => {
 		fetchLicores().then(setLicores);
@@ -26,6 +27,15 @@ export default function HomePage() {
 			return { ...prev, [id]: nuevo };
 		});
 	};
+
+	// Filtrar licores por nombre y tipo
+	const licoresFiltrados = licores.filter((licor) => {
+		const searchLower = searchTerm.toLowerCase();
+		return (
+			licor.nombre.toLowerCase().includes(searchLower) ||
+			licor.tipo.toLowerCase().includes(searchLower)
+		);
+	});
 
 	return (
 		<div className="min-h-screen bg-background text-primary">
@@ -52,27 +62,46 @@ export default function HomePage() {
 					<div className="relative max-w-full sm:max-w-md">
 						<input
 							type="text"
-							placeholder="Buscar licores..."
+							placeholder="Buscar por nombre o tipo..."
+							value={searchTerm}
+							onChange={(e) => setSearchTerm(e.target.value)}
 							className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-cardBg border border-border rounded-xl sm:rounded-2xl text-primary placeholder-placeholder focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all text-sm sm:text-base"
 						/>
 						<div className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2">
-							<div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-accent/40 rounded-full"></div>
+							{searchTerm ? (
+								<button
+									onClick={() => setSearchTerm("")}
+									className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-accent/20 hover:bg-accent/40 flex items-center justify-center text-accent transition-colors"
+									aria-label="Limpiar búsqueda"
+								>
+									×
+								</button>
+							) : (
+								<div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-accent/40 rounded-full"></div>
+							)}
 						</div>
 					</div>
+					{searchTerm && (
+						<div className="mt-2 text-xs sm:text-sm text-secondary/60">
+							{licoresFiltrados.length} resultado{licoresFiltrados.length !== 1 ? 's' : ''} para "{searchTerm}"
+						</div>
+					)}
 				</div>
 
 				<section className="bg-cardBg/60 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 border border-border/50 shadow-2xl">
 					<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 lg:mb-8 gap-2">
 						<h2 className="text-xl sm:text-2xl font-light text-primary">Selecciona los licores</h2>
 						<div className="text-xs sm:text-sm text-secondary/60 font-light">
-							{licores.length} productos disponibles
+							{licoresFiltrados.length} de {licores.length} productos {searchTerm ? 'encontrados' : 'disponibles'}
 						</div>
 					</div>
 						<ul className="grid gap-4 sm:gap-6">
-							{licores.length === 0 ? (
-								<li className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">No hay licores registrados.</li>
+							{licoresFiltrados.length === 0 ? (
+								<li className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
+									{searchTerm ? `No se encontraron licores para "${searchTerm}"` : 'No hay licores registrados.'}
+								</li>
 							) : (
-								licores.map((licor) => {
+								licoresFiltrados.map((licor) => {
 									const cantidad = cantidades[licor.id] || { botellas: 0, cajas: 0 };
 									const hasSelection = cantidad.botellas > 0 || cantidad.cajas > 0;
 									return (
