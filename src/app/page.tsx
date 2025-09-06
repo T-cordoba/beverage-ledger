@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import type { Licor } from "./actions-licores";
-import { createMovimiento } from "./actions";
+import { createMovimiento, getMovimientos, type Movimiento } from "./actions";
 
 async function fetchLicores(): Promise<Licor[]> {
 	const res = await fetch("/api/licores", { cache: "no-store" });
@@ -14,10 +14,31 @@ export default function HomePage() {
 	const [cantidades, setCantidades] = useState<Record<string, { botellas: number; cajas: number }>>({});
 	const [searchTerm, setSearchTerm] = useState("");
 	const [submitting, setSubmitting] = useState(false);
+	const [activeSection, setActiveSection] = useState<'seleccion' | 'historial'>('seleccion');
+	const [movimientos, setMovimientos] = useState<Movimiento[]>([]);
+	const [loadingMovimientos, setLoadingMovimientos] = useState(false);
 
 	useEffect(() => {
 		fetchLicores().then(setLicores);
 	}, []);
+
+	const loadMovimientos = async () => {
+		setLoadingMovimientos(true);
+		try {
+			const data = await getMovimientos();
+			setMovimientos(data);
+		} catch (error) {
+			console.error('Error al cargar movimientos:', error);
+		} finally {
+			setLoadingMovimientos(false);
+		}
+	};
+
+	useEffect(() => {
+		if (activeSection === 'historial') {
+			loadMovimientos();
+		}
+	}, [activeSection]);
 
 	const handleChange = (id: string, tipo: "botellas" | "cajas", delta: number) => {
 		setCantidades((prev) => {
@@ -81,6 +102,11 @@ export default function HomePage() {
 			setCantidades({});
 			setSearchTerm('');
 			
+			// Recargar movimientos si estamos en esa sección
+			if (activeSection === 'historial') {
+				loadMovimientos();
+			}
+			
 			alert('Movimiento registrado exitosamente');
 		} catch (error) {
 			console.error('Error al crear movimiento:', error);
@@ -133,17 +159,47 @@ export default function HomePage() {
 				</div>
 			</header>
 
+			{/* Navigation Bar */}
+			<nav className="border-b border-border bg-cardBg/50 backdrop-blur-sm sticky top-0 z-10">
+				<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div className="flex">
+						<button
+							onClick={() => setActiveSection('seleccion')}
+							className={`px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-medium transition-colors border-b-2 ${
+								activeSection === 'seleccion'
+									? 'text-accent border-accent'
+									: 'text-secondary/60 border-transparent hover:text-secondary hover:border-secondary/30'
+							}`}
+						>
+							Selección de Licores
+						</button>
+						<button
+							onClick={() => setActiveSection('historial')}
+							className={`px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-medium transition-colors border-b-2 ${
+								activeSection === 'historial'
+									? 'text-accent border-accent'
+									: 'text-secondary/60 border-transparent hover:text-secondary hover:border-secondary/30'
+							}`}
+						>
+							Historial de Movimientos
+						</button>
+					</div>
+				</div>
+			</nav>
+
 			{/* Main Content */}
 			<main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-12">
-				{/* Search Bar */}
-				<div className="mb-6 lg:mb-8">
-					<div className="relative max-w-full sm:max-w-md">
-						<input
-							type="text"
-							placeholder="Buscar por nombre o tipo..."
-							value={searchTerm}
-							onChange={(e) => setSearchTerm(e.target.value)}
-							className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-cardBg border border-border rounded-xl sm:rounded-2xl text-primary placeholder-placeholder focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all text-sm sm:text-base"
+				{activeSection === 'seleccion' ? (
+					<>
+						{/* Search Bar */}
+						<div className="mb-6 lg:mb-8">
+							<div className="relative max-w-full sm:max-w-md">
+								<input
+									type="text"
+									placeholder="Buscar por nombre o tipo..."
+									value={searchTerm}
+									onChange={(e) => setSearchTerm(e.target.value)}
+									className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-cardBg border border-border rounded-xl sm:rounded-2xl text-primary placeholder-placeholder focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all text-sm sm:text-base"
 						/>
 						<div className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2">
 							{searchTerm ? (
@@ -310,7 +366,64 @@ export default function HomePage() {
 							</button>
 						</div>
 					</section>
-				</main>
+					</>
+				) : (
+					/* Historial de Movimientos */
+					<section className="space-y-6 lg:space-y-8">
+						<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 lg:mb-8 gap-2">
+							<h2 className="text-xl sm:text-2xl font-light text-primary">Historial de Movimientos</h2>
+							<div className="text-xs sm:text-sm text-secondary/60 font-light">
+								{movimientos.length} movimiento{movimientos.length !== 1 ? 's' : ''} registrado{movimientos.length !== 1 ? 's' : ''}
+							</div>
+						</div>
+
+						{loadingMovimientos ? (
+							<div className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
+								Cargando movimientos...
+							</div>
+						) : movimientos.length === 0 ? (
+							<div className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
+								No hay movimientos registrados.
+							</div>
+						) : (
+							<div className="grid gap-4 sm:gap-6">
+								{movimientos.map((movimiento) => (
+									<div key={movimiento.id} className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:bg-white/10 transition-all duration-300">
+										<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
+											<h3 className="text-lg sm:text-xl font-medium text-accent">
+												Movimiento #{movimiento.id.slice(-8)}
+											</h3>
+											<span className="text-sm sm:text-base text-secondary/60 font-light">
+												{new Date(movimiento.fecha).toLocaleDateString('es-ES', {
+													day: 'numeric',
+													month: 'long',
+													year: 'numeric',
+													hour: '2-digit',
+													minute: '2-digit'
+												})}
+											</span>
+										</div>
+										
+										<div className="space-y-2">
+											{movimiento.licores.map((licor, index) => (
+												<div key={index} className="flex justify-between items-center py-2 border-b border-white/5 last:border-b-0">
+													<div className="flex flex-col">
+														<span className="text-secondary font-medium">{licor.nombre}</span>
+														<span className="text-xs text-secondary/60">{licor.tipo}</span>
+													</div>
+													<span className="text-accent font-medium">
+														{licor.cantidad} {licor.unidad}{licor.cantidad !== 1 ? (licor.unidad === 'botella' ? 's' : 's') : ''}
+													</span>
+												</div>
+											))}
+										</div>
+									</div>
+								))}
+							</div>
+						)}
+					</section>
+				)}
+			</main>
 			</div>
 		);
 	}
