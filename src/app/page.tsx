@@ -28,7 +28,7 @@ export default function HomePage() {
 			const data = await getMovimientos();
 			setMovimientos(data);
 		} catch (error) {
-			console.error('Error al cargar movimientos:', error);
+			console.error('Error loading movements:', error);
 		} finally {
 			setLoadingMovimientos(false);
 		}
@@ -39,6 +39,19 @@ export default function HomePage() {
 			loadMovimientos();
 		}
 	}, [activeSection]);
+
+	// Helper function to translate unit names for display
+	const getDisplayUnit = (unidad: string, cantidad: number) => {
+		const unitMap: Record<string, string> = {
+			'botella': 'bottle',
+			'caja': 'case',
+			'bottle': 'bottle',
+			'case': 'case'
+		};
+		
+		const englishUnit = unitMap[unidad] || unidad;
+		return cantidad === 1 ? englishUnit : englishUnit + 's';
+	};
 
 	const handleChange = (id: string, tipo: "botellas" | "cajas", delta: number) => {
 		setCantidades((prev) => {
@@ -52,80 +65,80 @@ export default function HomePage() {
 	};
 
 	const handleConfirmar = async () => {
-		// Verificar que hay al menos un licor seleccionado
+		// Verify that at least one liquor is selected
 		const licoresSeleccionados = Object.entries(cantidades).filter(
 			([_, cantidad]) => cantidad.botellas > 0 || cantidad.cajas > 0
 		);
 
 		if (licoresSeleccionados.length === 0) {
-			alert('Debes seleccionar al menos un licor para confirmar el movimiento.');
+			alert('You must select at least one liquor to confirm the movement.');
 			return;
 		}
 
 		setSubmitting(true);
 		try {
-			// Preparar datos del movimiento
+			// Prepare movement data
 			const licoresData = licoresSeleccionados.flatMap(([id, cantidad]) => {
 				const licor = licores.find(l => l.id.toString() === id);
 				const items = [];
 				
-				// Agregar botellas si hay cantidad
+				// Add bottles if there's quantity
 				if (cantidad.botellas > 0) {
 					items.push({
-						nombre: licor?.nombre || '',
-						tipo: licor?.tipo || '',
-						cantidad: cantidad.botellas,
-						unidad: 'botella' as const
+						name: licor?.name || '',
+						type: licor?.type || '',
+						quantity: cantidad.botellas,
+						unit: 'bottle' as const
 					});
 				}
 				
-				// Agregar cajas si hay cantidad
+				// Add cases if there's quantity
 				if (cantidad.cajas > 0) {
 					items.push({
-						nombre: licor?.nombre || '',
-						tipo: licor?.tipo || '',
-						cantidad: cantidad.cajas,
-						unidad: 'caja' as const
+						name: licor?.name || '',
+						type: licor?.type || '',
+						quantity: cantidad.cajas,
+						unit: 'case' as const
 					});
 				}
 				
 				return items;
 			});
 
-			// Crear el movimiento
+			// Create the movement
 			await createMovimiento({
-				fecha: new Date().toISOString(),
-				licores: licoresData
+				date: new Date().toISOString(),
+				liquors: licoresData
 			});
 
-			// Limpiar el formulario
+			// Clear the form
 			setCantidades({});
 			setSearchTerm('');
 			
-			// Recargar movimientos si estamos en esa sección
+			// Reload movements if we're in that section
 			if (activeSection === 'historial') {
 				loadMovimientos();
 			}
 			
-			alert('Movimiento registrado exitosamente');
+			alert('Movement registered successfully');
 		} catch (error) {
-			console.error('Error al crear movimiento:', error);
-			alert('Error al registrar el movimiento. Por favor intenta de nuevo.');
+			console.error('Error creating movement:', error);
+			alert('Error registering movement. Please try again.');
 		} finally {
 			setSubmitting(false);
 		}
 	};
 
-	// Filtrar licores por nombre y tipo
+	// Filter liquors by name and type
 	const licoresFiltrados = licores.filter((licor) => {
 		const searchLower = searchTerm.toLowerCase();
 		return (
-			licor.nombre.toLowerCase().includes(searchLower) ||
-			licor.tipo.toLowerCase().includes(searchLower)
+			licor.name.toLowerCase().includes(searchLower) ||
+			licor.type.toLowerCase().includes(searchLower)
 		);
 	});
 
-	// Ordenar licores: los que tienen cantidades seleccionadas primero
+	// Sort liquors: those with selected quantities first
 	const licoresOrdenados = [...licoresFiltrados].sort((a, b) => {
 		const cantidadA = cantidades[a.id] || { botellas: 0, cajas: 0 };
 		const cantidadB = cantidades[b.id] || { botellas: 0, cajas: 0 };
@@ -133,12 +146,12 @@ export default function HomePage() {
 		const tieneSeleccionA = cantidadA.botellas > 0 || cantidadA.cajas > 0;
 		const tieneSeleccionB = cantidadB.botellas > 0 || cantidadB.cajas > 0;
 		
-		// Si uno tiene selección y el otro no, el que tiene selección va primero
+		// If one has selection and the other doesn't, the one with selection goes first
 		if (tieneSeleccionA && !tieneSeleccionB) return -1;
 		if (!tieneSeleccionA && tieneSeleccionB) return 1;
 		
-		// Si ambos tienen o no tienen selección, mantener orden alfabético por nombre
-		return a.nombre.localeCompare(b.nombre);
+		// If both have or don't have selection, maintain alphabetical order by name
+		return a.name.localeCompare(b.name);
 	});
 
 	return (
@@ -154,7 +167,7 @@ export default function HomePage() {
 						</h1>
 					</div>
 					<p className="text-secondary/80 text-sm sm:text-base lg:text-lg font-light ml-5 lg:ml-7">
-						Gestión de inventario de licores para Encore Boston Harbor
+						Liquor inventory management for Encore Boston Harbor
 					</p>
 				</div>
 			</header>
@@ -171,7 +184,7 @@ export default function HomePage() {
 									: 'text-secondary/60 border-transparent hover:text-secondary hover:border-secondary/30'
 							}`}
 						>
-							Selección de Licores
+							Liquor Selection
 						</button>
 						<button
 							onClick={() => setActiveSection('historial')}
@@ -181,7 +194,7 @@ export default function HomePage() {
 									: 'text-secondary/60 border-transparent hover:text-secondary hover:border-secondary/30'
 							}`}
 						>
-							Historial de Movimientos
+							Movement History
 						</button>
 					</div>
 				</div>
@@ -196,7 +209,7 @@ export default function HomePage() {
 							<div className="relative max-w-full sm:max-w-md">
 								<input
 									type="text"
-									placeholder="Buscar por nombre o tipo..."
+									placeholder="Search by name or type..."
 									value={searchTerm}
 									onChange={(e) => setSearchTerm(e.target.value)}
 									className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-cardBg border border-border rounded-xl sm:rounded-2xl text-primary placeholder-placeholder focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all text-sm sm:text-base"
@@ -206,7 +219,7 @@ export default function HomePage() {
 								<button
 									onClick={() => setSearchTerm("")}
 									className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-accent/20 hover:bg-accent/40 flex items-center justify-center text-accent transition-colors"
-									aria-label="Limpiar búsqueda"
+									aria-label="Clear search"
 								>
 									×
 								</button>
@@ -224,15 +237,15 @@ export default function HomePage() {
 
 				<section className="bg-cardBg/60 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 border border-border/50 shadow-2xl">
 					<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 lg:mb-8 gap-2">
-						<h2 className="text-xl sm:text-2xl font-light text-primary">Selecciona los licores</h2>
+						<h2 className="text-xl sm:text-2xl font-light text-primary">Select liquors</h2>
 						<div className="text-xs sm:text-sm text-secondary/60 font-light">
-							{licoresOrdenados.length} de {licores.length} productos {searchTerm ? 'encontrados' : 'disponibles'}
+							{licoresOrdenados.length} of {licores.length} products {searchTerm ? 'found' : 'available'}
 						</div>
 					</div>
 						<ul className="grid gap-4 sm:gap-6">
 							{licoresOrdenados.length === 0 ? (
 								<li className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
-									{searchTerm ? `No se encontraron licores para "${searchTerm}"` : 'No hay licores registrados.'}
+									{searchTerm ? `No liquors found for "${searchTerm}"` : 'No liquors registered.'}
 								</li>
 							) : (
 								licoresOrdenados.map((licor) => {
@@ -255,27 +268,27 @@ export default function HomePage() {
 												{/* Licor Info */}
 												<div className="flex-1">
 													<h3 className="text-lg sm:text-xl lg:text-2xl font-light text-primary mb-2 group-hover:text-accent transition-colors">
-														{licor.nombre}
+														{licor.name}
 													</h3>
 													<div className="inline-flex items-center">
 														<span className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-medium uppercase tracking-widest text-accent/80 bg-accent/10 rounded-full border border-accent/20 backdrop-blur-sm">
-															{licor.tipo}
+															{licor.type}
 														</span>
 													</div>
 												</div>
 												
 												{/* Controls */}
 												<div className="flex flex-col gap-3 sm:gap-4">
-													{/* Botellas */}
+													{/* Bottles */}
 													<div className="flex items-center justify-between sm:justify-start sm:gap-4 bg-background/50 backdrop-blur-sm rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 border border-border/30">
 														<label className="text-xs sm:text-sm font-light text-secondary/80 uppercase tracking-wider min-w-[60px] sm:min-w-[80px]">
-															Botellas
+															Bottles
 														</label>
 														<div className="flex items-center gap-2 sm:gap-3">
 															<button
 																className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-border/50 hover:bg-accent/20 text-primary transition-all duration-200 flex items-center justify-center font-light text-base sm:text-lg border border-border/20 hover:border-accent/30"
 																onClick={() => handleChange(licor.id, "botellas", -1)}
-																aria-label="Restar botella"
+																aria-label="Remove bottle"
 																type="button"
 															>
 																−
@@ -286,7 +299,7 @@ export default function HomePage() {
 															<button
 																className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-accent hover:bg-accentHover text-background transition-all duration-200 flex items-center justify-center font-light text-base sm:text-lg shadow-lg hover:shadow-xl"
 																onClick={() => handleChange(licor.id, "botellas", 1)}
-																aria-label="Sumar botella"
+																aria-label="Add bottle"
 																type="button"
 															>
 																+
@@ -294,16 +307,16 @@ export default function HomePage() {
 														</div>
 													</div>
 													
-													{/* Cajas */}
+													{/* Cases */}
 													<div className="flex items-center justify-between sm:justify-start sm:gap-4 bg-background/50 backdrop-blur-sm rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 border border-border/30">
 														<label className="text-xs sm:text-sm font-light text-secondary/80 uppercase tracking-wider min-w-[60px] sm:min-w-[80px]">
-															Cajas
+															Cases
 														</label>
 														<div className="flex items-center gap-2 sm:gap-3">
 															<button
 																className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-border/50 hover:bg-accent/20 text-primary transition-all duration-200 flex items-center justify-center font-light text-base sm:text-lg border border-border/20 hover:border-accent/30"
 																onClick={() => handleChange(licor.id, "cajas", -1)}
-																aria-label="Restar caja"
+																aria-label="Remove case"
 																type="button"
 															>
 																−
@@ -314,7 +327,7 @@ export default function HomePage() {
 															<button
 																className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-accent hover:bg-accentHover text-background transition-all duration-200 flex items-center justify-center font-light text-base sm:text-lg shadow-lg hover:shadow-xl"
 																onClick={() => handleChange(licor.id, "cajas", 1)}
-																aria-label="Sumar caja"
+																aria-label="Add case"
 																type="button"
 															>
 																+
@@ -332,19 +345,19 @@ export default function HomePage() {
 						{/* Summary of Selected Items */}
 						{Object.entries(cantidades).some(([_, cantidad]) => cantidad.botellas > 0 || cantidad.cajas > 0) && (
 							<div className="mt-6 lg:mt-8 p-4 sm:p-6 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl">
-								<h3 className="text-lg sm:text-xl font-light text-primary mb-4">Resumen de selección</h3>
+								<h3 className="text-lg sm:text-xl font-light text-primary mb-4">Selection Summary</h3>
 								<div className="space-y-2">
 									{Object.entries(cantidades)
 										.filter(([_, cantidad]) => cantidad.botellas > 0 || cantidad.cajas > 0)
 										.map(([id, cantidad]) => {
 											const licor = licores.find(l => l.id.toString() === id);
 											const items = [];
-											if (cantidad.botellas > 0) items.push(`${cantidad.botellas} botella${cantidad.botellas > 1 ? 's' : ''}`);
-											if (cantidad.cajas > 0) items.push(`${cantidad.cajas} caja${cantidad.cajas > 1 ? 's' : ''}`);
+											if (cantidad.botellas > 0) items.push(`${cantidad.botellas} bottle${cantidad.botellas > 1 ? 's' : ''}`);
+											if (cantidad.cajas > 0) items.push(`${cantidad.cajas} case${cantidad.cajas > 1 ? 's' : ''}`);
 											
 											return (
 												<div key={id} className="flex justify-between text-sm sm:text-base">
-													<span className="text-secondary font-light">{licor?.nombre}</span>
+													<span className="text-secondary font-light">{licor?.name}</span>
 													<span className="text-accent font-medium">{items.join(' + ')}</span>
 												</div>
 											);
@@ -361,29 +374,29 @@ export default function HomePage() {
 								disabled={submitting}
 								className="group flex items-center gap-3 sm:gap-4 bg-accent hover:bg-accentHover text-background px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-sm sm:text-base lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
 							>
-								<span>{submitting ? 'Procesando...' : 'Confirmar Movimiento'}</span>
+								<span>{submitting ? 'Processing...' : 'Confirm Movement'}</span>
 								<div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-background rounded-full group-hover:scale-125 transition-transform"></div>
 							</button>
 						</div>
 					</section>
 					</>
 				) : (
-					/* Historial de Movimientos */
+					/* Movement History */
 					<section className="space-y-6 lg:space-y-8">
 						<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 lg:mb-8 gap-2">
-							<h2 className="text-xl sm:text-2xl font-light text-primary">Historial de Movimientos</h2>
+							<h2 className="text-xl sm:text-2xl font-light text-primary">Movement History</h2>
 							<div className="text-xs sm:text-sm text-secondary/60 font-light">
-								{movimientos.length} movimiento{movimientos.length !== 1 ? 's' : ''} registrado{movimientos.length !== 1 ? 's' : ''}
+								{movimientos.length} movement{movimientos.length !== 1 ? 's' : ''} recorded
 							</div>
 						</div>
 
 						{loadingMovimientos ? (
 							<div className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
-								Cargando movimientos...
+								Loading movements...
 							</div>
 						) : movimientos.length === 0 ? (
 							<div className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
-								No hay movimientos registrados.
+								No movements recorded.
 							</div>
 						) : (
 							<div className="grid gap-4 sm:gap-6">
@@ -391,10 +404,10 @@ export default function HomePage() {
 									<div key={movimiento.id} className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:bg-white/10 transition-all duration-300">
 										<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
 											<h3 className="text-lg sm:text-xl font-medium text-accent">
-												Movimiento #{movimiento.id.slice(-8)}
+												Movement #{movimiento.id.slice(-8)}
 											</h3>
 											<span className="text-sm sm:text-base text-secondary/60 font-light">
-												{new Date(movimiento.fecha).toLocaleDateString('es-ES', {
+												{new Date(movimiento.date).toLocaleDateString('en-US', {
 													day: 'numeric',
 													month: 'long',
 													year: 'numeric',
@@ -405,14 +418,14 @@ export default function HomePage() {
 										</div>
 										
 										<div className="space-y-2">
-											{movimiento.licores.map((licor, index) => (
+											{movimiento.liquors.map((licor, index) => (
 												<div key={index} className="flex justify-between items-center py-2 border-b border-white/5 last:border-b-0">
 													<div className="flex flex-col">
-														<span className="text-secondary font-medium">{licor.nombre}</span>
-														<span className="text-xs text-secondary/60">{licor.tipo}</span>
+														<span className="text-secondary font-medium">{licor.name}</span>
+														<span className="text-xs text-secondary/60">{licor.type}</span>
 													</div>
 													<span className="text-accent font-medium">
-														{licor.cantidad} {licor.unidad}{licor.cantidad !== 1 ? (licor.unidad === 'botella' ? 's' : 's') : ''}
+														{licor.quantity} {getDisplayUnit(licor.unit, licor.quantity)}
 													</span>
 												</div>
 											))}
