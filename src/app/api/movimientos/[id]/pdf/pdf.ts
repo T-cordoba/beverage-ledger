@@ -167,17 +167,127 @@ export async function createPDF(movimiento: Movimiento): Promise<Uint8Array> {
     color: darkBg,
   });
 
-  // Table items
+  // Table items with pagination
   let currentY = tableStartY - tableHeaderHeight - 10;
   const rowHeight = 25;
   let totalItems = 0;
+  const itemsPerPage = 14;
+  let currentPage = 1;
+  let itemsOnCurrentPage = 0;
+  let pages = [page];
 
   movimiento.liquors.forEach((liquor: any, index: number) => {
-    const isEvenRow = index % 2 === 0;
+    // Check if we need a new page
+    if (itemsOnCurrentPage >= itemsPerPage) {
+      // Add new page
+      const newPage = doc.addPage([595, 842]);
+      pages.push(newPage);
+      currentPage++;
+      itemsOnCurrentPage = 0;
+      
+      // Setup new page with same background and header
+      newPage.drawRectangle({
+        x: 0,
+        y: 0,
+        width: pageWidth,
+        height: pageHeight,
+        color: darkBg,
+      });
+      
+      // Header for new page
+      newPage.drawRectangle({
+        x: margin + 2,
+        y: pageHeight - 122,
+        width: pageWidth - 2 * margin,
+        height: 70,
+        color: rgb(0.1, 0.1, 0.1),
+      });
+      
+      newPage.drawRectangle({
+        x: margin,
+        y: pageHeight - 120,
+        width: pageWidth - 2 * margin,
+        height: 70,
+        color: accent,
+      });
+      
+      const titleText = 'ENCORE BEVERAGE LEDGER';
+      const titleTextSize = 24;
+      const titleTextWidth = titleText.length * (titleTextSize * 0.6);
+      const titleCenterX = (pageWidth - titleTextWidth) / 2;
+      
+      newPage.drawText(titleText, {
+        x: titleCenterX,
+        y: pageHeight - 100,
+        size: titleTextSize,
+        font: boldFont,
+        color: darkBg,
+      });
+      
+      const subtitleText = 'Liquor Movement Invoice';
+      const subtitleTextSize = 12;
+      const subtitleTextWidth = subtitleText.length * (subtitleTextSize * 0.5);
+      const subtitleCenterX = (pageWidth - subtitleTextWidth) / 2;
+      
+      newPage.drawText(subtitleText, {
+        x: subtitleCenterX,
+        y: pageHeight - 75,
+        size: subtitleTextSize,
+        font: font,
+        color: darkBg,
+      });
+      
+      // Table header for new page
+      const newTableStartY = pageHeight - 180;
+      newPage.drawRectangle({
+        x: margin,
+        y: newTableStartY - tableHeaderHeight,
+        width: pageWidth - 2 * margin,
+        height: tableHeaderHeight,
+        color: accent,
+      });
+      
+      newPage.drawText('Item', {
+        x: margin + 15,
+        y: newTableStartY - 18,
+        size: 12,
+        font: boldFont,
+        color: darkBg,
+      });
+      
+      newPage.drawText('Type', {
+        x: margin + 200,
+        y: newTableStartY - 18,
+        size: 12,
+        font: boldFont,
+        color: darkBg,
+      });
+      
+      newPage.drawText('Quantity', {
+        x: margin + 320,
+        y: newTableStartY - 18,
+        size: 12,
+        font: boldFont,
+        color: darkBg,
+      });
+      
+      newPage.drawText('Unit', {
+        x: margin + 420,
+        y: newTableStartY - 18,
+        size: 12,
+        font: boldFont,
+        color: darkBg,
+      });
+      
+      currentY = newTableStartY - tableHeaderHeight - 10;
+    }
+    
+    const currentPageObj = pages[pages.length - 1];
+    const isEvenRow = itemsOnCurrentPage % 2 === 0;
     
     // Alternate row background
     if (isEvenRow) {
-      page.drawRectangle({
+      currentPageObj.drawRectangle({
         x: margin,
         y: currentY - rowHeight + 5,
         width: pageWidth - 2 * margin,
@@ -188,7 +298,7 @@ export async function createPDF(movimiento: Movimiento): Promise<Uint8Array> {
 
     // Item name
     const itemText = liquor.name.length > 22 ? liquor.name.substring(0, 22) + '...' : liquor.name;
-    page.drawText(itemText, {
+    currentPageObj.drawText(itemText, {
       x: margin + 15,
       y: currentY - 10,
       size: 10,
@@ -197,7 +307,7 @@ export async function createPDF(movimiento: Movimiento): Promise<Uint8Array> {
     });
 
     // Type
-    page.drawText(liquor.type, {
+    currentPageObj.drawText(liquor.type, {
       x: margin + 200,
       y: currentY - 10,
       size: 10,
@@ -206,7 +316,7 @@ export async function createPDF(movimiento: Movimiento): Promise<Uint8Array> {
     });
 
     // Quantity
-    page.drawText(liquor.quantity.toString(), {
+    currentPageObj.drawText(liquor.quantity.toString(), {
       x: margin + 340,
       y: currentY - 10,
       size: 10,
@@ -216,7 +326,7 @@ export async function createPDF(movimiento: Movimiento): Promise<Uint8Array> {
 
     // Unit
     const displayUnit = liquor.quantity === 1 ? liquor.unit : liquor.unit + 's';
-    page.drawText(displayUnit, {
+    currentPageObj.drawText(displayUnit, {
       x: margin + 430,
       y: currentY - 10,
       size: 10,
@@ -226,61 +336,80 @@ export async function createPDF(movimiento: Movimiento): Promise<Uint8Array> {
 
     currentY -= rowHeight;
     totalItems += liquor.quantity;
+    itemsOnCurrentPage++;
   });
 
-  // Summary section - clean and centered
-  const summaryY = currentY - 40;
-  const summaryWidth = 200; // Fixed width for better control
-  const summaryX = pageWidth - margin - summaryWidth;
-  
-  // Summary background
-  page.drawRectangle({
-    x: summaryX,
-    y: summaryY - 30,
-    width: summaryWidth,
-    height: 30,
-    color: accent,
-  });
+  const totalPages = pages.length;
 
-  // Summary text - properly centered
-  const totalText = `Total Items: ${totalItems}`;
-  const totalTextSize = 12;
-  const totalTextWidth = totalText.length * (totalTextSize * 0.5);
-  const totalCenterX = summaryX + (summaryWidth - totalTextWidth) / 2;
-  
-  page.drawText(totalText, {
-    x: totalCenterX,
-    y: summaryY - 15,
-    size: totalTextSize,
-    font: boldFont,
-    color: darkBg,
-  });
+  // Add summary and footer to all pages
+  pages.forEach((pageObj, pageIndex) => {
+    const pageNumber = pageIndex + 1;
+    
+    // Summary section - clean and centered (only on last page)
+    if (pageIndex === pages.length - 1) {
+      const summaryY = currentY - 40;
+      const summaryWidth = 200;
+      const summaryX = pageWidth - margin - summaryWidth;
+      
+      pageObj.drawRectangle({
+        x: summaryX,
+        y: summaryY - 30,
+        width: summaryWidth,
+        height: 30,
+        color: accent,
+      });
 
-  // Footer
-  const footerY = 100;
-  
-  page.drawText('This document serves as a record of liquor movement', {
-    x: margin,
-    y: footerY,
-    size: 10,
-    font: font,
-    color: lightText,
-  });
+      const totalText = `Total Items: ${totalItems}`;
+      const totalTextSize = 12;
+      const totalTextWidth = totalText.length * (totalTextSize * 0.5);
+      const totalCenterX = summaryX + (summaryWidth - totalTextWidth) / 2;
+      
+      pageObj.drawText(totalText, {
+        x: totalCenterX,
+        y: summaryY - 15,
+        size: totalTextSize,
+        font: boldFont,
+        color: darkBg,
+      });
+    }
 
-  page.drawText('at Encore Boston Harbor Casino.', {
-    x: margin,
-    y: footerY - 15,
-    size: 10,
-    font: font,
-    color: lightText,
-  });
+    // Footer for each page
+    const footerY = 100;
+    
+    pageObj.drawText('This document serves as a record of liquor movement', {
+      x: margin,
+      y: footerY,
+      size: 10,
+      font: font,
+      color: lightText,
+    });
 
-  page.drawText(`Generated on: ${new Date().toLocaleString('en-US')}`, {
-    x: margin,
-    y: footerY - 40,
-    size: 8,
-    font: font,
-    color: rgb(0.7, 0.7, 0.7),
+    pageObj.drawText('at Encore Boston Harbor Casino.', {
+      x: margin,
+      y: footerY - 15,
+      size: 10,
+      font: font,
+      color: lightText,
+    });
+
+    pageObj.drawText(`Generated on: ${new Date().toLocaleString('en-US')}`, {
+      x: margin,
+      y: footerY - 40,
+      size: 8,
+      font: font,
+      color: rgb(0.7, 0.7, 0.7),
+    });
+
+    // Page counter at bottom right
+    const pageText = `Page ${pageNumber} of ${totalPages}`;
+    const pageTextWidth = pageText.length * (10 * 0.5);
+    pageObj.drawText(pageText, {
+      x: pageWidth - margin - pageTextWidth,
+      y: footerY - 40,
+      size: 10,
+      font: font,
+      color: lightText,
+    });
   });
 
   return doc.save();

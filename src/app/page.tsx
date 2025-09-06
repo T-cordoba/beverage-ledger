@@ -601,15 +601,20 @@ export default function HomePage() {
 														<h3 className="text-lg sm:text-xl font-medium text-accent truncate">
 															Movement #{movimiento.id.slice(-8)}
 														</h3>
-														<span className="text-sm sm:text-base text-secondary/60 font-light">
-															{new Date(movimiento.date).toLocaleDateString('en-US', {
-																day: 'numeric',
-																month: 'long',
-																year: 'numeric',
-																hour: '2-digit',
-																minute: '2-digit'
-															})}
-														</span>
+														<div className="space-y-1">
+															<span className="text-sm sm:text-base text-secondary/60 font-light block">
+																{new Date(movimiento.date).toLocaleDateString('en-US', {
+																	day: 'numeric',
+																	month: 'long',
+																	year: 'numeric',
+																	hour: '2-digit',
+																	minute: '2-digit'
+																})}
+															</span>
+															<span className="text-xs sm:text-sm text-secondary/50 font-light">
+																{movimiento.liquors.length} {movimiento.liquors.length === 1 ? 'item' : 'items'}
+															</span>
+														</div>
 													</div>
 													<button
 														onClick={() => window.open(`/api/movimientos/${movimiento.id}/pdf`, '_blank')}
@@ -636,7 +641,7 @@ export default function HomePage() {
 												<div className="space-y-2 mt-4">
 													<div 
 														className={`transition-all duration-500 ease-in-out ${
-															isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-[180px] opacity-100'
+															isExpanded ? 'max-h-none opacity-100' : 'max-h-[180px] opacity-100'
 														} overflow-hidden`}
 													>
 														{displayLiquors.map((licor, index) => (
