@@ -17,7 +17,8 @@ export default function HomePage() {
 	const [activeSection, setActiveSection] = useState<'seleccion' | 'historial'>('seleccion');
 	const [movimientos, setMovimientos] = useState<Movimiento[]>([]);
 	const [loadingMovimientos, setLoadingMovimientos] = useState(false);
-	const [showScrollButton, setShowScrollButton] = useState(true);
+	const [showScrollButton, setShowScrollButton] = useState(false);
+	const [buttonHasAppeared, setButtonHasAppeared] = useState(false);
 
 	useEffect(() => {
 		fetchLicores().then(setLicores);
@@ -64,7 +65,14 @@ export default function HomePage() {
 					
 					// Hide scroll button when checkout button is visible (with responsive margin)
 					const isCheckoutVisible = buttonRect.top < windowHeight - margin;
-					setShowScrollButton(!isCheckoutVisible);
+					const shouldShow = !isCheckoutVisible;
+					
+					// Track if button has appeared for entrance animation
+					if (shouldShow && !buttonHasAppeared) {
+						setButtonHasAppeared(true);
+					}
+					
+					setShowScrollButton(shouldShow);
 					
 					ticking = false;
 				});
@@ -86,7 +94,7 @@ export default function HomePage() {
 		} else {
 			setShowScrollButton(true);
 		}
-	}, [activeSection]);
+	}, [activeSection, buttonHasAppeared]);
 
 	// Helper function to translate unit names for display
 	const getDisplayUnit = (unidad: string, cantidad: number) => {
@@ -101,50 +109,47 @@ export default function HomePage() {
 		return cantidad === 1 ? englishUnit : englishUnit + 's';
 	};
 
-	// Function to scroll to checkout section with improved animation for mobile and desktop
+	// Function to scroll to checkout section with smooth animation
 	const scrollToCheckout = () => {
 		const checkoutButton = document.querySelector('[data-checkout-button]');
 		if (checkoutButton) {
 			// Get responsive offset based on screen size
 			const isMobile = window.innerWidth < 768;
-			const offset = isMobile ? 80 : 100; // Smaller offset for mobile
+			const offset = isMobile ? 80 : 100;
 			
-			// Get the position and add offset for better visual positioning
+			// Get the position and add offset
 			const buttonRect = checkoutButton.getBoundingClientRect();
-			const offsetTop = window.pageYOffset + buttonRect.top - offset;
-			
-			// Use smooth scrolling with fallback for older browsers
-			if ('scrollBehavior' in document.documentElement.style) {
-				window.scrollTo({
-					top: offsetTop,
-					behavior: 'smooth'
-				});
-			} else {
-				// Fallback for older browsers with manual smooth scroll
-				const startPosition = window.pageYOffset;
-				const distance = offsetTop - startPosition;
-				const duration = 500;
-				let start: number | null = null;
+			const targetPosition = window.pageYOffset + buttonRect.top - offset;
+			const startPosition = window.pageYOffset;
+			const distance = targetPosition - startPosition;
+			const duration = 800; // Longer duration for more noticeable animation
+			let start: number | null = null;
 
-				const step = (timestamp: number) => {
-					if (!start) start = timestamp;
-					const progress = timestamp - start;
-					const progressPercentage = Math.min(progress / duration, 1);
-					
-					// Easing function for smooth animation
-					const ease = progressPercentage < 0.5 
-						? 2 * progressPercentage * progressPercentage 
-						: 1 - Math.pow(-2 * progressPercentage + 2, 3) / 2;
-					
-					window.scrollTo(0, startPosition + distance * ease);
-					
-					if (progress < duration) {
-						requestAnimationFrame(step);
-					}
-				};
+			const easeInOutCubic = (t: number): number => {
+				return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+			};
+
+			const animateScroll = (timestamp: number) => {
+				if (!start) start = timestamp;
+				const progress = timestamp - start;
+				const progressPercentage = Math.min(progress / duration, 1);
 				
-				requestAnimationFrame(step);
-			}
+				// Apply easing function for smooth animation
+				const easedProgress = easeInOutCubic(progressPercentage);
+				const currentPosition = startPosition + distance * easedProgress;
+				
+				window.scrollTo(0, currentPosition);
+				
+				if (progress < duration) {
+					requestAnimationFrame(animateScroll);
+				} else {
+					// Ensure we end up exactly at the target position
+					window.scrollTo(0, targetPosition);
+				}
+			};
+
+			// Start the animation
+			requestAnimationFrame(animateScroll);
 		}
 	};
 
@@ -540,11 +545,29 @@ export default function HomePage() {
 			</main>
 			
 			{/* Floating Go to Checkout Button - Only show in liquor selection mode, when items are selected, and when checkout is not visible */}
-			{activeSection === 'seleccion' && hasSelectedItems && showScrollButton && (
-				<div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-20 transition-all duration-500 ease-in-out transform translate-y-0 opacity-100">
+			{activeSection === 'seleccion' && hasSelectedItems && (
+				<div 
+					className={`fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-20 transition-all duration-700 ease-out ${
+						showScrollButton 
+							? 'translate-y-0 opacity-100 scale-100' 
+							: 'translate-y-16 opacity-0 scale-95 pointer-events-none'
+					} ${
+						!buttonHasAppeared ? 'animate-bounce' : ''
+					}`}
+					style={{
+						transform: showScrollButton 
+							? 'translateY(0px) scale(1)' 
+							: 'translateY(64px) scale(0.95)',
+						opacity: showScrollButton ? 1 : 0,
+						visibility: showScrollButton ? 'visible' : 'hidden',
+						animation: showScrollButton && !buttonHasAppeared ? 'bounce 1s ease-in-out 2' : 'none'
+					}}
+				>
 					<button
 						onClick={scrollToCheckout}
-						className="group flex items-center gap-2 sm:gap-3 bg-accent hover:bg-accentHover text-background px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 rounded-full font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 text-xs sm:text-sm md:text-base border-2 border-accent hover:border-accentHover backdrop-blur-sm transform hover:-translate-y-1 active:translate-y-0"
+						className={`group flex items-center gap-2 sm:gap-3 bg-accent hover:bg-accentHover text-background px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 rounded-full font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 text-xs sm:text-sm md:text-base border-2 border-accent hover:border-accentHover backdrop-blur-sm transform hover:-translate-y-1 active:translate-y-0 ${
+							showScrollButton && !buttonHasAppeared ? 'animate-pulse' : ''
+						}`}
 						aria-label="Go to checkout"
 					>
 						<span className="hidden sm:inline">Go to Checkout</span>
