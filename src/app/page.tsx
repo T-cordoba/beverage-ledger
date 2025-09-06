@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import type { Licor } from "./actions-licores";
+import { createMovimiento } from "./actions";
 
 async function fetchLicores(): Promise<Licor[]> {
 	const res = await fetch("/api/licores", { cache: "no-store" });
@@ -12,6 +13,7 @@ export default function HomePage() {
 	const [licores, setLicores] = useState<Licor[]>([]);
 	const [cantidades, setCantidades] = useState<Record<string, { botellas: number; cajas: number }>>({});
 	const [searchTerm, setSearchTerm] = useState("");
+	const [submitting, setSubmitting] = useState(false);
 
 	useEffect(() => {
 		fetchLicores().then(setLicores);
@@ -28,6 +30,66 @@ export default function HomePage() {
 		});
 	};
 
+	const handleConfirmar = async () => {
+		// Verificar que hay al menos un licor seleccionado
+		const licoresSeleccionados = Object.entries(cantidades).filter(
+			([_, cantidad]) => cantidad.botellas > 0 || cantidad.cajas > 0
+		);
+
+		if (licoresSeleccionados.length === 0) {
+			alert('Debes seleccionar al menos un licor para confirmar el movimiento.');
+			return;
+		}
+
+		setSubmitting(true);
+		try {
+			// Preparar datos del movimiento
+			const licoresData = licoresSeleccionados.flatMap(([id, cantidad]) => {
+				const licor = licores.find(l => l.id.toString() === id);
+				const items = [];
+				
+				// Agregar botellas si hay cantidad
+				if (cantidad.botellas > 0) {
+					items.push({
+						nombre: licor?.nombre || '',
+						tipo: licor?.tipo || '',
+						cantidad: cantidad.botellas,
+						unidad: 'botella' as const
+					});
+				}
+				
+				// Agregar cajas si hay cantidad
+				if (cantidad.cajas > 0) {
+					items.push({
+						nombre: licor?.nombre || '',
+						tipo: licor?.tipo || '',
+						cantidad: cantidad.cajas,
+						unidad: 'caja' as const
+					});
+				}
+				
+				return items;
+			});
+
+			// Crear el movimiento
+			await createMovimiento({
+				fecha: new Date().toISOString(),
+				licores: licoresData
+			});
+
+			// Limpiar el formulario
+			setCantidades({});
+			setSearchTerm('');
+			
+			alert('Movimiento registrado exitosamente');
+		} catch (error) {
+			console.error('Error al crear movimiento:', error);
+			alert('Error al registrar el movimiento. Por favor intenta de nuevo.');
+		} finally {
+			setSubmitting(false);
+		}
+	};
+
 	// Filtrar licores por nombre y tipo
 	const licoresFiltrados = licores.filter((licor) => {
 		const searchLower = searchTerm.toLowerCase();
@@ -35,6 +97,22 @@ export default function HomePage() {
 			licor.nombre.toLowerCase().includes(searchLower) ||
 			licor.tipo.toLowerCase().includes(searchLower)
 		);
+	});
+
+	// Ordenar licores: los que tienen cantidades seleccionadas primero
+	const licoresOrdenados = [...licoresFiltrados].sort((a, b) => {
+		const cantidadA = cantidades[a.id] || { botellas: 0, cajas: 0 };
+		const cantidadB = cantidades[b.id] || { botellas: 0, cajas: 0 };
+		
+		const tieneSeleccionA = cantidadA.botellas > 0 || cantidadA.cajas > 0;
+		const tieneSeleccionB = cantidadB.botellas > 0 || cantidadB.cajas > 0;
+		
+		// Si uno tiene selección y el otro no, el que tiene selección va primero
+		if (tieneSeleccionA && !tieneSeleccionB) return -1;
+		if (!tieneSeleccionA && tieneSeleccionB) return 1;
+		
+		// Si ambos tienen o no tienen selección, mantener orden alfabético por nombre
+		return a.nombre.localeCompare(b.nombre);
 	});
 
 	return (
@@ -92,16 +170,16 @@ export default function HomePage() {
 					<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 lg:mb-8 gap-2">
 						<h2 className="text-xl sm:text-2xl font-light text-primary">Selecciona los licores</h2>
 						<div className="text-xs sm:text-sm text-secondary/60 font-light">
-							{licoresFiltrados.length} de {licores.length} productos {searchTerm ? 'encontrados' : 'disponibles'}
+							{licoresOrdenados.length} de {licores.length} productos {searchTerm ? 'encontrados' : 'disponibles'}
 						</div>
 					</div>
 						<ul className="grid gap-4 sm:gap-6">
-							{licoresFiltrados.length === 0 ? (
+							{licoresOrdenados.length === 0 ? (
 								<li className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
 									{searchTerm ? `No se encontraron licores para "${searchTerm}"` : 'No hay licores registrados.'}
 								</li>
 							) : (
-								licoresFiltrados.map((licor) => {
+								licoresOrdenados.map((licor) => {
 									const cantidad = cantidades[licor.id] || { botellas: 0, cajas: 0 };
 									const hasSelection = cantidad.botellas > 0 || cantidad.cajas > 0;
 									return (
@@ -195,10 +273,39 @@ export default function HomePage() {
 							)}
 						</ul>
 						
+						{/* Summary of Selected Items */}
+						{Object.entries(cantidades).some(([_, cantidad]) => cantidad.botellas > 0 || cantidad.cajas > 0) && (
+							<div className="mt-6 lg:mt-8 p-4 sm:p-6 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl">
+								<h3 className="text-lg sm:text-xl font-light text-primary mb-4">Resumen de selección</h3>
+								<div className="space-y-2">
+									{Object.entries(cantidades)
+										.filter(([_, cantidad]) => cantidad.botellas > 0 || cantidad.cajas > 0)
+										.map(([id, cantidad]) => {
+											const licor = licores.find(l => l.id.toString() === id);
+											const items = [];
+											if (cantidad.botellas > 0) items.push(`${cantidad.botellas} botella${cantidad.botellas > 1 ? 's' : ''}`);
+											if (cantidad.cajas > 0) items.push(`${cantidad.cajas} caja${cantidad.cajas > 1 ? 's' : ''}`);
+											
+											return (
+												<div key={id} className="flex justify-between text-sm sm:text-base">
+													<span className="text-secondary font-light">{licor?.nombre}</span>
+													<span className="text-accent font-medium">{items.join(' + ')}</span>
+												</div>
+											);
+										})
+									}
+								</div>
+							</div>
+						)}
+						
 						{/* Floating Action Button */}
 						<div className="mt-8 lg:mt-12 flex justify-center">
-							<button className="group flex items-center gap-3 sm:gap-4 bg-accent hover:bg-accentHover text-background px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-sm sm:text-base lg:text-lg">
-								<span>Confirmar Movimiento</span>
+							<button 
+								onClick={handleConfirmar}
+								disabled={submitting}
+								className="group flex items-center gap-3 sm:gap-4 bg-accent hover:bg-accentHover text-background px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-sm sm:text-base lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+							>
+								<span>{submitting ? 'Procesando...' : 'Confirmar Movimiento'}</span>
 								<div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-background rounded-full group-hover:scale-125 transition-transform"></div>
 							</button>
 						</div>
