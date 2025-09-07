@@ -26,6 +26,7 @@ export default function HomePage() {
 	const [showConfirmModal, setShowConfirmModal] = useState(false);
 	const [showCancelModal, setShowCancelModal] = useState(false);
 	const [movementSearchTerm, setMovementSearchTerm] = useState("");
+	const [dateFilter, setDateFilter] = useState("");
 	
 	// Notification system
 	const [notifications, setNotifications] = useState<Array<{
@@ -734,11 +735,19 @@ export default function HomePage() {
 							<h2 className="text-xl sm:text-2xl font-light text-primary">Movement History</h2>
 							<div className="text-xs sm:text-sm text-secondary/60 font-light">
 								{(() => {
-									const filteredCount = movimientos.filter(movimiento => 
-										movimiento.id.toLowerCase().includes(movementSearchTerm.toLowerCase())
-									).length;
+									const filteredCount = movimientos.filter(movimiento => {
+										// Filter by movement ID
+										const matchesCode = !movementSearchTerm || 
+											movimiento.id.toLowerCase().includes(movementSearchTerm.toLowerCase());
+										
+										// Filter by date
+										const matchesDate = !dateFilter || 
+											new Date(movimiento.date).toISOString().split('T')[0] === dateFilter;
+										
+										return matchesCode && matchesDate;
+									}).length;
 									
-									if (movementSearchTerm) {
+									if (movementSearchTerm || dateFilter) {
 										return `${filteredCount} of ${movimientos.length} movement${movimientos.length !== 1 ? 's' : ''}`;
 									}
 									return `${movimientos.length} movement${movimientos.length !== 1 ? 's' : ''} recorded`;
@@ -746,8 +755,9 @@ export default function HomePage() {
 							</div>
 						</div>
 
-						{/* Search field */}
-						<div className="mb-6">
+						{/* Search fields */}
+						<div className="mb-6 space-y-4">
+							{/* Movement code search */}
 							<div className="relative">
 								<input
 									type="text"
@@ -767,6 +777,32 @@ export default function HomePage() {
 									</button>
 								)}
 							</div>
+							
+							{/* Date filter */}
+							<div className="relative">
+								<input
+									type="date"
+									value={dateFilter}
+									onChange={(e) => setDateFilter(e.target.value)}
+									className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 pr-16 text-secondary placeholder:text-secondary/40 focus:outline-none focus:border-accent/50 focus:bg-white/10 transition-all duration-200 [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:opacity-60 [&::-webkit-calendar-picker-indicator]:hover:opacity-100"
+								/>
+								{dateFilter && (
+									<button
+										onClick={() => setDateFilter("")}
+										className="absolute right-10 top-1/2 transform -translate-y-1/2 text-secondary/60 hover:text-secondary transition-colors"
+									>
+										<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+										</svg>
+									</button>
+								)}
+							</div>
+							
+							{!movementSearchTerm && !dateFilter && (
+								<p className="text-xs text-secondary/50">
+									Search by movement code or filter by specific date
+								</p>
+							)}
 						</div>
 
 						{loadingMovimientos ? (
@@ -780,15 +816,27 @@ export default function HomePage() {
 						) : (
 							<div className="grid gap-4 sm:gap-6">
 								{(() => {
-									// Filter movements by search term
-									const filteredMovimientos = movimientos.filter(movimiento => 
-										movimiento.id.toLowerCase().includes(movementSearchTerm.toLowerCase())
-									);
+									// Filter movements by search term and date
+									const filteredMovimientos = movimientos.filter(movimiento => {
+										// Filter by movement ID
+										const matchesCode = !movementSearchTerm || 
+											movimiento.id.toLowerCase().includes(movementSearchTerm.toLowerCase());
+										
+										// Filter by date
+										const matchesDate = !dateFilter || 
+											new Date(movimiento.date).toISOString().split('T')[0] === dateFilter;
+										
+										return matchesCode && matchesDate;
+									});
 
-									if (filteredMovimientos.length === 0 && movementSearchTerm) {
+									if (filteredMovimientos.length === 0 && (movementSearchTerm || dateFilter)) {
+										const searchInfo = [];
+										if (movementSearchTerm) searchInfo.push(`"${movementSearchTerm}"`);
+										if (dateFilter) searchInfo.push(`date "${new Date(dateFilter).toLocaleDateString()}"`);
+										
 										return (
 											<div className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
-												No movements found matching "{movementSearchTerm}".
+												No movements found matching {searchInfo.join(' and ')}.
 											</div>
 										);
 									}
