@@ -497,15 +497,19 @@ export default function HomePage() {
 			{/* Header */}
 			<header className="border-b border-border bg-gradient-to-r from-background to-cardBg backdrop-blur-sm">
 				<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
-					<div className="flex items-center gap-3 mb-3 lg:mb-4">
-						<h1 className="text-2xl sm:text-3xl lg:text-4xl font-light text-accent tracking-wide">
-							<span className="block sm:inline">Encore Beverage</span>
-							<span className="block sm:inline sm:ml-2">Ledger</span>
-						</h1>
+					<div className="flex flex-col items-center justify-center">
+						{/* Logo EBL completo */}
+						<div className="mb-4">
+							<img 
+								src="/ebl-logo.png" 
+								alt="Encore Beverage Ledger" 
+								className="h-24 sm:h-32 lg:h-40 w-auto"
+							/>
+						</div>
+						<p className="text-secondary/80 text-sm sm:text-base lg:text-lg font-light text-center">
+							Liquor inventory management for Encore Boston Harbor
+						</p>
 					</div>
-					<p className="text-secondary/80 text-sm sm:text-base lg:text-lg font-light">
-						Liquor inventory management for Encore Boston Harbor
-					</p>
 				</div>
 			</header>
 
