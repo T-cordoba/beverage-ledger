@@ -1036,7 +1036,7 @@ export default function HomePage() {
 								onClick={() => setShowConfirmModal(false)}
 								className="flex-1 px-4 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-secondary hover:text-primary rounded-lg font-medium transition-all duration-200"
 							>
-								Cancel
+								Go Back
 							</button>
 							<button
 								onClick={executeMovement}
