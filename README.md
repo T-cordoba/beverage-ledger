@@ -1,14 +1,127 @@
-# Encore Beverage Ledger
+<div align="center">
+  <img src="public/ebl-logo.png" alt="Encore Beverage Ledger Logo" width="120" height="120">
+  
+  # Encore Beverage Ledger
+  **Professional Casino Liquor Inventory Management System**
+  
+  [![Next.js](https://img.shields.io/badge/Next.js-15.5.2-black)](https://nextjs.org/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.0-38B2AC)](https://tailwindcss.com/)
+  [![License](https://img.shields.io/badge/License-Proprietary-red)](#-copyright-notice)
+</div>
 
-**Proprietary Casino Liquor Inventory Management System**
+---
 
-A professional Next.js application designed for casino liquor inventory management with PDF invoice generation, real-time tracking, and comprehensive movement history.
+## 🎰 About the Project
+
+The **Encore Beverage Ledger** is a sophisticated, casino-themed liquor inventory management system designed for premium casino operations. This application provides comprehensive tracking, management, and reporting capabilities for beverage operations in high-end casino environments.
+
+### ✨ Key Features
+
+- **🍾 Real-time Inventory Tracking** - Monitor liquor bottles and cases with precision
+- **📊 Advanced Analytics** - Comprehensive statistics with customizable time ranges
+- **📋 Movement History** - Complete audit trail of all inventory transactions
+- **🧾 PDF Invoice Generation** - Professional invoice creation with casino branding
+- **🎨 Casino-themed UI** - Elegant gold and black design matching casino aesthetics
+- **📱 Responsive Design** - Optimized for desktop, tablet, and mobile devices
+- **🔍 Smart Search & Filtering** - Quick access to specific liquors and movements
+- **⚡ Performance Optimized** - Built with Next.js 15 and modern React patterns
+
+### 🎯 Target Environment
+
+This system is purpose-built for:
+- **Premium casino operations** and beverage management
+- High-volume liquor inventory management
+- Professional casino hospitality environments
+- Real-time tracking of premium spirits and wines
+
+---
+
+## 🛠️ Technology Stack
+
+### Frontend
+- **Next.js 15.5.2** - React framework with App Router
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Utility-first styling with custom casino theme
+- **React Hooks** - Modern state management with useReducer patterns
+
+### Backend & Database
+- **Neon Database** - Serverless PostgreSQL
+- **Server Actions** - Type-safe server functions
+- **PDF Generation** - Custom invoice creation
+
+### Architecture
+- **Component-based Design** - 13 modular, reusable components
+- **Clean Code Principles** - Maintainable and scalable codebase
+- **Type Safety** - Complete TypeScript implementation
+- **Responsive Design** - Mobile-first approach
+
+## 📁 Project Structure
+
+```
+encore-beverage-ledger/
+├── public/
+│   ├── ebl-logo.png          # Casino branding logo
+│   └── favicon.ico
+├── src/
+│   ├── app/
+│   │   ├── actions.ts        # Server actions for movements
+│   │   ├── actions-licores.ts # Liquor data management
+│   │   ├── layout.tsx        # App layout
+│   │   ├── page.tsx          # Main application (432 lines, refactored from 1460)
+│   │   └── api/              # API routes
+│   └── components/
+│       ├── Calendar/         # Date selection component
+│       ├── Modals/          # Confirmation and cancellation modals
+│       ├── MovementCard/    # Individual movement display
+│       ├── Navigation/      # Section navigation tabs
+│       ├── NotificationSystem/ # Toast notifications
+│       ├── ScrollToCheckoutButton/ # UX enhancement
+│       └── Sections/        # Main content sections
+│           ├── SelectionSection.tsx    # Liquor selection interface
+│           ├── HistorySection.tsx      # Movement history
+│           └── StatisticsSection.tsx   # Analytics dashboard
+├── tailwind.config.js       # Custom casino theme configuration
+└── README.md
+```
+
+---
+
+## 🎨 Design Philosophy
+
+The application embraces a **casino aesthetic** with:
+- **Gold Accent Color** (`#D4AF37`) - Representing luxury and elegance
+- **Dark Background** (`#120006`) - Professional casino atmosphere
+- **Smooth Animations** - Sophisticated transitions between sections
+- **Typography** - Clean, readable fonts suitable for operational use
+- **Responsive Layout** - Optimized for various screen sizes and devices
+
+---
+
+## 👨‍💻 Author
+
+**Tomás Córdoba Urquijo**
+- Software Developer & Technology Specialist
+
+---
+
+## ⚠️ IMPORTANT DISCLAIMER
+
+**TRADEMARK NOTICE**: This software is an independent project and is **NOT officially affiliated, endorsed, sponsored, or approved** by any casino, resort, or hospitality company. Any similarities to existing casino operations or brands are purely coincidental.
+
+**INTENDED USE**: This system is designed as a general-purpose beverage inventory management solution that can be adapted for various hospitality environments.
+
+**LIABILITY**: The author assumes no responsibility for any trademark infringement claims or legal issues arising from the use of this software.
+
+---
 
 ## 🚫 COPYRIGHT NOTICE
 
-**© 2025 T-cordoba. All Rights Reserved.**
+**© 2025 Tomás Córdoba Urquijo. All Rights Reserved.**
 
 This software is proprietary and confidential. Unauthorized copying, distribution, modification, public display, public performance, or other use of this software and associated documentation files is strictly prohibited and may violate copyright law.
+
+### 🔒 Licensing
 
 **NO PERMISSION IS GRANTED TO:**
 - Copy, modify, or distribute this software
@@ -16,78 +129,21 @@ This software is proprietary and confidential. Unauthorized copying, distributio
 - Create derivative works based on this software
 - Reverse engineer or decompile this software
 
-**⚠️ IMPORTANT:** This software may only be used for commercial or personal purposes with explicit written authorization from T-cordoba.
+**⚠️ IMPORTANT:** This software may only be used with explicit written authorization from Tomás Córdoba Urquijo.
 
-For licensing inquiries, contact: **T-cordoba**
+For licensing inquiries, contact: **Tomás Córdoba Urquijo**
 
----
+### ⚖️ Legal Protection
 
-## Getting Started
-
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/route.ts`. The page auto-updates as you edit the file.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## API Routes
-
-This directory contains example API routes for the headless API app.
-
-For more details, see [route.js file convention](https://nextjs.org/docs/app/api-reference/file-conventions/route).
-
----
-
-## ⚖️ LEGAL DISCLAIMER
-
-**INTELLECTUAL PROPERTY RIGHTS**
-
-This software and all associated materials are the exclusive intellectual property of T-cordoba and are protected under:
+This software and all associated materials are protected under:
 - Copyright laws
-- International copyright treaties
+- International copyright treaties  
 - Intellectual property laws and treaties
 
-**VIOLATION CONSEQUENCES**
-
-Unauthorized use, reproduction, distribution, or modification of this software may result in:
-- ✋ **Civil penalties** under applicable copyright laws
-- ⚖️ **Criminal prosecution** to the maximum extent of the law
-- 💰 **Monetary damages** and legal fees
-- 🚫 **Permanent injunction** against further use
-
-**ENFORCEMENT**
-
-T-cordoba reserves the right to pursue all legal remedies available for any unauthorized use of this proprietary software.
+**Violation may result in civil penalties, criminal prosecution, monetary damages, and permanent injunction.**
 
 ---
 
-**© 2025 T-cordoba. All Rights Reserved. Unauthorized use prohibited.**
+<div align="center">
+  <img src="public/ebl-logo.png" alt="EBL Logo" width="60" height="60">
+</div>
