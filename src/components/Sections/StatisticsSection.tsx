@@ -1,5 +1,7 @@
+type StatisticsData = { name: string; quantity: number };
+
 interface StatisticsSectionProps {
-	statisticsData: any;
+	statisticsData: StatisticsData[];
 	statisticsTimeRange: 'week' | 'month' | 'year';
 	statisticsView: 'liquor' | 'type';
 	loadingStatistics: boolean;
@@ -76,7 +78,7 @@ export default function StatisticsSection({
 					<div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6">
 						<h3 className="text-lg font-medium text-accent mb-4">Most Requested {statisticsView === 'liquor' ? 'Liquors' : 'Types'}</h3>
 						<div className="space-y-3">
-							{statisticsData.slice(0, 10).map((item: any, index: number) => {
+							{statisticsData.slice(0, 10).map((item: StatisticsData, index: number) => {
 								const maxQuantity = statisticsData[0]?.quantity || 1;
 								const percentage = (item.quantity / maxQuantity) * 100;
 								
@@ -105,7 +107,7 @@ export default function StatisticsSection({
 					<div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6">
 						<h3 className="text-lg font-medium text-accent mb-4">Leaderboard</h3>
 						<div className="space-y-2">
-							{statisticsData.slice(0, 15).map((item: any, index: number) => (
+							{statisticsData.slice(0, 15).map((item: StatisticsData, index: number) => (
 								<div 
 									key={item.name} 
 									className={`flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${

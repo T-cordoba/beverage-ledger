@@ -12,6 +12,7 @@ import ScrollToCheckoutButton from "../components/ScrollToCheckoutButton";
 
 // Types
 type LicorMovementData = { name: string; type: string; quantity: number; unit: 'bottle' | 'case' };
+type StatisticsData = { name: string; quantity: number };
 
 // UI State Reducer
 interface UIState {
@@ -152,7 +153,7 @@ export default function HomePage() {
 	};
 
 	// Statistics states
-	const [statisticsData, setStatisticsData] = useState<any>(null);
+	const [statisticsData, setStatisticsData] = useState<StatisticsData[]>([]);
 	const [statisticsTimeRange, setStatisticsTimeRange] = useState<'week' | 'month' | 'year'>('month');
 	const [statisticsView, setStatisticsView] = useState<'liquor' | 'type'>('liquor');
 	const [loadingStatistics, setLoadingStatistics] = useState(false);
