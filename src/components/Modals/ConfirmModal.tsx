@@ -29,7 +29,7 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, totalItems, t
 							disabled={submitting}
 							className="flex-1 px-6 py-3 bg-border/50 hover:bg-border text-secondary hover:text-primary rounded-xl font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
 						>
-							Cancel
+							Go Back
 						</button>
 						<button
 							onClick={onConfirm}

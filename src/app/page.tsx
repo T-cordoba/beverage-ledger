@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 import type { Licor } from "./actions-licores";
 import { createMovimiento, getMovimientos, type Movimiento, type Licor as LicorMovimiento } from "./actions";
 
@@ -13,6 +13,92 @@ import ScrollToCheckoutButton from "../components/ScrollToCheckoutButton";
 // Types
 type LicorMovementData = { name: string; type: string; quantity: number; unit: 'bottle' | 'case' };
 
+// UI State Reducer
+interface UIState {
+	activeSection: 'seleccion' | 'historial' | 'estadisticas';
+	isTransitioning: boolean;
+	slideDirection: 'left' | 'right';
+	showScrollButton: boolean;
+	buttonHasAppeared: boolean;
+}
+
+type UIAction = 
+	| { type: 'SET_SLIDE_DIRECTION'; payload: 'left' | 'right' }
+	| { type: 'START_TRANSITION' }
+	| { type: 'SET_SECTION'; payload: 'seleccion' | 'historial' | 'estadisticas' }
+	| { type: 'END_TRANSITION' }
+	| { type: 'SHOW_SCROLL_BUTTON' }
+	| { type: 'HIDE_SCROLL_BUTTON' }
+	| { type: 'MARK_BUTTON_APPEARED' };
+
+const uiReducer = (state: UIState, action: UIAction): UIState => {
+	switch (action.type) {
+		case 'SET_SLIDE_DIRECTION':
+			return { ...state, slideDirection: action.payload };
+		case 'START_TRANSITION':
+			return { ...state, isTransitioning: true };
+		case 'SET_SECTION':
+			return { ...state, activeSection: action.payload };
+		case 'END_TRANSITION':
+			return { ...state, isTransitioning: false };
+		case 'SHOW_SCROLL_BUTTON':
+			return { 
+				...state, 
+				showScrollButton: true,
+				buttonHasAppeared: true
+			};
+		case 'HIDE_SCROLL_BUTTON':
+			return { ...state, showScrollButton: false };
+		case 'MARK_BUTTON_APPEARED':
+			return { ...state, buttonHasAppeared: true };
+		default:
+			return state;
+	}
+};
+
+const initialUIState: UIState = {
+	activeSection: 'seleccion',
+	isTransitioning: false,
+	slideDirection: 'right',
+	showScrollButton: false,
+	buttonHasAppeared: false
+};
+
+// Modals State Reducer
+interface ModalsState {
+	showConfirmModal: boolean;
+	showCancelModal: boolean;
+}
+
+type ModalsAction = 
+	| { type: 'SHOW_CONFIRM_MODAL' }
+	| { type: 'HIDE_CONFIRM_MODAL' }
+	| { type: 'SHOW_CANCEL_MODAL' }
+	| { type: 'HIDE_CANCEL_MODAL' }
+	| { type: 'HIDE_ALL_MODALS' };
+
+const modalsReducer = (state: ModalsState, action: ModalsAction): ModalsState => {
+	switch (action.type) {
+		case 'SHOW_CONFIRM_MODAL':
+			return { ...state, showConfirmModal: true };
+		case 'HIDE_CONFIRM_MODAL':
+			return { ...state, showConfirmModal: false };
+		case 'SHOW_CANCEL_MODAL':
+			return { ...state, showCancelModal: true };
+		case 'HIDE_CANCEL_MODAL':
+			return { ...state, showCancelModal: false };
+		case 'HIDE_ALL_MODALS':
+			return { showConfirmModal: false, showCancelModal: false };
+		default:
+			return state;
+	}
+};
+
+const initialModalsState: ModalsState = {
+	showConfirmModal: false,
+	showCancelModal: false
+};
+
 async function fetchLicores(): Promise<Licor[]> {
 	const res = await fetch("/api/licores", { cache: "no-store" });
 	if (!res.ok) return [];
@@ -20,21 +106,20 @@ async function fetchLicores(): Promise<Licor[]> {
 }
 
 export default function HomePage() {
+	// UI State with useReducer
+	const [uiState, dispatchUI] = useReducer(uiReducer, initialUIState);
+	// Modals State with useReducer
+	const [modalsState, dispatchModals] = useReducer(modalsReducer, initialModalsState);
+	
+	// Individual states
 	const [licores, setLicores] = useState<Licor[]>([]);
 	const [loadingLicores, setLoadingLicores] = useState(true);
 	const [cantidades, setCantidades] = useState<Record<string, { botellas: number; cajas: number }>>({});
 	const [searchTerm, setSearchTerm] = useState("");
 	const [submitting, setSubmitting] = useState(false);
-	const [activeSection, setActiveSection] = useState<'seleccion' | 'historial' | 'estadisticas'>('seleccion');
-	const [isTransitioning, setIsTransitioning] = useState(false);
-	const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right');
 	const [movimientos, setMovimientos] = useState<Movimiento[]>([]);
 	const [loadingMovimientos, setLoadingMovimientos] = useState(false);
-	const [showScrollButton, setShowScrollButton] = useState(false);
-	const [buttonHasAppeared, setButtonHasAppeared] = useState(false);
 	const [expandedMovements, setExpandedMovements] = useState<Set<string>>(new Set());
-	const [showConfirmModal, setShowConfirmModal] = useState(false);
-	const [showCancelModal, setShowCancelModal] = useState(false);
 	const [movementSearchTerm, setMovementSearchTerm] = useState("");
 	const [dateFilter, setDateFilter] = useState("");
 	const [showDatePicker, setShowDatePicker] = useState(false);
@@ -44,23 +129,24 @@ export default function HomePage() {
 
 	// Handle section changes with slide animation
 	const handleSectionChange = (newSection: 'seleccion' | 'historial' | 'estadisticas') => {
-		if (newSection === activeSection || isTransitioning) return;
+		if (newSection === uiState.activeSection || uiState.isTransitioning) return;
 		
 		// Determine slide direction based on section order
 		const sectionOrder = ['seleccion', 'historial', 'estadisticas'];
-		const currentIndex = sectionOrder.indexOf(activeSection);
+		const currentIndex = sectionOrder.indexOf(uiState.activeSection);
 		const newIndex = sectionOrder.indexOf(newSection);
 		
 		// Set slide direction: right if moving forward, left if moving backward
-		setSlideDirection(newIndex > currentIndex ? 'right' : 'left');
-		setIsTransitioning(true);
+		const direction = newIndex > currentIndex ? 'right' : 'left';
+		dispatchUI({ type: 'SET_SLIDE_DIRECTION', payload: direction });
+		dispatchUI({ type: 'START_TRANSITION' });
 		
 		// Start slide out
 		setTimeout(() => {
-			setActiveSection(newSection);
+			dispatchUI({ type: 'SET_SECTION', payload: newSection });
 			// Slide in after section change
 			setTimeout(() => {
-				setIsTransitioning(false);
+				dispatchUI({ type: 'END_TRANSITION' });
 			}, 50);
 		}, 200);
 	};
@@ -101,10 +187,10 @@ export default function HomePage() {
 
 	// Load movements when accessing history section
 	useEffect(() => {
-		if (activeSection === 'historial' && movimientos.length === 0) {
+		if (uiState.activeSection === 'historial' && movimientos.length === 0) {
 			loadMovimientos();
 		}
-	}, [activeSection, movimientos.length]);
+	}, [uiState.activeSection, movimientos.length]);
 
 	// Load statistics when accessing statistics section
 	const loadStatistics = async () => {
@@ -156,18 +242,18 @@ export default function HomePage() {
 	};
 
 	useEffect(() => {
-		if (activeSection === 'historial' && movimientos.length === 0) {
+		if (uiState.activeSection === 'historial' && movimientos.length === 0) {
 			loadMovimientos();
 		}
-		if (activeSection === 'estadisticas') {
+		if (uiState.activeSection === 'estadisticas') {
 			loadStatistics();
 		}
-	}, [activeSection, statisticsTimeRange, statisticsView]);
+	}, [uiState.activeSection, statisticsTimeRange, statisticsView]);
 
 	// Scroll detection for floating button
 	useEffect(() => {
 		const handleScroll = () => {
-			if (activeSection !== 'seleccion') return;
+			if (uiState.activeSection !== 'seleccion') return;
 
 			// Get checkout button position
 			const checkoutButton = document.querySelector('[data-checkout-button]');
@@ -179,20 +265,16 @@ export default function HomePage() {
 			// Show floating button when checkout is not visible (regardless of scroll position)
 			const shouldShow = !buttonIsVisible;
 			
-			if (shouldShow && !showScrollButton) {
-				setShowScrollButton(true);
-				// Track that button has appeared for animation control
-				if (!buttonHasAppeared) {
-					setButtonHasAppeared(true);
-				}
-			} else if (!shouldShow && showScrollButton) {
-				setShowScrollButton(false);
+			if (shouldShow && !uiState.showScrollButton) {
+				dispatchUI({ type: 'SHOW_SCROLL_BUTTON' });
+			} else if (!shouldShow && uiState.showScrollButton) {
+				dispatchUI({ type: 'HIDE_SCROLL_BUTTON' });
 			}
 		};
 
 		window.addEventListener('scroll', handleScroll);
 		return () => window.removeEventListener('scroll', handleScroll);
-	}, [activeSection, showScrollButton, buttonHasAppeared]);
+	}, [uiState.activeSection, uiState.showScrollButton, uiState.buttonHasAppeared]);
 
 	const handleChange = (id: string, type: 'botellas' | 'cajas', delta: number) => {
 		setCantidades(prev => {
@@ -233,7 +315,7 @@ export default function HomePage() {
 			showNotification('warning', 'No Selection', 'Please select at least one item before confirming.');
 			return;
 		}
-		setShowConfirmModal(true);
+		dispatchModals({ type: 'SHOW_CONFIRM_MODAL' });
 	};
 
 	const executeMovement = async () => {
@@ -294,7 +376,7 @@ export default function HomePage() {
 			showNotification('error', 'Registration Failed', 'Error registering movement. Please try again.');
 		} finally {
 			setSubmitting(false);
-			setShowConfirmModal(false);
+			dispatchModals({ type: 'HIDE_CONFIRM_MODAL' });
 		}
 	};
 
@@ -306,14 +388,14 @@ export default function HomePage() {
 		}
 
 		// Show cancel confirmation modal
-		setShowCancelModal(true);
+		dispatchModals({ type: 'SHOW_CANCEL_MODAL' });
 	};
 
 	const executeCancelMovement = () => {
 		// Clear all selections
 		setCantidades({});
 		setSearchTerm('');
-		setShowCancelModal(false);
+		dispatchModals({ type: 'HIDE_CANCEL_MODAL' });
 		showNotification('info', 'Movement Cancelled', 'All selected items have been cleared.');
 		
 		// Scroll to top of page
@@ -403,19 +485,19 @@ export default function HomePage() {
 
 			{/* Navigation Bar */}
 			<Navigation 
-				activeSection={activeSection}
+				activeSection={uiState.activeSection}
 				onSectionChange={handleSectionChange}
 			/>
 
 			{/* Main Content */}
 			<main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
 				<div className={`transition-all duration-300 ease-in-out ${
-					isTransitioning 
-						? `transform ${slideDirection === 'right' ? 'translate-x-8' : '-translate-x-8'} opacity-0` 
+					uiState.isTransitioning 
+						? `transform ${uiState.slideDirection === 'right' ? 'translate-x-8' : '-translate-x-8'} opacity-0` 
 						: 'transform translate-x-0 opacity-100'
 				}`}>
 					<div className="space-y-8 lg:space-y-12">
-						{activeSection === 'seleccion' ? (
+						{uiState.activeSection === 'seleccion' ? (
 							<SelectionSection
 								licores={licores}
 								loadingLicores={loadingLicores}
@@ -427,7 +509,7 @@ export default function HomePage() {
 								onConfirm={handleConfirmar}
 								onCancel={handleCancelMovement}
 							/>
-						) : activeSection === 'historial' ? (
+						) : uiState.activeSection === 'historial' ? (
 							<HistorySection
 								movimientos={movimientos}
 								loadingMovimientos={loadingMovimientos}
@@ -440,7 +522,7 @@ export default function HomePage() {
 								setShowDatePicker={setShowDatePicker}
 								onToggleExpansion={toggleMovementExpansion}
 							/>
-						) : activeSection === 'estadisticas' ? (
+						) : uiState.activeSection === 'estadisticas' ? (
 							<StatisticsSection
 								statisticsData={statisticsData}
 								statisticsTimeRange={statisticsTimeRange}
@@ -455,18 +537,18 @@ export default function HomePage() {
 			</main>
 			
 			{/* Floating Go to Checkout Button */}
-			{activeSection === 'seleccion' && hasSelectedItems && (
+			{uiState.activeSection === 'seleccion' && hasSelectedItems && (
 				<ScrollToCheckoutButton
-					showScrollButton={showScrollButton}
-					buttonHasAppeared={buttonHasAppeared}
+					showScrollButton={uiState.showScrollButton}
+					buttonHasAppeared={uiState.buttonHasAppeared}
 					onScrollToCheckout={scrollToCheckout}
 				/>
 			)}
 
 			{/* Modals */}
 			<ConfirmModal
-				isOpen={showConfirmModal}
-				onClose={() => setShowConfirmModal(false)}
+				isOpen={modalsState.showConfirmModal}
+				onClose={() => dispatchModals({ type: 'HIDE_CONFIRM_MODAL' })}
 				onConfirm={executeMovement}
 				totalItems={uniqueLiquors}
 				totalQuantity={totalItems}
@@ -474,8 +556,8 @@ export default function HomePage() {
 			/>
 
 			<CancelModal
-				isOpen={showCancelModal}
-				onClose={() => setShowCancelModal(false)}
+				isOpen={modalsState.showCancelModal}
+				onClose={() => dispatchModals({ type: 'HIDE_CANCEL_MODAL' })}
 				onConfirm={executeCancelMovement}
 			/>
 
