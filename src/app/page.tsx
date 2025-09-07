@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import type { Licor } from "./actions-licores";
-import { createMovimiento, getMovimientos, type Movimiento } from "./actions";
+import { createMovimiento, getMovimientos, type Movimiento, type Licor as LicorMovimiento } from "./actions";
 
 // Components
 import NotificationSystem, { useNotifications } from "../components/NotificationSystem";
@@ -9,6 +9,9 @@ import Navigation from "../components/Navigation";
 import { SelectionSection, HistorySection, StatisticsSection } from "../components/Sections";
 import { ConfirmModal, CancelModal } from "../components/Modals";
 import ScrollToCheckoutButton from "../components/ScrollToCheckoutButton";
+
+// Types
+type LicorMovementData = { name: string; type: string; quantity: number; unit: 'bottle' | 'case' };
 
 async function fetchLicores(): Promise<Licor[]> {
 	const res = await fetch("/api/licores", { cache: "no-store" });
@@ -239,9 +242,9 @@ export default function HomePage() {
 		setSubmitting(true);
 		try {
 			// Convert cantidades to the expected format
-			const licoresData: Array<{ name: string; type: string; quantity: number; unit: 'bottle' | 'case' }> = Object.entries(cantidades).flatMap(([id, cantidad]) => {
+			const licoresData: LicorMovementData[] = Object.entries(cantidades).flatMap(([id, cantidad]) => {
 				const licor = licores.find(l => l.id.toString() === id);
-				const items: Array<{ name: string; type: string; quantity: number; unit: 'bottle' | 'case' }> = [];
+				const items: LicorMovementData[] = [];
 				
 				// Add bottles if there's quantity
 				if (cantidad.botellas > 0) {
@@ -276,12 +279,16 @@ export default function HomePage() {
 			setCantidades({});
 			setSearchTerm('');
 			
-			// Reload movements if we're in that section
-			if (activeSection === 'historial') {
-				loadMovimientos();
-			}
+			// Reload movements (always reload to keep data fresh)
+			loadMovimientos();
 			
 			showNotification('success', 'Movement Registered', 'The liquor movement has been recorded successfully.');
+			
+			// Scroll to top of page
+			window.scrollTo({
+				top: 0,
+				behavior: 'smooth'
+			});
 		} catch (error) {
 			console.error('Error creating movement:', error);
 			showNotification('error', 'Registration Failed', 'Error registering movement. Please try again.');
