@@ -16,3 +16,34 @@ body {
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
 	min-height: 100vh;
 }
+
+/* Custom animations for filter transitions */
+@keyframes fade-in-up {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fade-out-down {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+}
+
+.animate-fade-in-up {
+	animation: fade-in-up 0.4s ease-out;
+}
+
+.animate-fade-out-down {
+	animation: fade-out-down 0.3s ease-in;
+}

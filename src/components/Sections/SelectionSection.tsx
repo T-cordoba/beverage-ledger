@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Licor } from '../../app/actions-licores';
 
 interface SelectionSectionProps {
@@ -30,8 +30,16 @@ export default function SelectionSection({
 }: SelectionSectionProps) {
 	// Estado para controlar el dropdown personalizado
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+	// Key para forzar re-render y re-animación de los elementos
+	const [animationKey, setAnimationKey] = useState(0);
+	
 	// Get unique types for the dropdown
 	const uniqueTypes = Array.from(new Set(licores.map(licor => licor.type))).sort();
+
+	// Effect to trigger re-animation when filters change
+	useEffect(() => {
+		setAnimationKey(prev => prev + 1);
+	}, [searchTerm, typeFilter]);
 
 	// Filter liquors by name, type, and selected type filter
 	const licoresFiltrados = licores.filter((licor) => {
@@ -185,7 +193,7 @@ export default function SelectionSection({
 
 					{/* Clear All Filters Button - Solo en desktop dentro del flex */}
 					{(searchTerm || typeFilter) && (
-						<div className="hidden sm:flex items-center">
+						<div className="hidden sm:flex items-center animate-fade-in-up">
 							<button
 								onClick={() => {
 									onSearchChange('');
@@ -216,7 +224,7 @@ export default function SelectionSection({
 
 				{/* Clear All Filters Button - Solo en móvil, centrado */}
 				{(searchTerm || typeFilter) && (
-					<div className="flex sm:hidden justify-center mt-3">
+					<div className="flex sm:hidden justify-center mt-3 animate-fade-in-up">
 						<button
 							onClick={() => {
 								onSearchChange('');
@@ -249,9 +257,11 @@ export default function SelectionSection({
 				<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 lg:mb-8 gap-2">
 					<h2 className="text-xl sm:text-2xl font-light text-primary">Select liquors</h2>
 					<div className="text-xs sm:text-sm text-secondary/60 font-light">
-						{licoresOrdenados.length} of {licores.length} products {(searchTerm || typeFilter) ? 'found' : 'available'}
+						<span className="transition-all duration-300">
+							{licoresOrdenados.length} of {licores.length} products {(searchTerm || typeFilter) ? 'found' : 'available'}
+						</span>
 						{typeFilter && (
-							<span className="ml-2 px-2 py-1 bg-accent/10 text-accent rounded-md text-xs">
+							<span className="ml-2 px-2 py-1 bg-accent/10 text-accent rounded-md text-xs animate-fade-in-up">
 								{typeFilter}
 							</span>
 						)}
@@ -259,33 +269,39 @@ export default function SelectionSection({
 				</div>
 				<ul className="grid gap-2 sm:gap-4 lg:gap-6">
 					{loadingLicores ? (
-						<div className="flex items-center justify-center py-12">
+						<div className="flex items-center justify-center py-12 animate-fade-in-up">
 							<div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin"></div>
 						</div>
 					) : licoresOrdenados.length === 0 ? (
-						<li className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
-							{(searchTerm || typeFilter) ? (
-								<>
-									No liquors found for {searchTerm && `"${searchTerm}"`}
-									{searchTerm && typeFilter && ' in '}
-									{typeFilter && `${typeFilter} type`}
-								</>
-							) : (
-								'No liquors registered.'
-							)}
+						<li key={`no-results-${animationKey}`} className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light animate-fade-in-up opacity-0" style={{ animationFillMode: 'forwards' }}>
+							<div>
+								{(searchTerm || typeFilter) ? (
+									<>
+										No liquors found for {searchTerm && `"${searchTerm}"`}
+										{searchTerm && typeFilter && ' in '}
+										{typeFilter && `${typeFilter} type`}
+									</>
+								) : (
+									'No liquors registered.'
+								)}
+							</div>
 						</li>
 					) : (
-						licoresOrdenados.map((licor) => {
+						licoresOrdenados.map((licor, index) => {
 							const cantidad = cantidades[licor.id] || { botellas: 0, cajas: 0 };
 							const hasSelection = cantidad.botellas > 0 || cantidad.cajas > 0;
 							return (
 								<li
-									key={licor.id}
-									className={`group relative bg-gradient-to-r from-background/80 to-cardBg backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-8 border transition-all duration-300 hover:shadow-xl ${
+									key={`${licor.id}-${animationKey}`}
+									className={`group relative bg-gradient-to-r from-background/80 to-cardBg backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-8 border transition-all duration-300 hover:shadow-xl animate-fade-in-up opacity-0 ${
 										hasSelection 
 											? 'border-accent/50 shadow-accent/10 shadow-lg' 
 											: 'border-border/30 hover:border-accent/30'
 									}`}
+									style={{
+										animationDelay: `${index * 80}ms`,
+										animationFillMode: 'forwards'
+									}}
 								>
 									{hasSelection && (
 										<div className="absolute top-3 right-3 sm:top-4 sm:right-4 w-2 h-2 sm:w-3 sm:h-3 bg-accent rounded-full animate-pulse"></div>
