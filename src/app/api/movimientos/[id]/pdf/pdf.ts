@@ -119,7 +119,7 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
     color: lightText,
   });
 
-  page.drawText('Encore Boston Harbor Casino', {
+  page.drawText('Premium Casino Operations', {
     x: margin,
     y: detailsStartY - 70,
     size: 12,
@@ -390,7 +390,7 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
       color: lightText,
     });
 
-    pageObj.drawText('at Encore Boston Harbor Casino.', {
+    pageObj.drawText('for premium casino operations.', {
       x: margin,
       y: footerY - 15,
       size: 10,
