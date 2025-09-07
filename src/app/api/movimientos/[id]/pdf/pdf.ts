@@ -1,7 +1,7 @@
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import type { Movimiento } from '../../../../actions';
 
-export async function createPDF(movimiento: Movimiento): Promise<Uint8Array> {
+export async function createPDF(movimiento: Movimiento, formattedDate?: string | null): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   const page = doc.addPage([595, 842]); // A4 size
   const font = await doc.embedFont(StandardFonts.Helvetica);
@@ -87,22 +87,14 @@ export async function createPDF(movimiento: Movimiento): Promise<Uint8Array> {
   });
 
   const formatDate = (dateString: string) => {
-    // Parse the date components manually to avoid timezone interpretation
-    // This ensures the PDF shows the exact same date/time as stored in DB
+    // If we have a pre-formatted date from the frontend, use it
+    if (formattedDate) {
+      return formattedDate;
+    }
+    
+    // Fallback to original logic if no formatted date provided
     const date = new Date(dateString);
-    
-    // Extract components in UTC to get the actual stored values
-    const year = date.getUTCFullYear();
-    const month = date.getUTCMonth();
-    const day = date.getUTCDate();
-    const hours = date.getUTCHours();
-    const minutes = date.getUTCMinutes();
-    
-    // Create a new date with these components as local time
-    // This matches how the frontend interprets the date
-    const localDate = new Date(year, month, day, hours, minutes);
-    
-    return localDate.toLocaleDateString('en-US', {
+    return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',

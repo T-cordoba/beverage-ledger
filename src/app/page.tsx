@@ -1052,7 +1052,14 @@ export default function HomePage() {
 														</div>
 													</div>
 													<button
-														onClick={() => window.open(`/api/movimientos/${movimiento.id}/pdf`, '_blank')}
+														onClick={() => {
+															const formattedDate = new Date(movimiento.date).toLocaleDateString('en-US', {
+																month: '2-digit',
+																day: '2-digit',
+																year: 'numeric'
+															});
+															window.open(`/api/movimientos/${movimiento.id}/pdf?date=${encodeURIComponent(formattedDate)}`, '_blank');
+														}}
 														className="group flex items-center justify-center gap-2 bg-accent hover:bg-accentHover text-background px-4 py-2.5 sm:px-4 sm:py-2.5 rounded-lg sm:rounded-xl font-medium transition-all duration-200 text-sm hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl w-full sm:w-auto min-w-[100px] sm:min-w-[80px]"
 														title="View PDF Invoice"
 													>
