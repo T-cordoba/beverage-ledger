@@ -369,31 +369,6 @@ export default function HomePage() {
 		});
 	};
 
-	// PDF download function
-	const downloadPDF = async (movimientoId: string) => {
-		try {
-			const response = await fetch(`/api/movimientos/${movimientoId}/pdf`);
-			if (!response.ok) {
-				showNotification('error', 'Download Failed', 'Could not download PDF invoice.');
-				return;
-			}
-			
-			const blob = await response.blob();
-			const url = window.URL.createObjectURL(blob);
-			const link = document.createElement('a');
-			link.href = url;
-			link.download = `invoice-${movimientoId.slice(-8)}.pdf`;
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
-			window.URL.revokeObjectURL(url);
-			
-			showNotification('success', 'PDF Downloaded', 'Invoice has been downloaded successfully.');
-		} catch (error) {
-			showNotification('error', 'Download Error', 'An error occurred while downloading the PDF.');
-		}
-	};
-
 	// Filter liquors by name and type
 	const licoresFiltrados = licores.filter((licor) => {
 		const searchLower = searchTerm.toLowerCase();
@@ -727,9 +702,9 @@ export default function HomePage() {
 														</div>
 													</div>
 													<button
-														onClick={() => downloadPDF(movimiento.id)}
+														onClick={() => window.open(`/api/movimientos/${movimiento.id}/pdf`, '_blank')}
 														className="group flex items-center justify-center gap-2 bg-accent hover:bg-accentHover text-background px-4 py-2.5 sm:px-4 sm:py-2.5 rounded-lg sm:rounded-xl font-medium transition-all duration-200 text-sm hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl w-full sm:w-auto min-w-[100px] sm:min-w-[80px]"
-														title="Download PDF Invoice"
+														title="View PDF Invoice"
 													>
 														<svg 
 															className="w-4 h-4 flex-shrink-0 transition-transform duration-200 group-hover:scale-110" 

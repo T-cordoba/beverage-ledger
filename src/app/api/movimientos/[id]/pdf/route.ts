@@ -10,7 +10,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   return new NextResponse(Buffer.from(pdfBuffer), {
     headers: {
       'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename="factura-${id}.pdf"`
+      'Content-Disposition': `inline; filename="invoice-${id}.pdf"`
     }
   });
 }
