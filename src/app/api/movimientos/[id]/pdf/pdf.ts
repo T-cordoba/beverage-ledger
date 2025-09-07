@@ -88,15 +88,14 @@ export async function createPDF(movimiento: Movimiento): Promise<Uint8Array> {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    // Force the timezone to be interpreted as local time to match frontend display
+    // Use the same date formatting as the frontend (no forced timezone)
     // This ensures the PDF shows the same date/time as the frontend
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit',
-      timeZone: 'America/New_York' // Use Eastern Time for Boston Harbor Casino
+      minute: '2-digit'
     });
   };
 
