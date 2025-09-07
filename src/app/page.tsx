@@ -11,6 +11,7 @@ async function fetchLicores(): Promise<Licor[]> {
 
 export default function HomePage() {
 	const [licores, setLicores] = useState<Licor[]>([]);
+	const [loadingLicores, setLoadingLicores] = useState(true);
 	const [cantidades, setCantidades] = useState<Record<string, { botellas: number; cajas: number }>>({});
 	const [searchTerm, setSearchTerm] = useState("");
 	const [submitting, setSubmitting] = useState(false);
@@ -78,7 +79,18 @@ export default function HomePage() {
 	const [loadingStatistics, setLoadingStatistics] = useState(false);
 
 	useEffect(() => {
-		fetchLicores().then(setLicores);
+		const loadLicores = async () => {
+			setLoadingLicores(true);
+			try {
+				const data = await fetchLicores();
+				setLicores(data);
+			} catch (error) {
+				console.error('Error loading licores:', error);
+			} finally {
+				setLoadingLicores(false);
+			}
+		};
+		loadLicores();
 	}, []);
 
 	const loadMovimientos = async () => {
@@ -543,7 +555,11 @@ export default function HomePage() {
 						</div>
 					</div>
 						<ul className="grid gap-4 sm:gap-6">
-							{licoresOrdenados.length === 0 ? (
+							{loadingLicores ? (
+								<div className="flex items-center justify-center py-12">
+									<div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin"></div>
+								</div>
+							) : licoresOrdenados.length === 0 ? (
 								<li className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
 									{searchTerm ? `No liquors found for "${searchTerm}"` : 'No liquors registered.'}
 								</li>
@@ -721,8 +737,8 @@ export default function HomePage() {
 						</div>
 
 						{loadingMovimientos ? (
-							<div className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
-								Loading movements...
+							<div className="flex items-center justify-center py-12">
+								<div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin"></div>
 							</div>
 						) : movimientos.length === 0 ? (
 							<div className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
