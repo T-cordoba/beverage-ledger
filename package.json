@@ -1,6 +1,9 @@
 {
   "name": "encore-beverage-ledger",
   "version": "0.1.0",
+  "description": "Generic casino-style beverage inventory management system - Educational project",
+  "author": "Tomás Córdoba Urquijo",
+  "license": "PROPRIETARY",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",

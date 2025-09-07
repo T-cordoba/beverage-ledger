@@ -12,6 +12,16 @@
 
 ---
 
+## 🚨 **LEGAL DISCLAIMER**
+
+> **⚠️ IMPORTANT NOTICE**: This software is an **INDEPENDENT PROJECT** and is **NOT affiliated, associated, authorized, endorsed by, or in any way officially connected** with any casino, resort, gaming company, or hospitality business. 
+> 
+> Any trade names, logos, or brand names mentioned are used for **EDUCATIONAL AND DEMONSTRATIVE PURPOSES ONLY** and are the property of their respective owners.
+> 
+> This is a **GENERIC INVENTORY MANAGEMENT SYSTEM** that can be adapted for various hospitality environments.
+
+---
+
 ## 🎰 About the Project
 
 The **Encore Beverage Ledger** is a sophisticated, casino-themed liquor inventory management system designed for premium casino operations. This application provides comprehensive tracking, management, and reporting capabilities for beverage operations in high-end casino environments.
@@ -112,6 +122,8 @@ The application embraces a **casino aesthetic** with:
 **INTENDED USE**: This system is designed as a general-purpose beverage inventory management solution that can be adapted for various hospitality environments.
 
 **LIABILITY**: The author assumes no responsibility for any trademark infringement claims or legal issues arising from the use of this software.
+
+**📋 For complete legal terms, see [DISCLAIMER.md](./DISCLAIMER.md)**
 
 ---
 
