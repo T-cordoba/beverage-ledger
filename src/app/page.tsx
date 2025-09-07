@@ -279,6 +279,10 @@ export default function HomePage() {
 		([_, cantidad]) => cantidad.botellas > 0 || cantidad.cajas > 0
 	);
 
+	// Calculate total bottles and cases across all selections
+	const totalBottles = Object.values(cantidades).reduce((total, cantidad) => total + cantidad.botellas, 0);
+	const totalCases = Object.values(cantidades).reduce((total, cantidad) => total + cantidad.cajas, 0);
+
 	const handleChange = (id: string, tipo: "botellas" | "cajas", delta: number) => {
 		setCantidades((prev) => {
 			const actual = prev[id] || { botellas: 0, cajas: 0 };
@@ -642,7 +646,9 @@ export default function HomePage() {
 						{Object.entries(cantidades).some(([_, cantidad]) => cantidad.botellas > 0 || cantidad.cajas > 0) && (
 							<div className="mt-6 lg:mt-8 p-4 sm:p-6 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl">
 								<h3 className="text-lg sm:text-xl font-light text-primary mb-4">Selection Summary</h3>
-								<div className="space-y-2">
+								
+								{/* Detailed Breakdown */}
+								<div className="space-y-2 mb-4">
 									{Object.entries(cantidades)
 										.filter(([_, cantidad]) => cantidad.botellas > 0 || cantidad.cajas > 0)
 										.map(([id, cantidad]) => {
@@ -659,6 +665,22 @@ export default function HomePage() {
 											);
 										})
 									}
+								</div>
+
+								{/* Total Summary - Compact */}
+								<div className="pt-3 border-t border-white/10">
+									<div className="flex items-center justify-between text-sm">
+										<span className="text-secondary/80 font-medium">Total:</span>
+										<div className="flex items-center gap-4">
+											<span className="text-accent font-semibold">
+												{totalBottles} {totalBottles === 1 ? 'Bottle' : 'Bottles'}
+											</span>
+											<span className="text-secondary/60">•</span>
+											<span className="text-accent font-semibold">
+												{totalCases} {totalCases === 1 ? 'Case' : 'Cases'}
+											</span>
+										</div>
+									</div>
 								</div>
 							</div>
 						)}
