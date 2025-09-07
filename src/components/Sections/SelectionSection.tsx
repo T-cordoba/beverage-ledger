@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Licor } from '../../app/actions-licores';
 
 interface SelectionSectionProps {
@@ -5,9 +6,11 @@ interface SelectionSectionProps {
 	loadingLicores: boolean;
 	cantidades: Record<string, { botellas: number; cajas: number }>;
 	searchTerm: string;
+	typeFilter: string;
 	submitting: boolean;
 	onQuantityChange: (id: string, type: 'botellas' | 'cajas', delta: number) => void;
 	onSearchChange: (value: string) => void;
+	onTypeFilterChange: (type: string) => void;
 	onConfirm: () => void;
 	onCancel: () => void;
 }
@@ -17,19 +20,27 @@ export default function SelectionSection({
 	loadingLicores,
 	cantidades,
 	searchTerm,
+	typeFilter,
 	submitting,
 	onQuantityChange,
 	onSearchChange,
+	onTypeFilterChange,
 	onConfirm,
 	onCancel
 }: SelectionSectionProps) {
-	// Filter liquors by name and type
+	// Estado para controlar el dropdown personalizado
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+	// Get unique types for the dropdown
+	const uniqueTypes = Array.from(new Set(licores.map(licor => licor.type))).sort();
+
+	// Filter liquors by name, type, and selected type filter
 	const licoresFiltrados = licores.filter((licor) => {
 		const searchLower = searchTerm.toLowerCase();
-		return (
-			licor.name.toLowerCase().includes(searchLower) ||
-			licor.type.toLowerCase().includes(searchLower)
-		);
+		const matchesSearch = licor.name.toLowerCase().includes(searchLower) ||
+			licor.type.toLowerCase().includes(searchLower);
+		const matchesType = typeFilter === '' || licor.type === typeFilter;
+		
+		return matchesSearch && matchesType;
 	});
 
 	// Sort liquors: those with selected quantities first
@@ -55,28 +66,60 @@ export default function SelectionSection({
 
 	return (
 		<section className="space-y-6 lg:space-y-8">
-			{/* Search Bar */}
+			{/* Search and Filter Controls */}
 			<div className="mb-6 lg:mb-8">
-				<div className="relative max-w-full sm:max-w-md">
-					<input
-						type="text"
-						placeholder="Search by name or type..."
-						value={searchTerm}
-						onChange={(e) => onSearchChange(e.target.value)}
-						className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-cardBg border border-border rounded-xl sm:rounded-2xl text-primary placeholder-placeholder focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all text-sm sm:text-base"
-					/>
-					<div className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2">
-						{searchTerm ? (
-							<button
-								onClick={() => onSearchChange('')}
-								className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-accent/20 hover:bg-accent/40 flex items-center justify-center text-accent transition-colors"
-								aria-label="Clear search"
-							>
-								×
-							</button>
-						) : (
+				<div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+					{/* Search Bar */}
+					<div className="relative flex-1 max-w-full sm:max-w-md">
+						<input
+							type="text"
+							placeholder="Search by name or type..."
+							value={searchTerm}
+							onChange={(e) => onSearchChange(e.target.value)}
+							className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-cardBg border border-border rounded-xl sm:rounded-2xl text-primary placeholder-placeholder focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all text-sm sm:text-base"
+						/>
+						<div className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2">
+							{searchTerm ? (
+								<button
+									onClick={() => onSearchChange('')}
+									className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-accent/20 hover:bg-accent/40 flex items-center justify-center text-accent transition-colors"
+									aria-label="Clear search"
+								>
+									×
+								</button>
+							) : (
+								<svg 
+									className="w-4 h-4 sm:w-5 sm:h-5 text-accent/60" 
+									fill="none" 
+									stroke="currentColor" 
+									viewBox="0 0 24 24"
+								>
+									<path 
+										strokeLinecap="round" 
+										strokeLinejoin="round" 
+										strokeWidth={2} 
+										d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" 
+									/>
+								</svg>
+							)}
+						</div>
+					</div>
+
+					{/* Type Filter Dropdown */}
+					<div className="relative min-w-[200px]">
+						{/* Dropdown Button */}
+						<button
+							type="button"
+							onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+							className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-cardBg border border-border rounded-xl sm:rounded-2xl text-primary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all text-sm sm:text-base text-left flex items-center justify-between hover:border-accent/30"
+						>
+							<span className={typeFilter ? 'text-primary' : 'text-secondary/80'}>
+								{typeFilter || 'All Types'}
+							</span>
 							<svg 
-								className="w-4 h-4 sm:w-5 sm:h-5 text-accent/60" 
+								className={`w-4 h-4 sm:w-5 sm:h-5 text-accent/60 transition-transform duration-200 ${
+									isDropdownOpen ? 'rotate-180' : ''
+								}`} 
 								fill="none" 
 								stroke="currentColor" 
 								viewBox="0 0 24 24"
@@ -85,9 +128,57 @@ export default function SelectionSection({
 									strokeLinecap="round" 
 									strokeLinejoin="round" 
 									strokeWidth={2} 
-									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" 
+									d="M19 9l-7 7-7-7" 
 								/>
 							</svg>
+						</button>
+
+						{/* Dropdown Menu */}
+						{isDropdownOpen && (
+							<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg border border-border rounded-xl sm:rounded-2xl shadow-2xl backdrop-blur-sm z-50 overflow-hidden">
+								{/* All Types Option */}
+								<button
+									type="button"
+									onClick={() => {
+										onTypeFilterChange('');
+										setIsDropdownOpen(false);
+									}}
+									className={`w-full px-4 sm:px-6 py-3 text-left text-sm sm:text-base transition-all duration-200 hover:bg-accent/10 hover:text-accent border-b border-border/20 ${
+										!typeFilter 
+											? 'bg-accent/20 text-accent font-medium' 
+											: 'text-secondary/80 hover:text-primary'
+									}`}
+								>
+									All Types
+								</button>
+								
+								{/* Type Options */}
+								{uniqueTypes.map((type) => (
+									<button
+										key={type}
+										type="button"
+										onClick={() => {
+											onTypeFilterChange(type);
+											setIsDropdownOpen(false);
+										}}
+										className={`w-full px-4 sm:px-6 py-3 text-left text-sm sm:text-base transition-all duration-200 hover:bg-accent/10 hover:text-accent last:border-b-0 border-b border-border/20 ${
+											typeFilter === type 
+												? 'bg-accent/20 text-accent font-medium' 
+												: 'text-primary hover:text-accent'
+										}`}
+									>
+										{type}
+									</button>
+								))}
+							</div>
+						)}
+
+						{/* Overlay para cerrar el dropdown */}
+						{isDropdownOpen && (
+							<div 
+								className="fixed inset-0 z-40" 
+								onClick={() => setIsDropdownOpen(false)}
+							/>
 						)}
 					</div>
 				</div>
@@ -97,7 +188,12 @@ export default function SelectionSection({
 				<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 lg:mb-8 gap-2">
 					<h2 className="text-xl sm:text-2xl font-light text-primary">Select liquors</h2>
 					<div className="text-xs sm:text-sm text-secondary/60 font-light">
-						{licoresOrdenados.length} of {licores.length} products {searchTerm ? 'found' : 'available'}
+						{licoresOrdenados.length} of {licores.length} products {(searchTerm || typeFilter) ? 'found' : 'available'}
+						{typeFilter && (
+							<span className="ml-2 px-2 py-1 bg-accent/10 text-accent rounded-md text-xs">
+								{typeFilter}
+							</span>
+						)}
 					</div>
 				</div>
 				<ul className="grid gap-4 sm:gap-6">
@@ -107,7 +203,15 @@ export default function SelectionSection({
 						</div>
 					) : licoresOrdenados.length === 0 ? (
 						<li className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
-							{searchTerm ? `No liquors found for "${searchTerm}"` : 'No liquors registered.'}
+							{(searchTerm || typeFilter) ? (
+								<>
+									No liquors found for {searchTerm && `"${searchTerm}"`}
+									{searchTerm && typeFilter && ' in '}
+									{typeFilter && `${typeFilter} type`}
+								</>
+							) : (
+								'No liquors registered.'
+							)}
 						</li>
 					) : (
 						licoresOrdenados.map((licor) => {

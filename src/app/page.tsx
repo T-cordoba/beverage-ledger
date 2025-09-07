@@ -117,6 +117,7 @@ export default function HomePage() {
 	const [loadingLicores, setLoadingLicores] = useState(true);
 	const [cantidades, setCantidades] = useState<Record<string, { botellas: number; cajas: number }>>({});
 	const [searchTerm, setSearchTerm] = useState("");
+	const [typeFilter, setTypeFilter] = useState("");
 	const [submitting, setSubmitting] = useState(false);
 	const [movimientos, setMovimientos] = useState<Movimiento[]>([]);
 	const [loadingMovimientos, setLoadingMovimientos] = useState(false);
@@ -361,6 +362,7 @@ export default function HomePage() {
 			// Clear the form
 			setCantidades({});
 			setSearchTerm('');
+			setTypeFilter('');
 			
 			// Reload movements (always reload to keep data fresh)
 			loadMovimientos();
@@ -396,6 +398,7 @@ export default function HomePage() {
 		// Clear all selections
 		setCantidades({});
 		setSearchTerm('');
+		setTypeFilter('');
 		dispatchModals({ type: 'HIDE_CANCEL_MODAL' });
 		showNotification('info', 'Movement Cancelled', 'All selected items have been cleared.');
 		
@@ -504,9 +507,11 @@ export default function HomePage() {
 								loadingLicores={loadingLicores}
 								cantidades={cantidades}
 								searchTerm={searchTerm}
+								typeFilter={typeFilter}
 								submitting={submitting}
 								onQuantityChange={handleChange}
 								onSearchChange={setSearchTerm}
+								onTypeFilterChange={setTypeFilter}
 								onConfirm={handleConfirmar}
 								onCancel={handleCancelMovement}
 							/>
