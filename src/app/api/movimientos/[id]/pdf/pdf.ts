@@ -87,10 +87,22 @@ export async function createPDF(movimiento: Movimiento): Promise<Uint8Array> {
   });
 
   const formatDate = (dateString: string) => {
+    // Parse the date components manually to avoid timezone interpretation
+    // This ensures the PDF shows the exact same date/time as stored in DB
     const date = new Date(dateString);
-    // Use the same date formatting as the frontend (no forced timezone)
-    // This ensures the PDF shows the same date/time as the frontend
-    return date.toLocaleDateString('en-US', {
+    
+    // Extract components in UTC to get the actual stored values
+    const year = date.getUTCFullYear();
+    const month = date.getUTCMonth();
+    const day = date.getUTCDate();
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+    
+    // Create a new date with these components as local time
+    // This matches how the frontend interprets the date
+    const localDate = new Date(year, month, day, hours, minutes);
+    
+    return localDate.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
