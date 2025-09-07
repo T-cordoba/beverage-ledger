@@ -1,14 +1,17 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import type { Licor } from "./actions-licores";
-import { createMovimiento, getMovimientos, type Movimiento } from "./actions";
+import { createMovimiento, getMovimientos, type Movimiento, type Licor as LicorMovimiento } from "./actions";
 
 // Components
-import NotificationSystem, { useNotifications } from "../components/NotificationSystem";
-import Navigation from "../components/Navigation";
-import { SelectionSection, HistorySection, StatisticsSection } from "../components/Sections";
-import { ConfirmModal, CancelModal } from "../components/Modals";
-import ScrollToCheckoutButton from "../components/ScrollToCheckoutButton";
+import NotificationSystem, { useNotifications } from "../components/NotificationSystem/NotificationSystem";
+import Navigation from "../components/Navigation/Navigation";
+import SelectionSection from "../components/Sections/SelectionSection";
+import HistorySection from "../components/Sections/HistorySection";
+import StatisticsSection from "../components/Sections/StatisticsSection";
+import ConfirmModal from "../components/Modals/ConfirmModal";
+import CancelModal from "../components/Modals/CancelModal";
+import ScrollToCheckoutButton from "../components/ScrollToCheckoutButton/ScrollToCheckoutButton";
 
 async function fetchLicores(): Promise<Licor[]> {
 	const res = await fetch("/api/licores", { cache: "no-store" });
@@ -103,78 +106,24 @@ export default function HomePage() {
 		}
 	}, [activeSection, movimientos.length]);
 
-	// Load statistics when accessing statistics section
-	const loadStatistics = async () => {
-		setLoadingStatistics(true);
-		try {
-			const data = await getMovimientos();
-			// Calculate statistics based on time range
-			const now = new Date();
-			let startDate = new Date();
-			
-			switch (statisticsTimeRange) {
-				case 'week':
-					startDate.setDate(now.getDate() - 7);
-					break;
-				case 'month':
-					startDate.setMonth(now.getMonth() - 1);
-					break;
-				case 'year':
-					startDate.setFullYear(now.getFullYear() - 1);
-					break;
-			}
-			
-			// Filter movements by date range
-			const filteredMovements = data.filter(movement => 
-				new Date(movement.date) >= startDate
-			);
-			
-			// Calculate statistics by liquor or type
-			const stats: Record<string, number> = {};
-			
-			filteredMovements.forEach(movement => {
-				movement.liquors.forEach(liquor => {
-					const key = statisticsView === 'liquor' ? liquor.name : liquor.type;
-					stats[key] = (stats[key] || 0) + liquor.quantity;
-				});
-			});
-			
-			// Convert to sorted array for charts and leaderboard
-			const sortedStats = Object.entries(stats)
-				.map(([name, quantity]) => ({ name, quantity }))
-				.sort((a, b) => b.quantity - a.quantity);
-			
-			setStatisticsData(sortedStats);
-		} catch (error) {
-			console.error('Error loading statistics:', error);
-		} finally {
-			setLoadingStatistics(false);
-		}
-	};
-
-	useEffect(() => {
-		if (activeSection === 'historial' && movimientos.length === 0) {
-			loadMovimientos();
-		}
-		if (activeSection === 'estadisticas') {
-			loadStatistics();
-		}
-	}, [activeSection, statisticsTimeRange, statisticsView]);
-
 	// Scroll detection for floating button
 	useEffect(() => {
 		const handleScroll = () => {
 			if (activeSection !== 'seleccion') return;
 
+			const scrollY = window.scrollY;
+			const windowHeight = window.innerHeight;
+			const documentHeight = document.documentElement.scrollHeight;
+			
 			// Get checkout button position
 			const checkoutButton = document.querySelector('[data-checkout-button]');
 			if (!checkoutButton) return;
 
 			const buttonRect = checkoutButton.getBoundingClientRect();
-			const buttonIsVisible = buttonRect.top >= 0 && buttonRect.bottom <= window.innerHeight;
+			const buttonIsVisible = buttonRect.top >= 0 && buttonRect.bottom <= windowHeight;
 			
-			// Show floating button when checkout is not visible (regardless of scroll position)
-			const shouldShow = !buttonIsVisible;
+			// Show floating button when scrolled enough and checkout is not visible
+			const shouldShow = scrollY > 300 && !buttonIsVisible;
 			
 			if (shouldShow && !showScrollButton) {
 				setShowScrollButton(true);
@@ -239,9 +188,9 @@ export default function HomePage() {
 		setSubmitting(true);
 		try {
 			// Convert cantidades to the expected format
-			const licoresData: Array<{ name: string; type: string; quantity: number; unit: 'bottle' | 'case' }> = Object.entries(cantidades).flatMap(([id, cantidad]) => {
+			const licoresData: LicorMovimiento[] = Object.entries(cantidades).flatMap(([id, cantidad]) => {
 				const licor = licores.find(l => l.id.toString() === id);
-				const items: Array<{ name: string; type: string; quantity: number; unit: 'bottle' | 'case' }> = [];
+				const items: LicorMovimiento[] = [];
 				
 				// Add bottles if there's quantity
 				if (cantidad.botellas > 0) {
@@ -379,26 +328,29 @@ export default function HomePage() {
 			<header className="border-b border-border bg-gradient-to-r from-background to-cardBg backdrop-blur-sm">
 				<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
 					<div className="flex flex-col items-center justify-center">
-						{/* Logo EBL completo */}
-						<div className="mb-4">
+						<div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
 							<img 
 								src="/ebl-logo.png" 
-								alt="Encore Beverage Ledger" 
-								className="h-24 sm:h-32 lg:h-40 w-auto"
+								alt="EBL Logo" 
+								className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
 							/>
+							<div className="text-center">
+								<h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-light text-accent tracking-wide">
+									ENCORE BEVERAGE LEDGER
+								</h1>
+								<p className="text-xs sm:text-sm lg:text-base text-secondary/60 font-light tracking-widest uppercase mt-1">
+									Premium Liquor Management System
+								</p>
+							</div>
 						</div>
-						<p className="text-secondary/80 text-sm sm:text-base lg:text-lg font-light text-center">
-							Liquor inventory management for Encore Boston Harbor
-						</p>
+						
+						<Navigation 
+							activeSection={activeSection}
+							onSectionChange={handleSectionChange}
+						/>
 					</div>
 				</div>
 			</header>
-
-			{/* Navigation Bar */}
-			<Navigation 
-				activeSection={activeSection}
-				onSectionChange={handleSectionChange}
-			/>
 
 			{/* Main Content */}
 			<main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
