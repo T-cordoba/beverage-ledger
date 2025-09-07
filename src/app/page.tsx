@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import type { Licor } from "./actions-licores";
 import { createMovimiento, getMovimientos, type Movimiento } from "./actions";
 
@@ -27,6 +27,7 @@ export default function HomePage() {
 	const [showCancelModal, setShowCancelModal] = useState(false);
 	const [movementSearchTerm, setMovementSearchTerm] = useState("");
 	const [dateFilter, setDateFilter] = useState("");
+	const [showDatePicker, setShowDatePicker] = useState(false);
 	
 	// Notification system
 	const [notifications, setNotifications] = useState<Array<{
@@ -80,6 +81,9 @@ export default function HomePage() {
 	const [statisticsView, setStatisticsView] = useState<'liquor' | 'type'>('liquor');
 	const [loadingStatistics, setLoadingStatistics] = useState(false);
 
+	// Date picker ref
+	const datePickerRef = useRef<HTMLDivElement>(null);
+
 	useEffect(() => {
 		const loadLicores = async () => {
 			setLoadingLicores(true);
@@ -94,6 +98,20 @@ export default function HomePage() {
 		};
 		loadLicores();
 	}, []);
+
+	// Close date picker when clicking outside
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
+				setShowDatePicker(false);
+			}
+		};
+
+		if (showDatePicker) {
+			document.addEventListener('mousedown', handleClickOutside);
+			return () => document.removeEventListener('mousedown', handleClickOutside);
+		}
+	}, [showDatePicker]);
 
 	const loadMovimientos = async () => {
 		setLoadingMovimientos(true);
@@ -229,6 +247,43 @@ export default function HomePage() {
 		
 		const englishUnit = unitMap[unidad] || unidad;
 		return cantidad === 1 ? englishUnit : englishUnit + 's';
+	};
+
+	// Calendar helper functions
+	const formatDate = (date: Date) => {
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	};
+
+	const formatDateLocal = (date: Date) => {
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	};
+
+	const parseDate = (dateString: string) => {
+		return dateString ? new Date(dateString + 'T00:00:00') : new Date();
+	};
+
+	const getDaysInMonth = (year: number, month: number) => {
+		return new Date(year, month + 1, 0).getDate();
+	};
+
+	const getFirstDayOfMonth = (year: number, month: number) => {
+		return new Date(year, month, 1).getDay();
+	};
+
+	const monthNames = [
+		'January', 'February', 'March', 'April', 'May', 'June',
+		'July', 'August', 'September', 'October', 'November', 'December'
+	];
+
+	const handleDateSelect = (date: string) => {
+		setDateFilter(date);
+		setShowDatePicker(false);
 	};
 
 	// Function to scroll to checkout section with smooth animation
@@ -740,9 +795,9 @@ export default function HomePage() {
 										const matchesCode = !movementSearchTerm || 
 											movimiento.id.toLowerCase().includes(movementSearchTerm.toLowerCase());
 										
-										// Filter by date
+										// Filter by date (using local date comparison)
 										const matchesDate = !dateFilter || 
-											new Date(movimiento.date).toISOString().split('T')[0] === dateFilter;
+											formatDateLocal(new Date(movimiento.date)) === dateFilter;
 										
 										return matchesCode && matchesDate;
 									}).length;
@@ -779,22 +834,134 @@ export default function HomePage() {
 							</div>
 							
 							{/* Date filter */}
-							<div className="relative">
-								<input
-									type="date"
-									value={dateFilter}
-									onChange={(e) => setDateFilter(e.target.value)}
-									className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 pr-16 text-secondary placeholder:text-secondary/40 focus:outline-none focus:border-accent/50 focus:bg-white/10 transition-all duration-200 [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert [&::-webkit-calendar-picker-indicator]:opacity-60 [&::-webkit-calendar-picker-indicator]:hover:opacity-100"
-								/>
+							<div className="relative" ref={datePickerRef}>
+								{/* Date input display */}
+								<div
+									onClick={() => setShowDatePicker(!showDatePicker)}
+									className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 pr-16 text-secondary cursor-pointer hover:border-accent/50 hover:bg-white/10 transition-all duration-200 flex items-center justify-between"
+								>
+									<span className={dateFilter ? 'text-secondary' : 'text-secondary/40'}>
+										{dateFilter ? new Date(dateFilter + 'T00:00:00').toLocaleDateString('en-US', {
+											day: 'numeric',
+											month: 'long',
+											year: 'numeric'
+										}) : 'Select date...'}
+									</span>
+									<svg className="w-5 h-5 text-secondary/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<rect x="3" y="4" width="18" height="18" rx="2" ry="2" strokeWidth={2} />
+										<line x1="16" y1="2" x2="16" y2="6" strokeWidth={2} />
+										<line x1="8" y1="2" x2="8" y2="6" strokeWidth={2} />
+										<line x1="3" y1="10" x2="21" y2="10" strokeWidth={2} />
+									</svg>
+								</div>
+								
+								{/* Clear button */}
 								{dateFilter && (
 									<button
-										onClick={() => setDateFilter("")}
+										onClick={(e) => {
+											e.stopPropagation();
+											setDateFilter("");
+										}}
 										className="absolute right-10 top-1/2 transform -translate-y-1/2 text-secondary/60 hover:text-secondary transition-colors"
 									>
 										<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
 										</svg>
 									</button>
+								)}
+
+								{/* Calendar dropdown */}
+								{showDatePicker && (
+									<div className="absolute top-full left-0 right-0 mt-2 bg-background/95 backdrop-blur-sm border border-white/20 rounded-xl shadow-2xl z-50 p-4">
+										{(() => {
+											const today = new Date();
+											const currentDate = dateFilter ? parseDate(dateFilter) : today;
+											const year = currentDate.getFullYear();
+											const month = currentDate.getMonth();
+											const daysInMonth = getDaysInMonth(year, month);
+											const firstDay = getFirstDayOfMonth(year, month);
+											
+											const prevMonth = () => {
+												const newDate = new Date(year, month - 1, 1);
+												const newDateString = formatDateLocal(newDate);
+												setDateFilter(newDateString);
+											};
+											
+											const nextMonth = () => {
+												const newDate = new Date(year, month + 1, 1);
+												const newDateString = formatDateLocal(newDate);
+												setDateFilter(newDateString);
+											};
+
+											return (
+												<div className="space-y-4">
+													{/* Header */}
+													<div className="flex items-center justify-between">
+														<button
+															onClick={prevMonth}
+															className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+														>
+															<svg className="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+																<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+															</svg>
+														</button>
+														<h3 className="text-accent font-medium">
+															{monthNames[month]} {year}
+														</h3>
+														<button
+															onClick={nextMonth}
+															className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+														>
+															<svg className="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+																<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+															</svg>
+														</button>
+													</div>
+
+													{/* Days of week */}
+													<div className="grid grid-cols-7 gap-1 text-xs text-secondary/60 font-medium">
+														{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+															<div key={day} className="p-2 text-center">
+																{day}
+															</div>
+														))}
+													</div>
+
+													{/* Calendar grid */}
+													<div className="grid grid-cols-7 gap-1">
+														{/* Empty cells for days before month starts */}
+														{Array.from({ length: firstDay }, (_, i) => (
+															<div key={`empty-${i}`} className="p-2"></div>
+														))}
+														
+														{/* Days of the month */}
+														{Array.from({ length: daysInMonth }, (_, i) => {
+															const day = i + 1;
+															const dateStr = formatDateLocal(new Date(year, month, day));
+															const isSelected = dateFilter === dateStr;
+															const isToday = formatDateLocal(today) === dateStr;
+															
+															return (
+																<button
+																	key={day}
+																	onClick={() => handleDateSelect(dateStr)}
+																	className={`p-2 text-sm rounded-lg transition-all duration-200 hover:bg-accent/20 ${
+																		isSelected 
+																			? 'bg-accent text-background font-medium' 
+																			: isToday 
+																				? 'bg-white/10 text-accent font-medium' 
+																				: 'text-secondary hover:text-accent'
+																	}`}
+																>
+																	{day}
+																</button>
+															);
+														})}
+													</div>
+												</div>
+											);
+										})()}
+									</div>
 								)}
 							</div>
 							
@@ -822,9 +989,9 @@ export default function HomePage() {
 										const matchesCode = !movementSearchTerm || 
 											movimiento.id.toLowerCase().includes(movementSearchTerm.toLowerCase());
 										
-										// Filter by date
+										// Filter by date (using local date comparison)
 										const matchesDate = !dateFilter || 
-											new Date(movimiento.date).toISOString().split('T')[0] === dateFilter;
+											formatDateLocal(new Date(movimiento.date)) === dateFilter;
 										
 										return matchesCode && matchesDate;
 									});
@@ -832,7 +999,15 @@ export default function HomePage() {
 									if (filteredMovimientos.length === 0 && (movementSearchTerm || dateFilter)) {
 										const searchInfo = [];
 										if (movementSearchTerm) searchInfo.push(`"${movementSearchTerm}"`);
-										if (dateFilter) searchInfo.push(`date "${new Date(dateFilter).toLocaleDateString()}"`);
+										if (dateFilter) {
+											// Format date consistently with how it's displayed in the selector
+											const formattedDate = new Date(dateFilter + 'T00:00:00').toLocaleDateString('en-US', {
+												day: 'numeric',
+												month: 'long',
+												year: 'numeric'
+											});
+											searchInfo.push(`date "${formattedDate}"`);
+										}
 										
 										return (
 											<div className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
