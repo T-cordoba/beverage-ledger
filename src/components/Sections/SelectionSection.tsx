@@ -65,10 +65,11 @@ export default function SelectionSection({
 	const hasSelectedItems = Object.values(cantidades).some(cantidad => cantidad.botellas > 0 || cantidad.cajas > 0);
 
 	return (
-		<section className="space-y-6 lg:space-y-8">
+		<section className="space-y-3 sm:space-y-4 lg:space-y-8">
 			{/* Search and Filter Controls */}
-			<div className="mb-6 lg:mb-8">
-				<div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+			<div className="mb-4 sm:mb-6 lg:mb-8">
+				{/* Search and Dropdown Row */}
+				<div className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-6">
 					{/* Search Bar */}
 					<div className="relative flex-1 max-w-full sm:max-w-md">
 						<input
@@ -106,7 +107,7 @@ export default function SelectionSection({
 					</div>
 
 					{/* Type Filter Dropdown */}
-					<div className="relative min-w-[200px]">
+					<div className="relative flex-1 sm:flex-initial sm:min-w-[200px]">
 						{/* Dropdown Button */}
 						<button
 							type="button"
@@ -181,11 +182,71 @@ export default function SelectionSection({
 							/>
 						)}
 					</div>
+
+					{/* Clear All Filters Button - Solo en desktop dentro del flex */}
+					{(searchTerm || typeFilter) && (
+						<div className="hidden sm:flex items-center">
+							<button
+								onClick={() => {
+									onSearchChange('');
+									onTypeFilterChange('');
+									setIsDropdownOpen(false);
+								}}
+								className="group flex items-center gap-2 px-3 sm:px-4 py-3 sm:py-4 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 hover:border-red-500/50 rounded-xl sm:rounded-2xl text-red-400 hover:text-red-300 transition-all duration-200 text-sm sm:text-base font-medium"
+								aria-label="Clear all filters"
+							>
+								<svg 
+									className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:scale-110" 
+									fill="none" 
+									stroke="currentColor" 
+									viewBox="0 0 24 24"
+								>
+									<path 
+										strokeLinecap="round" 
+										strokeLinejoin="round" 
+										strokeWidth={2} 
+										d="M6 18L18 6M6 6l12 12" 
+									/>
+								</svg>
+								<span>Clear filters</span>
+							</button>
+						</div>
+					)}
 				</div>
+
+				{/* Clear All Filters Button - Solo en móvil, centrado */}
+				{(searchTerm || typeFilter) && (
+					<div className="flex sm:hidden justify-center mt-3">
+						<button
+							onClick={() => {
+								onSearchChange('');
+								onTypeFilterChange('');
+								setIsDropdownOpen(false);
+							}}
+							className="group flex items-center gap-2 px-4 py-2.5 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 hover:border-red-500/50 rounded-lg text-red-400 hover:text-red-300 transition-all duration-200 text-sm font-medium"
+							aria-label="Clear all filters"
+						>
+							<svg 
+								className="w-4 h-4 transition-transform group-hover:scale-110" 
+								fill="none" 
+								stroke="currentColor" 
+								viewBox="0 0 24 24"
+							>
+								<path 
+									strokeLinecap="round" 
+									strokeLinejoin="round" 
+									strokeWidth={2} 
+									d="M6 18L18 6M6 6l12 12" 
+								/>
+							</svg>
+							<span>Clear filters</span>
+						</button>
+					</div>
+				)}
 			</div>
 
-			<div className="bg-cardBg/60 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 border border-border/50 shadow-2xl">
-				<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 lg:mb-8 gap-2">
+			<div className="bg-cardBg/60 backdrop-blur-md rounded-2xl sm:rounded-3xl p-3 sm:p-4 lg:p-8 border border-border/50 shadow-2xl">
+				<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 lg:mb-8 gap-2">
 					<h2 className="text-xl sm:text-2xl font-light text-primary">Select liquors</h2>
 					<div className="text-xs sm:text-sm text-secondary/60 font-light">
 						{licoresOrdenados.length} of {licores.length} products {(searchTerm || typeFilter) ? 'found' : 'available'}
@@ -196,7 +257,7 @@ export default function SelectionSection({
 						)}
 					</div>
 				</div>
-				<ul className="grid gap-4 sm:gap-6">
+				<ul className="grid gap-2 sm:gap-4 lg:gap-6">
 					{loadingLicores ? (
 						<div className="flex items-center justify-center py-12">
 							<div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin"></div>
@@ -220,7 +281,7 @@ export default function SelectionSection({
 							return (
 								<li
 									key={licor.id}
-									className={`group relative bg-gradient-to-r from-background/80 to-cardBg backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border transition-all duration-300 hover:shadow-xl ${
+									className={`group relative bg-gradient-to-r from-background/80 to-cardBg backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-8 border transition-all duration-300 hover:shadow-xl ${
 										hasSelection 
 											? 'border-accent/50 shadow-accent/10 shadow-lg' 
 											: 'border-border/30 hover:border-accent/30'
@@ -230,7 +291,7 @@ export default function SelectionSection({
 										<div className="absolute top-3 right-3 sm:top-4 sm:right-4 w-2 h-2 sm:w-3 sm:h-3 bg-accent rounded-full animate-pulse"></div>
 									)}
 									
-									<div className="flex flex-col gap-4 sm:gap-6">
+									<div className="flex flex-col gap-3 sm:gap-4 lg:gap-6">
 										{/* Licor Info */}
 										<div className="flex-1">
 											<h3 className="text-lg sm:text-xl lg:text-2xl font-light text-primary mb-2 group-hover:text-accent transition-colors">
@@ -244,7 +305,7 @@ export default function SelectionSection({
 										</div>
 										
 										{/* Controls */}
-										<div className="flex flex-col gap-3 sm:gap-4">
+										<div className="flex flex-col gap-2 sm:gap-3 lg:gap-4">
 											{/* Bottles */}
 											<div className="flex items-center justify-between sm:justify-start sm:gap-4 bg-background/50 backdrop-blur-sm rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 border border-border/30">
 												<label className="text-xs sm:text-sm font-light text-secondary/80 uppercase tracking-wider min-w-[60px] sm:min-w-[80px]">
@@ -310,7 +371,7 @@ export default function SelectionSection({
 				
 				{/* Summary of Selected Items */}
 				{hasSelectedItems && (
-					<div className="mt-6 lg:mt-8 p-4 sm:p-6 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl">
+					<div className="mt-4 sm:mt-6 lg:mt-8 p-3 sm:p-4 lg:p-6 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl">
 						<h3 className="text-lg sm:text-xl font-light text-primary mb-4">Selection Summary</h3>
 						
 						{/* Detailed Breakdown */}
@@ -352,7 +413,7 @@ export default function SelectionSection({
 				)}
 				
 				{/* Action Buttons */}
-				<div className="mt-8 lg:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+				<div className="mt-4 sm:mt-6 lg:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
 					<button 
 						onClick={onCancel}
 						disabled={submitting || !hasSelectedItems}
