@@ -8,6 +8,11 @@
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
   [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.0-38B2AC)](https://tailwindcss.com/)
   [![License](https://img.shields.io/badge/License-Proprietary-red)](#-copyright-notice)
+  
+  ---
+  
+  ### **[LIVE DEMO](https://encore-beverage-ledger.vercel.app)** 
+  **Try the application: [encore-beverage-ledger.vercel.app](https://encore-beverage-ledger.vercel.app)**
 </div>
 
 ---
@@ -94,6 +99,32 @@ encore-beverage-ledger/
 ├── tailwind.config.js       # Custom casino theme configuration
 └── README.md
 ```
+
+---
+
+## 🌐 Live Demo & Deployment
+
+### 🚀 **Production Demo**
+**Experience the full application:** [https://encore-beverage-ledger.vercel.app](https://encore-beverage-ledger.vercel.app)
+
+**Demo Features:**
+- ✅ **Full functionality** - All features available for testing
+- ✅ **Real-time database** - Persistent data storage
+- ✅ **Responsive design** - Test on any device
+- ✅ **PDF generation** - Download sample invoices
+- ✅ **Live statistics** - Interactive analytics dashboard
+
+### 🔧 **Technology Stack**
+- **Frontend:** Next.js 15 with TypeScript and Tailwind CSS
+- **Backend:** Serverless functions with Neon PostgreSQL
+- **Hosting:** Vercel with automatic deployments
+- **Domain:** Custom subdomain with SSL encryption
+
+### 📱 **Compatibility**
+- **Desktop:** Chrome, Firefox, Safari, Edge
+- **Mobile:** iOS Safari, Android Chrome
+- **Tablets:** iPad, Android tablets
+- **Performance:** Optimized for fast loading and smooth interactions
 
 ---
 
