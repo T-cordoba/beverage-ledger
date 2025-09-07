@@ -760,7 +760,7 @@ export default function HomePage() {
 															Movement
 														</h3>
 														<div className="space-y-1">
-															<span className="text-xs sm:text-sm text-accent font-mono bg-white/5 px-2 py-1 rounded border border-white/10 inline-block">
+															<span className="text-xs sm:text-sm text-primary font-mono bg-white/5 px-2 py-1 rounded border border-white/10 inline-block">
 																{movimiento.id}
 															</span>
 															<div className="text-sm sm:text-base text-secondary/60 font-light">
