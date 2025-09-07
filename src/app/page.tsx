@@ -25,6 +25,7 @@ export default function HomePage() {
 	const [expandedMovements, setExpandedMovements] = useState<Set<string>>(new Set());
 	const [showConfirmModal, setShowConfirmModal] = useState(false);
 	const [showCancelModal, setShowCancelModal] = useState(false);
+	const [movementSearchTerm, setMovementSearchTerm] = useState("");
 	
 	// Notification system
 	const [notifications, setNotifications] = useState<Array<{
@@ -732,7 +733,39 @@ export default function HomePage() {
 						<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 lg:mb-8 gap-2">
 							<h2 className="text-xl sm:text-2xl font-light text-primary">Movement History</h2>
 							<div className="text-xs sm:text-sm text-secondary/60 font-light">
-								{movimientos.length} movement{movimientos.length !== 1 ? 's' : ''} recorded
+								{(() => {
+									const filteredCount = movimientos.filter(movimiento => 
+										movimiento.id.toLowerCase().includes(movementSearchTerm.toLowerCase())
+									).length;
+									
+									if (movementSearchTerm) {
+										return `${filteredCount} of ${movimientos.length} movement${movimientos.length !== 1 ? 's' : ''}`;
+									}
+									return `${movimientos.length} movement${movimientos.length !== 1 ? 's' : ''} recorded`;
+								})()}
+							</div>
+						</div>
+
+						{/* Search field */}
+						<div className="mb-6">
+							<div className="relative">
+								<input
+									type="text"
+									value={movementSearchTerm}
+									onChange={(e) => setMovementSearchTerm(e.target.value)}
+									placeholder="Search by movement code..."
+									className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-secondary placeholder:text-secondary/40 focus:outline-none focus:border-accent/50 focus:bg-white/10 transition-all duration-200"
+								/>
+								{movementSearchTerm && (
+									<button
+										onClick={() => setMovementSearchTerm("")}
+										className="absolute right-3 top-1/2 transform -translate-y-1/2 text-secondary/60 hover:text-secondary transition-colors"
+									>
+										<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+										</svg>
+									</button>
+								)}
 							</div>
 						</div>
 
@@ -746,7 +779,21 @@ export default function HomePage() {
 							</div>
 						) : (
 							<div className="grid gap-4 sm:gap-6">
-								{movimientos.map((movimiento) => {
+								{(() => {
+									// Filter movements by search term
+									const filteredMovimientos = movimientos.filter(movimiento => 
+										movimiento.id.toLowerCase().includes(movementSearchTerm.toLowerCase())
+									);
+
+									if (filteredMovimientos.length === 0 && movementSearchTerm) {
+										return (
+											<div className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
+												No movements found matching "{movementSearchTerm}".
+											</div>
+										);
+									}
+
+									return filteredMovimientos.map((movimiento) => {
 									const isExpanded = expandedMovements.has(movimiento.id);
 									const hasMoreLiquors = movimiento.liquors.length > 3;
 									const displayLiquors = isExpanded ? movimiento.liquors : movimiento.liquors.slice(0, 3);
@@ -850,7 +897,8 @@ export default function HomePage() {
 											</div>
 										</div>
 									);
-								})}
+								});
+								})()}
 							</div>
 						)}
 					</section>
