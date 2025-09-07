@@ -756,11 +756,14 @@ export default function HomePage() {
 											<div className="p-4 sm:p-6">
 												<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
 													<div className="flex-1 min-w-0">
-														<h3 className="text-lg sm:text-xl font-medium text-accent truncate">
-															Movement #{movimiento.id.slice(-8)}
+														<h3 className="text-lg sm:text-xl font-medium text-accent mb-1">
+															Movement
 														</h3>
 														<div className="space-y-1">
-															<span className="text-sm sm:text-base text-secondary/60 font-light block">
+															<span className="text-xs sm:text-sm text-accent font-mono bg-white/5 px-2 py-1 rounded border border-white/10 inline-block">
+																{movimiento.id}
+															</span>
+															<div className="text-sm sm:text-base text-secondary/60 font-light">
 																{new Date(movimiento.date).toLocaleDateString('en-US', {
 																	day: 'numeric',
 																	month: 'long',
@@ -768,10 +771,10 @@ export default function HomePage() {
 																	hour: '2-digit',
 																	minute: '2-digit'
 																})}
-															</span>
-															<span className="text-xs sm:text-sm text-secondary/50 font-light">
+															</div>
+															<div className="text-xs sm:text-sm text-secondary/50 font-light">
 																{movimiento.liquors.length} {movimiento.liquors.length === 1 ? 'item' : 'items'}
-															</span>
+															</div>
 														</div>
 													</div>
 													<button
