@@ -15,6 +15,8 @@ export default function HomePage() {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [submitting, setSubmitting] = useState(false);
 	const [activeSection, setActiveSection] = useState<'seleccion' | 'historial' | 'estadisticas'>('seleccion');
+	const [isTransitioning, setIsTransitioning] = useState(false);
+	const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right');
 	const [movimientos, setMovimientos] = useState<Movimiento[]>([]);
 	const [loadingMovimientos, setLoadingMovimientos] = useState(false);
 	const [showScrollButton, setShowScrollButton] = useState(false);
@@ -44,6 +46,29 @@ export default function HomePage() {
 
 	const removeNotification = (id: string) => {
 		setNotifications(prev => prev.filter(notification => notification.id !== id));
+	};
+
+	// Handle section changes with slide animation
+	const handleSectionChange = (newSection: 'seleccion' | 'historial' | 'estadisticas') => {
+		if (newSection === activeSection || isTransitioning) return;
+		
+		// Determine slide direction based on section order
+		const sectionOrder = ['seleccion', 'historial', 'estadisticas'];
+		const currentIndex = sectionOrder.indexOf(activeSection);
+		const newIndex = sectionOrder.indexOf(newSection);
+		
+		// Set slide direction: right if moving forward, left if moving backward
+		setSlideDirection(newIndex > currentIndex ? 'right' : 'left');
+		setIsTransitioning(true);
+		
+		// Start slide out
+		setTimeout(() => {
+			setActiveSection(newSection);
+			// Slide in after section change
+			setTimeout(() => {
+				setIsTransitioning(false);
+			}, 50);
+		}, 200);
 	};
 
 	// Statistics states
@@ -416,7 +441,7 @@ export default function HomePage() {
 				<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="flex">
 						<button
-							onClick={() => setActiveSection('seleccion')}
+							onClick={() => handleSectionChange('seleccion')}
 							className={`px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-medium transition-colors border-b-2 ${
 								activeSection === 'seleccion'
 									? 'text-accent border-accent'
@@ -426,7 +451,7 @@ export default function HomePage() {
 							Liquor Selection
 						</button>
 						<button
-							onClick={() => setActiveSection('historial')}
+							onClick={() => handleSectionChange('historial')}
 							className={`px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-medium transition-colors border-b-2 ${
 								activeSection === 'historial'
 									? 'text-accent border-accent'
@@ -436,7 +461,7 @@ export default function HomePage() {
 							Movement History
 						</button>
 						<button
-							onClick={() => setActiveSection('estadisticas')}
+							onClick={() => handleSectionChange('estadisticas')}
 							className={`px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-medium transition-colors border-b-2 ${
 								activeSection === 'estadisticas'
 									? 'text-accent border-accent'
@@ -451,8 +476,18 @@ export default function HomePage() {
 
 			{/* Main Content */}
 			<main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-12">
-				{activeSection === 'seleccion' ? (
-					<>
+				<div className={`transition-all duration-400 ease-out ${
+					isTransitioning 
+						? `opacity-0 transform ${slideDirection === 'right' ? 'translate-x-[100px]' : 'translate-x-[-100px]'}` 
+						: 'opacity-100 transform translate-x-0'
+				}`}>
+					<div className={`transition-all duration-400 ease-out delay-50 ${
+						!isTransitioning 
+							? 'opacity-100 transform translate-x-0' 
+							: `opacity-0 transform ${slideDirection === 'right' ? 'translate-x-[-30px]' : 'translate-x-[30px]'}`
+					}`}>
+						{activeSection === 'seleccion' ? (
+							<>
 						{/* Search Bar */}
 						<div className="mb-6 lg:mb-8">
 							<div className="relative max-w-full sm:max-w-md">
@@ -906,6 +941,8 @@ export default function HomePage() {
 						)}
 					</section>
 				) : null}
+					</div>
+				</div>
 			</main>
 			
 			{/* Floating Go to Checkout Button - Only show in liquor selection mode, when items are selected, and when checkout is not visible */}
