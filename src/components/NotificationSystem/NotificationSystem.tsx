@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { IconButton } from '../UI/Button';
 
 export type NotificationType = 'success' | 'error' | 'warning' | 'info';
 
@@ -103,14 +104,14 @@ export default function NotificationSystem({ notifications, removeNotification }
 					key={notification.id}
 					className={`relative p-4 rounded-xl shadow-2xl border backdrop-blur-sm animate-in slide-in-from-right-full duration-300 ${getNotificationColor(notification.type)}`}
 				>
-					<button
+					<IconButton
 						onClick={() => removeNotification(notification.id)}
-						className="absolute top-2 right-2 w-6 h-6 rounded-full hover:bg-white/10 flex items-center justify-center transition-colors"
+						className="absolute top-2 right-2 w-6 h-6 hover:bg-white/10"
 					>
 						<svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
 						</svg>
-					</button>
+					</IconButton>
 					
 					<div className="flex items-start gap-3 pr-6">
 						<div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${getIconBackgroundColor(notification.type)}`}>

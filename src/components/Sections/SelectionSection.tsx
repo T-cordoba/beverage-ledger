@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { Licor } from '../../app/actions-licores';
+import { QuantityMinusButton, QuantityPlusButton, FilterButton, ClearSearchButton, PrimaryButton, SecondaryButton, DropdownButton, DropdownItemButton, Button } from '../UI/Button';
 
 interface SelectionSectionProps {
 	licores: Licor[];
@@ -89,13 +90,12 @@ export default function SelectionSection({
 						/>
 						<div className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2">
 							{searchTerm ? (
-								<button
+								<ClearSearchButton
 									onClick={() => onSearchChange('')}
-									className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-accent/20 hover:bg-accent/40 flex items-center justify-center text-accent transition-colors"
 									aria-label="Clear search"
 								>
 									×
-								</button>
+								</ClearSearchButton>
 							) : (
 								<svg 
 									className="w-4 h-4 sm:w-5 sm:h-5 text-accent/60" 
@@ -117,10 +117,10 @@ export default function SelectionSection({
 					{/* Type Filter Dropdown */}
 					<div className="relative flex-1 sm:flex-initial sm:min-w-[200px]">
 						{/* Dropdown Button */}
-						<button
+						<DropdownButton
 							type="button"
 							onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-							className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-cardBg border border-border rounded-xl sm:rounded-2xl text-primary focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all text-sm sm:text-base text-left flex items-center justify-between hover:border-accent/30"
+							size="md"
 						>
 							<span className={typeFilter ? 'text-primary' : 'text-secondary/80'}>
 								{typeFilter || 'All Types'}
@@ -140,44 +140,38 @@ export default function SelectionSection({
 									d="M19 9l-7 7-7-7" 
 								/>
 							</svg>
-						</button>
+						</DropdownButton>
 
 						{/* Dropdown Menu */}
 						{isDropdownOpen && (
 							<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg border border-border rounded-xl sm:rounded-2xl shadow-2xl backdrop-blur-sm z-50 overflow-hidden">
 								{/* All Types Option */}
-								<button
+								<DropdownItemButton
 									type="button"
 									onClick={() => {
 										onTypeFilterChange('');
 										setIsDropdownOpen(false);
 									}}
-									className={`w-full px-4 sm:px-6 py-3 text-left text-sm sm:text-base transition-all duration-200 hover:bg-accent/10 hover:text-accent border-b border-border/20 ${
-										!typeFilter 
-											? 'bg-accent/20 text-accent font-medium' 
-											: 'text-secondary/80 hover:text-primary'
-									}`}
+									isActive={!typeFilter}
+									size="md"
 								>
 									All Types
-								</button>
+								</DropdownItemButton>
 								
 								{/* Type Options */}
 								{uniqueTypes.map((type) => (
-									<button
+									<DropdownItemButton
 										key={type}
 										type="button"
 										onClick={() => {
 											onTypeFilterChange(type);
 											setIsDropdownOpen(false);
 										}}
-										className={`w-full px-4 sm:px-6 py-3 text-left text-sm sm:text-base transition-all duration-200 hover:bg-accent/10 hover:text-accent last:border-b-0 border-b border-border/20 ${
-											typeFilter === type 
-												? 'bg-accent/20 text-accent font-medium' 
-												: 'text-primary hover:text-accent'
-										}`}
+										isActive={typeFilter === type}
+										size="md"
 									>
 										{type}
-									</button>
+									</DropdownItemButton>
 								))}
 							</div>
 						)}
@@ -194,13 +188,14 @@ export default function SelectionSection({
 					{/* Clear All Filters Button - Solo en desktop dentro del flex */}
 					{(searchTerm || typeFilter) && (
 						<div className="hidden sm:flex items-center animate-fade-in-up">
-							<button
+							<Button
+								variant="danger"
 								onClick={() => {
 									onSearchChange('');
 									onTypeFilterChange('');
 									setIsDropdownOpen(false);
 								}}
-								className="group flex items-center gap-2 px-3 sm:px-4 py-3 sm:py-4 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 hover:border-red-500/50 rounded-xl sm:rounded-2xl text-red-400 hover:text-red-300 transition-all duration-200 text-sm sm:text-base font-medium"
+								className="group flex items-center gap-2 !px-3 sm:!px-4 !py-3 sm:!py-4 !bg-red-500/10 hover:!bg-red-500/20 !border !border-red-500/30 hover:!border-red-500/50 !rounded-xl sm:!rounded-2xl !text-red-400 hover:!text-red-300 !transition-all !duration-200 !text-sm sm:!text-base !font-medium"
 								aria-label="Clear all filters"
 							>
 								<svg 
@@ -217,7 +212,7 @@ export default function SelectionSection({
 									/>
 								</svg>
 								<span>Clear filters</span>
-							</button>
+							</Button>
 						</div>
 					)}
 				</div>
@@ -225,13 +220,14 @@ export default function SelectionSection({
 				{/* Clear All Filters Button - Solo en móvil, centrado */}
 				{(searchTerm || typeFilter) && (
 					<div className="flex sm:hidden justify-center mt-3 animate-fade-in-up">
-						<button
+						<Button
+							variant="danger"
 							onClick={() => {
 								onSearchChange('');
 								onTypeFilterChange('');
 								setIsDropdownOpen(false);
 							}}
-							className="group flex items-center gap-2 px-4 py-2.5 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 hover:border-red-500/50 rounded-lg text-red-400 hover:text-red-300 transition-all duration-200 text-sm font-medium"
+							className="group flex items-center gap-2 !px-4 !py-2.5 !bg-red-500/10 hover:!bg-red-500/20 !border !border-red-500/30 hover:!border-red-500/50 !rounded-lg !text-red-400 hover:!text-red-300 !transition-all !duration-200 !text-sm !font-medium"
 							aria-label="Clear all filters"
 						>
 							<svg 
@@ -248,7 +244,7 @@ export default function SelectionSection({
 								/>
 							</svg>
 							<span>Clear filters</span>
-						</button>
+						</Button>
 					</div>
 				)}
 			</div>
@@ -328,25 +324,23 @@ export default function SelectionSection({
 													Bottles
 												</label>
 												<div className="flex items-center gap-2 sm:gap-3">
-													<button
-														className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-border/50 hover:bg-accent/20 text-primary transition-all duration-200 flex items-center justify-center font-light text-base sm:text-lg border border-border/20 hover:border-accent/30"
+													<QuantityMinusButton
 														onClick={() => onQuantityChange(licor.id, "botellas", -1)}
 														aria-label="Remove bottle"
 														type="button"
 													>
 														−
-													</button>
+													</QuantityMinusButton>
 													<span className="w-8 sm:w-12 text-center font-light text-lg sm:text-xl text-accent">
 														{cantidad.botellas}
 													</span>
-													<button
-														className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-accent hover:bg-accentHover text-background transition-all duration-200 flex items-center justify-center font-light text-base sm:text-lg shadow-lg hover:shadow-xl"
+													<QuantityPlusButton
 														onClick={() => onQuantityChange(licor.id, "botellas", 1)}
 														aria-label="Add bottle"
 														type="button"
 													>
 														+
-													</button>
+													</QuantityPlusButton>
 												</div>
 											</div>
 											
@@ -356,25 +350,23 @@ export default function SelectionSection({
 													Cases
 												</label>
 												<div className="flex items-center gap-2 sm:gap-3">
-													<button
-														className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-border/50 hover:bg-accent/20 text-primary transition-all duration-200 flex items-center justify-center font-light text-base sm:text-lg border border-border/20 hover:border-accent/30"
+													<QuantityMinusButton
 														onClick={() => onQuantityChange(licor.id, "cajas", -1)}
 														aria-label="Remove case"
 														type="button"
 													>
 														−
-													</button>
+													</QuantityMinusButton>
 													<span className="w-8 sm:w-12 text-center font-light text-lg sm:text-xl text-accent">
 														{cantidad.cajas}
 													</span>
-													<button
-														className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-accent hover:bg-accentHover text-background transition-all duration-200 flex items-center justify-center font-light text-base sm:text-lg shadow-lg hover:shadow-xl"
+													<QuantityPlusButton
 														onClick={() => onQuantityChange(licor.id, "cajas", 1)}
 														aria-label="Add case"
 														type="button"
 													>
 														+
-													</button>
+													</QuantityPlusButton>
 												</div>
 											</div>
 										</div>
@@ -430,27 +422,34 @@ export default function SelectionSection({
 				
 				{/* Action Buttons */}
 				<div className="mt-4 sm:mt-6 lg:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-					<button 
+					<SecondaryButton 
 						onClick={onCancel}
 						disabled={submitting || !hasSelectedItems}
-						className="group flex items-center justify-center gap-2 sm:gap-3 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-secondary hover:text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-sm sm:text-base lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none order-2 sm:order-1"
+						className="group flex items-center justify-center gap-2 sm:gap-3 !px-6 sm:!px-8 !py-3 sm:!py-4 !bg-white/10 hover:!bg-white/20 !border !border-white/20 hover:!border-white/30 !text-secondary hover:!text-primary !rounded-xl sm:!rounded-2xl !font-medium !transition-all !duration-300 !shadow-lg hover:!shadow-xl hover:!scale-105 !text-sm sm:!text-base lg:!text-lg disabled:!opacity-50 disabled:!cursor-not-allowed disabled:!transform-none order-2 sm:order-1"
+						leftIcon={
+							<svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+							</svg>
+						}
 					>
-						<svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-						</svg>
-						<span>Cancel Movement</span>
-					</button>
-					<button 
+						Cancel Movement
+					</SecondaryButton>
+					<PrimaryButton 
 						onClick={onConfirm}
 						disabled={submitting || !hasSelectedItems}
 						data-checkout-button
-						className="group flex items-center justify-center gap-3 sm:gap-4 bg-accent hover:bg-accentHover text-background px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-sm sm:text-base lg:text-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none order-1 sm:order-2"
+						isLoading={submitting}
+						className="group flex items-center justify-center gap-3 sm:gap-4 !px-6 sm:!px-8 !py-3 sm:!py-4 !bg-accent hover:!bg-accentHover !text-background !rounded-xl sm:!rounded-2xl !font-medium !transition-all !duration-300 !shadow-lg hover:!shadow-xl hover:!scale-105 !text-sm sm:!text-base lg:!text-lg disabled:!opacity-50 disabled:!cursor-not-allowed disabled:!transform-none order-1 sm:order-2"
+						leftIcon={
+							!submitting && (
+								<svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+								</svg>
+							)
+						}
 					>
-						<svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-						</svg>
-						<span>{submitting ? 'Processing...' : 'Confirm Movement'}</span>
-					</button>
+						{submitting ? 'Processing...' : 'Confirm Movement'}
+					</PrimaryButton>
 				</div>
 			</div>
 		</section>

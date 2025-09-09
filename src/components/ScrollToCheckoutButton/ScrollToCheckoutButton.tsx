@@ -1,3 +1,5 @@
+import { PrimaryButton } from '../UI/Button';
+
 interface ScrollToCheckoutButtonProps {
 	showScrollButton: boolean;
 	buttonHasAppeared: boolean;
@@ -27,9 +29,9 @@ export default function ScrollToCheckoutButton({
 				animation: showScrollButton && !buttonHasAppeared ? 'bounce 1s ease-in-out 2' : 'none'
 			}}
 		>
-			<button
+			<PrimaryButton
 				onClick={onScrollToCheckout}
-				className={`group flex items-center gap-2 sm:gap-3 bg-accent hover:bg-accentHover text-background px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 rounded-full font-medium transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 text-xs sm:text-sm md:text-base border-2 border-accent hover:border-accentHover backdrop-blur-sm transform hover:-translate-y-1 active:translate-y-0 ${
+				className={`group flex items-center gap-2 sm:gap-3 !px-3 sm:!px-4 md:!px-6 !py-2.5 sm:!py-3 md:!py-4 !bg-accent hover:!bg-accentHover !text-background !rounded-full !font-medium !transition-all !duration-300 !shadow-lg hover:!shadow-xl hover:!scale-105 active:!scale-95 !text-xs sm:!text-sm md:!text-base !border-2 !border-accent hover:!border-accentHover !backdrop-blur-sm transform hover:!-translate-y-1 active:!translate-y-0 ${
 					showScrollButton && !buttonHasAppeared ? 'animate-pulse' : ''
 				}`}
 				aria-label="Go to checkout"
@@ -51,7 +53,7 @@ export default function ScrollToCheckoutButton({
 						/>
 					</svg>
 				</div>
-			</button>
+			</PrimaryButton>
 		</div>
 	);
 }

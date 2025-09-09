@@ -1,5 +1,7 @@
 type StatisticsData = { name: string; quantity: number };
 
+import { FilterButton } from '../UI/Button';
+
 interface StatisticsSectionProps {
 	statisticsData: StatisticsData[];
 	statisticsTimeRange: 'week' | 'month' | 'year';
@@ -32,17 +34,15 @@ export default function StatisticsSection({
 					<span className="text-secondary/80 text-sm font-medium">Period:</span>
 					<div className="flex bg-cardBg border border-border rounded-lg overflow-hidden">
 						{(['week', 'month', 'year'] as const).map((range) => (
-							<button
+							<FilterButton
 								key={range}
 								onClick={() => onTimeRangeChange(range)}
-								className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-colors ${
-									statisticsTimeRange === range
-										? 'bg-accent text-background'
-										: 'text-secondary/70 hover:text-secondary hover:bg-white/5'
-								}`}
+								isActive={statisticsTimeRange === range}
+								size="sm"
+								className="first:rounded-l-lg last:rounded-r-lg"
 							>
 								{range === 'week' ? 'Week' : range === 'month' ? 'Month' : 'Year'}
-							</button>
+							</FilterButton>
 						))}
 					</div>
 				</div>
@@ -52,17 +52,15 @@ export default function StatisticsSection({
 					<span className="text-secondary/80 text-sm font-medium">View:</span>
 					<div className="flex bg-cardBg border border-border rounded-lg overflow-hidden">
 						{(['liquor', 'type'] as const).map((view) => (
-							<button
+							<FilterButton
 								key={view}
 								onClick={() => onViewChange(view)}
-								className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-colors ${
-									statisticsView === view
-										? 'bg-accent text-background'
-										: 'text-secondary/70 hover:text-secondary hover:bg-white/5'
-								}`}
+								isActive={statisticsView === view}
+								size="sm"
+								className="first:rounded-l-lg last:rounded-r-lg"
 							>
 								{view === 'liquor' ? 'By Liquor' : 'By Type'}
-							</button>
+							</FilterButton>
 						))}
 					</div>
 				</div>

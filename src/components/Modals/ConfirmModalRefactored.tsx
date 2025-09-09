@@ -1,3 +1,6 @@
+// Ejemplo de uso del nuevo sistema de botones
+// Refactorización del ConfirmModal usando los nuevos componentes
+
 import { PrimaryButton, SecondaryButton } from '../UI/Button';
 
 interface ConfirmModalProps {
@@ -9,7 +12,14 @@ interface ConfirmModalProps {
 	submitting: boolean;
 }
 
-export default function ConfirmModal({ isOpen, onClose, onConfirm, totalItems, totalQuantity, submitting }: ConfirmModalProps) {
+export default function ConfirmModalRefactored({ 
+	isOpen, 
+	onClose, 
+	onConfirm, 
+	totalItems, 
+	totalQuantity, 
+	submitting 
+}: ConfirmModalProps) {
 	if (!isOpen) return null;
 
 	return (
@@ -25,6 +35,8 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, totalItems, t
 					<p className="text-secondary/80 mb-6 leading-relaxed">
 						Are you sure you want to register this movement with <span className="font-medium text-accent">{totalItems} liquor{totalItems !== 1 ? 's' : ''}</span> and <span className="font-medium text-accent">{totalQuantity} total item{totalQuantity !== 1 ? 's' : ''}</span>?
 					</p>
+					
+					{/* Usando los nuevos componentes de botón */}
 					<div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
 						<SecondaryButton
 							onClick={onClose}
@@ -33,13 +45,14 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, totalItems, t
 						>
 							Go Back
 						</SecondaryButton>
+						
 						<PrimaryButton
 							onClick={onConfirm}
 							disabled={submitting}
 							isLoading={submitting}
 							className="flex-1"
 						>
-							Confirm
+							{submitting ? 'Registering...' : 'Confirm'}
 						</PrimaryButton>
 					</div>
 				</div>

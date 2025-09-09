@@ -1,3 +1,5 @@
+import { SecondaryButton, DestructiveButton } from '../UI/Button';
+
 interface CancelModalProps {
 	isOpen: boolean;
 	onClose: () => void;
@@ -21,18 +23,18 @@ export default function CancelModal({ isOpen, onClose, onConfirm }: CancelModalP
 						Are you sure you want to cancel this movement? All selected items will be cleared and cannot be recovered.
 					</p>
 					<div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-						<button
+						<SecondaryButton
 							onClick={onClose}
-							className="flex-1 px-6 py-3 bg-border/50 hover:bg-border text-secondary hover:text-primary rounded-xl font-medium transition-all duration-200"
+							className="flex-1"
 						>
 							Keep Items
-						</button>
-						<button
+						</SecondaryButton>
+						<DestructiveButton
 							onClick={onConfirm}
-							className="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-medium transition-all duration-200"
+							className="flex-1"
 						>
 							Clear All
-						</button>
+						</DestructiveButton>
 					</div>
 				</div>
 			</div>
