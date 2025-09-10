@@ -20,7 +20,7 @@ export default function StatisticsSection({
 	onViewChange
 }: StatisticsSectionProps) {
 	return (
-		<section className="space-y-6 lg:space-y-8">
+		<section className="space-y-6 lg:space-y-8 w-full max-w-full overflow-hidden">
 			{/* Statistics Header */}
 			<div className="text-center">
 				<h2 className="text-xl sm:text-2xl font-light text-primary">Statistics</h2>
@@ -28,10 +28,10 @@ export default function StatisticsSection({
 			</div>
 
 			{/* Filter Controls */}
-			<div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center">
+			<div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center px-4 sm:px-0">
 				{/* Time Range Selector */}
-				<div className="flex items-center gap-2">
-					<span className="text-secondary/80 text-sm font-medium">Period:</span>
+				<div className="flex items-center gap-2 w-full sm:w-auto justify-center">
+					<span className="text-secondary/80 text-sm font-medium flex-shrink-0">Period:</span>
 					<div className="flex bg-cardBg border border-border rounded-lg overflow-hidden">
 						{(['week', 'month', 'year'] as const).map((range) => (
 							<FilterButton
@@ -39,7 +39,7 @@ export default function StatisticsSection({
 								onClick={() => onTimeRangeChange(range)}
 								isActive={statisticsTimeRange === range}
 								size="sm"
-								className="first:rounded-l-lg last:rounded-r-lg"
+								className="first:rounded-l-lg last:rounded-r-lg px-3 py-2"
 							>
 								{range === 'week' ? 'Week' : range === 'month' ? 'Month' : 'Year'}
 							</FilterButton>
@@ -48,8 +48,8 @@ export default function StatisticsSection({
 				</div>
 
 				{/* View Type Selector */}
-				<div className="flex items-center gap-2">
-					<span className="text-secondary/80 text-sm font-medium">View:</span>
+				<div className="flex items-center gap-2 w-full sm:w-auto justify-center">
+					<span className="text-secondary/80 text-sm font-medium flex-shrink-0">View:</span>
 					<div className="flex bg-cardBg border border-border rounded-lg overflow-hidden">
 						{(['liquor', 'type'] as const).map((view) => (
 							<FilterButton
@@ -57,7 +57,7 @@ export default function StatisticsSection({
 								onClick={() => onViewChange(view)}
 								isActive={statisticsView === view}
 								size="sm"
-								className="first:rounded-l-lg last:rounded-r-lg"
+								className="first:rounded-l-lg last:rounded-r-lg px-3 py-2"
 							>
 								{view === 'liquor' ? 'By Liquor' : 'By Type'}
 							</FilterButton>
@@ -71,9 +71,9 @@ export default function StatisticsSection({
 					<div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin"></div>
 				</div>
 			) : statisticsData && statisticsData.length > 0 ? (
-				<div className="grid gap-6 lg:gap-8 lg:grid-cols-2">
+				<div className="grid gap-4 sm:gap-6 lg:gap-8 lg:grid-cols-2 w-full max-w-full overflow-hidden">
 					{/* Chart Section */}
-					<div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6">
+					<div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 min-w-0">
 						<h3 className="text-lg font-medium text-accent mb-4">Most Requested {statisticsView === 'liquor' ? 'Liquors' : 'Types'}</h3>
 						<div className="space-y-3">
 							{statisticsData.slice(0, 10).map((item: StatisticsData, index: number) => {
@@ -81,10 +81,10 @@ export default function StatisticsSection({
 								const percentage = (item.quantity / maxQuantity) * 100;
 								
 								return (
-									<div key={item.name} className="relative">
-										<div className="flex justify-between items-center mb-1">
-											<span className="text-sm font-medium text-secondary truncate pr-2">{item.name}</span>
-											<span className="text-xs text-accent font-medium">{item.quantity}</span>
+									<div key={item.name} className="relative w-full min-w-0">
+										<div className="flex justify-between items-center mb-1 gap-2 min-w-0">
+											<span className="text-sm font-medium text-secondary truncate flex-1 min-w-0">{item.name}</span>
+											<span className="text-xs text-accent font-medium flex-shrink-0">{item.quantity}</span>
 										</div>
 										<div className="w-full bg-white/10 rounded-full h-2">
 											<div 
@@ -102,20 +102,20 @@ export default function StatisticsSection({
 					</div>
 
 					{/* Leaderboard Section */}
-					<div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6">
+					<div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 min-w-0">
 						<h3 className="text-lg font-medium text-accent mb-4">Leaderboard</h3>
 						<div className="space-y-2">
 							{statisticsData.slice(0, 15).map((item: StatisticsData, index: number) => (
 								<div 
 									key={item.name} 
-									className={`flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
+									className={`flex items-center justify-between p-2 sm:p-3 rounded-lg transition-all duration-200 gap-2 min-w-0 ${
 										index < 3 
 											? 'bg-accent/10 border border-accent/20' 
 											: 'bg-white/5 hover:bg-white/10'
 									}`}
 								>
-									<div className="flex items-center gap-3">
-										<div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+									<div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+										<div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
 											index === 0 ? 'bg-yellow-500/20 text-yellow-400' :
 											index === 1 ? 'bg-gray-400/20 text-gray-300' :
 											index === 2 ? 'bg-amber-600/20 text-amber-400' :
@@ -123,11 +123,11 @@ export default function StatisticsSection({
 										}`}>
 											{index + 1}
 										</div>
-										<span className="text-sm font-medium text-secondary truncate">{item.name}</span>
+										<span className="text-sm font-medium text-secondary truncate min-w-0">{item.name}</span>
 									</div>
-									<div className="flex items-center gap-2">
-										<span className="text-accent font-bold">{item.quantity}</span>
-										<span className="text-xs text-secondary/60">
+									<div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+										<span className="text-accent font-bold text-sm">{item.quantity}</span>
+										<span className="text-xs text-secondary/60 hidden sm:inline">
 											{item.quantity === 1 ? 'unit' : 'units'}
 										</span>
 									</div>
