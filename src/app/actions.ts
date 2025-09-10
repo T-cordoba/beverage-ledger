@@ -5,8 +5,14 @@ import { neon } from "@neondatabase/serverless";
 const sql = neon(process.env.DATABASE_URL!);
 
 export type Licor = {
+  id: string;
   name: string;
   type: string;
+  brand?: string;
+  subcategory?: string;
+  abv?: number;
+  origin?: string;
+  age?: string;
   quantity: number;
   unit: 'bottle' | 'case';
 };

@@ -11,7 +11,18 @@ import { ConfirmModal, CancelModal } from "../components/Modals";
 import ScrollToCheckoutButton from "../components/ScrollToCheckoutButton";
 
 // Types
-type LicorMovementData = { name: string; type: string; quantity: number; unit: 'bottle' | 'case' };
+type LicorMovementData = { 
+  id: string;
+  name: string; 
+  type: string; 
+  brand?: string;
+  subcategory?: string;
+  abv?: number;
+  origin?: string;
+  age?: string;
+  quantity: number; 
+  unit: 'bottle' | 'case' 
+};
 type StatisticsData = { name: string; quantity: number };
 
 // UI State Reducer
@@ -333,8 +344,14 @@ export default function HomePage() {
 				// Add bottles if there's quantity
 				if (cantidad.botellas > 0) {
 					items.push({
+						id: licor?.id || '',
 						name: licor?.name || '',
 						type: licor?.type || '',
+						brand: licor?.brand,
+						subcategory: licor?.subcategory,
+						abv: licor?.abv,
+						origin: licor?.origin,
+						age: licor?.age,
 						quantity: cantidad.botellas,
 						unit: 'bottle' as const
 					});
@@ -343,8 +360,14 @@ export default function HomePage() {
 				// Add cases if there's quantity
 				if (cantidad.cajas > 0) {
 					items.push({
+						id: licor?.id || '',
 						name: licor?.name || '',
 						type: licor?.type || '',
+						brand: licor?.brand,
+						subcategory: licor?.subcategory,
+						abv: licor?.abv,
+						origin: licor?.origin,
+						age: licor?.age,
 						quantity: cantidad.cajas,
 						unit: 'case' as const
 					});

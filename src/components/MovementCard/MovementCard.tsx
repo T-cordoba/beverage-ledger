@@ -82,12 +82,29 @@ export default function MovementCard({ movimiento, isExpanded, onToggleExpansion
 						} overflow-hidden`}
 					>
 						{displayLiquors.map((licor, index) => (
-							<div key={`${movimiento.id}-${index}`} className="flex justify-between items-center py-2 border-b border-white/5 last:border-b-0">
-								<div className="flex flex-col">
+							<div key={`${movimiento.id}-${index}`} className="flex justify-between items-start py-3 border-b border-white/5 last:border-b-0">
+								<div className="flex flex-col space-y-1 flex-1">
 									<span className="text-secondary font-medium">{licor.name}</span>
 									<span className="text-xs text-secondary/60">{licor.type}</span>
+									{licor.brand && (
+										<span className="text-xs text-accent/70">Brand: {licor.brand}</span>
+									)}
+									<div className="flex flex-wrap gap-2 text-xs text-secondary/50">
+										{licor.origin && (
+											<span>Origin: {licor.origin}</span>
+										)}
+										{licor.abv && (
+											<span>ABV: {licor.abv}%</span>
+										)}
+										{licor.age && (
+											<span>Age: {licor.age}</span>
+										)}
+										{licor.subcategory && (
+											<span>Category: {licor.subcategory}</span>
+										)}
+									</div>
 								</div>
-								<span className="text-accent font-medium">
+								<span className="text-accent font-medium ml-4 text-right">
 									{licor.quantity} {getDisplayUnit(licor.unit, licor.quantity)}
 								</span>
 							</div>
