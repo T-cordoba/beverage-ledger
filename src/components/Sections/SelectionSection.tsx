@@ -31,8 +31,12 @@ export default function SelectionSection({
 }: SelectionSectionProps) {
 	// Estado para controlar el dropdown personalizado
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+	const [isItemsPerPageDropdownOpen, setIsItemsPerPageDropdownOpen] = useState(false);
 	// Key para forzar re-render y re-animación de los elementos
 	const [animationKey, setAnimationKey] = useState(0);
+	// Estados de paginación
+	const [currentPage, setCurrentPage] = useState(1);
+	const [itemsPerPage, setItemsPerPage] = useState(15);
 	
 	// Get unique types for the dropdown
 	const uniqueTypes = Array.from(new Set(licores.map(licor => licor.type))).sort();
@@ -40,6 +44,7 @@ export default function SelectionSection({
 	// Effect to trigger re-animation when filters change
 	useEffect(() => {
 		setAnimationKey(prev => prev + 1);
+		setCurrentPage(1); // Reset to first page when filters change
 	}, [searchTerm, typeFilter]);
 
 	// Filter liquors by name, type, brand, subcategory, origin, and selected type filter
@@ -71,6 +76,12 @@ export default function SelectionSection({
 		// If both have or don't have selection, maintain alphabetical order by name
 		return a.name.localeCompare(b.name);
 	});
+
+	// Pagination logic
+	const totalPages = Math.ceil(licoresOrdenados.length / itemsPerPage);
+	const startIndex = (currentPage - 1) * itemsPerPage;
+	const endIndex = startIndex + itemsPerPage;
+	const currentPageLicores = licoresOrdenados.slice(startIndex, endIndex);
 
 	// Calculate totals
 	const totalBottles = Object.values(cantidades).reduce((sum, cantidad) => sum + cantidad.botellas, 0);
@@ -272,7 +283,7 @@ export default function SelectionSection({
 						<div className="flex items-center justify-center py-12 animate-fade-in-up">
 							<div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin"></div>
 						</div>
-					) : licoresOrdenados.length === 0 ? (
+					) : currentPageLicores.length === 0 ? (
 						<li key={`no-results-${animationKey}`} className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light animate-fade-in-up opacity-0" style={{ animationFillMode: 'forwards' }}>
 							<div>
 								{(searchTerm || typeFilter) ? (
@@ -287,7 +298,7 @@ export default function SelectionSection({
 							</div>
 						</li>
 					) : (
-						licoresOrdenados.map((licor, index) => {
+						currentPageLicores.map((licor, index) => {
 							const cantidad = cantidades[licor.id] || { botellas: 0, cajas: 0 };
 							const hasSelection = cantidad.botellas > 0 || cantidad.cajas > 0;
 							return (
@@ -422,6 +433,120 @@ export default function SelectionSection({
 						})
 					)}
 				</ul>
+				
+				{/* Pagination Controls */}
+				{totalPages > 1 && (
+					<div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 animate-fade-in-up">
+						{/* Results Info */}
+						<div className="text-sm text-secondary/70 order-2 sm:order-1">
+							Showing {((currentPage - 1) * itemsPerPage) + 1}-{Math.min(currentPage * itemsPerPage, licoresOrdenados.length)} of {licoresOrdenados.length} results
+						</div>
+						
+						{/* Pagination Navigation */}
+						<div className="flex items-center gap-2 order-1 sm:order-2">
+							{/* Previous Button */}
+							<Button
+								variant="secondary"
+								onClick={() => setCurrentPage(currentPage - 1)}
+								disabled={currentPage === 1}
+								className="!px-3 !py-2 !text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+							>
+								Previous
+							</Button>
+							
+							{/* Page Numbers */}
+							<div className="flex items-center gap-1">
+								{Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+									let pageNum;
+									if (totalPages <= 5) {
+										pageNum = i + 1;
+									} else if (currentPage <= 3) {
+										pageNum = i + 1;
+									} else if (currentPage >= totalPages - 2) {
+										pageNum = totalPages - 4 + i;
+									} else {
+										pageNum = currentPage - 2 + i;
+									}
+									
+									return (
+										<Button
+											key={pageNum}
+											variant={currentPage === pageNum ? "primary" : "secondary"}
+											onClick={() => setCurrentPage(pageNum)}
+											className="!px-3 !py-2 !text-sm !min-w-[40px]"
+										>
+											{pageNum}
+										</Button>
+									);
+								})}
+							</div>
+							
+							{/* Next Button */}
+							<Button
+								variant="secondary"
+								onClick={() => setCurrentPage(currentPage + 1)}
+								disabled={currentPage === totalPages}
+								className="!px-3 !py-2 !text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+							>
+								Next
+							</Button>
+						</div>
+						
+						{/* Items per page selector */}
+						<div className="flex items-center gap-2 text-sm text-secondary/70 order-3">
+							<span>Items per page:</span>
+							<div className="relative">
+								<Button
+									variant="secondary"
+									onClick={() => setIsItemsPerPageDropdownOpen(!isItemsPerPageDropdownOpen)}
+									className="group !px-3 !py-2 !text-sm !bg-white/5 hover:!bg-white/10 !border !border-white/10 hover:!border-white/20 !rounded-lg !text-primary !transition-all !duration-200 !font-medium flex items-center gap-2 !min-w-[60px] justify-between"
+									aria-label="Select items per page"
+								>
+									<span>{itemsPerPage}</span>
+									<svg 
+										className={`w-4 h-4 transition-transform duration-200 ${isItemsPerPageDropdownOpen ? 'rotate-180' : ''}`}
+										fill="none" 
+										stroke="currentColor" 
+										viewBox="0 0 24 24"
+									>
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+									</svg>
+								</Button>
+
+								{/* Dropdown Menu */}
+								{isItemsPerPageDropdownOpen && (
+									<div className="absolute top-full left-0 mt-2 bg-cardBg backdrop-blur-md border border-white/20 rounded-xl shadow-2xl z-50 min-w-[80px] overflow-hidden">
+										{[10, 15, 25, 50].map((value) => (
+											<button
+												key={value}
+												onClick={() => {
+													setItemsPerPage(value);
+													setCurrentPage(1);
+													setIsItemsPerPageDropdownOpen(false);
+												}}
+												className={`w-full px-4 py-3 text-left text-sm transition-all duration-200 hover:bg-white/10 border-b border-white/10 last:border-b-0 ${
+													itemsPerPage === value 
+														? 'bg-accent/20 text-accent font-medium' 
+														: 'text-primary hover:text-accent'
+												}`}
+											>
+												{value}
+											</button>
+										))}
+									</div>
+								)}
+
+								{/* Overlay para cerrar el dropdown */}
+								{isItemsPerPageDropdownOpen && (
+									<div 
+										className="fixed inset-0 z-40" 
+										onClick={() => setIsItemsPerPageDropdownOpen(false)}
+									/>
+								)}
+							</div>
+						</div>
+					</div>
+				)}
 				
 				{/* Summary of Selected Items */}
 				{hasSelectedItems && (
