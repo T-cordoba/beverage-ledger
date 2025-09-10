@@ -263,7 +263,7 @@ export default function SelectionSection({
 
 						{/* Dropdown Menu */}
 						{isDropdownOpen && (
-							<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg border border-border rounded-xl sm:rounded-2xl shadow-2xl backdrop-blur-sm z-[9999] overflow-hidden">
+							<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg border border-border rounded-xl sm:rounded-2xl shadow-2xl backdrop-blur-sm z-[9999] max-h-48 sm:max-h-80 overflow-y-auto">
 								{/* All Types Option */}
 								<DropdownItemButton
 									type="button"

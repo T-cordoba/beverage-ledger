@@ -65,7 +65,7 @@ export default function AdvancedFilters({
 		<div className="bg-cardBg/40 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-border/30 shadow-lg animate-fade-in-up relative z-[110]">
 			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
 				{/* Brand Filter */}
-				<div className="relative z-[110]">
+				<div className="relative z-[114]">
 					<label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">Brand</label>
 					<Button
 						variant="secondary"
@@ -81,7 +81,7 @@ export default function AdvancedFilters({
 					</Button>
 					
 					{isBrandDropdownOpen && (
-						<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg backdrop-blur-md border border-white/20 rounded-xl shadow-2xl z-[9999] max-h-48 overflow-y-auto">
+						<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg/95 backdrop-blur-sm border border-border rounded-xl shadow-2xl z-[124] max-h-48 overflow-y-auto">
 							<button
 								onClick={() => {
 									setBrandFilter('');
@@ -109,12 +109,12 @@ export default function AdvancedFilters({
 					)}
 					
 					{isBrandDropdownOpen && (
-						<div className="fixed inset-0 z-[9998]" onClick={() => setIsBrandDropdownOpen(false)} />
+						<div className="fixed inset-0 z-[115]" onClick={() => setIsBrandDropdownOpen(false)} />
 					)}
 				</div>
 
 				{/* Origin Filter */}
-				<div className="relative z-[110]">
+				<div className="relative z-[113]">
 					<label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">Origin</label>
 					<Button
 						variant="secondary"
@@ -130,7 +130,7 @@ export default function AdvancedFilters({
 					</Button>
 					
 					{isOriginDropdownOpen && (
-						<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg backdrop-blur-md border border-white/20 rounded-xl shadow-2xl z-[9999] max-h-48 overflow-y-auto">
+						<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg/95 backdrop-blur-sm border border-border rounded-xl shadow-2xl z-[123] max-h-48 overflow-y-auto">
 							<button
 								onClick={() => {
 									setOriginFilter('');
@@ -158,12 +158,12 @@ export default function AdvancedFilters({
 					)}
 					
 					{isOriginDropdownOpen && (
-						<div className="fixed inset-0 z-[9998]" onClick={() => setIsOriginDropdownOpen(false)} />
+						<div className="fixed inset-0 z-[114]" onClick={() => setIsOriginDropdownOpen(false)} />
 					)}
 				</div>
 
 				{/* Subcategory Filter */}
-				<div className="relative z-[110]">
+				<div className="relative z-[112]">
 					<label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">Category</label>
 					<Button
 						variant="secondary"
@@ -179,7 +179,7 @@ export default function AdvancedFilters({
 					</Button>
 					
 					{isSubcategoryDropdownOpen && (
-						<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg backdrop-blur-md border border-white/20 rounded-xl shadow-2xl z-[9999] max-h-48 overflow-y-auto">
+						<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg/95 backdrop-blur-sm border border-border rounded-xl shadow-2xl z-[122] max-h-48 overflow-y-auto">
 							<button
 								onClick={() => {
 									setSubcategoryFilter('');
@@ -207,12 +207,12 @@ export default function AdvancedFilters({
 					)}
 					
 					{isSubcategoryDropdownOpen && (
-						<div className="fixed inset-0 z-[9998]" onClick={() => setIsSubcategoryDropdownOpen(false)} />
+						<div className="fixed inset-0 z-[113]" onClick={() => setIsSubcategoryDropdownOpen(false)} />
 					)}
 				</div>
 
 				{/* Age Filter */}
-				<div className="relative z-[110]">
+				<div className="relative z-[111]">
 					<label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">Age</label>
 					<Button
 						variant="secondary"
@@ -228,7 +228,7 @@ export default function AdvancedFilters({
 					</Button>
 					
 					{isAgeDropdownOpen && (
-						<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg backdrop-blur-md border border-white/20 rounded-xl shadow-2xl z-[9999] max-h-48 overflow-y-auto">
+						<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg/95 backdrop-blur-sm border border-border rounded-xl shadow-2xl z-[121] max-h-48 overflow-y-auto">
 							<button
 								onClick={() => {
 									setAgeFilter('');
@@ -256,7 +256,7 @@ export default function AdvancedFilters({
 					)}
 					
 					{isAgeDropdownOpen && (
-						<div className="fixed inset-0 z-[9998]" onClick={() => setIsAgeDropdownOpen(false)} />
+						<div className="fixed inset-0 z-[112]" onClick={() => setIsAgeDropdownOpen(false)} />
 					)}
 				</div>
 			</div>
