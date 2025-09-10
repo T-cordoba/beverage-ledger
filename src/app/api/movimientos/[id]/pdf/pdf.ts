@@ -1,420 +1,470 @@
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import type { Movimiento } from '../../../../actions';
 
+interface LiquorRow {
+  name: string;
+  type: string;
+  brand?: string;
+  origin?: string;
+  abv?: number;
+  age?: string;
+  subcategory?: string;
+  quantity: number;
+  unit: string;
+}
+
 export async function createPDF(movimiento: Movimiento, formattedDate?: string | null): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
-  const page = doc.addPage([595, 842]); // A4 size
+  
+  // Fonts
   const font = await doc.embedFont(StandardFonts.Helvetica);
   const boldFont = await doc.embedFont(StandardFonts.HelveticaBold);
 
-  // Casino colors
-  const darkBg = rgb(18/255, 0, 6/255);
-  const lightText = rgb(240/255, 230/255, 206/255);
-  const accent = rgb(212/255, 175/255, 55/255);
-  const white = rgb(1, 1, 1);
-  const lightGray = rgb(0.95, 0.95, 0.95);
+  // Colors - Using exact system colors from Tailwind config
+  const background = rgb(0x12/255, 0x00/255, 0x06/255);    // #120006
+  const primary = rgb(0xF0/255, 0xE6/255, 0xCE/255);       // #F0E6CE
+  const secondary = rgb(0xFF/255, 0xFF/255, 0xFF/255);     // #FFFFFF (white)
+  const accent = rgb(0xD4/255, 0xAF/255, 0x37/255);        // #D4AF37
+  const accentHover = rgb(0xE6/255, 0xC8/255, 0x5B/255);   // #E6C85B
+  const border = rgb(0x2A/255, 0x2A/255, 0x2A/255);        // #2A2A2A
+  const inputBg = rgb(0x1A/255, 0x1A/255, 0x1A/255);       // #1A1A1A
+  const lightBg = rgb(0.95, 0.93, 0.88);                   // Light version of primary for alternating rows
 
-  const pageWidth = 595;
-  const pageHeight = 842;
-  const margin = 50;
+  // Page dimensions
+  const pageWidth = 595;  // A4 width
+  const pageHeight = 842; // A4 height
+  const margin = 40;
 
-  // Dark background
-  page.drawRectangle({
-    x: 0,
-    y: 0,
-    width: pageWidth,
-    height: pageHeight,
-    color: darkBg,
-  });
+  // Table configuration - Adjusted widths to fit within page margins (total ~495px for A4)
+  const tableColumns = [
+    { header: 'Item', width: 100, key: 'name' },
+    { header: 'Brand', width: 70, key: 'brand' },
+    { header: 'Type', width: 85, key: 'type' },
+    { header: 'Origin', width: 55, key: 'origin' },
+    { header: 'ABV%', width: 35, key: 'abv' },
+    { header: 'Age', width: 35, key: 'age' },
+    { header: 'Category', width: 65, key: 'subcategory' },
+    { header: 'Qty', width: 25, key: 'quantity' },
+    { header: 'Unit', width: 40, key: 'unit' }
+  ];
 
-  // Header section - clean and simple
-  // Header shadow effect
-  page.drawRectangle({
-    x: margin + 2,
-    y: pageHeight - 122,
-    width: pageWidth - 2 * margin,
-    height: 70,
-    color: rgb(0.1, 0.1, 0.1),
-  });
-  
-  // Main header background
-  page.drawRectangle({
-    x: margin,
-    y: pageHeight - 120,
-    width: pageWidth - 2 * margin,
-    height: 70,
-    color: accent,
-  });
+  const tableWidth = tableColumns.reduce((sum, col) => sum + col.width, 0); // Should be ~510px
+  const tableStartX = margin; // Start from margin instead of centering
+  const baseRowHeight = 16;
+  const maxLinesPerRow = 3; // Maximum lines before considering new page
+  const headerHeight = 25;
+  const itemsPerPage = 28; // Adjusted for multi-line rows
 
-  // Title - perfectly centered horizontally and vertically
-  const titleText = 'ENCORE BEVERAGE LEDGER';
-  const titleSize = 24;
-  // More accurate width calculation for centering
-  const titleWidth = titleText.length * (titleSize * 0.55); 
-  const centerX = (pageWidth - titleWidth) / 2;
-  
-  page.drawText(titleText, {
-    x: centerX,
-    y: pageHeight - 75, // Moved down for better vertical centering
-    size: titleSize,
-    font: boldFont,
-    color: darkBg,
-  });
-
-  const subtitleText = 'Liquor Movement Invoice';
-  const subtitleSize = 14;
-  // More accurate width calculation for subtitle
-  const subtitleWidth = subtitleText.length * (subtitleSize * 0.55);
-  const subtitleCenterX = (pageWidth - subtitleWidth) / 2;
-  
-  page.drawText(subtitleText, {
-    x: subtitleCenterX,
-    y: pageHeight - 100, // Moved down to maintain proper spacing
-    size: subtitleSize,
-    font: font,
-    color: darkBg,
-  });
-
-  // Invoice details
-  const detailsStartY = pageHeight - 160;
-  
-  page.drawText('Invoice Details', {
-    x: margin,
-    y: detailsStartY,
-    size: 16,
-    font: boldFont,
-    color: accent,
-  });
-
-  const formatDate = (dateString: string) => {
-    // If we have a pre-formatted date from the frontend, use it
-    if (formattedDate) {
-      return formattedDate;
+  // Enhanced text wrapping function
+  function wrapText(text: string, maxWidth: number, fontSize: number): string[] {
+    if (!text || text === '-') return [text || ''];
+    
+    const words = text.split(' ');
+    const lines: string[] = [];
+    let currentLine = '';
+    
+    // More conservative character width calculation for better fitting
+    const avgCharWidth = fontSize * 0.6;
+    const maxCharsPerLine = Math.floor((maxWidth - 8) / avgCharWidth); // 8px total padding
+    
+    for (const word of words) {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      
+      if (testLine.length <= maxCharsPerLine) {
+        currentLine = testLine;
+      } else {
+        if (currentLine) {
+          lines.push(currentLine);
+          
+          // Check if the word itself is too long
+          if (word.length > maxCharsPerLine) {
+            // Split long word
+            let remainingWord = word;
+            while (remainingWord.length > maxCharsPerLine) {
+              lines.push(remainingWord.substring(0, maxCharsPerLine - 1) + '-');
+              remainingWord = remainingWord.substring(maxCharsPerLine - 1);
+            }
+            currentLine = remainingWord;
+          } else {
+            currentLine = word;
+          }
+        } else {
+          // Single word too long, force split
+          let remainingWord = word;
+          while (remainingWord.length > maxCharsPerLine) {
+            lines.push(remainingWord.substring(0, maxCharsPerLine - 1) + '-');
+            remainingWord = remainingWord.substring(maxCharsPerLine - 1);
+          }
+          currentLine = remainingWord;
+        }
+      }
     }
     
-    // Fallback to original logic if no formatted date provided
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+    
+    // Limit to maxLinesPerRow to prevent excessive row height
+    return lines.slice(0, maxLinesPerRow);
+  }
+
+  // Function to calculate row height based on content
+  function calculateRowHeight(row: LiquorRow): number {
+    let maxLines = 1;
+    
+    tableColumns.forEach(col => {
+      let cellValue = '';
+      switch (col.key) {
+        case 'name': cellValue = row.name; break;
+        case 'brand': cellValue = row.brand || ''; break;
+        case 'type': cellValue = row.type; break;
+        case 'origin': cellValue = row.origin || ''; break;
+        case 'abv': cellValue = row.abv ? `${row.abv}%` : ''; break;
+        case 'age': cellValue = row.age || ''; break;
+        case 'subcategory': cellValue = row.subcategory || ''; break;
+        case 'quantity': cellValue = row.quantity.toString(); break;
+        case 'unit': cellValue = row.unit; break;
+      }
+      
+      const lines = wrapText(cellValue, col.width, 8);
+      maxLines = Math.max(maxLines, lines.length);
     });
-  };
+    
+    return baseRowHeight * maxLines;
+  }
 
-  page.drawText(`Invoice ID: ${movimiento.id}`, {
-    x: margin,
-    y: detailsStartY - 30,
-    size: 12,
-    font: font,
-    color: lightText,
-  });
+  // Helper function to create header
+  function createHeader(page: any, pageNumber: number, totalPages: number) {
+    // Company header
+    page.drawRectangle({
+      x: 0,
+      y: pageHeight - 100,
+      width: pageWidth,
+      height: 100,
+      color: background,
+    });
 
-  page.drawText(`Date: ${formatDate(movimiento.date)}`, {
-    x: margin,
-    y: detailsStartY - 50,
-    size: 12,
-    font: font,
-    color: lightText,
-  });
+    // Company name
+    page.drawText('ENCORE BEVERAGE LEDGER', {
+      x: margin,
+      y: pageHeight - 35,
+      size: 22,
+      font: boldFont,
+      color: primary,
+    });
 
-  page.drawText('Premium Casino Operations', {
-    x: margin,
-    y: detailsStartY - 70,
-    size: 12,
-    font: font,
-    color: lightText,
-  });
+    // Subtitle
+    page.drawText('Liquor Inventory Movement Invoice', {
+      x: margin,
+      y: pageHeight - 55,
+      size: 12,
+      font: font,
+      color: primary,
+    });
 
-  // Items table header - clean design
-  const tableStartY = detailsStartY - 120;
-  const tableHeaderHeight = 30;
-  
-  // Table header background
-  page.drawRectangle({
-    x: margin,
-    y: tableStartY - tableHeaderHeight,
-    width: pageWidth - 2 * margin,
-    height: tableHeaderHeight,
-    color: accent,
-  });
+    // Page info
+    page.drawText(`Page ${pageNumber} of ${totalPages}`, {
+      x: pageWidth - margin - 80,
+      y: pageHeight - 35,
+      size: 10,
+      font: font,
+      color: primary,
+    });
 
-  // Table headers - better positioned and visible
-  page.drawText('Item', {
-    x: margin + 15,
-    y: tableStartY - 18,
-    size: 12,
-    font: boldFont,
-    color: darkBg,
-  });
-
-  page.drawText('Type', {
-    x: margin + 200,
-    y: tableStartY - 18,
-    size: 12,
-    font: boldFont,
-    color: darkBg,
-  });
-
-  page.drawText('Quantity', {
-    x: margin + 320,
-    y: tableStartY - 18,
-    size: 12,
-    font: boldFont,
-    color: darkBg,
-  });
-
-  page.drawText('Unit', {
-    x: margin + 420,
-    y: tableStartY - 18,
-    size: 12,
-    font: boldFont,
-    color: darkBg,
-  });
-
-  // Table items with pagination
-  let currentY = tableStartY - tableHeaderHeight - 10;
-  const rowHeight = 25;
-  let totalItems = 0;
-  const itemsPerPage = 14;
-  let currentPage = 1;
-  let itemsOnCurrentPage = 0;
-  let pages = [page];
-
-  movimiento.liquors.forEach((liquor: any, index: number) => {
-    // Check if we need a new page
-    if (itemsOnCurrentPage >= itemsPerPage) {
-      // Add new page
-      const newPage = doc.addPage([595, 842]);
-      pages.push(newPage);
-      currentPage++;
-      itemsOnCurrentPage = 0;
+    // Invoice details (only on first page)
+    if (pageNumber === 1) {
+      const detailsY = pageHeight - 130;
       
-      // Setup new page with same background and header
-      newPage.drawRectangle({
-        x: 0,
-        y: 0,
-        width: pageWidth,
-        height: pageHeight,
-        color: darkBg,
-      });
-      
-      // Header for new page
-      newPage.drawRectangle({
-        x: margin + 2,
-        y: pageHeight - 122,
-        width: pageWidth - 2 * margin,
-        height: 70,
-        color: rgb(0.1, 0.1, 0.1),
-      });
-      
-      newPage.drawRectangle({
+      page.drawText('INVOICE DETAILS', {
         x: margin,
-        y: pageHeight - 120,
-        width: pageWidth - 2 * margin,
-        height: 70,
+        y: detailsY,
+        size: 14,
+        font: boldFont,
         color: accent,
       });
-      
-      const titleText = 'ENCORE BEVERAGE LEDGER';
-      const titleTextSize = 24;
-      const titleTextWidth = titleText.length * (titleTextSize * 0.6);
-      const titleCenterX = (pageWidth - titleTextWidth) / 2;
-      
-      newPage.drawText(titleText, {
-        x: titleCenterX,
-        y: pageHeight - 100,
-        size: titleTextSize,
-        font: boldFont,
-        color: darkBg,
-      });
-      
-      const subtitleText = 'Liquor Movement Invoice';
-      const subtitleTextSize = 12;
-      const subtitleTextWidth = subtitleText.length * (subtitleTextSize * 0.5);
-      const subtitleCenterX = (pageWidth - subtitleTextWidth) / 2;
-      
-      newPage.drawText(subtitleText, {
-        x: subtitleCenterX,
-        y: pageHeight - 75,
-        size: subtitleTextSize,
+
+      const formatDate = (dateString: string) => {
+        if (formattedDate) return formattedDate;
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      };
+
+      page.drawText(`Invoice ID: ${movimiento.id}`, {
+        x: margin,
+        y: detailsY - 20,
+        size: 10,
         font: font,
-        color: darkBg,
+        color: inputBg,
       });
-      
-      // Table header for new page
-      const newTableStartY = pageHeight - 180;
-      newPage.drawRectangle({
+
+      page.drawText(`Date: ${formatDate(movimiento.date)}`, {
         x: margin,
-        y: newTableStartY - tableHeaderHeight,
-        width: pageWidth - 2 * margin,
-        height: tableHeaderHeight,
-        color: accent,
+        y: detailsY - 35,
+        size: 10,
+        font: font,
+        color: inputBg,
       });
-      
-      newPage.drawText('Item', {
-        x: margin + 15,
-        y: newTableStartY - 18,
-        size: 12,
-        font: boldFont,
-        color: darkBg,
+
+      page.drawText('Premium Casino Operations', {
+        x: margin,
+        y: detailsY - 50,
+        size: 10,
+        font: font,
+        color: border,
       });
-      
-      newPage.drawText('Type', {
-        x: margin + 200,
-        y: newTableStartY - 18,
-        size: 12,
-        font: boldFont,
-        color: darkBg,
-      });
-      
-      newPage.drawText('Quantity', {
-        x: margin + 320,
-        y: newTableStartY - 18,
-        size: 12,
-        font: boldFont,
-        color: darkBg,
-      });
-      
-      newPage.drawText('Unit', {
-        x: margin + 420,
-        y: newTableStartY - 18,
-        size: 12,
-        font: boldFont,
-        color: darkBg,
-      });
-      
-      currentY = newTableStartY - tableHeaderHeight - 10;
     }
+  }
+
+  // Helper function to create table header
+  function createTableHeader(page: any, startY: number) {
+    // Header background
+    page.drawRectangle({
+      x: tableStartX,
+      y: startY - headerHeight,
+      width: tableWidth,
+      height: headerHeight,
+      color: background,
+    });
+
+    // Header text
+    let currentX = tableStartX;
+    tableColumns.forEach(col => {
+      page.drawText(col.header, {
+        x: currentX + 5,
+        y: startY - 16,
+        size: 9,
+        font: boldFont,
+        color: primary,
+      });
+      currentX += col.width;
+    });
+
+    return startY - headerHeight;
+  }
+
+  // Prepare liquor data
+  const liquorRows: LiquorRow[] = movimiento.liquors.map(liquor => ({
+    name: liquor.name || '',
+    type: liquor.type || '',
+    brand: liquor.brand || '',
+    origin: liquor.origin || '',
+    abv: liquor.abv,
+    age: liquor.age || '',
+    subcategory: liquor.subcategory || '',
+    quantity: liquor.quantity,
+    unit: liquor.unit === 'bottle' ? (liquor.quantity === 1 ? 'bottle' : 'bottles') : 
+          liquor.unit === 'case' ? (liquor.quantity === 1 ? 'case' : 'cases') : liquor.unit
+  }));
+
+  // Create pages and render content
+  let currentPageIndex = 0;
+  let itemsOnCurrentPage = 0;
+  let currentY = 0;
+  let totalItems = liquorRows.reduce((sum, row) => sum + row.quantity, 0);
+  
+  // Start with just the first page
+  const pages: any[] = [];
+  pages.push(doc.addPage([pageWidth, pageHeight]));
+
+  // Setup first page
+  createHeader(pages[0], 1, 1); // We'll update total pages later
+  const tableStartY = pageHeight - 220;
+  currentY = createTableHeader(pages[0], tableStartY);
+
+  // Render liquor items
+  currentPageIndex = 0;
+  itemsOnCurrentPage = 0;
+  currentY = pages[0] ? (pageHeight - 220 - headerHeight) : 0;
+
+  liquorRows.forEach((row, index) => {
+    // Calculate dynamic row height based on content
+    const currentRowHeight = calculateRowHeight(row);
     
-    const currentPageObj = pages[pages.length - 1];
+    // Check if we have enough vertical space for this row
+    const minYPosition = 120; // Minimum Y position before footer
+    const spaceNeeded = currentRowHeight + 5; // Add some padding
+    
+    // Check if we need to move to next page based on vertical space
+    if (currentY - spaceNeeded < minYPosition) {
+      // Need a new page
+      if (currentPageIndex < pages.length - 1) {
+        currentPageIndex++;
+        itemsOnCurrentPage = 0;
+        currentY = pageHeight - 140 - headerHeight;
+      } else {
+        // Need to create a new page
+        const newPage = doc.addPage([pageWidth, pageHeight]);
+        pages.push(newPage);
+        
+        // Setup new page
+        createHeader(newPage, pages.length, pages.length); // Temporary, will be updated later
+        const tableStartY = pageHeight - 140;
+        createTableHeader(newPage, tableStartY);
+        
+        currentPageIndex++;
+        itemsOnCurrentPage = 0;
+        currentY = pageHeight - 140 - headerHeight;
+      }
+    }
+
+    const page = pages[currentPageIndex];
     const isEvenRow = itemsOnCurrentPage % 2 === 0;
-    
-    // Alternate row background
+
+    // Alternating row background
     if (isEvenRow) {
-      currentPageObj.drawRectangle({
-        x: margin,
-        y: currentY - rowHeight + 5,
-        width: pageWidth - 2 * margin,
-        height: rowHeight,
-        color: rgb(0.1, 0.1, 0.1),
+      page.drawRectangle({
+        x: tableStartX,
+        y: currentY - currentRowHeight,
+        width: tableWidth,
+        height: currentRowHeight,
+        color: lightBg,
       });
     }
 
-    // Item name
-    const itemText = liquor.name.length > 22 ? liquor.name.substring(0, 22) + '...' : liquor.name;
-    currentPageObj.drawText(itemText, {
-      x: margin + 15,
-      y: currentY - 10,
-      size: 10,
-      font: font,
-      color: lightText,
+    // Draw cell borders
+    let currentX = tableStartX;
+    tableColumns.forEach(col => {
+      page.drawRectangle({
+        x: currentX,
+        y: currentY - currentRowHeight,
+        width: col.width,
+        height: currentRowHeight,
+        color: secondary,
+        borderColor: border,
+        borderWidth: 0.5,
+      });
+      currentX += col.width;
     });
 
-    // Type
-    currentPageObj.drawText(liquor.type, {
-      x: margin + 200,
-      y: currentY - 10,
-      size: 10,
-      font: font,
-      color: lightText,
+    // Render cell content with multi-line support
+    currentX = tableStartX;
+    tableColumns.forEach(col => {
+      let cellValue = '';
+      
+      switch (col.key) {
+        case 'name':
+          cellValue = row.name;
+          break;
+        case 'brand':
+          cellValue = row.brand || '-';
+          break;
+        case 'type':
+          cellValue = row.type;
+          break;
+        case 'origin':
+          cellValue = row.origin || '-';
+          break;
+        case 'abv':
+          cellValue = row.abv ? `${row.abv}%` : '-';
+          break;
+        case 'age':
+          cellValue = row.age || '-';
+          break;
+        case 'subcategory':
+          cellValue = row.subcategory || '-';
+          break;
+        case 'quantity':
+          cellValue = row.quantity.toString();
+          break;
+        case 'unit':
+          cellValue = row.unit;
+          break;
+      }
+
+      // Wrap text and render all lines
+      const wrappedLines = wrapText(cellValue, col.width, 8);
+      
+      wrappedLines.forEach((line, lineIndex) => {
+        const lineY = currentY - 10 - (lineIndex * 10); // 10px line spacing
+        
+        page.drawText(line, {
+          x: currentX + 3,
+          y: lineY,
+          size: 8,
+          font: font,
+          color: inputBg,
+        });
+      });
+
+      currentX += col.width;
     });
 
-    // Quantity
-    currentPageObj.drawText(liquor.quantity.toString(), {
-      x: margin + 340,
-      y: currentY - 10,
-      size: 10,
-      font: font,
-      color: lightText,
-    });
-
-    // Unit
-    const displayUnit = liquor.quantity === 1 ? liquor.unit : liquor.unit + 's';
-    currentPageObj.drawText(displayUnit, {
-      x: margin + 430,
-      y: currentY - 10,
-      size: 10,
-      font: font,
-      color: lightText,
-    });
-
-    currentY -= rowHeight;
-    totalItems += liquor.quantity;
+    currentY -= currentRowHeight;
     itemsOnCurrentPage++;
   });
 
+  // Update page numbers now that we know the total
   const totalPages = pages.length;
-
-  // Add summary and footer to all pages
-  pages.forEach((pageObj, pageIndex) => {
-    const pageNumber = pageIndex + 1;
+  pages.forEach((page, index) => {
+    // Clear the old page number area and redraw with correct total
+    page.drawRectangle({
+      x: pageWidth - margin - 80,
+      y: pageHeight - 45,
+      width: 80,
+      height: 20,
+      color: background,
+    });
     
-    // Summary section - clean and centered (only on last page)
-    if (pageIndex === pages.length - 1) {
-      const summaryY = currentY - 40;
-      const summaryWidth = 200;
-      const summaryX = pageWidth - margin - summaryWidth;
-      
-      pageObj.drawRectangle({
-        x: summaryX,
-        y: summaryY - 30,
-        width: summaryWidth,
-        height: 30,
-        color: accent,
-      });
-
-      const totalText = `Total Items: ${totalItems}`;
-      const totalTextSize = 12;
-      const totalTextWidth = totalText.length * (totalTextSize * 0.5);
-      const totalCenterX = summaryX + (summaryWidth - totalTextWidth) / 2;
-      
-      pageObj.drawText(totalText, {
-        x: totalCenterX,
-        y: summaryY - 15,
-        size: totalTextSize,
-        font: boldFont,
-        color: darkBg,
-      });
-    }
-
-    // Footer for each page
-    const footerY = 100;
-    
-    pageObj.drawText('This document serves as a record of liquor movement', {
-      x: margin,
-      y: footerY,
+    page.drawText(`Page ${index + 1} of ${totalPages}`, {
+      x: pageWidth - margin - 75,
+      y: pageHeight - 35,
       size: 10,
       font: font,
-      color: lightText,
+      color: primary,
     });
+  });
 
-    pageObj.drawText('for premium casino operations.', {
-      x: margin,
-      y: footerY - 15,
-      size: 10,
-      font: font,
-      color: lightText,
-    });
+  // Add summary and footer to last page
+  const lastPage = pages[pages.length - 1];
+  
+  // Summary box - positioned within margins
+  const summaryY = currentY - 40;
+  lastPage.drawRectangle({
+    x: pageWidth - margin - 150,
+    y: summaryY - 35,
+    width: 150,
+    height: 35,
+    color: accent,
+  });
 
-    pageObj.drawText(`Generated on: ${new Date().toLocaleString('en-US')}`, {
+  lastPage.drawText(`TOTAL ITEMS: ${totalItems}`, {
+    x: pageWidth - margin - 145,
+    y: summaryY - 15,
+    size: 11,
+    font: boldFont,
+    color: background,
+  });
+
+  lastPage.drawText(`TOTAL LIQUORS: ${liquorRows.length}`, {
+    x: pageWidth - margin - 145,
+    y: summaryY - 28,
+    size: 9,
+    font: font,
+    color: background,
+  });
+
+  // Footer on all pages
+  pages.forEach(page => {
+    page.drawText('This document serves as an official record of liquor inventory movement for premium casino operations.', {
       x: margin,
-      y: footerY - 40,
+      y: 50,
       size: 8,
       font: font,
-      color: rgb(0.7, 0.7, 0.7),
+      color: border,
     });
 
-    // Page counter at bottom right
-    const pageText = `Page ${pageNumber} of ${totalPages}`;
-    const pageTextWidth = pageText.length * (10 * 0.5);
-    pageObj.drawText(pageText, {
-      x: pageWidth - margin - pageTextWidth,
-      y: footerY - 40,
-      size: 10,
+    page.drawText(`Generated: ${new Date().toLocaleString('en-US')}`, {
+      x: margin,
+      y: 35,
+      size: 7,
       font: font,
-      color: lightText,
+      color: border,
     });
   });
 
