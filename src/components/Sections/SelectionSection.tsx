@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { Licor } from '../../app/actions-licores';
 import { QuantityMinusButton, QuantityPlusButton, FilterButton, ClearSearchButton, PrimaryButton, SecondaryButton, DropdownButton, DropdownItemButton, Button } from '../UI/Button';
 
@@ -32,6 +32,11 @@ export default function SelectionSection({
 	// Estado para controlar el dropdown personalizado
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 	const [isItemsPerPageDropdownOpen, setIsItemsPerPageDropdownOpen] = useState(false);
+	
+	// Estado para rastrear scroll automático
+	const [lastAddedLicorId, setLastAddedLicorId] = useState<string | null>(null);
+	const licorRefs = useRef<Record<string, HTMLLIElement | null>>({});
+	
 	// Key para forzar re-render y re-animación de los elementos
 	const [animationKey, setAnimationKey] = useState(0);
 	// Estados de paginación
@@ -82,6 +87,54 @@ export default function SelectionSection({
 	const startIndex = (currentPage - 1) * itemsPerPage;
 	const endIndex = startIndex + itemsPerPage;
 	const currentPageLicores = licoresOrdenados.slice(startIndex, endIndex);
+
+	// Function to handle quantity change with auto-scroll
+	const handleQuantityChange = (id: string, type: 'botellas' | 'cajas', delta: number) => {
+		const currentCantidad = cantidades[id] || { botellas: 0, cajas: 0 };
+		const currentValue = currentCantidad[type];
+		
+		// Only track if we're adding (delta > 0) and this is the first item being added
+		if (delta > 0 && currentValue === 0) {
+			setLastAddedLicorId(id);
+		}
+		
+		// Call the original function
+		onQuantityChange(id, type, delta);
+	};
+
+	// Effect to scroll to the last added licor
+	useEffect(() => {
+		if (lastAddedLicorId) {
+			// Find which page contains this licor
+			const licorIndex = licoresOrdenados.findIndex(licor => licor.id === lastAddedLicorId);
+			if (licorIndex !== -1) {
+				const targetPage = Math.floor(licorIndex / itemsPerPage) + 1;
+				
+				// If we need to change page, do it first
+				if (targetPage !== currentPage) {
+					setCurrentPage(targetPage);
+					// The scroll will happen after the page change in the next effect
+					return;
+				}
+				
+				// Scroll to the element
+				const element = licorRefs.current[lastAddedLicorId];
+				if (element) {
+					element.scrollIntoView({ 
+						behavior: 'smooth', 
+						block: 'center' 
+					});
+				}
+			}
+			
+			// Clear the tracking after a short delay
+			const timer = setTimeout(() => {
+				setLastAddedLicorId(null);
+			}, 1000);
+			
+			return () => clearTimeout(timer);
+		}
+	}, [lastAddedLicorId, licoresOrdenados, currentPage, itemsPerPage]);
 
 	// Calculate totals
 	const totalBottles = Object.values(cantidades).reduce((sum, cantidad) => sum + cantidad.botellas, 0);
@@ -304,6 +357,7 @@ export default function SelectionSection({
 							return (
 								<li
 									key={`${licor.id}-${animationKey}`}
+									ref={(el) => { licorRefs.current[licor.id] = el; }}
 									className={`group relative bg-gradient-to-r from-background/80 to-cardBg backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-8 border transition-all duration-300 hover:shadow-xl animate-fade-in-up opacity-0 ${
 										hasSelection 
 											? 'border-accent/50 shadow-accent/10 shadow-lg' 
@@ -382,7 +436,7 @@ export default function SelectionSection({
 												</label>
 												<div className="flex items-center gap-2 sm:gap-3">
 													<QuantityMinusButton
-														onClick={() => onQuantityChange(licor.id, "botellas", -1)}
+														onClick={() => handleQuantityChange(licor.id, "botellas", -1)}
 														aria-label="Remove bottle"
 														type="button"
 													>
@@ -392,7 +446,7 @@ export default function SelectionSection({
 														{cantidad.botellas}
 													</span>
 													<QuantityPlusButton
-														onClick={() => onQuantityChange(licor.id, "botellas", 1)}
+														onClick={() => handleQuantityChange(licor.id, "botellas", 1)}
 														aria-label="Add bottle"
 														type="button"
 													>
@@ -408,7 +462,7 @@ export default function SelectionSection({
 												</label>
 												<div className="flex items-center gap-2 sm:gap-3">
 													<QuantityMinusButton
-														onClick={() => onQuantityChange(licor.id, "cajas", -1)}
+														onClick={() => handleQuantityChange(licor.id, "cajas", -1)}
 														aria-label="Remove case"
 														type="button"
 													>
@@ -418,7 +472,7 @@ export default function SelectionSection({
 														{cantidad.cajas}
 													</span>
 													<QuantityPlusButton
-														onClick={() => onQuantityChange(licor.id, "cajas", 1)}
+														onClick={() => handleQuantityChange(licor.id, "cajas", 1)}
 														aria-label="Add case"
 														type="button"
 													>
