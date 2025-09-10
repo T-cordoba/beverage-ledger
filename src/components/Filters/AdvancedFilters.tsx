@@ -11,8 +11,8 @@ interface AdvancedFiltersProps {
 	setSubcategoryFilter: (category: string) => void;
 	ageFilter: string;
 	setAgeFilter: (age: string) => void;
-	abvRange: { min: number; max: number };
-	setAbvRange: (range: { min: number; max: number } | ((prev: { min: number; max: number }) => { min: number; max: number })) => void;
+	abvFilter: string;
+	setAbvFilter: (abv: string) => void;
 	
 	// Dropdown states
 	isBrandDropdownOpen: boolean;
@@ -23,12 +23,15 @@ interface AdvancedFiltersProps {
 	setIsSubcategoryDropdownOpen: (open: boolean) => void;
 	isAgeDropdownOpen: boolean;
 	setIsAgeDropdownOpen: (open: boolean) => void;
+	isAbvDropdownOpen: boolean;
+	setIsAbvDropdownOpen: (open: boolean) => void;
 	
 	// Available options
 	uniqueBrands: (string | undefined)[];
 	uniqueOrigins: (string | undefined)[];
 	uniqueSubcategories: (string | undefined)[];
 	uniqueAges: (string | undefined)[];
+	uniqueAbvs: (string | undefined)[];
 	
 	// Functions
 	clearAdvancedFilters: () => void;
@@ -44,8 +47,8 @@ export default function AdvancedFilters({
 	setSubcategoryFilter,
 	ageFilter,
 	setAgeFilter,
-	abvRange,
-	setAbvRange,
+	abvFilter,
+	setAbvFilter,
 	isBrandDropdownOpen,
 	setIsBrandDropdownOpen,
 	isOriginDropdownOpen,
@@ -54,16 +57,19 @@ export default function AdvancedFilters({
 	setIsSubcategoryDropdownOpen,
 	isAgeDropdownOpen,
 	setIsAgeDropdownOpen,
+	isAbvDropdownOpen,
+	setIsAbvDropdownOpen,
 	uniqueBrands,
 	uniqueOrigins,
 	uniqueSubcategories,
 	uniqueAges,
+	uniqueAbvs,
 	clearAdvancedFilters,
 	hasAdvancedFilters,
 }: AdvancedFiltersProps) {
 	return (
 		<div className="bg-cardBg/40 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-border/30 shadow-lg animate-fade-in-up relative z-[110]">
-			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
 				{/* Brand Filter */}
 				<div className="relative z-[114]">
 					<label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">Brand</label>
@@ -259,45 +265,54 @@ export default function AdvancedFilters({
 						<div className="fixed inset-0 z-[112]" onClick={() => setIsAgeDropdownOpen(false)} />
 					)}
 				</div>
-			</div>
 
-			{/* ABV Range Slider */}
-			<div className="mb-4">
-				<label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">
-					ABV Range: {abvRange.min}% - {abvRange.max}%
-				</label>
-				<div className="flex items-center gap-4">
-					<span className="text-xs text-secondary/60 min-w-[30px]">0%</span>
-					<div className="flex-1 relative">
-						<input
-							type="range"
-							min="0"
-							max="80"
-							value={abvRange.min}
-							onChange={(e) => setAbvRange(prev => ({ ...prev, min: Number(e.target.value) }))}
-							className="absolute w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider-thumb"
-							style={{ zIndex: 1 }}
-						/>
-						<input
-							type="range"
-							min="0"
-							max="80"
-							value={abvRange.max}
-							onChange={(e) => setAbvRange(prev => ({ ...prev, max: Number(e.target.value) }))}
-							className="absolute w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider-thumb"
-							style={{ zIndex: 2 }}
-						/>
-						<div className="h-2 bg-white/10 rounded-lg relative">
-							<div 
-								className="absolute h-full bg-accent rounded-lg"
-								style={{
-									left: `${(abvRange.min / 80) * 100}%`,
-									width: `${((abvRange.max - abvRange.min) / 80) * 100}%`
+				{/* ABV Filter */}
+				<div className="relative z-[110]">
+					<label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">ABV</label>
+					<Button
+						variant="secondary"
+						onClick={() => setIsAbvDropdownOpen(!isAbvDropdownOpen)}
+						className="w-full group !px-3 !py-2.5 !text-sm !bg-white/5 hover:!bg-white/10 !border !border-white/10 hover:!border-white/20 !rounded-lg !text-primary !transition-all !duration-200 !font-medium flex items-center justify-between"
+					>
+						<span className={abvFilter ? 'text-primary' : 'text-secondary/60'}>
+							{abvFilter ? `${abvFilter}%` : 'All ABVs'}
+						</span>
+						<svg className={`w-4 h-4 transition-transform duration-200 ${isAbvDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+						</svg>
+					</Button>
+					
+					{isAbvDropdownOpen && (
+						<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg/95 backdrop-blur-sm border border-border rounded-xl shadow-2xl z-[120] max-h-48 overflow-y-auto">
+							<button
+								onClick={() => {
+									setAbvFilter('');
+									setIsAbvDropdownOpen(false);
 								}}
-							/>
+								className="w-full px-4 py-3 text-left text-sm transition-all duration-200 hover:bg-white/10 border-b border-white/10 text-secondary/60"
+							>
+								All ABVs
+							</button>
+							{uniqueAbvs.filter(Boolean).map((abv) => (
+								<button
+									key={abv}
+									onClick={() => {
+										setAbvFilter(abv || '');
+										setIsAbvDropdownOpen(false);
+									}}
+									className={`w-full px-4 py-3 text-left text-sm transition-all duration-200 hover:bg-white/10 border-b border-white/10 last:border-b-0 ${
+										abvFilter === abv ? 'bg-accent/20 text-accent font-medium' : 'text-primary hover:text-accent'
+									}`}
+								>
+									{abv}%
+								</button>
+							))}
 						</div>
-					</div>
-					<span className="text-xs text-secondary/60 min-w-[30px]">80%</span>
+					)}
+					
+					{isAbvDropdownOpen && (
+						<div className="fixed inset-0 z-[111]" onClick={() => setIsAbvDropdownOpen(false)} />
+					)}
 				</div>
 			</div>
 

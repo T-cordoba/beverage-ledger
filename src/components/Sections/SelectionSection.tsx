@@ -40,13 +40,14 @@ export default function SelectionSection({
 	const [originFilter, setOriginFilter] = useState('');
 	const [subcategoryFilter, setSubcategoryFilter] = useState('');
 	const [ageFilter, setAgeFilter] = useState('');
-	const [abvRange, setAbvRange] = useState({ min: 0, max: 80 });
+	const [abvFilter, setAbvFilter] = useState('');
 	
 	// Dropdown states for advanced filters
 	const [isBrandDropdownOpen, setIsBrandDropdownOpen] = useState(false);
 	const [isOriginDropdownOpen, setIsOriginDropdownOpen] = useState(false);
 	const [isSubcategoryDropdownOpen, setIsSubcategoryDropdownOpen] = useState(false);
 	const [isAgeDropdownOpen, setIsAgeDropdownOpen] = useState(false);
+	const [isAbvDropdownOpen, setIsAbvDropdownOpen] = useState(false);
 	
 	// Estado para rastrear scroll automático
 	const [lastAddedLicorId, setLastAddedLicorId] = useState<string | null>(null);
@@ -66,12 +67,13 @@ export default function SelectionSection({
 	const uniqueOrigins = Array.from(new Set(licores.map(licor => licor.origin).filter(Boolean))).sort();
 	const uniqueSubcategories = Array.from(new Set(licores.map(licor => licor.subcategory).filter(Boolean))).sort();
 	const uniqueAges = Array.from(new Set(licores.map(licor => licor.age).filter(Boolean))).sort();
+	const uniqueAbvs = Array.from(new Set(licores.map(licor => licor.abv?.toString()).filter(Boolean))).sort((a, b) => parseFloat(a || '0') - parseFloat(b || '0'));
 
 	// Effect to trigger re-animation when filters change
 	useEffect(() => {
 		setAnimationKey(prev => prev + 1);
 		setCurrentPage(1); // Reset to first page when filters change
-	}, [searchTerm, typeFilter, brandFilter, originFilter, subcategoryFilter, ageFilter, abvRange]);
+	}, [searchTerm, typeFilter, brandFilter, originFilter, subcategoryFilter, ageFilter, abvFilter]);
 
 	// Filter liquors by all available filters
 	const licoresFiltrados = licores.filter((licor) => {
@@ -88,10 +90,7 @@ export default function SelectionSection({
 		const matchesOrigin = originFilter === '' || licor.origin === originFilter;
 		const matchesSubcategory = subcategoryFilter === '' || licor.subcategory === subcategoryFilter;
 		const matchesAge = ageFilter === '' || licor.age === ageFilter;
-		
-		// ABV filter
-		const licorAbv = licor.abv || 0;
-		const matchesAbv = licorAbv >= abvRange.min && licorAbv <= abvRange.max;
+		const matchesAbv = abvFilter === '' || licor.abv?.toString() === abvFilter;
 		
 		return matchesSearch && matchesType && matchesBrand && matchesOrigin && 
 			   matchesSubcategory && matchesAge && matchesAbv;
@@ -168,15 +167,14 @@ export default function SelectionSection({
 	}, [lastAddedLicorId, licoresOrdenados, currentPage, itemsPerPage]);
 
 	// Helper functions for advanced filters
-	const hasAdvancedFilters = brandFilter || originFilter || subcategoryFilter || ageFilter || 
-		abvRange.min > 0 || abvRange.max < 80;
+	const hasAdvancedFilters = brandFilter || originFilter || subcategoryFilter || ageFilter || abvFilter;
 	
 	const clearAdvancedFilters = () => {
 		setBrandFilter('');
 		setOriginFilter('');
 		setSubcategoryFilter('');
 		setAgeFilter('');
-		setAbvRange({ min: 0, max: 80 });
+		setAbvFilter('');
 	};
 	
 	const clearAllFilters = () => {
@@ -410,8 +408,8 @@ export default function SelectionSection({
 					setSubcategoryFilter={setSubcategoryFilter}
 					ageFilter={ageFilter}
 					setAgeFilter={setAgeFilter}
-					abvRange={abvRange}
-					setAbvRange={setAbvRange}
+					abvFilter={abvFilter}
+					setAbvFilter={setAbvFilter}
 					isBrandDropdownOpen={isBrandDropdownOpen}
 					setIsBrandDropdownOpen={setIsBrandDropdownOpen}
 					isOriginDropdownOpen={isOriginDropdownOpen}
@@ -420,10 +418,13 @@ export default function SelectionSection({
 					setIsSubcategoryDropdownOpen={setIsSubcategoryDropdownOpen}
 					isAgeDropdownOpen={isAgeDropdownOpen}
 					setIsAgeDropdownOpen={setIsAgeDropdownOpen}
+					isAbvDropdownOpen={isAbvDropdownOpen}
+					setIsAbvDropdownOpen={setIsAbvDropdownOpen}
 					uniqueBrands={uniqueBrands}
 					uniqueOrigins={uniqueOrigins}
 					uniqueSubcategories={uniqueSubcategories}
 					uniqueAges={uniqueAges}
+					uniqueAbvs={uniqueAbvs}
 					clearAdvancedFilters={clearAdvancedFilters}
 					hasAdvancedFilters={hasAdvancedFilters}
 				/>
