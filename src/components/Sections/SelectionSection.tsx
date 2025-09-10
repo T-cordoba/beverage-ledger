@@ -42,11 +42,15 @@ export default function SelectionSection({
 		setAnimationKey(prev => prev + 1);
 	}, [searchTerm, typeFilter]);
 
-	// Filter liquors by name, type, and selected type filter
+	// Filter liquors by name, type, brand, subcategory, origin, and selected type filter
 	const licoresFiltrados = licores.filter((licor) => {
 		const searchLower = searchTerm.toLowerCase();
 		const matchesSearch = licor.name.toLowerCase().includes(searchLower) ||
-			licor.type.toLowerCase().includes(searchLower);
+			licor.type.toLowerCase().includes(searchLower) ||
+			(licor.brand && licor.brand.toLowerCase().includes(searchLower)) ||
+			(licor.subcategory && licor.subcategory.toLowerCase().includes(searchLower)) ||
+			(licor.origin && licor.origin.toLowerCase().includes(searchLower)) ||
+			(licor.age && licor.age.toLowerCase().includes(searchLower));
 		const matchesType = typeFilter === '' || licor.type === typeFilter;
 		
 		return matchesSearch && matchesType;
@@ -83,7 +87,7 @@ export default function SelectionSection({
 					<div className="relative flex-1 max-w-full sm:max-w-md">
 						<input
 							type="text"
-							placeholder="Search by name or type..."
+							placeholder="Search by name, brand, type, origin..."
 							value={searchTerm}
 							onChange={(e) => onSearchChange(e.target.value)}
 							className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-cardBg border border-border rounded-xl sm:rounded-2xl text-primary placeholder-placeholder focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all text-sm sm:text-base"
@@ -309,6 +313,48 @@ export default function SelectionSection({
 											<h3 className="text-lg sm:text-xl lg:text-2xl font-light text-primary mb-2 group-hover:text-accent transition-colors">
 												{licor.name}
 											</h3>
+											
+											{/* Brand and details row */}
+											<div className="flex flex-wrap items-center gap-2 mb-3">
+												{licor.brand && (
+													<span className="px-2 py-1 text-xs font-medium text-secondary/80 bg-secondary/10 rounded-md border border-secondary/20">
+														{licor.brand}
+													</span>
+												)}
+												{licor.subcategory && (
+													<span className="px-2 py-1 text-xs font-medium text-accent/70 bg-accent/5 rounded-md border border-accent/15">
+														{licor.subcategory}
+													</span>
+												)}
+												{licor.age && (
+													<span className="px-2 py-1 text-xs font-medium text-blue-400/80 bg-blue-400/10 rounded-md border border-blue-400/20">
+														{licor.age}
+													</span>
+												)}
+											</div>
+
+											{/* ABV and Origin row */}
+											<div className="flex flex-wrap items-center gap-3 mb-3">
+												{licor.abv && (
+													<div className="flex items-center gap-1.5 text-xs text-secondary/70">
+														<svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+															<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+														</svg>
+														<span>{licor.abv}% ABV</span>
+													</div>
+												)}
+												{licor.origin && (
+													<div className="flex items-center gap-1.5 text-xs text-secondary/70">
+														<svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+															<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+															<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+														</svg>
+														<span>{licor.origin}</span>
+													</div>
+												)}
+											</div>
+
+											{/* Type badge */}
 											<div className="inline-flex items-center">
 												<span className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-medium uppercase tracking-widest text-accent/80 bg-accent/10 rounded-full border border-accent/20 backdrop-blur-sm">
 													{licor.type}

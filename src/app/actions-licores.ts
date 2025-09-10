@@ -6,6 +6,11 @@ export type Licor = {
   id: string;
   name: string;
   type: string;
+  brand?: string;
+  subcategory?: string;
+  abv?: number;
+  origin?: string;
+  age?: string;
 };
 
 export async function getLicores(): Promise<Licor[]> {
@@ -14,5 +19,10 @@ export async function getLicores(): Promise<Licor[]> {
     id: row.id,
     name: row.nombre,
     type: row.tipo,
+    brand: row.brand,
+    subcategory: row.subcategory,
+    abv: row.abv ? parseFloat(row.abv) : undefined,
+    origin: row.origin,
+    age: row.age,
   }));
 }
