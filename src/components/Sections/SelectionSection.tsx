@@ -33,6 +33,20 @@ export default function SelectionSection({
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 	const [isItemsPerPageDropdownOpen, setIsItemsPerPageDropdownOpen] = useState(false);
 	
+	// Estados para filtros avanzados
+	const [isAdvancedFiltersOpen, setIsAdvancedFiltersOpen] = useState(false);
+	const [brandFilter, setBrandFilter] = useState('');
+	const [originFilter, setOriginFilter] = useState('');
+	const [subcategoryFilter, setSubcategoryFilter] = useState('');
+	const [ageFilter, setAgeFilter] = useState('');
+	const [abvRange, setAbvRange] = useState({ min: 0, max: 80 });
+	
+	// Estados para dropdowns de filtros avanzados
+	const [isBrandDropdownOpen, setIsBrandDropdownOpen] = useState(false);
+	const [isOriginDropdownOpen, setIsOriginDropdownOpen] = useState(false);
+	const [isSubcategoryDropdownOpen, setIsSubcategoryDropdownOpen] = useState(false);
+	const [isAgeDropdownOpen, setIsAgeDropdownOpen] = useState(false);
+	
 	// Estado para rastrear scroll automático
 	const [lastAddedLicorId, setLastAddedLicorId] = useState<string | null>(null);
 	const licorRefs = useRef<Record<string, HTMLLIElement | null>>({});
@@ -45,14 +59,20 @@ export default function SelectionSection({
 	
 	// Get unique types for the dropdown
 	const uniqueTypes = Array.from(new Set(licores.map(licor => licor.type))).sort();
+	
+	// Get unique options for advanced filters
+	const uniqueBrands = Array.from(new Set(licores.map(licor => licor.brand).filter(Boolean))).sort();
+	const uniqueOrigins = Array.from(new Set(licores.map(licor => licor.origin).filter(Boolean))).sort();
+	const uniqueSubcategories = Array.from(new Set(licores.map(licor => licor.subcategory).filter(Boolean))).sort();
+	const uniqueAges = Array.from(new Set(licores.map(licor => licor.age).filter(Boolean))).sort();
 
 	// Effect to trigger re-animation when filters change
 	useEffect(() => {
 		setAnimationKey(prev => prev + 1);
 		setCurrentPage(1); // Reset to first page when filters change
-	}, [searchTerm, typeFilter]);
+	}, [searchTerm, typeFilter, brandFilter, originFilter, subcategoryFilter, ageFilter, abvRange]);
 
-	// Filter liquors by name, type, brand, subcategory, origin, and selected type filter
+	// Filter liquors by all available filters
 	const licoresFiltrados = licores.filter((licor) => {
 		const searchLower = searchTerm.toLowerCase();
 		const matchesSearch = licor.name.toLowerCase().includes(searchLower) ||
@@ -61,9 +81,19 @@ export default function SelectionSection({
 			(licor.subcategory && licor.subcategory.toLowerCase().includes(searchLower)) ||
 			(licor.origin && licor.origin.toLowerCase().includes(searchLower)) ||
 			(licor.age && licor.age.toLowerCase().includes(searchLower));
-		const matchesType = typeFilter === '' || licor.type === typeFilter;
 		
-		return matchesSearch && matchesType;
+		const matchesType = typeFilter === '' || licor.type === typeFilter;
+		const matchesBrand = brandFilter === '' || licor.brand === brandFilter;
+		const matchesOrigin = originFilter === '' || licor.origin === originFilter;
+		const matchesSubcategory = subcategoryFilter === '' || licor.subcategory === subcategoryFilter;
+		const matchesAge = ageFilter === '' || licor.age === ageFilter;
+		
+		// ABV filter
+		const licorAbv = licor.abv || 0;
+		const matchesAbv = licorAbv >= abvRange.min && licorAbv <= abvRange.max;
+		
+		return matchesSearch && matchesType && matchesBrand && matchesOrigin && 
+			   matchesSubcategory && matchesAge && matchesAbv;
 	});
 
 	// Sort liquors: those with selected quantities first
@@ -135,6 +165,26 @@ export default function SelectionSection({
 			return () => clearTimeout(timer);
 		}
 	}, [lastAddedLicorId, licoresOrdenados, currentPage, itemsPerPage]);
+
+	// Helper functions for advanced filters
+	const hasAdvancedFilters = brandFilter || originFilter || subcategoryFilter || ageFilter || 
+		abvRange.min > 0 || abvRange.max < 80;
+	
+	const clearAdvancedFilters = () => {
+		setBrandFilter('');
+		setOriginFilter('');
+		setSubcategoryFilter('');
+		setAgeFilter('');
+		setAbvRange({ min: 0, max: 80 });
+	};
+	
+	const clearAllFilters = () => {
+		onSearchChange('');
+		onTypeFilterChange('');
+		clearAdvancedFilters();
+		setIsDropdownOpen(false);
+		setIsAdvancedFiltersOpen(false);
+	};
 
 	// Calculate totals
 	const totalBottles = Object.values(cantidades).reduce((sum, cantidad) => sum + cantidad.botellas, 0);
@@ -212,7 +262,7 @@ export default function SelectionSection({
 
 						{/* Dropdown Menu */}
 						{isDropdownOpen && (
-							<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg border border-border rounded-xl sm:rounded-2xl shadow-2xl backdrop-blur-sm z-50 overflow-hidden">
+							<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg border border-border rounded-xl sm:rounded-2xl shadow-2xl backdrop-blur-sm z-[9999] overflow-hidden">
 								{/* All Types Option */}
 								<DropdownItemButton
 									type="button"
@@ -247,22 +297,57 @@ export default function SelectionSection({
 						{/* Overlay para cerrar el dropdown */}
 						{isDropdownOpen && (
 							<div 
-								className="fixed inset-0 z-40" 
+								className="fixed inset-0 z-[9998]" 
 								onClick={() => setIsDropdownOpen(false)}
 							/>
 						)}
 					</div>
 
+					{/* Advanced Filters Button */}
+					<div className="relative">
+						<Button
+							variant="secondary"
+							onClick={() => setIsAdvancedFiltersOpen(!isAdvancedFiltersOpen)}
+							className={`group flex items-center gap-2 !px-3 sm:!px-4 !py-3 sm:!py-4 !rounded-xl sm:!rounded-2xl !text-sm sm:!text-base !font-medium !transition-all !duration-200 ${
+								hasAdvancedFilters 
+									? '!bg-accent/20 !border-accent/50 !text-accent hover:!bg-accent/30' 
+									: '!bg-white/5 hover:!bg-white/10 !border-white/10 hover:!border-white/20 !text-primary'
+							}`}
+							aria-label="Advanced filters"
+						>
+							<svg 
+								className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:scale-110" 
+								fill="none" 
+								stroke="currentColor" 
+								viewBox="0 0 24 24"
+							>
+								<path 
+									strokeLinecap="round" 
+									strokeLinejoin="round" 
+									strokeWidth={2} 
+									d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" 
+								/>
+							</svg>
+							<span className="hidden sm:inline">Advanced</span>
+							<svg 
+								className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-200 ${
+									isAdvancedFiltersOpen ? 'rotate-180' : ''
+								}`} 
+								fill="none" 
+								stroke="currentColor" 
+								viewBox="0 0 24 24"
+							>
+								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+							</svg>
+						</Button>
+					</div>
+
 					{/* Clear All Filters Button - Solo en desktop dentro del flex */}
-					{(searchTerm || typeFilter) && (
+					{(searchTerm || typeFilter || hasAdvancedFilters) && (
 						<div className="hidden sm:flex items-center animate-fade-in-up">
 							<Button
 								variant="danger"
-								onClick={() => {
-									onSearchChange('');
-									onTypeFilterChange('');
-									setIsDropdownOpen(false);
-								}}
+								onClick={clearAllFilters}
 								className="group flex items-center gap-2 !px-3 sm:!px-4 !py-3 sm:!py-4 !bg-red-500/10 hover:!bg-red-500/20 !border !border-red-500/30 hover:!border-red-500/50 !rounded-xl sm:!rounded-2xl !text-red-400 hover:!text-red-300 !transition-all !duration-200 !text-sm sm:!text-base !font-medium"
 								aria-label="Clear all filters"
 							>
@@ -286,15 +371,11 @@ export default function SelectionSection({
 				</div>
 
 				{/* Clear All Filters Button - Solo en móvil, centrado */}
-				{(searchTerm || typeFilter) && (
+				{(searchTerm || typeFilter || hasAdvancedFilters) && (
 					<div className="flex sm:hidden justify-center mt-3 animate-fade-in-up">
 						<Button
 							variant="danger"
-							onClick={() => {
-								onSearchChange('');
-								onTypeFilterChange('');
-								setIsDropdownOpen(false);
-							}}
+							onClick={clearAllFilters}
 							className="group flex items-center gap-2 !px-4 !py-2.5 !bg-red-500/10 hover:!bg-red-500/20 !border !border-red-500/30 hover:!border-red-500/50 !rounded-lg !text-red-400 hover:!text-red-300 !transition-all !duration-200 !text-sm !font-medium"
 							aria-label="Clear all filters"
 						>
@@ -316,6 +397,261 @@ export default function SelectionSection({
 					</div>
 				)}
 			</div>
+
+			{/* Advanced Filters Section */}
+			{isAdvancedFiltersOpen && (
+				<div className="bg-cardBg/40 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-border/30 shadow-lg animate-fade-in-up relative z-[110]">
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+						{/* Brand Filter */}
+						<div className="relative z-[110]">
+							<label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">Brand</label>
+							<Button
+								variant="secondary"
+								onClick={() => setIsBrandDropdownOpen(!isBrandDropdownOpen)}
+								className="w-full group !px-3 !py-2.5 !text-sm !bg-white/5 hover:!bg-white/10 !border !border-white/10 hover:!border-white/20 !rounded-lg !text-primary !transition-all !duration-200 !font-medium flex items-center justify-between"
+							>
+								<span className={brandFilter ? 'text-primary' : 'text-secondary/60'}>
+									{brandFilter || 'All Brands'}
+								</span>
+								<svg className={`w-4 h-4 transition-transform duration-200 ${isBrandDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+								</svg>
+							</Button>
+							
+							{isBrandDropdownOpen && (
+								<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg backdrop-blur-md border border-white/20 rounded-xl shadow-2xl z-[9999] max-h-48 overflow-y-auto">
+									<button
+										onClick={() => {
+											setBrandFilter('');
+											setIsBrandDropdownOpen(false);
+										}}
+										className="w-full px-4 py-3 text-left text-sm transition-all duration-200 hover:bg-white/10 border-b border-white/10 text-secondary/60"
+									>
+										All Brands
+									</button>
+									{uniqueBrands.map((brand) => (
+										<button
+											key={brand}
+											onClick={() => {
+												setBrandFilter(brand || '');
+												setIsBrandDropdownOpen(false);
+											}}
+											className={`w-full px-4 py-3 text-left text-sm transition-all duration-200 hover:bg-white/10 border-b border-white/10 last:border-b-0 ${
+												brandFilter === brand ? 'bg-accent/20 text-accent font-medium' : 'text-primary hover:text-accent'
+											}`}
+										>
+											{brand}
+										</button>
+									))}
+								</div>
+							)}
+							
+							{isBrandDropdownOpen && (
+								<div className="fixed inset-0 z-[9998]" onClick={() => setIsBrandDropdownOpen(false)} />
+							)}
+						</div>
+
+						{/* Origin Filter */}
+						<div className="relative z-[110]">
+							<label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">Origin</label>
+							<Button
+								variant="secondary"
+								onClick={() => setIsOriginDropdownOpen(!isOriginDropdownOpen)}
+								className="w-full group !px-3 !py-2.5 !text-sm !bg-white/5 hover:!bg-white/10 !border !border-white/10 hover:!border-white/20 !rounded-lg !text-primary !transition-all !duration-200 !font-medium flex items-center justify-between"
+							>
+								<span className={originFilter ? 'text-primary' : 'text-secondary/60'}>
+									{originFilter || 'All Origins'}
+								</span>
+								<svg className={`w-4 h-4 transition-transform duration-200 ${isOriginDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+								</svg>
+							</Button>
+							
+							{isOriginDropdownOpen && (
+								<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg backdrop-blur-md border border-white/20 rounded-xl shadow-2xl z-[9999] max-h-48 overflow-y-auto">
+									<button
+										onClick={() => {
+											setOriginFilter('');
+											setIsOriginDropdownOpen(false);
+										}}
+										className="w-full px-4 py-3 text-left text-sm transition-all duration-200 hover:bg-white/10 border-b border-white/10 text-secondary/60"
+									>
+										All Origins
+									</button>
+									{uniqueOrigins.map((origin) => (
+										<button
+											key={origin}
+											onClick={() => {
+												setOriginFilter(origin || '');
+												setIsOriginDropdownOpen(false);
+											}}
+											className={`w-full px-4 py-3 text-left text-sm transition-all duration-200 hover:bg-white/10 border-b border-white/10 last:border-b-0 ${
+												originFilter === origin ? 'bg-accent/20 text-accent font-medium' : 'text-primary hover:text-accent'
+											}`}
+										>
+											{origin}
+										</button>
+									))}
+								</div>
+							)}
+							
+							{isOriginDropdownOpen && (
+								<div className="fixed inset-0 z-[9998]" onClick={() => setIsOriginDropdownOpen(false)} />
+							)}
+						</div>
+
+						{/* Subcategory Filter */}
+						<div className="relative z-[110]">
+							<label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">Category</label>
+							<Button
+								variant="secondary"
+								onClick={() => setIsSubcategoryDropdownOpen(!isSubcategoryDropdownOpen)}
+								className="w-full group !px-3 !py-2.5 !text-sm !bg-white/5 hover:!bg-white/10 !border !border-white/10 hover:!border-white/20 !rounded-lg !text-primary !transition-all !duration-200 !font-medium flex items-center justify-between"
+							>
+								<span className={subcategoryFilter ? 'text-primary' : 'text-secondary/60'}>
+									{subcategoryFilter || 'All Categories'}
+								</span>
+								<svg className={`w-4 h-4 transition-transform duration-200 ${isSubcategoryDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+								</svg>
+							</Button>
+							
+							{isSubcategoryDropdownOpen && (
+								<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg backdrop-blur-md border border-white/20 rounded-xl shadow-2xl z-[9999] max-h-48 overflow-y-auto">
+									<button
+										onClick={() => {
+											setSubcategoryFilter('');
+											setIsSubcategoryDropdownOpen(false);
+										}}
+										className="w-full px-4 py-3 text-left text-sm transition-all duration-200 hover:bg-white/10 border-b border-white/10 text-secondary/60"
+									>
+										All Categories
+									</button>
+									{uniqueSubcategories.map((subcategory) => (
+										<button
+											key={subcategory}
+											onClick={() => {
+												setSubcategoryFilter(subcategory || '');
+												setIsSubcategoryDropdownOpen(false);
+											}}
+											className={`w-full px-4 py-3 text-left text-sm transition-all duration-200 hover:bg-white/10 border-b border-white/10 last:border-b-0 ${
+												subcategoryFilter === subcategory ? 'bg-accent/20 text-accent font-medium' : 'text-primary hover:text-accent'
+											}`}
+										>
+											{subcategory}
+										</button>
+									))}
+								</div>
+							)}
+							
+							{isSubcategoryDropdownOpen && (
+								<div className="fixed inset-0 z-[9998]" onClick={() => setIsSubcategoryDropdownOpen(false)} />
+							)}
+						</div>
+
+						{/* Age Filter */}
+						<div className="relative z-[110]">
+							<label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">Age</label>
+							<Button
+								variant="secondary"
+								onClick={() => setIsAgeDropdownOpen(!isAgeDropdownOpen)}
+								className="w-full group !px-3 !py-2.5 !text-sm !bg-white/5 hover:!bg-white/10 !border !border-white/10 hover:!border-white/20 !rounded-lg !text-primary !transition-all !duration-200 !font-medium flex items-center justify-between"
+							>
+								<span className={ageFilter ? 'text-primary' : 'text-secondary/60'}>
+									{ageFilter || 'All Ages'}
+								</span>
+								<svg className={`w-4 h-4 transition-transform duration-200 ${isAgeDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+								</svg>
+							</Button>
+							
+							{isAgeDropdownOpen && (
+								<div className="absolute top-full left-0 right-0 mt-2 bg-cardBg backdrop-blur-md border border-white/20 rounded-xl shadow-2xl z-[9999] max-h-48 overflow-y-auto">
+									<button
+										onClick={() => {
+											setAgeFilter('');
+											setIsAgeDropdownOpen(false);
+										}}
+										className="w-full px-4 py-3 text-left text-sm transition-all duration-200 hover:bg-white/10 border-b border-white/10 text-secondary/60"
+									>
+										All Ages
+									</button>
+									{uniqueAges.map((age) => (
+										<button
+											key={age}
+											onClick={() => {
+												setAgeFilter(age || '');
+												setIsAgeDropdownOpen(false);
+											}}
+											className={`w-full px-4 py-3 text-left text-sm transition-all duration-200 hover:bg-white/10 border-b border-white/10 last:border-b-0 ${
+												ageFilter === age ? 'bg-accent/20 text-accent font-medium' : 'text-primary hover:text-accent'
+											}`}
+										>
+											{age}
+										</button>
+									))}
+								</div>
+							)}
+							
+							{isAgeDropdownOpen && (
+								<div className="fixed inset-0 z-[9998]" onClick={() => setIsAgeDropdownOpen(false)} />
+							)}
+						</div>
+					</div>
+
+					{/* ABV Range Slider */}
+					<div className="mb-4">
+						<label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">
+							ABV Range: {abvRange.min}% - {abvRange.max}%
+						</label>
+						<div className="flex items-center gap-4">
+							<span className="text-xs text-secondary/60 min-w-[30px]">0%</span>
+							<div className="flex-1 relative">
+								<input
+									type="range"
+									min="0"
+									max="80"
+									value={abvRange.min}
+									onChange={(e) => setAbvRange(prev => ({ ...prev, min: Number(e.target.value) }))}
+									className="absolute w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider-thumb"
+									style={{ zIndex: 1 }}
+								/>
+								<input
+									type="range"
+									min="0"
+									max="80"
+									value={abvRange.max}
+									onChange={(e) => setAbvRange(prev => ({ ...prev, max: Number(e.target.value) }))}
+									className="absolute w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider-thumb"
+									style={{ zIndex: 2 }}
+								/>
+								<div className="h-2 bg-white/10 rounded-lg relative">
+									<div 
+										className="absolute h-full bg-accent rounded-lg"
+										style={{
+											left: `${(abvRange.min / 80) * 100}%`,
+											width: `${((abvRange.max - abvRange.min) / 80) * 100}%`
+										}}
+									/>
+								</div>
+							</div>
+							<span className="text-xs text-secondary/60 min-w-[30px]">80%</span>
+						</div>
+					</div>
+
+					{/* Advanced Filters Actions */}
+					<div className="flex justify-end gap-3">
+						<Button
+							variant="secondary"
+							onClick={clearAdvancedFilters}
+							className="!px-4 !py-2 !text-sm !bg-white/5 hover:!bg-white/10 !border !border-white/10 hover:!border-white/20 !rounded-lg !text-secondary/70 hover:!text-primary"
+							disabled={!hasAdvancedFilters}
+						>
+							Clear Advanced
+						</Button>
+					</div>
+				</div>
+			)}
 
 			<div className="bg-cardBg/60 backdrop-blur-md rounded-2xl sm:rounded-3xl p-3 sm:p-4 lg:p-8 border border-border/50 shadow-2xl">
 				<div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 lg:mb-8 gap-2">
@@ -569,7 +905,7 @@ export default function SelectionSection({
 
 								{/* Dropdown Menu */}
 								{isItemsPerPageDropdownOpen && (
-									<div className="absolute top-full left-0 mt-2 bg-cardBg backdrop-blur-md border border-white/20 rounded-xl shadow-2xl z-50 min-w-[80px] overflow-hidden">
+									<div className="absolute top-full left-0 mt-2 bg-cardBg backdrop-blur-md border border-white/20 rounded-xl shadow-2xl z-[9999] min-w-[80px] overflow-hidden">
 										{[10, 15, 25, 50].map((value) => (
 											<button
 												key={value}
@@ -593,7 +929,7 @@ export default function SelectionSection({
 								{/* Overlay para cerrar el dropdown */}
 								{isItemsPerPageDropdownOpen && (
 									<div 
-										className="fixed inset-0 z-40" 
+										className="fixed inset-0 z-[9998]" 
 										onClick={() => setIsItemsPerPageDropdownOpen(false)}
 									/>
 								)}
