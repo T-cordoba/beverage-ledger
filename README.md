@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="public/ebl-logo.png" alt="Encore Beverage Ledger Logo" width="120" height="120">
+  <img src="public/ebl-logo.png" alt="Beverage Ledger Logo" width="120" height="120">
   
-  # Encore Beverage Ledger
+  # Beverage Ledger
   **Professional Casino Liquor Inventory Management System**
   
   [![Next.js](https://img.shields.io/badge/Next.js-15.5.2-black)](https://nextjs.org/)
@@ -11,8 +11,8 @@
   
   ---
   
-  ### **[LIVE DEMO](https://encore-beverage-ledger.vercel.app)** 
-  **Try the application: [encore-beverage-ledger.vercel.app](https://encore-beverage-ledger.vercel.app)**
+  ### **[LIVE DEMO](https://beverage-ledger.vercel.app)** 
+  **Try the application: [beverage-ledger.vercel.app](https://beverage-ledger.vercel.app)**
 </div>
 
 ---
@@ -29,7 +29,7 @@
 
 ## 🎰 About the Project
 
-The **Encore Beverage Ledger** is a sophisticated, casino-themed liquor inventory management system designed for premium casino operations. This application provides comprehensive tracking, management, and reporting capabilities for beverage operations in high-end casino environments.
+The **Beverage Ledger** is a sophisticated, casino-themed liquor inventory management system designed for premium casino operations. This application provides comprehensive tracking, management, and reporting capabilities for beverage operations in high-end casino environments.
 
 ### ✨ Key Features
 
@@ -74,7 +74,7 @@ This system is purpose-built for:
 ## 📁 Project Structure
 
 ```
-encore-beverage-ledger/
+beverage-ledger/
 ├── public/
 │   ├── ebl-logo.png          # Casino branding logo
 │   └── favicon.ico
@@ -105,7 +105,7 @@ encore-beverage-ledger/
 ## 🌐 Live Demo & Deployment
 
 ### 🚀 **Production Demo**
-**Experience the full application:** [https://encore-beverage-ledger.vercel.app](https://encore-beverage-ledger.vercel.app)
+**Experience the full application:** [https://beverage-ledger.vercel.app](https://beverage-ledger.vercel.app)
 
 **Demo Features:**
 - ✅ **Full functionality** - All features available for testing

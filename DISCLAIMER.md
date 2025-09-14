@@ -6,7 +6,7 @@
 
 ## NO AFFILIATION DISCLAIMER
 
-This software project ("Encore Beverage Ledger") is an **INDEPENDENT SOFTWARE PROJECT** created by Tomás Córdoba Urquijo for **EDUCATIONAL AND DEMONSTRATIVE PURPOSES**.
+This software project ("Beverage Ledger") is an **INDEPENDENT SOFTWARE PROJECT** created by Tomás Córdoba Urquijo for **EDUCATIONAL AND DEMONSTRATIVE PURPOSES**.
 
 ### IMPORTANT CLARIFICATIONS:
 
