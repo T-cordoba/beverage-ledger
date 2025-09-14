@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-	title: 'Encore Beverage Ledger',
+	title: 'Beverage Ledger',
 	description: 'Professional liquor inventory management system',
 	icons: {
 		icon: [

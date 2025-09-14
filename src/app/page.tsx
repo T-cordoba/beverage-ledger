@@ -499,7 +499,7 @@ export default function HomePage() {
 						<div className="mb-4">
 							<img 
 								src="/ebl-logo.png" 
-								alt="Encore Beverage Ledger" 
+								alt="Beverage Ledger" 
 								className="h-24 sm:h-32 lg:h-40 w-auto"
 							/>
 						</div>
