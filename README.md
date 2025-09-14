@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/ebl-logo.png" alt="Beverage Ledger Logo" width="120" height="120">
+  <img src="public/bl-logo.png" alt="Beverage Ledger Logo" width="120" height="120">
   
   # Beverage Ledger
   **Professional Casino Liquor Inventory Management System**
@@ -76,7 +76,7 @@ This system is purpose-built for:
 ```
 beverage-ledger/
 ├── public/
-│   ├── ebl-logo.png          # Casino branding logo
+│   ├── bl-logo.png          # Casino branding logo
 │   └── favicon.ico
 ├── src/
 │   ├── app/
@@ -188,5 +188,5 @@ This software and all associated materials are protected under:
 ---
 
 <div align="center">
-  <img src="public/ebl-logo.png" alt="EBL Logo" width="60" height="60">
+  <img src="public/bl-logo.png" alt="BL Logo" width="60" height="60">
 </div>

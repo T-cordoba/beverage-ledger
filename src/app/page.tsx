@@ -495,10 +495,10 @@ export default function HomePage() {
 			<header className="border-b border-border bg-gradient-to-r from-background to-cardBg backdrop-blur-sm">
 				<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
 					<div className="flex flex-col items-center justify-center">
-						{/* Logo EBL completo */}
+						{/* Logo BL completo */}
 						<div className="mb-4">
 							<img 
-								src="/ebl-logo.png" 
+								src="/bl-logo.png" 
 								alt="Beverage Ledger" 
 								className="h-24 sm:h-32 lg:h-40 w-auto"
 							/>
