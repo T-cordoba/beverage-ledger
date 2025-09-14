@@ -504,7 +504,7 @@ export default function HomePage() {
 							/>
 						</div>
 						<p className="text-secondary/80 text-sm sm:text-base lg:text-lg font-light text-center">
-							Liquor inventory management for Encore Boston Harbor
+							Liquor inventory management for Premium Casino Operations.
 						</p>
 					</div>
 				</div>
