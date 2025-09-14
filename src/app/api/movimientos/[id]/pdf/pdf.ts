@@ -145,7 +145,7 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
     });
 
     // Company name
-    page.drawText('ENCORE BEVERAGE LEDGER', {
+    page.drawText('BEVERAGE LEDGER', {
       x: margin,
       y: pageHeight - 35,
       size: 22,
