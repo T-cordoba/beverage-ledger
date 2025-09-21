@@ -485,10 +485,11 @@ export default function SelectionSection({
 										<div className="absolute top-3 right-3 sm:top-4 sm:right-4 w-2 h-2 sm:w-3 sm:h-3 bg-accent rounded-full animate-pulse"></div>
 									)}
 									
-									<div className="flex flex-col gap-3 sm:gap-4 lg:gap-6">
+									{/* Mobile layout: vertical stack */}
+									<div className="flex flex-col gap-3 sm:gap-4 lg:hidden">
 										{/* Licor Info */}
 										<div className="flex-1">
-											<h3 className="text-lg sm:text-xl lg:text-2xl font-light text-primary mb-2 group-hover:text-accent transition-colors">
+											<h3 className="text-lg sm:text-xl font-light text-primary mb-2 group-hover:text-accent transition-colors">
 												{licor.name}
 											</h3>
 											
@@ -541,7 +542,7 @@ export default function SelectionSection({
 										</div>
 										
 										{/* Controls */}
-										<div className="flex flex-col gap-2 sm:gap-3 lg:gap-4">
+										<div className="flex flex-col gap-2 sm:gap-3">
 											{/* Bottles */}
 											<div className="flex items-center justify-between sm:justify-start sm:gap-4 bg-background/50 backdrop-blur-sm rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 border border-border/30">
 												<label className="text-xs sm:text-sm font-light text-secondary/80 uppercase tracking-wider min-w-[60px] sm:min-w-[80px]">
@@ -582,6 +583,118 @@ export default function SelectionSection({
 														−
 													</QuantityMinusButton>
 													<span className="w-8 sm:w-12 text-center font-light text-lg sm:text-xl text-accent">
+														{cantidad.cajas}
+													</span>
+													<QuantityPlusButton
+														onClick={() => handleQuantityChange(licor.id, "cajas", 1)}
+														aria-label="Add case"
+														type="button"
+													>
+														+
+													</QuantityPlusButton>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									{/* Desktop layout: horizontal with controls on the right */}
+									<div className="hidden lg:flex lg:items-center lg:justify-between lg:gap-8">
+										{/* Licor Info - Left side */}
+										<div className="flex-1">
+											<h3 className="text-2xl font-light text-primary mb-2 group-hover:text-accent transition-colors">
+												{licor.name}
+											</h3>
+											
+											{/* Brand and details row */}
+											<div className="flex flex-wrap items-center gap-2 mb-3">
+												{licor.brand && (
+													<span className="px-2 py-1 text-xs font-medium text-secondary/80 bg-secondary/10 rounded-md border border-secondary/20">
+														{licor.brand}
+													</span>
+												)}
+												{licor.subcategory && (
+													<span className="px-2 py-1 text-xs font-medium text-accent/70 bg-accent/5 rounded-md border border-accent/15">
+														{licor.subcategory}
+													</span>
+												)}
+												{licor.age && (
+													<span className="px-2 py-1 text-xs font-medium text-blue-400/80 bg-blue-400/10 rounded-md border border-blue-400/20">
+														{licor.age}
+													</span>
+												)}
+											</div>
+
+											{/* ABV and Origin row */}
+											<div className="flex flex-wrap items-center gap-3 mb-3">
+												{licor.abv && (
+													<div className="flex items-center gap-1.5 text-xs text-secondary/70">
+														<svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+															<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+														</svg>
+														<span>{licor.abv}% ABV</span>
+													</div>
+												)}
+												{licor.origin && (
+													<div className="flex items-center gap-1.5 text-xs text-secondary/70">
+														<svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+															<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+															<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+														</svg>
+														<span>{licor.origin}</span>
+													</div>
+												)}
+											</div>
+
+											{/* Type badge */}
+											<div className="inline-flex items-center">
+												<span className="px-4 py-2 text-xs font-medium uppercase tracking-widest text-accent/80 bg-accent/10 rounded-full border border-accent/20 backdrop-blur-sm">
+													{licor.type}
+												</span>
+											</div>
+										</div>
+										
+										{/* Controls - Right side */}
+										<div className="flex flex-col gap-4 min-w-[300px]">
+											{/* Bottles */}
+											<div className="flex items-center justify-between bg-background/50 backdrop-blur-sm rounded-2xl px-6 py-4 border border-border/30">
+												<label className="text-sm font-light text-secondary/80 uppercase tracking-wider min-w-[80px]">
+													Bottles
+												</label>
+												<div className="flex items-center gap-3">
+													<QuantityMinusButton
+														onClick={() => handleQuantityChange(licor.id, "botellas", -1)}
+														aria-label="Remove bottle"
+														type="button"
+													>
+														−
+													</QuantityMinusButton>
+													<span className="w-12 text-center font-light text-xl text-accent">
+														{cantidad.botellas}
+													</span>
+													<QuantityPlusButton
+														onClick={() => handleQuantityChange(licor.id, "botellas", 1)}
+														aria-label="Add bottle"
+														type="button"
+													>
+														+
+													</QuantityPlusButton>
+												</div>
+											</div>
+											
+											{/* Cases */}
+											<div className="flex items-center justify-between bg-background/50 backdrop-blur-sm rounded-2xl px-6 py-4 border border-border/30">
+												<label className="text-sm font-light text-secondary/80 uppercase tracking-wider min-w-[80px]">
+													Cases
+												</label>
+												<div className="flex items-center gap-3">
+													<QuantityMinusButton
+														onClick={() => handleQuantityChange(licor.id, "cajas", -1)}
+														aria-label="Remove case"
+														type="button"
+													>
+														−
+													</QuantityMinusButton>
+													<span className="w-12 text-center font-light text-xl text-accent">
 														{cantidad.cajas}
 													</span>
 													<QuantityPlusButton
