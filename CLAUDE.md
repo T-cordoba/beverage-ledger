@@ -238,7 +238,9 @@ Los refresh tokens rotan y hay **detección de reuso**: si el front manda dos ve
 
 ### El dominio (Fase 3, ya construido)
 
-`GET /docs-json` expone el contrato completo: **30 rutas, 58 esquemas**. Es de ahí que sale `src/lib/api/schema.d.ts` con `npm run api:types`. Lo esencial para diseñar las vistas:
+`GET /docs-json` expone el contrato completo: **30 rutas, 58 esquemas**, con la API corriendo en `:3001`.
+
+⚠️ El script `npm run api:types` y la dependencia `openapi-typescript` **todavía no existen en este repo**: montarlos es trabajo de la Fase 5, junto con el cliente y el wrapper de auth. La Fase 4 no los necesita. Lo esencial para diseñar las vistas:
 
 - **Catálogo** — `/products`, `/categories`, `/brands`. Todo paginado por cursor con `search`, filtros y orden en el servidor: no descargues los 215. Leer es abierto a cualquier autenticado; escribir exige `catalog:manage`. Los productos no se borran, se desactivan con `isActive: false`.
 - **Movimientos** — el ciclo es **crear borrador → confirmar**, en dos llamadas. `POST /movements` abre un `DRAFT` que no toca existencias; `POST /movements/:id/confirm` aplica el delta. Eso es justamente lo que da el borrador persistente de la Fase 6. Anular es `POST /movements/:id/cancel` con motivo, y revierte el stock.
