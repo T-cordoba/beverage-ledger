@@ -27,8 +27,8 @@ El nombre no es casual: la fuente de verdad del inventario es un **ledger inmuta
 |---|---|---|
 | 0 | Higiene del repo front: ESLint, Prettier, alias `@/`, código muerto, `CLAUDE.md` | ✅ Hecha |
 | 1 | Repo API: scaffold Nest, Prisma, esquema, seed, `common/` | ✅ Hecha |
-| 2 | API: auth (local + Google OAuth), JWT, refresh, matriz de permisos | 🔄 Siguiente |
-| 3 | API: catálogo, inventario con stock, reportes, PDF | ⬜ Pendiente |
+| 2 | API: auth (local + Google OAuth), JWT, refresh, matriz de permisos | ✅ Hecha |
+| 3 | API: catálogo, inventario con stock, reportes, PDF | 🔄 Siguiente |
 | 4 | Front: design system (tokens CSS, primitivos Radix, `cn()`) | ⬜ Pendiente |
 | 5 | Front: reestructura a rutas reales + corte a la API nueva | ⬜ Pendiente |
 | 6 | Front: dashboard de existencias + panel de administración | ⬜ Pendiente |
@@ -224,9 +224,17 @@ El modelo sigue el principio de **segregación de funciones**, el control base d
 | Usuarios, roles y organización | ❌ | ❌ | ✅ |
 | Log de auditoría | ❌ | ❌ | ✅ |
 
-La matriz vive en **una sola definición declarativa** en la API (`common/permissions/permissions.config.ts`), la consume el `RolesGuard` y se expone al front en `/auth/me`. El front la usa para ocultar lo que el usuario no puede hacer — pero **la autorización real siempre es del backend**; ocultar un botón no es un control de seguridad.
+La matriz vive en **una sola definición declarativa** en la API (`common/permissions/permissions.config.ts`), la consume el `PermissionsGuard` y se expone al front en `/auth/me`. El front la usa para ocultar lo que el usuario no puede hacer — pero **la autorización real siempre es del backend**; ocultar un botón no es un control de seguridad.
 
 Nada de `if (user.role === 'admin')` desperdigado por el código.
+
+### Lo que el front tendrá que consumir (ya construido en la API)
+
+`GET /auth/me` devuelve `{ user, organization, permissions }`. La lista de `permissions` es de strings tipo `movement:create-outbound` o `catalog:manage`; el front condiciona la UI sobre esa lista, nunca sobre `role`.
+
+La sesión son dos piezas: un **access token JWT corto que se guarda en memoria** —nunca en `localStorage`— y una **cookie de refresh httpOnly** que el navegador maneja solo. Cuando el access token expira, `POST /auth/refresh` con `credentials: 'include'` devuelve uno nuevo. El login con Google no devuelve token: redirige a `/auth/callback` con la cookie ya puesta, y esa página tiene que llamar a `/auth/refresh` para obtener el access token.
+
+Los refresh tokens rotan y hay **detección de reuso**: si el front manda dos veces el mismo, la API revoca todas las sesiones de ese usuario. El wrapper del cliente debe serializar los refresh concurrentes en una sola llamada, o un par de peticiones simultáneas con el token vencido cierran la sesión.
 
 ---
 
