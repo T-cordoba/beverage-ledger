@@ -82,8 +82,40 @@ Lo que se aplaza: signup de organizaciones, billing, invitaciones, subdominios, 
 ## 5. Convenciones
 
 ### Idioma
-- **Código, identificadores, nombres de archivo, columnas de BD, comentarios: inglés.** El código original mezclaba (`cantidades`, `botellas`, `cajas`, `licores`, `nombre`, `tipo`, `fecha`); eso se elimina.
+- **Todo lo que vive dentro del código va en inglés**: identificadores, nombres de archivo, columnas de BD, comentarios, mensajes de log y mensajes de commit. El código original mezclaba (`cantidades`, `botellas`, `cajas`, `licores`, `nombre`, `tipo`, `fecha`); eso se elimina.
+- El español queda para la documentación del repositorio (`CLAUDE.md`, `README.md`) y para el copy de la interfaz.
 - **Copy de la interfaz: nunca literal en el JSX.** Va a `src/i18n/messages/{es,en}.json` (Fase 7). `es` es el idioma por defecto.
+
+### Comentarios
+
+**El comentario por defecto es no escribirlo.** Un comentario es deuda: hay que mantenerlo sincronizado con el código y, cuando deja de estarlo, miente. La mayoría son innecesarios porque el código ya lo dice.
+
+Se escribe un comentario cuando explica **por qué**, no **qué**:
+
+```ts
+// ✗ Restata lo que el código ya dice
+// Incrementa el contador
+counter += 1;
+
+// ✓ Explica una decisión que no se deduce del código
+// Grouped by delta: 215 sequential updates blow past Prisma's 5s
+// transaction timeout against a remote database.
+```
+
+Qué sí merece un comentario:
+- Una decisión no obvia y su alternativa descartada.
+- Una restricción externa (límite de un proveedor, bug de una librería, requisito legal).
+- Una invariante que el tipo no puede expresar.
+- JSDoc en lo público cuando el nombre no basta: qué lanza, qué asume.
+- `TODO`/`FIXME` con contexto suficiente para actuar.
+
+Qué no:
+- Parafrasear la línea siguiente.
+- Banners y separadores ASCII para dividir secciones. Si un archivo necesita separadores, necesita partirse en varios.
+- Comentar código muerto en vez de borrarlo: para eso está git.
+- Encabezados con autor o fecha: eso lo sabe git.
+
+Si un fragmento necesita un comentario para entenderse, primero considera si un nombre mejor o una función extraída lo hacen innecesario.
 
 ### Nada quemado
 Ni colores, ni z-index, ni endpoints, ni textos, ni valores de negocio, ni nombres de empresa. Si un valor aparece dos veces, es un token o una constante. Los sitios donde vivir:
