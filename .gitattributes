@@ -1,9 +1,7 @@
-# Normaliza los finales de línea a LF en el repo y en el working tree.
-# Sin esto, en Windows Git hace checkout en CRLF mientras Prettier escribe LF,
-# y `npm run format:check` falla en una máquina limpia.
+# Force LF: on Windows Git checks out CRLF while Prettier writes LF, which makes
+# `npm run format:check` fail on a clean machine.
 * text=auto eol=lf
 
-# Binarios: nunca tocar.
 *.png binary
 *.ico binary
 *.jpg binary

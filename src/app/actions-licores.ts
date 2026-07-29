@@ -15,7 +15,7 @@ export type Licor = {
   age?: string;
 };
 
-/** Fila cruda de la tabla `licores` (columnas en español, ver CLAUDE.md §10). */
+/** Raw `licores` row. Columns are Spanish, see CLAUDE.md §10. */
 type LicorRow = {
   id: string;
   nombre: string;

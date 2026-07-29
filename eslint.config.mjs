@@ -23,13 +23,13 @@ const eslintConfig = [
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
           caughtErrorsIgnorePattern: '^_',
-          // Permite el idiom `const { [k]: _omitido, ...resto } = obj`.
+          // Allows the `const { [k]: _omitted, ...rest } = obj` idiom.
           ignoreRestSiblings: true,
         },
       ],
       '@typescript-eslint/no-explicit-any': 'error',
 
-      // Ver CLAUDE.md §5: los imports van siempre por el alias @/.
+      // Imports always go through the @/ alias, see CLAUDE.md.
       'no-restricted-imports': [
         'error',
         {
@@ -42,8 +42,8 @@ const eslintConfig = [
         },
       ],
 
-      // Ver CLAUDE.md §5: nada quemado. Los colores y el z-index salen de tokens,
-      // no de valores arbitrarios de Tailwind.
+      // Colours and z-index come from theme tokens, never from arbitrary Tailwind
+      // values.
       'no-restricted-syntax': [
         'warn',
         {
@@ -59,7 +59,7 @@ const eslintConfig = [
     },
   },
 
-  // Prettier va al final: desactiva las reglas de estilo que colisionan con el formateador.
+  // Last: turns off stylistic rules that collide with the formatter.
   ...compat.extends('prettier'),
 ];
 

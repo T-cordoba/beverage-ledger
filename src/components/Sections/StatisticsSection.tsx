@@ -21,7 +21,6 @@ export default function StatisticsSection({
 }: StatisticsSectionProps) {
   return (
     <section className="space-y-6 lg:space-y-8 w-full max-w-full overflow-hidden">
-      {/* Statistics Header */}
       <div className="text-center">
         <h2 className="text-xl sm:text-2xl font-light text-primary">Statistics</h2>
         <p className="text-secondary/60 text-sm sm:text-base mt-2">
@@ -29,9 +28,7 @@ export default function StatisticsSection({
         </p>
       </div>
 
-      {/* Filter Controls */}
       <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center px-4 sm:px-0">
-        {/* Time Range Selector */}
         <div className="flex items-center gap-2 w-full sm:w-auto justify-center">
           <span className="text-secondary/80 text-sm font-medium flex-shrink-0">Period:</span>
           <div className="flex bg-cardBg border border-border rounded-lg overflow-hidden">
@@ -49,7 +46,6 @@ export default function StatisticsSection({
           </div>
         </div>
 
-        {/* View Type Selector */}
         <div className="flex items-center gap-2 w-full sm:w-auto justify-center">
           <span className="text-secondary/80 text-sm font-medium flex-shrink-0">View:</span>
           <div className="flex bg-cardBg border border-border rounded-lg overflow-hidden">
@@ -74,7 +70,6 @@ export default function StatisticsSection({
         </div>
       ) : statisticsData && statisticsData.length > 0 ? (
         <div className="grid gap-4 sm:gap-6 lg:gap-8 lg:grid-cols-2 w-full max-w-full overflow-hidden">
-          {/* Chart Section */}
           <div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 min-w-0">
             <h3 className="text-lg font-medium text-accent mb-4">
               Most Requested {statisticsView === 'liquor' ? 'Liquors' : 'Types'}
@@ -109,7 +104,6 @@ export default function StatisticsSection({
             </div>
           </div>
 
-          {/* Leaderboard Section */}
           <div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 min-w-0">
             <h3 className="text-lg font-medium text-accent mb-4">Leaderboard</h3>
             <div className="space-y-2">

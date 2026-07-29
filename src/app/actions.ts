@@ -23,7 +23,7 @@ export type Movimiento = {
   liquors: Licor[];
 };
 
-/** Fila cruda de la tabla `movimientos` (columnas en español, ver CLAUDE.md §10). */
+/** Raw `movimientos` row. Columns are Spanish, see CLAUDE.md §10. */
 type MovimientoRow = {
   id: string;
   fecha: string;

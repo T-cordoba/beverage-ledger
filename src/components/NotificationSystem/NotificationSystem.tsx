@@ -17,7 +17,6 @@ export function useNotifications() {
     const id = Date.now().toString();
     setNotifications((prev) => [...prev, { id, type, title, message }]);
 
-    // Auto remove after 5 seconds
     setTimeout(() => {
       removeNotification(id);
     }, 5000);

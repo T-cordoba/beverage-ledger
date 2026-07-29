@@ -17,7 +17,6 @@ body {
   min-height: 100vh;
 }
 
-/* Custom animations for filter transitions */
 @keyframes fade-in-up {
   from {
     opacity: 0;

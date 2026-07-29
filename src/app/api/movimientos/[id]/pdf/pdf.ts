@@ -19,25 +19,21 @@ export async function createPDF(
 ): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
 
-  // Fonts
   const font = await doc.embedFont(StandardFonts.Helvetica);
   const boldFont = await doc.embedFont(StandardFonts.HelveticaBold);
 
-  // Colors - Using exact system colors from Tailwind config
-  const background = rgb(0x12 / 255, 0x00 / 255, 0x06 / 255); // #120006
-  const primary = rgb(0xf0 / 255, 0xe6 / 255, 0xce / 255); // #F0E6CE
-  const secondary = rgb(0xff / 255, 0xff / 255, 0xff / 255); // #FFFFFF (white)
-  const accent = rgb(0xd4 / 255, 0xaf / 255, 0x37 / 255); // #D4AF37
-  const border = rgb(0x2a / 255, 0x2a / 255, 0x2a / 255); // #2A2A2A
-  const inputBg = rgb(0x1a / 255, 0x1a / 255, 0x1a / 255); // #1A1A1A
-  const lightBg = rgb(0.95, 0.93, 0.88); // Light version of primary for alternating rows
+  const background = rgb(0x12 / 255, 0x00 / 255, 0x06 / 255);
+  const primary = rgb(0xf0 / 255, 0xe6 / 255, 0xce / 255);
+  const secondary = rgb(0xff / 255, 0xff / 255, 0xff / 255);
+  const accent = rgb(0xd4 / 255, 0xaf / 255, 0x37 / 255);
+  const border = rgb(0x2a / 255, 0x2a / 255, 0x2a / 255);
+  const inputBg = rgb(0x1a / 255, 0x1a / 255, 0x1a / 255);
+  const lightBg = rgb(0.95, 0.93, 0.88);
 
-  // Page dimensions
   const pageWidth = 595; // A4 width
   const pageHeight = 842; // A4 height
   const margin = 40;
 
-  // Table configuration - Adjusted widths to fit within page margins (total ~495px for A4)
   const tableColumns = [
     { header: 'Item', width: 100, key: 'name' },
     { header: 'Brand', width: 70, key: 'brand' },
@@ -50,13 +46,12 @@ export async function createPDF(
     { header: 'Unit', width: 40, key: 'unit' },
   ];
 
-  const tableWidth = tableColumns.reduce((sum, col) => sum + col.width, 0); // Should be ~510px
-  const tableStartX = margin; // Start from margin instead of centering
+  const tableWidth = tableColumns.reduce((sum, col) => sum + col.width, 0);
+  const tableStartX = margin;
   const baseRowHeight = 16;
-  const maxLinesPerRow = 3; // Maximum lines before considering new page
+  const maxLinesPerRow = 3;
   const headerHeight = 25;
 
-  // Enhanced text wrapping function
   function wrapText(text: string, maxWidth: number, fontSize: number): string[] {
     if (!text || text === '-') return [text || ''];
 
@@ -64,9 +59,8 @@ export async function createPDF(
     const lines: string[] = [];
     let currentLine = '';
 
-    // More conservative character width calculation for better fitting
     const avgCharWidth = fontSize * 0.6;
-    const maxCharsPerLine = Math.floor((maxWidth - 8) / avgCharWidth); // 8px total padding
+    const maxCharsPerLine = Math.floor((maxWidth - 8) / avgCharWidth);
 
     for (const word of words) {
       const testLine = currentLine ? `${currentLine} ${word}` : word;
@@ -77,9 +71,7 @@ export async function createPDF(
         if (currentLine) {
           lines.push(currentLine);
 
-          // Check if the word itself is too long
           if (word.length > maxCharsPerLine) {
-            // Split long word
             let remainingWord = word;
             while (remainingWord.length > maxCharsPerLine) {
               lines.push(remainingWord.substring(0, maxCharsPerLine - 1) + '-');
@@ -90,7 +82,6 @@ export async function createPDF(
             currentLine = word;
           }
         } else {
-          // Single word too long, force split
           let remainingWord = word;
           while (remainingWord.length > maxCharsPerLine) {
             lines.push(remainingWord.substring(0, maxCharsPerLine - 1) + '-');
@@ -105,11 +96,9 @@ export async function createPDF(
       lines.push(currentLine);
     }
 
-    // Limit to maxLinesPerRow to prevent excessive row height
     return lines.slice(0, maxLinesPerRow);
   }
 
-  // Function to calculate row height based on content
   function calculateRowHeight(row: LiquorRow): number {
     let maxLines = 1;
 
@@ -152,9 +141,7 @@ export async function createPDF(
     return baseRowHeight * maxLines;
   }
 
-  // Helper function to create header
   function createHeader(page: PDFPage, pageNumber: number, totalPages: number) {
-    // Company header
     page.drawRectangle({
       x: 0,
       y: pageHeight - 100,
@@ -163,7 +150,6 @@ export async function createPDF(
       color: background,
     });
 
-    // Company name
     page.drawText('BEVERAGE LEDGER', {
       x: margin,
       y: pageHeight - 35,
@@ -172,7 +158,6 @@ export async function createPDF(
       color: primary,
     });
 
-    // Subtitle
     page.drawText('Liquor Inventory Movement Invoice', {
       x: margin,
       y: pageHeight - 55,
@@ -181,7 +166,6 @@ export async function createPDF(
       color: primary,
     });
 
-    // Page info
     page.drawText(`Page ${pageNumber} of ${totalPages}`, {
       x: pageWidth - margin - 80,
       y: pageHeight - 35,
@@ -190,7 +174,6 @@ export async function createPDF(
       color: primary,
     });
 
-    // Invoice details (only on first page)
     if (pageNumber === 1) {
       const detailsY = pageHeight - 130;
 
@@ -240,9 +223,7 @@ export async function createPDF(
     }
   }
 
-  // Helper function to create table header
   function createTableHeader(page: PDFPage, startY: number) {
-    // Header background
     page.drawRectangle({
       x: tableStartX,
       y: startY - headerHeight,
@@ -251,7 +232,6 @@ export async function createPDF(
       color: background,
     });
 
-    // Header text
     let currentX = tableStartX;
     tableColumns.forEach((col) => {
       page.drawText(col.header, {
@@ -267,7 +247,6 @@ export async function createPDF(
     return startY - headerHeight;
   }
 
-  // Prepare liquor data
   const liquorRows: LiquorRow[] = movimiento.liquors.map((liquor) => ({
     name: liquor.name || '',
     type: liquor.type || '',
@@ -289,48 +268,38 @@ export async function createPDF(
           : liquor.unit,
   }));
 
-  // Create pages and render content
   let currentPageIndex = 0;
   let itemsOnCurrentPage = 0;
   let currentY = 0;
   const totalItems = liquorRows.reduce((sum, row) => sum + row.quantity, 0);
 
-  // Start with just the first page
   const pages: PDFPage[] = [];
   pages.push(doc.addPage([pageWidth, pageHeight]));
 
-  // Setup first page
-  createHeader(pages[0], 1, 1); // We'll update total pages later
+  createHeader(pages[0], 1, 1); // Total page count is only known after layout; fixed up at the end.
   const tableStartY = pageHeight - 220;
   currentY = createTableHeader(pages[0], tableStartY);
 
-  // Render liquor items
   currentPageIndex = 0;
   itemsOnCurrentPage = 0;
   currentY = pages[0] ? pageHeight - 220 - headerHeight : 0;
 
   liquorRows.forEach((row) => {
-    // Calculate dynamic row height based on content
     const currentRowHeight = calculateRowHeight(row);
 
-    // Check if we have enough vertical space for this row
-    const minYPosition = 120; // Minimum Y position before footer
-    const spaceNeeded = currentRowHeight + 5; // Add some padding
+    const minYPosition = 120;
+    const spaceNeeded = currentRowHeight + 5;
 
-    // Check if we need to move to next page based on vertical space
     if (currentY - spaceNeeded < minYPosition) {
-      // Need a new page
       if (currentPageIndex < pages.length - 1) {
         currentPageIndex++;
         itemsOnCurrentPage = 0;
         currentY = pageHeight - 140 - headerHeight;
       } else {
-        // Need to create a new page
         const newPage = doc.addPage([pageWidth, pageHeight]);
         pages.push(newPage);
 
-        // Setup new page
-        createHeader(newPage, pages.length, pages.length); // Temporary, will be updated later
+        createHeader(newPage, pages.length, pages.length); // Placeholder page count, corrected once the total is known.
         const tableStartY = pageHeight - 140;
         createTableHeader(newPage, tableStartY);
 
@@ -343,7 +312,6 @@ export async function createPDF(
     const page = pages[currentPageIndex];
     const isEvenRow = itemsOnCurrentPage % 2 === 0;
 
-    // Alternating row background
     if (isEvenRow) {
       page.drawRectangle({
         x: tableStartX,
@@ -354,7 +322,6 @@ export async function createPDF(
       });
     }
 
-    // Draw cell borders
     let currentX = tableStartX;
     tableColumns.forEach((col) => {
       page.drawRectangle({
@@ -369,7 +336,6 @@ export async function createPDF(
       currentX += col.width;
     });
 
-    // Render cell content with multi-line support
     currentX = tableStartX;
     tableColumns.forEach((col) => {
       let cellValue = '';
@@ -404,11 +370,10 @@ export async function createPDF(
           break;
       }
 
-      // Wrap text and render all lines
       const wrappedLines = wrapText(cellValue, col.width, 8);
 
       wrappedLines.forEach((line, lineIndex) => {
-        const lineY = currentY - 10 - lineIndex * 10; // 10px line spacing
+        const lineY = currentY - 10 - lineIndex * 10;
 
         page.drawText(line, {
           x: currentX + 3,
@@ -426,10 +391,8 @@ export async function createPDF(
     itemsOnCurrentPage++;
   });
 
-  // Update page numbers now that we know the total
   const totalPages = pages.length;
   pages.forEach((page, index) => {
-    // Clear the old page number area and redraw with correct total
     page.drawRectangle({
       x: pageWidth - margin - 80,
       y: pageHeight - 45,
@@ -447,10 +410,8 @@ export async function createPDF(
     });
   });
 
-  // Add summary and footer to last page
   const lastPage = pages[pages.length - 1];
 
-  // Summary box - positioned within margins
   const summaryY = currentY - 40;
   lastPage.drawRectangle({
     x: pageWidth - margin - 150,
@@ -476,7 +437,6 @@ export async function createPDF(
     color: background,
   });
 
-  // Footer on all pages
   pages.forEach((page) => {
     page.drawText(
       'This document serves as an official record of liquor inventory movement for premium casino operations.',

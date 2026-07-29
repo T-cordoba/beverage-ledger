@@ -15,7 +15,6 @@ export default function Calendar({
 }: CalendarProps) {
   const datePickerRef = useRef<HTMLDivElement>(null);
 
-  // Handle clicking outside to close calendar
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
@@ -29,7 +28,6 @@ export default function Calendar({
     }
   }, [showDatePicker, setShowDatePicker]);
 
-  // Calendar helper functions
   const formatDateLocal = (date: Date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -127,7 +125,6 @@ export default function Calendar({
         )}
       </button>
 
-      {/* Calendar dropdown */}
       {showDatePicker && (
         <div className="absolute top-full left-0 right-0 mt-2 bg-background/95 backdrop-blur-sm border border-white/20 rounded-xl shadow-2xl z-50 p-4">
           {(() => {
@@ -152,7 +149,6 @@ export default function Calendar({
 
             return (
               <div className="space-y-4">
-                {/* Header */}
                 <div className="flex items-center justify-between">
                   <button
                     onClick={prevMonth}
@@ -195,7 +191,6 @@ export default function Calendar({
                   </button>
                 </div>
 
-                {/* Days of week */}
                 <div className="grid grid-cols-7 gap-1 text-xs text-secondary/60 font-medium">
                   {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
                     <div key={day} className="p-2 text-center">
@@ -204,14 +199,11 @@ export default function Calendar({
                   ))}
                 </div>
 
-                {/* Calendar grid */}
                 <div className="grid grid-cols-7 gap-1">
-                  {/* Empty cells for days before month starts */}
                   {Array.from({ length: firstDay }, (_, i) => (
                     <div key={`empty-${i}`} className="p-2"></div>
                   ))}
 
-                  {/* Days of the month */}
                   {Array.from({ length: daysInMonth }, (_, i) => {
                     const day = i + 1;
                     const dateStr = formatDateLocal(new Date(year, month, day));

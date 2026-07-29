@@ -1,27 +1,26 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 
-// Variantes
 type ButtonVariant =
-  | 'primary' // bg-accent hover:bg-accentHover (amarillo)
-  | 'secondary' // bg-border/50 hover:bg-border (gris)
-  | 'ghost' // transparent (para navegación)
-  | 'filter' // Para botones de filtro/toggle
-  | 'danger' // bg-red-500/10 hover:bg-red-500/20 (rojo transparente)
-  | 'destructive' // bg-red-600 hover:bg-red-700 (rojo sólido para acciones irreversibles)
-  | 'icon' // Para botones pequeños redondos
-  | 'navTab' // Para tabs de navegación
-  | 'quantityMinus' // Para botones - de cantidad
-  | 'quantityPlus' // Para botones + de cantidad
-  | 'clearSearch' // Para botón X de limpiar búsqueda
-  | 'dropdown' // Para botón principal de dropdown
-  | 'dropdownItem'; // Para items dentro del dropdown
+  | 'primary'
+  | 'secondary'
+  | 'ghost'
+  | 'filter'
+  | 'danger'
+  | 'destructive'
+  | 'icon'
+  | 'navTab'
+  | 'quantityMinus'
+  | 'quantityPlus'
+  | 'clearSearch'
+  | 'dropdown'
+  | 'dropdownItem';
 
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  isActive?: boolean; // Para estados toggle/filter
+  isActive?: boolean;
   isLoading?: boolean;
   children: ReactNode;
   leftIcon?: ReactNode;
@@ -91,7 +90,6 @@ export default function Button({
   disabled,
   ...props
 }: ButtonProps) {
-  // Obtener estilos de variante
   const getVariantStyles = () => {
     switch (variant) {
       case 'filter':
@@ -114,7 +112,6 @@ export default function Button({
     }
   };
 
-  // Para botones con padding incluido, no aplicar size automático
   const shouldApplyBaseStyles = ![
     'clearSearch',
     'quantityMinus',
@@ -131,7 +128,6 @@ export default function Button({
     ? 'font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
     : 'disabled:opacity-50 disabled:cursor-not-allowed';
 
-  // Combinar todas las clases
   const combinedClassName = [
     baseStyles,
     getVariantStyles(),

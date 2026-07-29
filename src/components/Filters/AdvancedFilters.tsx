@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from '@/components/UI/Button';
 
 interface AdvancedFiltersProps {
-  // Single filter states (used in the actual implementation)
   brandFilter: string;
   setBrandFilter: (brand: string) => void;
   originFilter: string;
@@ -14,7 +13,6 @@ interface AdvancedFiltersProps {
   abvFilter: string;
   setAbvFilter: (abv: string) => void;
 
-  // Dropdown states
   isBrandDropdownOpen: boolean;
   setIsBrandDropdownOpen: (open: boolean) => void;
   isOriginDropdownOpen: boolean;
@@ -26,14 +24,12 @@ interface AdvancedFiltersProps {
   isAbvDropdownOpen: boolean;
   setIsAbvDropdownOpen: (open: boolean) => void;
 
-  // Available options
   uniqueBrands: (string | undefined)[];
   uniqueOrigins: (string | undefined)[];
   uniqueSubcategories: (string | undefined)[];
   uniqueAges: (string | undefined)[];
   uniqueAbvs: (string | undefined)[];
 
-  // Functions
   clearAdvancedFilters: () => void;
   hasAdvancedFilters: boolean | string;
 }
@@ -70,7 +66,6 @@ export default function AdvancedFilters({
   return (
     <div className="bg-cardBg/40 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-border/30 shadow-lg animate-fade-in-up relative z-[110]">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
-        {/* Brand Filter */}
         <div className="relative z-[114]">
           <label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">
             Brand
@@ -133,7 +128,6 @@ export default function AdvancedFilters({
           )}
         </div>
 
-        {/* Origin Filter */}
         <div className="relative z-[113]">
           <label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">
             Origin
@@ -196,7 +190,6 @@ export default function AdvancedFilters({
           )}
         </div>
 
-        {/* Subcategory Filter */}
         <div className="relative z-[112]">
           <label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">
             Category
@@ -262,7 +255,6 @@ export default function AdvancedFilters({
           )}
         </div>
 
-        {/* Age Filter */}
         <div className="relative z-[111]">
           <label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">
             Age
@@ -325,7 +317,6 @@ export default function AdvancedFilters({
           )}
         </div>
 
-        {/* ABV Filter */}
         <div className="relative z-[110]">
           <label className="block text-xs font-medium text-secondary/70 mb-2 uppercase tracking-wider">
             ABV
@@ -389,7 +380,6 @@ export default function AdvancedFilters({
         </div>
       </div>
 
-      {/* Advanced Filters Actions */}
       <div className="flex justify-end gap-3">
         <Button
           variant="secondary"

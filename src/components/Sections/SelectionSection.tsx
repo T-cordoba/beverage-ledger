@@ -39,11 +39,9 @@ export default function SelectionSection({
   onConfirm,
   onCancel,
 }: SelectionSectionProps) {
-  // Estado para controlar el dropdown personalizado
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isItemsPerPageDropdownOpen, setIsItemsPerPageDropdownOpen] = useState(false);
 
-  // Estados para filtros avanzados
   const [isAdvancedFiltersOpen, setIsAdvancedFiltersOpen] = useState(false);
   const [brandFilter, setBrandFilter] = useState('');
   const [originFilter, setOriginFilter] = useState('');
@@ -51,27 +49,21 @@ export default function SelectionSection({
   const [ageFilter, setAgeFilter] = useState('');
   const [abvFilter, setAbvFilter] = useState('');
 
-  // Dropdown states for advanced filters
   const [isBrandDropdownOpen, setIsBrandDropdownOpen] = useState(false);
   const [isOriginDropdownOpen, setIsOriginDropdownOpen] = useState(false);
   const [isSubcategoryDropdownOpen, setIsSubcategoryDropdownOpen] = useState(false);
   const [isAgeDropdownOpen, setIsAgeDropdownOpen] = useState(false);
   const [isAbvDropdownOpen, setIsAbvDropdownOpen] = useState(false);
 
-  // Estado para rastrear scroll automático
   const [lastAddedLicorId, setLastAddedLicorId] = useState<string | null>(null);
   const licorRefs = useRef<Record<string, HTMLLIElement | null>>({});
 
-  // Key para forzar re-render y re-animación de los elementos
   const [animationKey, setAnimationKey] = useState(0);
-  // Estados de paginación
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(15);
 
-  // Get unique types for the dropdown
   const uniqueTypes = Array.from(new Set(licores.map((licor) => licor.type))).sort();
 
-  // Get unique options for advanced filters
   const uniqueBrands = Array.from(
     new Set(licores.map((licor) => licor.brand).filter(Boolean)),
   ).sort();
@@ -86,13 +78,11 @@ export default function SelectionSection({
     new Set(licores.map((licor) => licor.abv?.toString()).filter(Boolean)),
   ).sort((a, b) => parseFloat(a || '0') - parseFloat(b || '0'));
 
-  // Effect to trigger re-animation when filters change
   useEffect(() => {
     setAnimationKey((prev) => prev + 1);
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1);
   }, [searchTerm, typeFilter, brandFilter, originFilter, subcategoryFilter, ageFilter, abvFilter]);
 
-  // Filter liquors by all available filters
   const licoresFiltrados = licores.filter((licor) => {
     const searchLower = searchTerm.toLowerCase();
     const matchesSearch =
@@ -121,7 +111,6 @@ export default function SelectionSection({
     );
   });
 
-  // Sort liquors: those with selected quantities first
   const licoresOrdenados = [...licoresFiltrados].sort((a, b) => {
     const cantidadA = cantidades[a.id] || { botellas: 0, cajas: 0 };
     const cantidadB = cantidades[b.id] || { botellas: 0, cajas: 0 };
@@ -129,50 +118,39 @@ export default function SelectionSection({
     const tieneSeleccionA = cantidadA.botellas > 0 || cantidadA.cajas > 0;
     const tieneSeleccionB = cantidadB.botellas > 0 || cantidadB.cajas > 0;
 
-    // If one has selection and the other doesn't, the one with selection goes first
     if (tieneSeleccionA && !tieneSeleccionB) return -1;
     if (!tieneSeleccionA && tieneSeleccionB) return 1;
 
-    // If both have or don't have selection, maintain alphabetical order by name
     return a.name.localeCompare(b.name);
   });
 
-  // Pagination logic
   const totalPages = Math.ceil(licoresOrdenados.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentPageLicores = licoresOrdenados.slice(startIndex, endIndex);
 
-  // Function to handle quantity change with auto-scroll
   const handleQuantityChange = (id: string, type: 'botellas' | 'cajas', delta: number) => {
     const currentCantidad = cantidades[id] || { botellas: 0, cajas: 0 };
     const currentValue = currentCantidad[type];
 
-    // Only track if we're adding (delta > 0) and this is the first item being added
     if (delta > 0 && currentValue === 0) {
       setLastAddedLicorId(id);
     }
 
-    // Call the original function
     onQuantityChange(id, type, delta);
   };
 
-  // Effect to scroll to the last added licor
   useEffect(() => {
     if (lastAddedLicorId) {
-      // Find which page contains this licor
       const licorIndex = licoresOrdenados.findIndex((licor) => licor.id === lastAddedLicorId);
       if (licorIndex !== -1) {
         const targetPage = Math.floor(licorIndex / itemsPerPage) + 1;
 
-        // If we need to change page, do it first
         if (targetPage !== currentPage) {
           setCurrentPage(targetPage);
-          // The scroll will happen after the page change in the next effect
           return;
         }
 
-        // Scroll to the element
         const element = licorRefs.current[lastAddedLicorId];
         if (element) {
           element.scrollIntoView({
@@ -182,7 +160,6 @@ export default function SelectionSection({
         }
       }
 
-      // Clear the tracking after a short delay
       const timer = setTimeout(() => {
         setLastAddedLicorId(null);
       }, 1000);
@@ -191,7 +168,6 @@ export default function SelectionSection({
     }
   }, [lastAddedLicorId, licoresOrdenados, currentPage, itemsPerPage]);
 
-  // Helper functions for advanced filters
   const hasAdvancedFilters =
     brandFilter || originFilter || subcategoryFilter || ageFilter || abvFilter;
 
@@ -211,7 +187,6 @@ export default function SelectionSection({
     setIsAdvancedFiltersOpen(false);
   };
 
-  // Calculate totals
   const totalBottles = Object.values(cantidades).reduce(
     (sum, cantidad) => sum + cantidad.botellas,
     0,
@@ -223,11 +198,8 @@ export default function SelectionSection({
 
   return (
     <section className="space-y-3 sm:space-y-4 lg:space-y-8">
-      {/* Search and Filter Controls */}
       <div className="mb-4 sm:mb-6 lg:mb-8">
-        {/* Search and Dropdown Row */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-6">
-          {/* Search Bar */}
           <div className="relative flex-1 max-w-full sm:max-w-md">
             <input
               type="text"
@@ -259,9 +231,7 @@ export default function SelectionSection({
             </div>
           </div>
 
-          {/* Type Filter Dropdown */}
           <div className="relative flex-1 sm:flex-initial sm:min-w-[200px]">
-            {/* Dropdown Button */}
             <DropdownButton
               type="button"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -287,10 +257,8 @@ export default function SelectionSection({
               </svg>
             </DropdownButton>
 
-            {/* Dropdown Menu */}
             {isDropdownOpen && (
               <div className="absolute top-full left-0 right-0 mt-2 bg-cardBg border border-border rounded-xl sm:rounded-2xl shadow-2xl backdrop-blur-sm z-[9999] max-h-48 sm:max-h-80 overflow-y-auto">
-                {/* All Types Option */}
                 <DropdownItemButton
                   type="button"
                   onClick={() => {
@@ -303,7 +271,6 @@ export default function SelectionSection({
                   All Types
                 </DropdownItemButton>
 
-                {/* Type Options */}
                 {uniqueTypes.map((type) => (
                   <DropdownItemButton
                     key={type}
@@ -321,13 +288,11 @@ export default function SelectionSection({
               </div>
             )}
 
-            {/* Overlay para cerrar el dropdown */}
             {isDropdownOpen && (
               <div className="fixed inset-0 z-[9998]" onClick={() => setIsDropdownOpen(false)} />
             )}
           </div>
 
-          {/* Advanced Filters Button */}
           <div className="relative">
             <Button
               variant="secondary"
@@ -371,7 +336,6 @@ export default function SelectionSection({
             </Button>
           </div>
 
-          {/* Clear All Filters Button - Solo en desktop dentro del flex */}
           {(searchTerm || typeFilter || hasAdvancedFilters) && (
             <div className="hidden sm:flex items-center animate-fade-in-up">
               <Button
@@ -399,7 +363,6 @@ export default function SelectionSection({
           )}
         </div>
 
-        {/* Clear All Filters Button - Solo en móvil, centrado */}
         {(searchTerm || typeFilter || hasAdvancedFilters) && (
           <div className="flex sm:hidden justify-center mt-3 animate-fade-in-up">
             <Button
@@ -427,7 +390,6 @@ export default function SelectionSection({
         )}
       </div>
 
-      {/* Advanced Filters Section */}
       {isAdvancedFiltersOpen && (
         <AdvancedFilters
           brandFilter={brandFilter}
@@ -522,15 +484,12 @@ export default function SelectionSection({
                     <div className="absolute top-3 right-3 sm:top-4 sm:right-4 w-2 h-2 sm:w-3 sm:h-3 bg-accent rounded-full animate-pulse"></div>
                   )}
 
-                  {/* Mobile layout: vertical stack */}
                   <div className="flex flex-col gap-3 sm:gap-4 lg:hidden">
-                    {/* Licor Info */}
                     <div className="flex-1">
                       <h3 className="text-lg sm:text-xl font-light text-primary mb-2 group-hover:text-accent transition-colors">
                         {licor.name}
                       </h3>
 
-                      {/* Brand and details row */}
                       <div className="flex flex-wrap items-center gap-2 mb-3">
                         {licor.brand && (
                           <span className="px-2 py-1 text-xs font-medium text-secondary/80 bg-secondary/10 rounded-md border border-secondary/20">
@@ -549,7 +508,6 @@ export default function SelectionSection({
                         )}
                       </div>
 
-                      {/* ABV and Origin row */}
                       <div className="flex flex-wrap items-center gap-3 mb-3">
                         {licor.abv && (
                           <div className="flex items-center gap-1.5 text-xs text-secondary/70">
@@ -595,7 +553,6 @@ export default function SelectionSection({
                         )}
                       </div>
 
-                      {/* Type badge */}
                       <div className="inline-flex items-center">
                         <span className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs font-medium uppercase tracking-widest text-accent/80 bg-accent/10 rounded-full border border-accent/20 backdrop-blur-sm">
                           {licor.type}
@@ -603,9 +560,7 @@ export default function SelectionSection({
                       </div>
                     </div>
 
-                    {/* Controls */}
                     <div className="flex flex-col gap-2 sm:gap-3">
-                      {/* Bottles */}
                       <div className="flex items-center justify-between sm:justify-start sm:gap-4 bg-background/50 backdrop-blur-sm rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 border border-border/30">
                         <label className="text-xs sm:text-sm font-light text-secondary/80 uppercase tracking-wider min-w-[60px] sm:min-w-[80px]">
                           Bottles
@@ -631,7 +586,6 @@ export default function SelectionSection({
                         </div>
                       </div>
 
-                      {/* Cases */}
                       <div className="flex items-center justify-between sm:justify-start sm:gap-4 bg-background/50 backdrop-blur-sm rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 border border-border/30">
                         <label className="text-xs sm:text-sm font-light text-secondary/80 uppercase tracking-wider min-w-[60px] sm:min-w-[80px]">
                           Cases
@@ -659,15 +613,12 @@ export default function SelectionSection({
                     </div>
                   </div>
 
-                  {/* Desktop layout: horizontal with controls on the right */}
                   <div className="hidden lg:flex lg:items-center lg:justify-between lg:gap-8">
-                    {/* Licor Info - Left side */}
                     <div className="flex-1">
                       <h3 className="text-2xl font-light text-primary mb-2 group-hover:text-accent transition-colors">
                         {licor.name}
                       </h3>
 
-                      {/* Brand and details row */}
                       <div className="flex flex-wrap items-center gap-2 mb-3">
                         {licor.brand && (
                           <span className="px-2 py-1 text-xs font-medium text-secondary/80 bg-secondary/10 rounded-md border border-secondary/20">
@@ -686,7 +637,6 @@ export default function SelectionSection({
                         )}
                       </div>
 
-                      {/* ABV and Origin row */}
                       <div className="flex flex-wrap items-center gap-3 mb-3">
                         {licor.abv && (
                           <div className="flex items-center gap-1.5 text-xs text-secondary/70">
@@ -732,7 +682,6 @@ export default function SelectionSection({
                         )}
                       </div>
 
-                      {/* Type badge */}
                       <div className="inline-flex items-center">
                         <span className="px-4 py-2 text-xs font-medium uppercase tracking-widest text-accent/80 bg-accent/10 rounded-full border border-accent/20 backdrop-blur-sm">
                           {licor.type}
@@ -740,9 +689,7 @@ export default function SelectionSection({
                       </div>
                     </div>
 
-                    {/* Controls - Right side */}
                     <div className="flex flex-col gap-4 min-w-[300px]">
-                      {/* Bottles */}
                       <div className="flex items-center justify-between bg-background/50 backdrop-blur-sm rounded-2xl px-6 py-4 border border-border/30">
                         <label className="text-sm font-light text-secondary/80 uppercase tracking-wider min-w-[80px]">
                           Bottles
@@ -768,7 +715,6 @@ export default function SelectionSection({
                         </div>
                       </div>
 
-                      {/* Cases */}
                       <div className="flex items-center justify-between bg-background/50 backdrop-blur-sm rounded-2xl px-6 py-4 border border-border/30">
                         <label className="text-sm font-light text-secondary/80 uppercase tracking-wider min-w-[80px]">
                           Cases
@@ -801,19 +747,15 @@ export default function SelectionSection({
           )}
         </ul>
 
-        {/* Pagination Controls */}
         {totalPages > 1 && (
           <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 animate-fade-in-up">
-            {/* Results Info */}
             <div className="text-sm text-secondary/70 order-2 sm:order-1">
               Showing {(currentPage - 1) * itemsPerPage + 1}-
               {Math.min(currentPage * itemsPerPage, licoresOrdenados.length)} of{' '}
               {licoresOrdenados.length} results
             </div>
 
-            {/* Pagination Navigation */}
             <div className="flex items-center gap-2 order-1 sm:order-2">
-              {/* Previous Button */}
               <Button
                 variant="secondary"
                 onClick={() => setCurrentPage(currentPage - 1)}
@@ -823,7 +765,6 @@ export default function SelectionSection({
                 Previous
               </Button>
 
-              {/* Page Numbers */}
               <div className="flex items-center gap-1">
                 {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
                   let pageNum;
@@ -850,7 +791,6 @@ export default function SelectionSection({
                 })}
               </div>
 
-              {/* Next Button */}
               <Button
                 variant="secondary"
                 onClick={() => setCurrentPage(currentPage + 1)}
@@ -861,7 +801,6 @@ export default function SelectionSection({
               </Button>
             </div>
 
-            {/* Items per page selector */}
             <div className="flex items-center gap-2 text-sm text-secondary/70 order-3">
               <span>Items per page:</span>
               <div className="relative">
@@ -887,7 +826,6 @@ export default function SelectionSection({
                   </svg>
                 </Button>
 
-                {/* Dropdown Menu */}
                 {isItemsPerPageDropdownOpen && (
                   <div className="absolute top-full left-0 mt-2 bg-cardBg backdrop-blur-md border border-white/20 rounded-xl shadow-2xl z-[9999] min-w-[80px] overflow-hidden">
                     {[10, 15, 25, 50].map((value) => (
@@ -910,7 +848,6 @@ export default function SelectionSection({
                   </div>
                 )}
 
-                {/* Overlay para cerrar el dropdown */}
                 {isItemsPerPageDropdownOpen && (
                   <div
                     className="fixed inset-0 z-[9998]"
@@ -922,12 +859,10 @@ export default function SelectionSection({
           </div>
         )}
 
-        {/* Summary of Selected Items */}
         {hasSelectedItems && (
           <div className="mt-4 sm:mt-6 lg:mt-8 p-3 sm:p-4 lg:p-6 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl">
             <h3 className="text-lg sm:text-xl font-light text-primary mb-4">Selection Summary</h3>
 
-            {/* Detailed Breakdown */}
             <div className="space-y-2 mb-4">
               {Object.entries(cantidades)
                 .filter(([_, cantidad]) => cantidad.botellas > 0 || cantidad.cajas > 0)
@@ -948,7 +883,6 @@ export default function SelectionSection({
                 })}
             </div>
 
-            {/* Total Summary - Compact */}
             <div className="pt-3 border-t border-white/10">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-secondary/80 font-medium">Total:</span>
@@ -966,7 +900,6 @@ export default function SelectionSection({
           </div>
         )}
 
-        {/* Action Buttons */}
         <div className="mt-4 sm:mt-6 lg:mt-12 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
           <SecondaryButton
             onClick={onCancel}

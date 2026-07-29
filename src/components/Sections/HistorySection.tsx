@@ -27,7 +27,6 @@ export default function HistorySection({
   setShowDatePicker,
   onToggleExpansion,
 }: HistorySectionProps) {
-  // Format date for display
   const formatDateLocal = (date: Date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -35,13 +34,10 @@ export default function HistorySection({
     return `${year}-${month}-${day}`;
   };
 
-  // Filter movements by search term and date
   const filteredMovimientos = movimientos.filter((movimiento) => {
-    // Filter by movement ID
     const matchesCode =
       !movementSearchTerm || movimiento.id.toLowerCase().includes(movementSearchTerm.toLowerCase());
 
-    // Filter by date (using local date comparison)
     const matchesDate = !dateFilter || formatDateLocal(new Date(movimiento.date)) === dateFilter;
 
     return matchesCode && matchesDate;
@@ -59,9 +55,7 @@ export default function HistorySection({
         </div>
       </div>
 
-      {/* Search and Filter Controls */}
       <div className="grid gap-4 sm:grid-cols-2">
-        {/* Movement Search */}
         <div className="relative">
           <input
             type="text"
@@ -87,7 +81,6 @@ export default function HistorySection({
           </div>
         </div>
 
-        {/* Date Filter */}
         <Calendar
           dateFilter={dateFilter}
           showDatePicker={showDatePicker}
@@ -118,7 +111,6 @@ export default function HistorySection({
                 const searchInfo = [];
                 if (movementSearchTerm) searchInfo.push(`"${movementSearchTerm}"`);
                 if (dateFilter) {
-                  // Format date consistently with how it's displayed in the selector
                   const formattedDate = new Date(dateFilter + 'T00:00:00').toLocaleDateString(
                     'en-US',
                     {
