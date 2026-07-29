@@ -28,8 +28,8 @@ El nombre no es casual: la fuente de verdad del inventario es un **ledger inmuta
 | 0 | Higiene del repo front: ESLint, Prettier, alias `@/`, código muerto, `CLAUDE.md` | ✅ Hecha |
 | 1 | Repo API: scaffold Nest, Prisma, esquema, seed, `common/` | ✅ Hecha |
 | 2 | API: auth (local + Google OAuth), JWT, refresh, matriz de permisos | ✅ Hecha |
-| 3 | API: catálogo, inventario con stock, reportes, PDF | 🔄 Siguiente |
-| 4 | Front: design system (tokens CSS, primitivos Radix, `cn()`) | ⬜ Pendiente |
+| 3 | API: catálogo, inventario con stock, reportes, PDF | ✅ Hecha |
+| 4 | Front: design system (tokens CSS, primitivos Radix, `cn()`) | 🔄 Siguiente |
 | 5 | Front: reestructura a rutas reales + corte a la API nueva | ⬜ Pendiente |
 | 6 | Front: dashboard de existencias + panel de administración | ⬜ Pendiente |
 | 7 | Front: landing page + i18n + parametrización de branding | ⬜ Pendiente |
@@ -37,7 +37,7 @@ El nombre no es casual: la fuente de verdad del inventario es un **ledger inmuta
 
 Plan completo: `C:\Users\Tomas\.claude\plans\ok-voy-a-hacerle-tender-sprout.md`
 
-**Este repositorio no se toca hasta la Fase 4.** Las fases 2 y 3 ocurren enteras en `beverage-ledger-api`; aquí no hay nada que hacer mientras tanto.
+**El backend está terminado.** Las fases 1 a 3 ocurrieron enteras en `beverage-ledger-api`; a partir de aquí todo el trabajo es de este repositorio.
 
 **Hasta la Fase 5, la app sigue funcionando contra la base de datos Neon vieja.** No borres `src/app/actions.ts`, `src/app/actions-licores.ts` ni `src/app/api/` antes del corte — la app deja de funcionar. La base nueva de Supabase ya existe y está sembrada, pero todavía no la consume nadie.
 
@@ -235,6 +235,18 @@ Nada de `if (user.role === 'admin')` desperdigado por el código.
 La sesión son dos piezas: un **access token JWT corto que se guarda en memoria** —nunca en `localStorage`— y una **cookie de refresh httpOnly** que el navegador maneja solo. Cuando el access token expira, `POST /auth/refresh` con `credentials: 'include'` devuelve uno nuevo. El login con Google no devuelve token: redirige a `/auth/callback` con la cookie ya puesta, y esa página tiene que llamar a `/auth/refresh` para obtener el access token.
 
 Los refresh tokens rotan y hay **detección de reuso**: si el front manda dos veces el mismo, la API revoca todas las sesiones de ese usuario. El wrapper del cliente debe serializar los refresh concurrentes en una sola llamada, o un par de peticiones simultáneas con el token vencido cierran la sesión.
+
+### El dominio (Fase 3, ya construido)
+
+`GET /docs-json` expone el contrato completo: **30 rutas, 58 esquemas**. Es de ahí que sale `src/lib/api/schema.d.ts` con `npm run api:types`. Lo esencial para diseñar las vistas:
+
+- **Catálogo** — `/products`, `/categories`, `/brands`. Todo paginado por cursor con `search`, filtros y orden en el servidor: no descargues los 215. Leer es abierto a cualquier autenticado; escribir exige `catalog:manage`. Los productos no se borran, se desactivan con `isActive: false`.
+- **Movimientos** — el ciclo es **crear borrador → confirmar**, en dos llamadas. `POST /movements` abre un `DRAFT` que no toca existencias; `POST /movements/:id/confirm` aplica el delta. Eso es justamente lo que da el borrador persistente de la Fase 6. Anular es `POST /movements/:id/cancel` con motivo, y revierte el stock.
+- **Cantidades** — `quantity` va **positiva** en `INBOUND` y `OUTBOUND` (el tipo lleva la dirección) y **con signo** en `ADJUSTMENT`, que corrige hacia ambos lados y **exige `reason`**. La unidad es `BOTTLE` o `CASE`; la API normaliza con el `caseSize` del producto.
+- **Existencias** — `/stock` paginado, `/stock/low` para la tarjeta de "bajo mínimo" del dashboard, `/stock/:productId/kardex` para el histórico de un producto con saldo corrido.
+- **Reportes** — `/reports/summary`, `/reports/consumption` (`groupBy=product|category|brand`, que es lo que hoy calcula el navegador) y `/reports/activity` (serie temporal). Rango omitido = últimos 30 días.
+- **PDF** — `GET /movements/:id/pdf`. Ya no es un IDOR: va scopeado a la organización.
+- **Errores** — todos con la misma forma: `{ statusCode, error, message, path, timestamp }`, donde `message` puede ser un string o un array (los errores de validación).
 
 ---
 
