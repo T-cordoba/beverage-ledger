@@ -3,30 +3,20 @@ import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-	title: 'Beverage Ledger',
-	description: 'Professional liquor inventory management system',
-	icons: {
-		icon: [
-			{ url: '/favicon.ico' },
-			{ url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-			{ url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' }
-		],
-		apple: [
-			{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
-		],
-		other: [
-			{ url: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
-			{ url: '/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' }
-		]
-	}
+  title: 'Beverage Ledger',
+  description: 'Professional liquor inventory management system',
+  // Solo se declaran los iconos que existen en public/. Las variantes PNG
+  // (favicon-16x16, apple-touch-icon, android-chrome-*) nunca se generaron.
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-	return (
-		<html lang="es">
-			<body>
-				{children}
-			</body>
-		</html>
-	);
+  return (
+    // El copy de la interfaz está en inglés. Pasa a ser dinámico con i18n (Fase 7).
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
 }
