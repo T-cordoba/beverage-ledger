@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getMovimientos, createMovimiento, getMovimientoById } from '../../actions';
+import { getMovimientos, createMovimiento } from '@/app/actions';
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const movimientos = await getMovimientos();
   return NextResponse.json(movimientos);
 }

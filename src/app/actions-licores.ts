@@ -1,4 +1,6 @@
-import { neon } from "@neondatabase/serverless";
+'use server';
+
+import { neon } from '@neondatabase/serverless';
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -13,16 +15,28 @@ export type Licor = {
   age?: string;
 };
 
+/** Fila cruda de la tabla `licores` (columnas en español, ver CLAUDE.md §10). */
+type LicorRow = {
+  id: string;
+  nombre: string;
+  tipo: string;
+  brand: string | null;
+  subcategory: string | null;
+  abv: string | number | null;
+  origin: string | null;
+  age: string | null;
+};
+
 export async function getLicores(): Promise<Licor[]> {
-  const result = await sql`SELECT * FROM licores ORDER BY nombre ASC`;
-  return result.map((row: any) => ({
+  const rows = (await sql`SELECT * FROM licores ORDER BY nombre ASC`) as LicorRow[];
+  return rows.map((row) => ({
     id: row.id,
     name: row.nombre,
     type: row.tipo,
-    brand: row.brand,
-    subcategory: row.subcategory,
-    abv: row.abv ? parseFloat(row.abv) : undefined,
-    origin: row.origin,
-    age: row.age,
+    brand: row.brand ?? undefined,
+    subcategory: row.subcategory ?? undefined,
+    abv: row.abv ? Number(row.abv) : undefined,
+    origin: row.origin ?? undefined,
+    age: row.age ?? undefined,
   }));
 }

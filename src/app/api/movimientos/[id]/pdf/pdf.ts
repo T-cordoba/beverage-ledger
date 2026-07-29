@@ -1,5 +1,5 @@
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
-import type { Movimiento } from '../../../../actions';
+import { PDFDocument, PDFPage, rgb, StandardFonts } from 'pdf-lib';
+import type { Movimiento } from '@/app/actions';
 
 interface LiquorRow {
   name: string;
@@ -13,25 +13,27 @@ interface LiquorRow {
   unit: string;
 }
 
-export async function createPDF(movimiento: Movimiento, formattedDate?: string | null): Promise<Uint8Array> {
+export async function createPDF(
+  movimiento: Movimiento,
+  formattedDate?: string | null,
+): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
-  
+
   // Fonts
   const font = await doc.embedFont(StandardFonts.Helvetica);
   const boldFont = await doc.embedFont(StandardFonts.HelveticaBold);
 
   // Colors - Using exact system colors from Tailwind config
-  const background = rgb(0x12/255, 0x00/255, 0x06/255);    // #120006
-  const primary = rgb(0xF0/255, 0xE6/255, 0xCE/255);       // #F0E6CE
-  const secondary = rgb(0xFF/255, 0xFF/255, 0xFF/255);     // #FFFFFF (white)
-  const accent = rgb(0xD4/255, 0xAF/255, 0x37/255);        // #D4AF37
-  const accentHover = rgb(0xE6/255, 0xC8/255, 0x5B/255);   // #E6C85B
-  const border = rgb(0x2A/255, 0x2A/255, 0x2A/255);        // #2A2A2A
-  const inputBg = rgb(0x1A/255, 0x1A/255, 0x1A/255);       // #1A1A1A
-  const lightBg = rgb(0.95, 0.93, 0.88);                   // Light version of primary for alternating rows
+  const background = rgb(0x12 / 255, 0x00 / 255, 0x06 / 255); // #120006
+  const primary = rgb(0xf0 / 255, 0xe6 / 255, 0xce / 255); // #F0E6CE
+  const secondary = rgb(0xff / 255, 0xff / 255, 0xff / 255); // #FFFFFF (white)
+  const accent = rgb(0xd4 / 255, 0xaf / 255, 0x37 / 255); // #D4AF37
+  const border = rgb(0x2a / 255, 0x2a / 255, 0x2a / 255); // #2A2A2A
+  const inputBg = rgb(0x1a / 255, 0x1a / 255, 0x1a / 255); // #1A1A1A
+  const lightBg = rgb(0.95, 0.93, 0.88); // Light version of primary for alternating rows
 
   // Page dimensions
-  const pageWidth = 595;  // A4 width
+  const pageWidth = 595; // A4 width
   const pageHeight = 842; // A4 height
   const margin = 40;
 
@@ -45,7 +47,7 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
     { header: 'Age', width: 35, key: 'age' },
     { header: 'Category', width: 65, key: 'subcategory' },
     { header: 'Qty', width: 25, key: 'quantity' },
-    { header: 'Unit', width: 40, key: 'unit' }
+    { header: 'Unit', width: 40, key: 'unit' },
   ];
 
   const tableWidth = tableColumns.reduce((sum, col) => sum + col.width, 0); // Should be ~510px
@@ -53,29 +55,28 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
   const baseRowHeight = 16;
   const maxLinesPerRow = 3; // Maximum lines before considering new page
   const headerHeight = 25;
-  const itemsPerPage = 28; // Adjusted for multi-line rows
 
   // Enhanced text wrapping function
   function wrapText(text: string, maxWidth: number, fontSize: number): string[] {
     if (!text || text === '-') return [text || ''];
-    
+
     const words = text.split(' ');
     const lines: string[] = [];
     let currentLine = '';
-    
+
     // More conservative character width calculation for better fitting
     const avgCharWidth = fontSize * 0.6;
     const maxCharsPerLine = Math.floor((maxWidth - 8) / avgCharWidth); // 8px total padding
-    
+
     for (const word of words) {
       const testLine = currentLine ? `${currentLine} ${word}` : word;
-      
+
       if (testLine.length <= maxCharsPerLine) {
         currentLine = testLine;
       } else {
         if (currentLine) {
           lines.push(currentLine);
-          
+
           // Check if the word itself is too long
           if (word.length > maxCharsPerLine) {
             // Split long word
@@ -99,11 +100,11 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
         }
       }
     }
-    
+
     if (currentLine) {
       lines.push(currentLine);
     }
-    
+
     // Limit to maxLinesPerRow to prevent excessive row height
     return lines.slice(0, maxLinesPerRow);
   }
@@ -111,30 +112,48 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
   // Function to calculate row height based on content
   function calculateRowHeight(row: LiquorRow): number {
     let maxLines = 1;
-    
-    tableColumns.forEach(col => {
+
+    tableColumns.forEach((col) => {
       let cellValue = '';
       switch (col.key) {
-        case 'name': cellValue = row.name; break;
-        case 'brand': cellValue = row.brand || ''; break;
-        case 'type': cellValue = row.type; break;
-        case 'origin': cellValue = row.origin || ''; break;
-        case 'abv': cellValue = row.abv ? `${row.abv}%` : ''; break;
-        case 'age': cellValue = row.age || ''; break;
-        case 'subcategory': cellValue = row.subcategory || ''; break;
-        case 'quantity': cellValue = row.quantity.toString(); break;
-        case 'unit': cellValue = row.unit; break;
+        case 'name':
+          cellValue = row.name;
+          break;
+        case 'brand':
+          cellValue = row.brand || '';
+          break;
+        case 'type':
+          cellValue = row.type;
+          break;
+        case 'origin':
+          cellValue = row.origin || '';
+          break;
+        case 'abv':
+          cellValue = row.abv ? `${row.abv}%` : '';
+          break;
+        case 'age':
+          cellValue = row.age || '';
+          break;
+        case 'subcategory':
+          cellValue = row.subcategory || '';
+          break;
+        case 'quantity':
+          cellValue = row.quantity.toString();
+          break;
+        case 'unit':
+          cellValue = row.unit;
+          break;
       }
-      
+
       const lines = wrapText(cellValue, col.width, 8);
       maxLines = Math.max(maxLines, lines.length);
     });
-    
+
     return baseRowHeight * maxLines;
   }
 
   // Helper function to create header
-  function createHeader(page: any, pageNumber: number, totalPages: number) {
+  function createHeader(page: PDFPage, pageNumber: number, totalPages: number) {
     // Company header
     page.drawRectangle({
       x: 0,
@@ -174,7 +193,7 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
     // Invoice details (only on first page)
     if (pageNumber === 1) {
       const detailsY = pageHeight - 130;
-      
+
       page.drawText('INVOICE DETAILS', {
         x: margin,
         y: detailsY,
@@ -191,7 +210,7 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
           month: 'long',
           day: 'numeric',
           hour: '2-digit',
-          minute: '2-digit'
+          minute: '2-digit',
         });
       };
 
@@ -222,7 +241,7 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
   }
 
   // Helper function to create table header
-  function createTableHeader(page: any, startY: number) {
+  function createTableHeader(page: PDFPage, startY: number) {
     // Header background
     page.drawRectangle({
       x: tableStartX,
@@ -234,7 +253,7 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
 
     // Header text
     let currentX = tableStartX;
-    tableColumns.forEach(col => {
+    tableColumns.forEach((col) => {
       page.drawText(col.header, {
         x: currentX + 5,
         y: startY - 16,
@@ -249,7 +268,7 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
   }
 
   // Prepare liquor data
-  const liquorRows: LiquorRow[] = movimiento.liquors.map(liquor => ({
+  const liquorRows: LiquorRow[] = movimiento.liquors.map((liquor) => ({
     name: liquor.name || '',
     type: liquor.type || '',
     brand: liquor.brand || '',
@@ -258,18 +277,26 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
     age: liquor.age || '',
     subcategory: liquor.subcategory || '',
     quantity: liquor.quantity,
-    unit: liquor.unit === 'bottle' ? (liquor.quantity === 1 ? 'bottle' : 'bottles') : 
-          liquor.unit === 'case' ? (liquor.quantity === 1 ? 'case' : 'cases') : liquor.unit
+    unit:
+      liquor.unit === 'bottle'
+        ? liquor.quantity === 1
+          ? 'bottle'
+          : 'bottles'
+        : liquor.unit === 'case'
+          ? liquor.quantity === 1
+            ? 'case'
+            : 'cases'
+          : liquor.unit,
   }));
 
   // Create pages and render content
   let currentPageIndex = 0;
   let itemsOnCurrentPage = 0;
   let currentY = 0;
-  let totalItems = liquorRows.reduce((sum, row) => sum + row.quantity, 0);
-  
+  const totalItems = liquorRows.reduce((sum, row) => sum + row.quantity, 0);
+
   // Start with just the first page
-  const pages: any[] = [];
+  const pages: PDFPage[] = [];
   pages.push(doc.addPage([pageWidth, pageHeight]));
 
   // Setup first page
@@ -280,16 +307,16 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
   // Render liquor items
   currentPageIndex = 0;
   itemsOnCurrentPage = 0;
-  currentY = pages[0] ? (pageHeight - 220 - headerHeight) : 0;
+  currentY = pages[0] ? pageHeight - 220 - headerHeight : 0;
 
-  liquorRows.forEach((row, index) => {
+  liquorRows.forEach((row) => {
     // Calculate dynamic row height based on content
     const currentRowHeight = calculateRowHeight(row);
-    
+
     // Check if we have enough vertical space for this row
     const minYPosition = 120; // Minimum Y position before footer
     const spaceNeeded = currentRowHeight + 5; // Add some padding
-    
+
     // Check if we need to move to next page based on vertical space
     if (currentY - spaceNeeded < minYPosition) {
       // Need a new page
@@ -301,12 +328,12 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
         // Need to create a new page
         const newPage = doc.addPage([pageWidth, pageHeight]);
         pages.push(newPage);
-        
+
         // Setup new page
         createHeader(newPage, pages.length, pages.length); // Temporary, will be updated later
         const tableStartY = pageHeight - 140;
         createTableHeader(newPage, tableStartY);
-        
+
         currentPageIndex++;
         itemsOnCurrentPage = 0;
         currentY = pageHeight - 140 - headerHeight;
@@ -329,7 +356,7 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
 
     // Draw cell borders
     let currentX = tableStartX;
-    tableColumns.forEach(col => {
+    tableColumns.forEach((col) => {
       page.drawRectangle({
         x: currentX,
         y: currentY - currentRowHeight,
@@ -344,9 +371,9 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
 
     // Render cell content with multi-line support
     currentX = tableStartX;
-    tableColumns.forEach(col => {
+    tableColumns.forEach((col) => {
       let cellValue = '';
-      
+
       switch (col.key) {
         case 'name':
           cellValue = row.name;
@@ -379,10 +406,10 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
 
       // Wrap text and render all lines
       const wrappedLines = wrapText(cellValue, col.width, 8);
-      
+
       wrappedLines.forEach((line, lineIndex) => {
-        const lineY = currentY - 10 - (lineIndex * 10); // 10px line spacing
-        
+        const lineY = currentY - 10 - lineIndex * 10; // 10px line spacing
+
         page.drawText(line, {
           x: currentX + 3,
           y: lineY,
@@ -410,7 +437,7 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
       height: 20,
       color: background,
     });
-    
+
     page.drawText(`Page ${index + 1} of ${totalPages}`, {
       x: pageWidth - margin - 75,
       y: pageHeight - 35,
@@ -422,7 +449,7 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
 
   // Add summary and footer to last page
   const lastPage = pages[pages.length - 1];
-  
+
   // Summary box - positioned within margins
   const summaryY = currentY - 40;
   lastPage.drawRectangle({
@@ -450,14 +477,17 @@ export async function createPDF(movimiento: Movimiento, formattedDate?: string |
   });
 
   // Footer on all pages
-  pages.forEach(page => {
-    page.drawText('This document serves as an official record of liquor inventory movement for premium casino operations.', {
-      x: margin,
-      y: 50,
-      size: 8,
-      font: font,
-      color: border,
-    });
+  pages.forEach((page) => {
+    page.drawText(
+      'This document serves as an official record of liquor inventory movement for premium casino operations.',
+      {
+        x: margin,
+        y: 50,
+        size: 8,
+        font: font,
+        color: border,
+      },
+    );
 
     page.drawText(`Generated: ${new Date().toLocaleString('en-US')}`, {
       x: margin,

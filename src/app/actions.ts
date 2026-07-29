@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { neon } from "@neondatabase/serverless";
+import { neon } from '@neondatabase/serverless';
 
 const sql = neon(process.env.DATABASE_URL!);
 
@@ -23,36 +23,42 @@ export type Movimiento = {
   liquors: Licor[];
 };
 
-export async function getMovimientos(): Promise<Movimiento[]> {
-  const result = await sql`SELECT * FROM movimientos ORDER BY fecha DESC`;
-  return result.map((row: any) => ({
+/** Fila cruda de la tabla `movimientos` (columnas en español, ver CLAUDE.md §10). */
+type MovimientoRow = {
+  id: string;
+  fecha: string;
+  licores: string | Licor[];
+};
+
+function toMovimiento(row: MovimientoRow): Movimiento {
+  return {
     id: row.id,
     date: row.fecha,
     liquors: typeof row.licores === 'string' ? JSON.parse(row.licores) : row.licores,
-  }));
+  };
 }
 
-export async function createMovimiento({ date, liquors }: { date: string; liquors: Licor[] }): Promise<Movimiento> {
-  const result = await sql`
+export async function getMovimientos(): Promise<Movimiento[]> {
+  const rows = (await sql`SELECT * FROM movimientos ORDER BY fecha DESC`) as MovimientoRow[];
+  return rows.map(toMovimiento);
+}
+
+export async function createMovimiento({
+  date,
+  liquors,
+}: {
+  date: string;
+  liquors: Licor[];
+}): Promise<Movimiento> {
+  const rows = (await sql`
     INSERT INTO movimientos (id, fecha, licores)
     VALUES (gen_random_uuid(), ${date}, ${JSON.stringify(liquors)})
     RETURNING *
-  `;
-  const row = result[0];
-  return {
-    id: row.id,
-    date: row.fecha,
-    liquors: typeof row.licores === 'string' ? JSON.parse(row.licores) : row.licores,
-  };
+  `) as MovimientoRow[];
+  return toMovimiento(rows[0]);
 }
 
 export async function getMovimientoById(id: string): Promise<Movimiento | null> {
-  const result = await sql`SELECT * FROM movimientos WHERE id = ${id}`;
-  if (!result[0]) return null;
-  const row = result[0];
-  return {
-    id: row.id,
-    date: row.fecha,
-    liquors: typeof row.licores === 'string' ? JSON.parse(row.licores) : row.licores,
-  };
+  const rows = (await sql`SELECT * FROM movimientos WHERE id = ${id}`) as MovimientoRow[];
+  return rows[0] ? toMovimiento(rows[0]) : null;
 }

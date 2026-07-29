@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getLicores } from '../../actions-licores';
+import { NextResponse } from 'next/server';
+import { getLicores } from '@/app/actions-licores';
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const licores = await getLicores();
   return NextResponse.json(licores);
 }
