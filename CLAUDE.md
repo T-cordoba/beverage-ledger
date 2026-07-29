@@ -26,8 +26,8 @@ El nombre no es casual: la fuente de verdad del inventario es un **ledger inmuta
 | Fase | Qué incluye | Estado |
 |---|---|---|
 | 0 | Higiene del repo front: ESLint, Prettier, alias `@/`, código muerto, `CLAUDE.md` | ✅ Hecha |
-| 1 | Repo API: scaffold Nest, Prisma, esquema, seed, `common/` | 🔄 Siguiente |
-| 2 | API: auth (local + Google OAuth), JWT, refresh, matriz de permisos | ⬜ Pendiente |
+| 1 | Repo API: scaffold Nest, Prisma, esquema, seed, `common/` | ✅ Hecha |
+| 2 | API: auth (local + Google OAuth), JWT, refresh, matriz de permisos | 🔄 Siguiente |
 | 3 | API: catálogo, inventario con stock, reportes, PDF | ⬜ Pendiente |
 | 4 | Front: design system (tokens CSS, primitivos Radix, `cn()`) | ⬜ Pendiente |
 | 5 | Front: reestructura a rutas reales + corte a la API nueva | ⬜ Pendiente |
@@ -37,7 +37,9 @@ El nombre no es casual: la fuente de verdad del inventario es un **ledger inmuta
 
 Plan completo: `C:\Users\Tomas\.claude\plans\ok-voy-a-hacerle-tender-sprout.md`
 
-**Hasta la Fase 5, la app sigue funcionando contra la base de datos Neon vieja.** No borres `src/app/actions.ts`, `src/app/actions-licores.ts` ni `src/app/api/` antes del corte — la app deja de funcionar.
+**Este repositorio no se toca hasta la Fase 4.** Las fases 2 y 3 ocurren enteras en `beverage-ledger-api`; aquí no hay nada que hacer mientras tanto.
+
+**Hasta la Fase 5, la app sigue funcionando contra la base de datos Neon vieja.** No borres `src/app/actions.ts`, `src/app/actions-licores.ts` ni `src/app/api/` antes del corte — la app deja de funcionar. La base nueva de Supabase ya existe y está sembrada, pero todavía no la consume nadie.
 
 ---
 
