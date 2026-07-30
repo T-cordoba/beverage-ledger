@@ -8,10 +8,14 @@ export interface ReportRange {
   to: string;
 }
 
+export type ActivityGranularity = 'day' | 'week' | 'month';
+
 const reportKeys = {
   consumption: (groupBy: ConsumptionGroupBy, range: ReportRange, limit: number) =>
     ['reports', 'consumption', groupBy, range, limit] as const,
   summary: (range: ReportRange) => ['reports', 'summary', range] as const,
+  activity: (range: ReportRange, granularity: ActivityGranularity) =>
+    ['reports', 'activity', range, granularity] as const,
 };
 
 export function useConsumptionReport(
@@ -30,10 +34,28 @@ export function useConsumptionReport(
   });
 }
 
-export function useSummaryReport(range: ReportRange) {
+export function useSummaryReport(range: ReportRange, enabled = true) {
   return useQuery({
     queryKey: reportKeys.summary(range),
     queryFn: async () =>
       unwrap(await api.GET('/api/v1/reports/summary', { params: { query: range } })),
+    enabled,
+  });
+}
+
+export function useActivityReport(
+  range: ReportRange,
+  granularity: ActivityGranularity,
+  enabled = true,
+) {
+  return useQuery({
+    queryKey: reportKeys.activity(range, granularity),
+    queryFn: async () =>
+      unwrap(
+        await api.GET('/api/v1/reports/activity', {
+          params: { query: { ...range, granularity } },
+        }),
+      ),
+    enabled,
   });
 }

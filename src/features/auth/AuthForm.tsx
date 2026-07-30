@@ -2,34 +2,12 @@
 
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, type FormEvent, type ReactNode } from 'react';
-import { Button, Input } from '@/components/ui';
+import { useState, type FormEvent } from 'react';
+import { Button, Field, Input } from '@/components/ui';
 import { GOOGLE_SIGN_IN_URL, IS_GOOGLE_SIGN_IN_ENABLED } from '@/config/api';
 import { RETURN_TO_PARAM, ROUTES, safeReturnTo } from '@/config/navigation';
 import { describeError } from '@/lib/api';
 import { useAuth } from './auth-context';
-
-function Field({
-  id,
-  label,
-  children,
-}: {
-  id: string;
-  label: string;
-  children: ReactNode;
-}): ReactNode {
-  return (
-    <div className="space-y-2">
-      <label
-        htmlFor={id}
-        className="block text-xs font-medium uppercase tracking-wider text-contrast/70"
-      >
-        {label}
-      </label>
-      {children}
-    </div>
-  );
-}
 
 function FormError({ message }: { message: string }) {
   return (
@@ -88,26 +66,30 @@ export function LoginForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       {error && <FormError message={error} />}
 
-      <Field id="email" label="Email">
-        <Input
-          id="email"
-          type="email"
-          autoComplete="email"
-          required
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
+      <Field label="Email">
+        {({ id }) => (
+          <Input
+            id={id}
+            type="email"
+            autoComplete="email"
+            required
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        )}
       </Field>
 
-      <Field id="password" label="Password">
-        <Input
-          id="password"
-          type="password"
-          autoComplete="current-password"
-          required
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
+      <Field label="Password">
+        {({ id }) => (
+          <Input
+            id={id}
+            type="password"
+            autoComplete="current-password"
+            required
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        )}
       </Field>
 
       <Button type="submit" size="lg" className="w-full" isLoading={isSubmitting}>
@@ -143,7 +125,7 @@ export function RegisterForm() {
 
     try {
       await register({ name, email, password });
-      router.replace(ROUTES.movements);
+      router.replace(ROUTES.dashboard);
     } catch (cause) {
       setError(describeError(cause, 'Could not create the account. Please try again.'));
       setIsSubmitting(false);
@@ -154,41 +136,45 @@ export function RegisterForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       {error && <FormError message={error} />}
 
-      <Field id="name" label="Name">
-        <Input
-          id="name"
-          type="text"
-          autoComplete="name"
-          required
-          minLength={2}
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-        />
+      <Field label="Name">
+        {({ id }) => (
+          <Input
+            id={id}
+            type="text"
+            autoComplete="name"
+            required
+            minLength={2}
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+          />
+        )}
       </Field>
 
-      <Field id="email" label="Email">
-        <Input
-          id="email"
-          type="email"
-          autoComplete="email"
-          required
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
+      <Field label="Email">
+        {({ id }) => (
+          <Input
+            id={id}
+            type="email"
+            autoComplete="email"
+            required
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        )}
       </Field>
 
-      <Field id="password" label="Password">
-        <Input
-          id="password"
-          type="password"
-          autoComplete="new-password"
-          required
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-        <p className="text-xs text-contrast/50">
-          At least 12 characters, with lowercase, uppercase and a digit.
-        </p>
+      <Field label="Password" hint="At least 12 characters, with lowercase, uppercase and a digit.">
+        {({ id, describedBy }) => (
+          <Input
+            id={id}
+            type="password"
+            autoComplete="new-password"
+            required
+            aria-describedby={describedBy}
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        )}
       </Field>
 
       <Button type="submit" size="lg" className="w-full" isLoading={isSubmitting}>

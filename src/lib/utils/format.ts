@@ -73,6 +73,14 @@ export function formatNumber(value: number, locale = DEFAULT_LOCALE): string {
 }
 
 /**
+ * Keeps the sign visible: a ledger delta of `+12` reads differently from `12`,
+ * and an adjustment is only legible when the direction is on the number itself.
+ */
+export function formatSignedNumber(value: number, locale = DEFAULT_LOCALE): string {
+  return value > 0 ? `+${formatNumber(value, locale)}` : formatNumber(value, locale);
+}
+
+/**
  * Returns the noun, not the phrase: `${count} ${pluralize(count, 'bottle')}`.
  * Keeping the count out means call sites that render it separately — inside a
  * styled span, say — do not have to build the plural by hand.

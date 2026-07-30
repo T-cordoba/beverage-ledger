@@ -5,6 +5,7 @@ export {
   formatMonthYear,
   formatNumber,
   formatShortDate,
+  formatSignedNumber,
   getMonthNames,
   getWeekdayNames,
   parseDateKey,

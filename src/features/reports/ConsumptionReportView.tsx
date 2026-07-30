@@ -1,19 +1,12 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Button, Card, EmptyState, Spinner } from '@/components/ui';
+import { Card, EmptyState, SegmentedControl, Spinner, StatTile } from '@/components/ui';
 import { useAuth } from '@/features/auth';
 import type { ConsumptionGroupBy, ConsumptionRow } from '@/lib/api';
 import { cn, formatNumber, formatShortDate, pluralize } from '@/lib/utils';
-import { useConsumptionReport, useSummaryReport, type ReportRange } from './api';
-
-type Period = 'week' | 'month' | 'year';
-
-const periods: { value: Period; label: string }[] = [
-  { value: 'week', label: 'Week' },
-  { value: 'month', label: 'Month' },
-  { value: 'year', label: 'Year' },
-];
+import { useConsumptionReport, useSummaryReport } from './api';
+import { rangeFor, REPORT_PERIODS, type ReportPeriod } from './range';
 
 const groupings: { value: ConsumptionGroupBy; label: string }[] = [
   { value: 'product', label: 'By product' },
@@ -22,63 +15,6 @@ const groupings: { value: ConsumptionGroupBy; label: string }[] = [
 ];
 
 const TOP_ROWS = 15;
-
-function rangeFor(period: Period): ReportRange {
-  const to = new Date();
-  const from = new Date(to);
-
-  if (period === 'week') from.setDate(to.getDate() - 7);
-  if (period === 'month') from.setMonth(to.getMonth() - 1);
-  if (period === 'year') from.setFullYear(to.getFullYear() - 1);
-
-  return { from: from.toISOString(), to: to.toISOString() };
-}
-
-function SegmentedControl<T extends string>({
-  label,
-  value,
-  options,
-  onChange,
-}: {
-  label: string;
-  value: T;
-  options: readonly { value: T; label: string }[];
-  onChange: (value: T) => void;
-}) {
-  return (
-    <div className="flex w-full items-center justify-center gap-2 sm:w-auto">
-      <span className="shrink-0 text-sm font-medium text-contrast/80">{label}</span>
-      <div className="flex overflow-hidden rounded-lg border border-border bg-surface/80">
-        {options.map((option) => (
-          <Button
-            key={option.value}
-            variant="ghost"
-            size="sm"
-            className={cn(
-              'rounded-none',
-              value === option.value
-                ? 'bg-accent text-background hover:bg-accent-hover'
-                : 'bg-background/50 hover:bg-background/70',
-            )}
-            aria-pressed={value === option.value}
-            onClick={() => onChange(option.value)}
-          >
-            {option.label}
-          </Button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function StatTile({ label, value }: { label: string; value: string }) {
-  return (
-    <Card className="space-y-1 bg-contrast/5 text-center">
-      <p className="text-2xl font-light text-accent">{value}</p>
-      <p className="text-xs uppercase tracking-wider text-contrast/60">{label}</p>
-    </Card>
-  );
-}
 
 function ConsumptionBars({ rows }: { rows: ConsumptionRow[] }) {
   const top = rows[0]?.quantityBase || 1;
@@ -150,7 +86,7 @@ function ConsumptionTable({ rows }: { rows: ConsumptionRow[] }) {
 
 export function ConsumptionReportView() {
   const { can } = useAuth();
-  const [period, setPeriod] = useState<Period>('month');
+  const [period, setPeriod] = useState<ReportPeriod>('month');
   const [groupBy, setGroupBy] = useState<ConsumptionGroupBy>('product');
 
   const range = useMemo(() => rangeFor(period), [period]);
@@ -180,7 +116,12 @@ export function ConsumptionReportView() {
       </header>
 
       <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
-        <SegmentedControl label="Period:" value={period} options={periods} onChange={setPeriod} />
+        <SegmentedControl
+          label="Period:"
+          value={period}
+          options={REPORT_PERIODS}
+          onChange={setPeriod}
+        />
         <SegmentedControl
           label="Group:"
           value={groupBy}
