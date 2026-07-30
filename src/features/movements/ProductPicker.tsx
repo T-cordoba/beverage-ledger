@@ -226,18 +226,16 @@ export function ProductPicker({
   // an inbound has no ceiling, and an adjustment is what corrects the number this
   // would be capping by.
   const capped = MOVEMENT_TYPES[draft.type].takesFromOrigin;
-  const { data: levels } = useStockAvailability(
+  const { levels, isReady } = useStockAvailability(
     products.map((product) => product.id),
     draft.locationId || undefined,
     capped,
   );
 
-  const onHand = new Map((levels?.data ?? []).map((level) => [level.productId, level.quantityBase]));
-
   // Until the levels arrive there is no ceiling to enforce, which leaves the
   // steppers as they were rather than blocking them on a pending request.
   const availableOf = (productId: string): number | null =>
-    capped && levels ? (onHand.get(productId) ?? 0) : null;
+    isReady ? (levels.get(productId) ?? 0) : null;
 
   return (
     <div className="space-y-4 sm:space-y-6">

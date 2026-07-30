@@ -1,8 +1,11 @@
 'use client';
 
-import { keepPreviousData, useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useInfiniteQuery, useQueries, useQuery } from '@tanstack/react-query';
 import { api, unwrap } from '@/lib/api';
 import { stockKeys } from './keys';
+
+/** Well under the 200 the endpoint accepts, and it matches how the picker pages. */
+const AVAILABILITY_CHUNK = 50;
 
 /** Filters the stock endpoint understands. Anything else would be client-side. */
 export interface StockQuery {
@@ -37,25 +40,49 @@ export function useStockLevels(query: StockQuery) {
  * which products it is showing, and needs to know how many of each it may take
  * out before the user asks for more than exists.
  */
-export function useStockAvailability(productIds: string[], locationId?: string, enabled = true) {
+export function useStockAvailability(
+  productIds: string[],
+  locationId?: string,
+  enabled = true,
+): { levels: Map<string, number>; isReady: boolean } {
+  // Chunked, and each chunk is its own query: the picker grows by a page at a
+  // time, so this keeps the URL bounded and lets an already-fetched page stay
+  // cached instead of refetching everything whenever one more product loads.
+  const chunks: string[][] = [];
   const ids = [...productIds].sort();
 
-  return useQuery({
-    queryKey: stockKeys.availability(ids, locationId),
-    queryFn: async () =>
-      unwrap(
-        await api.GET('/api/v1/stock', {
-          params: {
-            query: {
-              productIds: ids.join(','),
-              limit: Math.max(ids.length, 1),
-              ...(locationId ? { locationId } : {}),
+  for (let index = 0; index < ids.length; index += AVAILABILITY_CHUNK) {
+    chunks.push(ids.slice(index, index + AVAILABILITY_CHUNK));
+  }
+
+  const results = useQueries({
+    queries: chunks.map((chunk) => ({
+      queryKey: stockKeys.availability(chunk, locationId),
+      queryFn: async () =>
+        unwrap(
+          await api.GET('/api/v1/stock', {
+            params: {
+              query: {
+                productIds: chunk.join(','),
+                limit: chunk.length,
+                ...(locationId ? { locationId } : {}),
+              },
             },
-          },
-        }),
-      ),
-    enabled: enabled && ids.length > 0,
+          }),
+        ),
+      enabled,
+    })),
   });
+
+  const levels = new Map<string, number>();
+
+  for (const result of results) {
+    for (const level of result.data?.data ?? []) {
+      levels.set(level.productId, level.quantityBase);
+    }
+  }
+
+  return { levels, isReady: enabled && results.length > 0 && results.every((one) => one.isSuccess) };
 }
 
 /** A shortlist, not a page: the endpoint returns the worst offenders and stops. */
