@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, Popover, PopoverContent, PopoverTrigger } from '@/components/ui';
 import {
   cn,
   formatLongDate,
@@ -10,11 +9,15 @@ import {
   parseDateKey,
   toDateKey,
 } from '@/lib/utils';
+import { Button } from './Button';
+import { Popover, PopoverContent, PopoverTrigger } from './Popover';
 
-interface CalendarProps {
-  /** `YYYY-MM-DD`, or empty for no filter. */
-  dateFilter: string;
-  setDateFilter: (date: string) => void;
+interface DatePickerProps {
+  /** `YYYY-MM-DD`, or empty for no date. */
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  className?: string;
 }
 
 const weekdayNames = getWeekdayNames();
@@ -23,18 +26,23 @@ function startOfMonth(date: Date) {
   return new Date(date.getFullYear(), date.getMonth(), 1);
 }
 
-export default function Calendar({ dateFilter, setDateFilter }: CalendarProps) {
+export function DatePicker({
+  value,
+  onChange,
+  placeholder = 'Pick a date',
+  className,
+}: DatePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   // The month on screen is separate from the selected day: paging through
-  // months used to overwrite the filter with the 1st of each month visited.
+  // months used to overwrite the value with the 1st of each month visited.
   const [viewMonth, setViewMonth] = useState(() =>
-    startOfMonth(dateFilter ? parseDateKey(dateFilter) : new Date()),
+    startOfMonth(value ? parseDateKey(value) : new Date()),
   );
 
   const handleOpenChange = (open: boolean) => {
     if (open) {
-      setViewMonth(startOfMonth(dateFilter ? parseDateKey(dateFilter) : new Date()));
+      setViewMonth(startOfMonth(value ? parseDateKey(value) : new Date()));
     }
     setIsOpen(open);
   };
@@ -50,7 +58,7 @@ export default function Calendar({ dateFilter, setDateFilter }: CalendarProps) {
   const todayKey = toDateKey(new Date());
 
   return (
-    <div className="relative">
+    <div className={cn('relative', className)}>
       <Popover open={isOpen} onOpenChange={handleOpenChange}>
         <PopoverTrigger asChild>
           <button
@@ -58,10 +66,9 @@ export default function Calendar({ dateFilter, setDateFilter }: CalendarProps) {
             className={cn(
               'flex w-full items-center gap-2 rounded-xl border bg-background/50 px-4 py-3 text-sm backdrop-blur-sm transition-colors',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20',
-              dateFilter
-                ? 'border-accent/50 text-accent'
+              value
+                ? 'border-accent/50 pr-12 text-accent'
                 : 'border-contrast/20 text-contrast hover:border-accent/30 hover:text-accent',
-              dateFilter && 'pr-12',
             )}
           >
             <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,7 +79,7 @@ export default function Calendar({ dateFilter, setDateFilter }: CalendarProps) {
                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
               />
             </svg>
-            <span>{dateFilter ? formatLongDate(parseDateKey(dateFilter)) : 'Filter by date'}</span>
+            <span>{value ? formatLongDate(parseDateKey(value)) : placeholder}</span>
           </button>
         </PopoverTrigger>
 
@@ -127,7 +134,7 @@ export default function Calendar({ dateFilter, setDateFilter }: CalendarProps) {
             {Array.from({ length: daysInMonth }, (_, index) => {
               const day = index + 1;
               const dateKey = toDateKey(new Date(year, month, day));
-              const isSelected = dateFilter === dateKey;
+              const isSelected = value === dateKey;
 
               return (
                 <Button
@@ -143,7 +150,7 @@ export default function Calendar({ dateFilter, setDateFilter }: CalendarProps) {
                         : 'text-contrast hover:text-accent',
                   )}
                   onClick={() => {
-                    setDateFilter(dateKey);
+                    onChange(dateKey);
                     setIsOpen(false);
                   }}
                 >
@@ -155,13 +162,13 @@ export default function Calendar({ dateFilter, setDateFilter }: CalendarProps) {
         </PopoverContent>
       </Popover>
 
-      {dateFilter && (
+      {value && (
         <Button
           variant="ghost"
           size="icon-sm"
           className="absolute right-2 top-1/2 -translate-y-1/2 text-accent"
-          onClick={() => setDateFilter('')}
-          aria-label="Clear date filter"
+          onClick={() => onChange('')}
+          aria-label="Clear the date"
         >
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path

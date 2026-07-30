@@ -1,41 +1,70 @@
-import { useCallback, useState } from 'react';
-import { Button } from '@/components/ui';
+'use client';
+
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
 import { cn } from '@/lib/utils';
+import { Button } from './Button';
 
-export type NotificationType = 'success' | 'error' | 'warning' | 'info';
+export type NotificationTone = 'success' | 'error' | 'warning' | 'info';
 
-export interface Notification {
-  id: string;
-  type: NotificationType;
+interface Notification {
+  id: number;
+  tone: NotificationTone;
   title: string;
   message: string;
 }
 
-export function useNotifications() {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+type Notify = (tone: NotificationTone, title: string, message: string) => void;
 
-  const removeNotification = useCallback((id: string) => {
-    setNotifications((prev) => prev.filter((notification) => notification.id !== id));
-  }, []);
+const NotificationsContext = createContext<Notify | null>(null);
 
-  const showNotification = useCallback(
-    (type: NotificationType, title: string, message: string) => {
-      const id = Date.now().toString();
-      setNotifications((prev) => [...prev, { id, type, title, message }]);
+const DISMISS_AFTER_MS = 5000;
 
-      setTimeout(() => removeNotification(id), 5000);
-    },
-    [removeNotification],
-  );
+export function useNotify(): Notify {
+  const notify = useContext(NotificationsContext);
 
-  return {
-    notifications,
-    showNotification,
-    removeNotification,
-  };
+  if (!notify) {
+    throw new Error('useNotify must be used inside NotificationsProvider');
+  }
+
+  return notify;
 }
 
-const toneStyles: Record<NotificationType, { panel: string; icon: string; path: string }> = {
+export function NotificationsProvider({ children }: { children: ReactNode }) {
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const nextId = useRef(0);
+
+  const dismiss = useCallback((id: number) => {
+    setNotifications((current) => current.filter((notification) => notification.id !== id));
+  }, []);
+
+  const notify = useCallback<Notify>(
+    (tone, title, message) => {
+      const id = nextId.current++;
+      setNotifications((current) => [...current, { id, tone, title, message }]);
+      setTimeout(() => dismiss(id), DISMISS_AFTER_MS);
+    },
+    [dismiss],
+  );
+
+  const value = useMemo(() => notify, [notify]);
+
+  return (
+    <NotificationsContext.Provider value={value}>
+      {children}
+      <NotificationList notifications={notifications} onDismiss={dismiss} />
+    </NotificationsContext.Provider>
+  );
+}
+
+const toneStyles: Record<NotificationTone, { panel: string; icon: string; path: string }> = {
   success: {
     panel: 'bg-success/10 border-success/30',
     icon: 'bg-success/20 text-success',
@@ -58,22 +87,20 @@ const toneStyles: Record<NotificationType, { panel: string; icon: string; path: 
   },
 };
 
-interface NotificationSystemProps {
-  notifications: Notification[];
-  removeNotification: (id: string) => void;
-}
-
-export default function NotificationSystem({
+function NotificationList({
   notifications,
-  removeNotification,
-}: NotificationSystemProps) {
+  onDismiss,
+}: {
+  notifications: Notification[];
+  onDismiss: (id: number) => void;
+}) {
   // The container renders even when empty: a screen reader only announces
   // changes to a live region that was already in the DOM, so returning null
   // while there is nothing to show would silence the first notification.
   return (
     <div aria-live="polite" className="fixed right-4 top-20 z-toast max-w-sm space-y-3 md:top-4">
       {notifications.map((notification) => {
-        const tone = toneStyles[notification.type];
+        const tone = toneStyles[notification.tone];
 
         return (
           <div
@@ -88,7 +115,7 @@ export default function NotificationSystem({
               variant="ghost"
               size="icon-sm"
               className="absolute right-2 top-2 h-6 w-6 rounded-full"
-              onClick={() => removeNotification(notification.id)}
+              onClick={() => onDismiss(notification.id)}
               aria-label="Dismiss notification"
             >
               <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
