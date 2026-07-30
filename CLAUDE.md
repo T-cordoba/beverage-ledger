@@ -30,8 +30,8 @@ El nombre no es casual: la fuente de verdad del inventario es un **ledger inmuta
 | 2 | API: auth (local + Google OAuth), JWT, refresh, matriz de permisos | ✅ Hecha |
 | 3 | API: catálogo, inventario con stock, reportes, PDF | ✅ Hecha |
 | 4 | Front: design system (tokens CSS, primitivos Radix, `cn()`) | ✅ Hecha |
-| 5 | Front: reestructura a rutas reales + corte a la API nueva | 🔄 Siguiente |
-| 6 | Front: dashboard de existencias + panel de administración | ⬜ Pendiente |
+| 5 | Front: reestructura a rutas reales + corte a la API nueva | ✅ Hecha |
+| 6 | Front: dashboard de existencias + panel de administración | 🔄 Siguiente |
 | 7 | Front: landing page + i18n + parametrización de branding | ⬜ Pendiente |
 | 8 | READMEs y documentación final | ⬜ Pendiente |
 
@@ -39,7 +39,7 @@ Plan completo: `C:\Users\Tomas\.claude\plans\ok-voy-a-hacerle-tender-sprout.md`
 
 **El backend está terminado.** Las fases 1 a 3 ocurrieron enteras en `beverage-ledger-api`; a partir de aquí todo el trabajo es de este repositorio.
 
-**Hasta la Fase 5, la app sigue funcionando contra la base de datos Neon vieja.** No borres `src/app/actions.ts`, `src/app/actions-licores.ts` ni `src/app/api/` antes del corte — la app deja de funcionar. La base nueva de Supabase ya existe y está sembrada, pero todavía no la consume nadie.
+**El corte ya ocurrió.** Este repo no habla con ninguna base de datos: `actions.ts`, `actions-licores.ts` y `src/app/api/` están borrados, igual que `@neondatabase/serverless` y `pdf-lib`. Todo pasa por `beverage-ledger-api`, que tiene que estar levantada en `:3001` para que la app funcione. Neon ya se puede apagar; la connection string que quede en tu `.env` local no la lee nadie.
 
 ---
 
@@ -53,6 +53,7 @@ pnpm install --frozen-lockfile  # lo que hace CI: falla si el lockfile no cuadra
 pnpm dev                        # servidor de desarrollo (Turbopack) en :3000
 pnpm build                      # build de producción
 pnpm start                      # servir el build
+pnpm api:types                  # regenera src/lib/api/schema.d.ts desde la API viva
 pnpm lint                       # ESLint
 pnpm typecheck                  # tsc --noEmit
 pnpm format                     # Prettier --write
@@ -167,7 +168,7 @@ Regla de dirección de dependencias: `app/` → `features/` → `components/ui/`
 - **Estado de UI local**: dentro del componente que lo posee. Un dropdown gestiona su propio `isOpen`; no se sube al padre.
 - **Estado de negocio compartido**: hooks propios en `features/` (`useMovementDraft`, `useCatalogFilters`).
 
-Antipatrón a evitar (es literalmente el estado actual de `src/app/page.tsx`): un componente con 560 líneas, 10 `useState`, 2 `useReducer`, fetching, agregación de datos y manipulación del DOM. Se desmonta en la Fase 5.
+Antipatrón a evitar (era literalmente el `src/app/page.tsx` de antes): un componente con 560 líneas, 10 `useState`, 2 `useReducer`, fetching, agregación de datos y manipulación del DOM. Se desmontó en la Fase 5.
 
 ### Estilos
 - Tailwind con tokens del tema. **Nunca** `!important` en las clases: si necesitas pisar un estilo, el componente base está mal diseñado. Usa `cn()` (`@/lib/utils`, clsx + tailwind-merge) para componer clases — con tailwind-merge la clase del call site gana sin `!important`.
@@ -177,13 +178,11 @@ Antipatrón a evitar (es literalmente el estado actual de `src/app/page.tsx`): u
 **Nombres de color disponibles** (todos con modificador de alfa, `bg-accent/20` funciona):
 `background`, `foreground`, `contrast`, `placeholder`, `border`, `scrim`, `surface`, `surface-raised`, `accent`, `accent-hover`, `success`, `warning`, `info`, `danger`, `danger-strong`.
 
-⚠️ Sobreviven cuatro alias **deprecados** apuntando a los mismos tokens, para que las vistas pre-Fase-5 sigan compilando: `primary` (= `foreground`), `secondary` (= `contrast`), `accentHover`, `cardBg` (= `surface`). **No los uses en código nuevo**; se borran con esas vistas en la Fase 5.
-
 **Escala de z-index** (en vez de los `z-[9999]` de antes): `z-sticky` < `z-floating` < `z-overlay` < `z-modal` < `z-dropdown` = `z-popover` < `z-toast`. Los dropdowns van por encima del modal a propósito: un `Select` abierto dentro de un `Dialog` tiene que pintarse sobre él.
 
 **Formatters**: `@/lib/utils` (`toDateKey`, `parseDateKey`, `formatLongDate`, `formatShortDate`, `formatDateTime`, `formatMonthYear`, `getMonthNames`, `getWeekdayNames`, `pluralize`, `formatNumber`). El locale sale de `@/config/locale`, no de literales `'en-US'`.
 
-`DataTable` y `Pagination` quedan sin construir a propósito: la API pagina por cursor, y un componente de paginación numerada diseñado sin ese contrato delante saldría mal. Se hacen en la Fase 5/6 con el consumidor real.
+No hay `Pagination` numerada y no la va a haber: la API pagina por cursor, así que las listas crecen con un botón de "cargar más". Un componente de páginas numeradas necesitaría un total que el contrato no da. `DataTable` sigue sin construirse hasta que haya un consumidor real (Fase 6).
 
 ### Accesibilidad
 Los overlays (dropdown, select, modal, popover) se construyen sobre **Radix UI**, no con `div`s y `onClick`. Radix da gratis roles ARIA, navegación por teclado, focus trap y cierre con Escape — nada de lo cual existe en el código original.
@@ -263,13 +262,17 @@ La matriz vive en **una sola definición declarativa** en la API (`common/permis
 
 Nada de `if (user.role === 'admin')` desperdigado por el código.
 
-### Lo que el front tendrá que consumir (ya construido en la API)
+### Cómo lo consume el front (Fase 5, ya construido)
 
-`GET /auth/me` devuelve `{ user, organization, permissions }`. La lista de `permissions` es de strings tipo `movement:create-outbound` o `catalog:manage`; el front condiciona la UI sobre esa lista, nunca sobre `role`.
+`GET /auth/me` devuelve `{ user, organization, permissions }`. La lista de `permissions` es de strings tipo `movement:create-outbound` o `catalog:manage`; el front condiciona la UI sobre esa lista con `can()` de `useAuth()`, nunca sobre `role`.
 
-La sesión son dos piezas: un **access token JWT corto que se guarda en memoria** —nunca en `localStorage`— y una **cookie de refresh httpOnly** que el navegador maneja solo. Cuando el access token expira, `POST /auth/refresh` con `credentials: 'include'` devuelve uno nuevo. El login con Google no devuelve token: redirige a `/auth/callback` con la cookie ya puesta, y esa página tiene que llamar a `/auth/refresh` para obtener el access token.
+La sesión son dos piezas: un **access token JWT corto que vive en memoria** (`src/lib/api/session.ts`) —nunca en `localStorage`, porque lo que un script puede leer, un script inyectado puede exfiltrar— y una **cookie de refresh httpOnly** que el navegador maneja solo. Perder el token al recargar es el diseño: la cookie sobrevive y compra uno nuevo.
 
-Los refresh tokens rotan y hay **detección de reuso**: si el front manda dos veces el mismo, la API revoca todas las sesiones de ese usuario. El wrapper del cliente debe serializar los refresh concurrentes en una sola llamada, o un par de peticiones simultáneas con el token vencido cierran la sesión.
+El token se renueva **antes de vencer**, no tras un 401: reintentar una petición ya enviada obliga a conservar un clon de cada request por si hay que repetir el body. Comprobar la expiración en `onRequest` sale gratis y deja al 401 significando lo único que debería significar, que la sesión terminó (`forgetSession()` → el guard manda a `/login`).
+
+Los refresh tokens rotan y hay **detección de reuso**: dos envíos del mismo token revocan todas las sesiones de ese usuario. Por eso `refreshSession()` colapsa las llamadas concurrentes en una sola promesa; sin eso, dos peticiones en paralelo con el token vencido cierran la sesión.
+
+El login con Google no devuelve token: redirige a `/auth/callback` con la cookie ya puesta, y esa página llama a `/auth/refresh`. El botón solo se muestra con `NEXT_PUBLIC_GOOGLE_SIGN_IN=true`, porque sin credenciales la API responde 501.
 
 ### El dominio (Fase 3, ya construido)
 
@@ -282,12 +285,14 @@ El contrato completo son **30 rutas (43 operaciones) y 58 esquemas**, con la API
 | OpenAPI JSON, para `api:types` | `http://localhost:3001/docs-json` — **en la raíz** |
 | Base de la API, para el cliente | `http://localhost:3001/api/v1` |
 
-`/api/v1/docs-json` devuelve 404: Swagger se monta fuera del `setGlobalPrefix`. La base con prefijo va en `NEXT_PUBLIC_API_URL`.
+`/api/v1/docs-json` devuelve 404: Swagger se monta fuera del `setGlobalPrefix`.
 
-⚠️ El script `pnpm api:types` y la dependencia `openapi-typescript` **todavía no existen en este repo**: montarlos es trabajo de la Fase 5, junto con el cliente y el wrapper de auth. La Fase 4 no los necesita. Lo esencial para diseñar las vistas:
+⚠️ `NEXT_PUBLIC_API_URL` es el **origen pelado** (`http://localhost:3001`), sin `/api/v1`. Las rutas del schema generado ya traen el prefijo, así que ponerlo también en la base pediría `/api/v1/api/v1/...`.
+
+Lo esencial del dominio:
 
 - **Catálogo** — `/products`, `/categories`, `/brands`. Todo paginado por cursor con `search`, filtros y orden en el servidor: no descargues los 215. Leer es abierto a cualquier autenticado; escribir exige `catalog:manage`. Los productos no se borran, se desactivan con `isActive: false`.
-- **Movimientos** — el ciclo es **crear borrador → confirmar**, en dos llamadas. `POST /movements` abre un `DRAFT` que no toca existencias; `POST /movements/:id/confirm` aplica el delta. Eso es justamente lo que da el borrador persistente de la Fase 6. Anular es `POST /movements/:id/cancel` con motivo, y revierte el stock.
+- **Movimientos** — el ciclo es **crear borrador → confirmar**, en dos llamadas. `POST /movements` abre un `DRAFT` que no toca existencias; `POST /movements/:id/confirm` aplica el delta. `useRegisterMovement` encadena las dos; si la segunda falla —una salida mayor al stock— el borrador se queda ahí en vez de tirar lo que el usuario capturó. Retomarlo es trabajo de la Fase 6. Anular es `POST /movements/:id/cancel` con motivo, y revierte el stock.
 - **Cantidades** — `quantity` va **positiva** en `INBOUND` y `OUTBOUND` (el tipo lleva la dirección) y **con signo** en `ADJUSTMENT`, que corrige hacia ambos lados y **exige `reason`**. La unidad es `BOTTLE` o `CASE`; la API normaliza con el `caseSize` del producto.
 - **Existencias** — `/stock` paginado, `/stock/low` para la tarjeta de "bajo mínimo" del dashboard, `/stock/:productId/kardex` para el histórico de un producto con saldo corrido.
 - **Reportes** — `/reports/summary`, `/reports/consumption` (`groupBy=product|category|brand`, que es lo que hoy calcula el navegador) y `/reports/activity` (serie temporal). Rango omitido = últimos 30 días.
@@ -296,29 +301,37 @@ El contrato completo son **30 rutas (43 operaciones) y 58 esquemas**, con la API
 
 ---
 
-## 8. Estructura objetivo del front
+## 8. Estructura del front
+
+Lo que existe hoy, con lo pendiente marcado:
 
 ```
 src/
   app/
-    (marketing)/      landing, features, legal — estático (SSG), público
-    (auth)/           login, register, callback de Google
-    (app)/            producto autenticado; layout con shell y guard
-      dashboard/  movements/  catalog/  reports/  admin/
+    page.tsx          redirige a /movements (⬜ landing en la Fase 7)
+    providers.tsx     QueryClient + notificaciones + AuthProvider
+    (auth)/           login · register · auth/callback
+    (app)/            layout = AuthGuard + AppShell
+      movements/      historial · new · [id]
+      reports/
+      ⬜ dashboard/ catalog/ admin/   (Fase 6)
   components/
     ui/               primitivos (ver §5)
-    layout/           AppShell, Sidebar, Topbar, MarketingNav, Footer
-  features/           catalog · movements · reports · auth · admin
+    layout/           AppShell, Topbar   (⬜ Sidebar y MarketingNav cuando hagan falta)
+  features/           auth · catalog · movements · reports   (⬜ admin en la Fase 6)
   lib/
-    api/              cliente generado desde OpenAPI + wrapper con auth y refresh
+    api/              schema.d.ts generado, cliente, sesión, errores
+    query/            configuración del QueryClient
     utils/            cn(), formatters de fecha/número/plural
     hooks/
-  config/             constantes, navegación, feature flags
+  config/             api, locale, navigation
   styles/             tokens.css + globals.css
-  i18n/               messages/es.json · messages/en.json
+  ⬜ i18n/            messages/es.json · messages/en.json   (Fase 7)
 ```
 
 Imports siempre por alias `@/`, nunca relativos que suban de directorio (`../../`).
+
+**El cliente de la API.** `src/lib/api/` es la única puerta al backend: `schema.d.ts` lo genera `pnpm api:types` y **no se edita a mano**; `client.ts` monta `openapi-fetch` con el middleware de auth y expone `unwrap()`/`assertOk()`, que convierten el par `{ data, error }` en un valor o en un `ApiError` —que es lo que TanStack Query sabe manejar—; `types.ts` pone nombres cortos a los esquemas para no escribir `components['schemas']['…']` por todo el código. Ningún componente llama a `fetch` directamente.
 
 ---
 
@@ -327,7 +340,8 @@ Imports siempre por alias `@/`, nunca relativos que suban de directorio (`../../
 - **Cookie cross-site.** El plan de despliegue es Vercel (front) + Render (API) sin dominio propio, así que la cookie de refresh queda cross-site y obligada a `SameSite=None; Secure`. Safari la bloquea por ITP. Funciona en local y en Chrome/Edge/Firefox; el arreglo real es un dominio propio con `app.` y `api.` bajo el mismo padre.
 - **Pooler de Supabase.** El pooler en modo transacción (puerto 6543) no puede correr migraciones de Prisma. Hacen falta dos variables: `DATABASE_URL` (pooler, runtime) y `DIRECT_URL` (directa, puerto 5432, migraciones).
 - **Passwords en connection strings.** Si contienen `/`, `%`, `@` o `:` hay que URL-encodearlos o la conexión falla con un error de parseo poco descriptivo.
-- **`"use server"`.** Mientras queden server actions en este repo, todo archivo que toque la base de datos debe llevar la directiva. Sin ella, si un client component lo importa, el driver y la connection string acaban en el bundle del navegador.
+- **La protección de rutas es del cliente, no de `middleware.ts`.** La cookie de refresh es httpOnly, va scopeada a `/api/v1/auth` y en producción la pone otro origen: el servidor de Next no puede verla, así que un middleware o dejaría pasar siempre o bloquearía siempre. `AuthGuard` evita pintar una pantalla que va a responder 401, y **la autorización real es de la API**.
+- **Casing de los directorios.** Windows no distingue mayúsculas y Linux sí: `src/components/UI` estuvo versionado así mientras los imports decían `ui`, lo que compilaba en local y habría roto el build en Vercel. Si renombras solo el caso, `git rm -r --cached` y volver a añadir.
 
 ---
 
@@ -346,11 +360,18 @@ Cerrado en la Fase 4:
 - Modales sin focus trap, dropdowns sin roles ARIA, notificaciones sin `aria-live` → resuelto vía Radix y una live region que se monta siempre.
 - Un bug de paso: navegar de mes en el date picker sobrescribía el filtro de fecha con el día 1 del mes visitado. El mes visible es ahora estado propio.
 
-Pendiente para la Fase 5:
+Cerrado en la Fase 5:
 
-- `src/app/page.tsx`: 560 líneas con toda la aplicación dentro. Navegación por string en estado, sin rutas — sin deep links ni botón atrás.
-- Cuatro declaraciones del tipo `Licor`.
-- API sin autenticación, sin validación de entrada y sin manejo de errores; PDFs descargables por UUID sin comprobar propiedad.
-- `SELECT * FROM movimientos` sin paginación: la tabla entera viaja al navegador en cada carga de historial y de estadísticas, que además se agregan en el cliente.
-- El inventario se llama inventario pero no existen las existencias en ninguna parte.
-- Nombres de dominio en español dentro del código (`cantidades`, `botellas`, `cajas`, `licores`): se van cuando las vistas pasen a consumir la API nueva.
+- ~~`src/app/page.tsx`: 560 líneas con toda la aplicación dentro, navegación por string en estado~~ → rutas reales bajo `(app)/`, con deep links, botón atrás y URLs compartibles. El estado de servidor es TanStack Query y el de negocio vive en `useMovementDraft` y `useCatalogFilters`.
+- ~~Cuatro declaraciones del tipo `Licor`~~ → un `schema.d.ts` generado del OpenAPI. De paso se arregló en la API el defecto que lo hacía inservible: los `@ApiProperty({ nullable: true })` sin `type` salían como `Record<string, never>`.
+- ~~API sin autenticación; PDFs descargables por UUID sin comprobar propiedad~~ → toda petición lleva bearer token, el PDF incluido, y va scopeada a la organización.
+- ~~`SELECT * FROM movimientos` sin paginación y estadísticas agregadas en el cliente~~ → paginación por cursor y `GROUP BY` en SQL. El catálogo también: búsqueda y filtros server-side, incluidos `origin`, `subcategory`, `age` y `abv`, que se añadieron a la API en esta fase junto con `/products/facets` para poblar los desplegables.
+- ~~Nombres de dominio en español dentro del código~~ → todo inglés; `botellas`/`cajas` son ahora `BOTTLE`/`CASE`, la unidad que habla la API.
+- ~~El scroll animado a mano con `document.querySelector` y `requestAnimationFrame`~~ → una barra sticky con el resumen del borrador.
+
+Sigue pendiente (Fase 6 en adelante):
+
+- El inventario se llama inventario y todavía no muestra existencias: `/stock` y `/stock/low` existen en la API y no los consume nadie.
+- El borrador se pierde al recargar, `occurredAt` es siempre ahora, y solo se registran salidas: entradas y ajustes tienen endpoint pero no vista.
+- Un confirm fallido deja un `DRAFT` huérfano que no hay forma de retomar desde la UI.
+- Copy en inglés incrustado en el JSX; sale a `i18n/` en la Fase 7.
