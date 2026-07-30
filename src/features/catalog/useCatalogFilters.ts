@@ -32,6 +32,12 @@ export interface CatalogFiltersState {
   setSearch: (value: string) => void;
   filters: CatalogFilterValues;
   setFilter: (key: CatalogFilterKey, value: string) => void;
+  /**
+   * Active or inactive, never both: the API's `isActive` defaults to true when
+   * omitted, so there is no "any status" to ask for.
+   */
+  isActive: boolean;
+  setIsActive: (value: boolean) => void;
   clearAll: () => void;
   clearFilters: () => void;
   hasFilters: boolean;
@@ -43,6 +49,7 @@ export interface CatalogFiltersState {
 export function useCatalogFilters(): CatalogFiltersState {
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useState<CatalogFilterValues>(EMPTY_FILTERS);
+  const [isActive, setIsActive] = useState(true);
   const debouncedSearch = useDebouncedValue(search);
 
   const setFilter = useCallback((key: CatalogFilterKey, value: string) => {
@@ -54,12 +61,14 @@ export function useCatalogFilters(): CatalogFiltersState {
   const clearAll = useCallback(() => {
     setSearch('');
     setFilters(EMPTY_FILTERS);
+    setIsActive(true);
   }, []);
 
   const hasFilters = CATALOG_FILTER_KEYS.some((key) => filters[key] !== '');
 
   const query = useMemo<ProductQuery>(
     () => ({
+      isActive,
       ...(debouncedSearch ? { search: debouncedSearch } : {}),
       ...(filters.categoryId ? { categoryId: filters.categoryId } : {}),
       ...(filters.brandId ? { brandId: filters.brandId } : {}),
@@ -68,7 +77,7 @@ export function useCatalogFilters(): CatalogFiltersState {
       ...(filters.age ? { age: filters.age } : {}),
       ...(filters.abv ? { abv: Number(filters.abv) } : {}),
     }),
-    [debouncedSearch, filters],
+    [debouncedSearch, filters, isActive],
   );
 
   return {
@@ -76,10 +85,12 @@ export function useCatalogFilters(): CatalogFiltersState {
     setSearch,
     filters,
     setFilter,
+    isActive,
+    setIsActive,
     clearAll,
     clearFilters,
     hasFilters,
-    hasAny: hasFilters || search !== '',
+    hasAny: hasFilters || search !== '' || !isActive,
     query,
   };
 }

@@ -1,12 +1,27 @@
 'use client';
 
-import { keepPreviousData, useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { api, unwrap, type ProductListQuery } from '@/lib/api';
+import {
+  keepPreviousData,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+  type QueryClient,
+} from '@tanstack/react-query';
+import { stockKeys } from '@/features/stock/keys';
+import {
+  api,
+  unwrap,
+  type CreateProductInput,
+  type ProductListQuery,
+  type UpdateProductInput,
+} from '@/lib/api';
 
 /** Filters that reach the server. Everything the picker shows is one of these. */
 export type ProductQuery = Omit<ProductListQuery, 'cursor'>;
 
 export const catalogKeys = {
+  all: ['products'] as const,
   products: (query: ProductQuery) => ['products', query] as const,
   product: (id: string) => ['products', 'detail', id] as const,
   facets: ['product-facets'] as const,
@@ -106,5 +121,35 @@ export function useBrands() {
         ),
       ),
     staleTime: 5 * 60_000,
+  });
+}
+
+/**
+ * A product write moves more than the product list: the facets are built from
+ * these columns, and the stock view reads the reorder threshold off the product.
+ */
+function invalidateCatalog(queryClient: QueryClient): void {
+  void queryClient.invalidateQueries({ queryKey: catalogKeys.all });
+  void queryClient.invalidateQueries({ queryKey: catalogKeys.facets });
+  void queryClient.invalidateQueries({ queryKey: stockKeys.all });
+}
+
+export function useCreateProduct() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (input: CreateProductInput) =>
+      unwrap(await api.POST('/api/v1/products', { body: input })),
+    onSuccess: () => invalidateCatalog(queryClient),
+  });
+}
+
+export function useUpdateProduct() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, input }: { id: string; input: UpdateProductInput }) =>
+      unwrap(await api.PATCH('/api/v1/products/{id}', { params: { path: { id } }, body: input })),
+    onSuccess: () => invalidateCatalog(queryClient),
   });
 }

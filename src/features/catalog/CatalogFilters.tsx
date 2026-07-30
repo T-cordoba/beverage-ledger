@@ -16,7 +16,14 @@ interface AdvancedField {
   options: SelectOption[];
 }
 
-export function CatalogFilters({ state }: { state: CatalogFiltersState }) {
+export function CatalogFilters({
+  state,
+  showStatus = false,
+}: {
+  state: CatalogFiltersState;
+  /** Only the catalogue view manages deactivated products; pickers never show them. */
+  showStatus?: boolean;
+}) {
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
 
   const { data: categories = [] } = useCategories();
@@ -92,6 +99,20 @@ export function CatalogFilters({ state }: { state: CatalogFiltersState }) {
             ]}
           />
         </div>
+
+        {showStatus && (
+          <div className="flex-1 sm:min-w-[160px] sm:flex-initial">
+            <Select
+              value={state.isActive ? 'active' : 'inactive'}
+              onValueChange={(value) => state.setIsActive(value === 'active')}
+              aria-label="Filter by status"
+              options={[
+                { value: 'active', label: 'Active' },
+                { value: 'inactive', label: 'Deactivated' },
+              ]}
+            />
+          </div>
+        )}
 
         <Button
           variant="secondary"
