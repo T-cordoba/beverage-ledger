@@ -273,7 +273,16 @@ Los refresh tokens rotan y hay **detección de reuso**: si el front manda dos ve
 
 ### El dominio (Fase 3, ya construido)
 
-`GET /docs-json` expone el contrato completo: **30 rutas, 58 esquemas**, con la API corriendo en `:3001`.
+El contrato completo son **30 rutas (43 operaciones) y 58 esquemas**, con la API corriendo en `:3001`. Verificado.
+
+⚠️ Ojo con las dos URLs, porque no comparten prefijo:
+
+| | URL |
+|---|---|
+| OpenAPI JSON, para `api:types` | `http://localhost:3001/docs-json` — **en la raíz** |
+| Base de la API, para el cliente | `http://localhost:3001/api/v1` |
+
+`/api/v1/docs-json` devuelve 404: Swagger se monta fuera del `setGlobalPrefix`. La base con prefijo va en `NEXT_PUBLIC_API_URL`.
 
 ⚠️ El script `pnpm api:types` y la dependencia `openapi-typescript` **todavía no existen en este repo**: montarlos es trabajo de la Fase 5, junto con el cliente y el wrapper de auth. La Fase 4 no los necesita. Lo esencial para diseñar las vistas:
 
