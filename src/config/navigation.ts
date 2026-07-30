@@ -14,10 +14,13 @@ export const ROUTES = {
   movement: (id: string) => `/movements/${id}`,
   reports: '/reports',
   catalog: '/catalog',
+  /** Out of MAIN_NAVIGATION on purpose: it hangs off the account menu. */
+  profile: '/profile',
   admin: '/admin',
   adminUsers: '/admin/users',
   adminCategories: '/admin/categories',
   adminBrands: '/admin/brands',
+  adminLocations: '/admin/locations',
   adminOrganization: '/admin/organization',
   adminAudit: '/admin/audit',
 } as const;
@@ -62,6 +65,7 @@ export const ADMIN_NAVIGATION: NavigationItem[] = [
   { href: ROUTES.adminUsers, label: 'Users', permissions: ['user:manage'] },
   { href: ROUTES.adminCategories, label: 'Categories', permissions: ['catalog:manage'] },
   { href: ROUTES.adminBrands, label: 'Brands', permissions: ['catalog:manage'] },
+  { href: ROUTES.adminLocations, label: 'Locations', permissions: ['catalog:manage'] },
   { href: ROUTES.adminOrganization, label: 'Organization', permissions: ['organization:manage'] },
   { href: ROUTES.adminAudit, label: 'Audit log', permissions: ['audit:read'] },
 ];

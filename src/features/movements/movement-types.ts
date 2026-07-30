@@ -14,6 +14,20 @@ interface MovementTypeMeta {
    */
   isSigned: boolean;
   requiresReason: boolean;
+  /**
+   * A transfer needs two locations and the others need one, so the capture view
+   * asks this instead of comparing against the type in three places.
+   */
+  needsDestination: boolean;
+  /**
+   * Whether every line of this type takes units out of the origin, which is what
+   * lets the picker stop at what is on hand.
+   *
+   * False for an adjustment even though a negative one also removes stock: an
+   * adjustment exists precisely because the recorded number is wrong, so capping
+   * it by that number would be circular. The API still refuses to go below zero.
+   */
+  takesFromOrigin: boolean;
 }
 
 export const MOVEMENT_TYPES: Record<MovementType, MovementTypeMeta> = {
@@ -24,6 +38,8 @@ export const MOVEMENT_TYPES: Record<MovementType, MovementTypeMeta> = {
     permission: 'movement:create-outbound',
     isSigned: false,
     requiresReason: false,
+    needsDestination: false,
+    takesFromOrigin: true,
   },
   INBOUND: {
     label: 'Inbound',
@@ -32,6 +48,8 @@ export const MOVEMENT_TYPES: Record<MovementType, MovementTypeMeta> = {
     permission: 'movement:create-inbound',
     isSigned: false,
     requiresReason: false,
+    needsDestination: false,
+    takesFromOrigin: false,
   },
   ADJUSTMENT: {
     label: 'Adjustment',
@@ -41,6 +59,19 @@ export const MOVEMENT_TYPES: Record<MovementType, MovementTypeMeta> = {
     permission: 'movement:create-adjustment',
     isSigned: true,
     requiresReason: true,
+    needsDestination: false,
+    takesFromOrigin: false,
+  },
+  TRANSFER: {
+    label: 'Transfer',
+    action: 'Register a transfer',
+    effect:
+      'Moves stock from one location to another. The total on hand does not change: confirming writes both sides at once.',
+    permission: 'movement:create-transfer',
+    isSigned: false,
+    requiresReason: false,
+    needsDestination: true,
+    takesFromOrigin: true,
   },
 };
 
@@ -50,5 +81,10 @@ export const MOVEMENT_TYPES: Record<MovementType, MovementTypeMeta> = {
  */
 export const MIN_REASON_LENGTH = 4;
 
-/** Dispatch first: it is the movement of the day, the other two are exceptions. */
-export const MOVEMENT_TYPE_ORDER: MovementType[] = ['OUTBOUND', 'INBOUND', 'ADJUSTMENT'];
+/** Dispatch first: it is the movement of the day, the rest are exceptions. */
+export const MOVEMENT_TYPE_ORDER: MovementType[] = [
+  'OUTBOUND',
+  'INBOUND',
+  'TRANSFER',
+  'ADJUSTMENT',
+];

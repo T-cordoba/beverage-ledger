@@ -14,6 +14,7 @@ import {
 } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { useCategories } from '@/features/catalog';
+import { LocationSelect } from '@/features/locations';
 import type { StockLevel } from '@/lib/api';
 import { useDebouncedValue } from '@/lib/hooks';
 import { formatNumber, pluralize } from '@/lib/utils';
@@ -89,6 +90,7 @@ const columns: DataTableColumn<StockLevel>[] = [
 export function StockLevelsView() {
   const [search, setSearch] = useState('');
   const [categoryId, setCategoryId] = useState('');
+  const [locationId, setLocationId] = useState('');
   const debouncedSearch = useDebouncedValue(search);
 
   const { data: categories = [] } = useCategories();
@@ -97,19 +99,21 @@ export function StockLevelsView() {
     () => ({
       ...(debouncedSearch ? { search: debouncedSearch } : {}),
       ...(categoryId ? { categoryId } : {}),
+      ...(locationId ? { locationId } : {}),
     }),
-    [categoryId, debouncedSearch],
+    [categoryId, debouncedSearch, locationId],
   );
 
   const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
     useStockLevels(query);
 
   const rows = data?.pages.flatMap((page) => page.data) ?? [];
-  const hasFilters = Boolean(search || categoryId);
+  const hasFilters = Boolean(search || categoryId || locationId);
 
   const clearFilters = () => {
     setSearch('');
     setCategoryId('');
+    setLocationId('');
   };
 
   return (
@@ -122,7 +126,7 @@ export function StockLevelsView() {
         </p>
       </header>
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-3">
         <Input
           type="search"
           placeholder="Search by product..."
@@ -138,6 +142,13 @@ export function StockLevelsView() {
             { value: '', label: 'All categories' },
             ...categories.map((category) => ({ value: category.id, label: category.name })),
           ]}
+        />
+        {/* One location at a time, never a sum: stock is per location, and adding
+            two warehouses together is a number nobody can act on. */}
+        <LocationSelect
+          value={locationId}
+          onValueChange={setLocationId}
+          aria-label="Filter by location"
         />
       </div>
 

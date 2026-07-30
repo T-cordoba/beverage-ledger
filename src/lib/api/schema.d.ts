@@ -459,6 +459,43 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/locations': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List locations */
+    get: operations['LocationsController_list'];
+    put?: never;
+    /** Create a location */
+    post: operations['LocationsController_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/locations/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Read one location */
+    get: operations['LocationsController_findOne'];
+    put?: never;
+    post?: never;
+    /** Delete a location the ledger does not reference */
+    delete: operations['LocationsController_remove'];
+    options?: never;
+    head?: never;
+    /** Rename a location, or promote it to default */
+    patch: operations['LocationsController_update'];
+    trace?: never;
+  };
   '/api/v1/movements/{id}/pdf': {
     parameters: {
       query?: never;
@@ -645,6 +682,7 @@ export interface components {
       | 'movement:create-outbound'
       | 'movement:create-inbound'
       | 'movement:create-adjustment'
+      | 'movement:create-transfer'
       | 'movement:cancel'
       | 'stock:read'
       | 'report:read'
@@ -705,10 +743,10 @@ export interface components {
       role: components['schemas']['UserRole'];
       /**
        * Format: password
-       * @description Omit to create the user as INVITED, with no way in until a password is set
+       * @description At least 12 characters, with lowercase, uppercase and a digit
        * @example Inventario2026!
        */
-      password?: string;
+      password: string;
     };
     UpdateUserDto: {
       name?: string;
@@ -842,8 +880,11 @@ export interface components {
       name?: string;
       /** Format: uuid */
       categoryId?: string;
-      /** Format: uuid */
-      brandId?: string;
+      /**
+       * Format: uuid
+       * @description Null unlinks the brand. Omitted leaves it as it is
+       */
+      brandId?: string | null;
       subcategory?: string;
       abv?: number;
       origin?: string;
@@ -854,7 +895,7 @@ export interface components {
       isActive?: boolean;
     };
     /** @enum {string} */
-    MovementType: 'INBOUND' | 'OUTBOUND' | 'ADJUSTMENT';
+    MovementType: 'INBOUND' | 'OUTBOUND' | 'ADJUSTMENT' | 'TRANSFER';
     /** @enum {string} */
     MovementStatus: 'DRAFT' | 'CONFIRMED' | 'CANCELLED';
     MovementActorDto: {
@@ -887,6 +928,11 @@ export interface components {
       id: string;
       /** Format: uuid */
       productId: string;
+      /**
+       * Format: uuid
+       * @description Which location this line moves. A transfer writes one line per side
+       */
+      locationId: string;
       /** @description As captured, in the unit below */
       quantity: number;
       unit: components['schemas']['MovementUnit'];
@@ -903,8 +949,16 @@ export interface components {
       code: string;
       type: components['schemas']['MovementType'];
       status: components['schemas']['MovementStatus'];
-      /** Format: uuid */
+      /**
+       * Format: uuid
+       * @description The origin on a transfer
+       */
       locationId: string;
+      /**
+       * Format: uuid
+       * @description Only a transfer has one
+       */
+      destinationLocationId: string | null;
       /**
        * Format: date-time
        * @description When it happened
@@ -926,7 +980,7 @@ export interface components {
       /** Format: uuid */
       productId: string;
       /**
-       * @description Positive on inbound and outbound, where the type carries the direction. Signed on an adjustment, which corrects either way
+       * @description Positive on inbound, outbound and transfer, where the type carries the direction. Signed on an adjustment, which corrects either way
        * @example 6
        */
       quantity: number;
@@ -937,9 +991,14 @@ export interface components {
       type: components['schemas']['MovementType'];
       /**
        * Format: uuid
-       * @description Defaults to the default location
+       * @description Defaults to the default location. The origin on a transfer
        */
       locationId?: string;
+      /**
+       * Format: uuid
+       * @description Required on a transfer, and rejected on every other type
+       */
+      destinationLocationId?: string;
       /**
        * Format: date-time
        * @description When it happened, which need not be now. Defaults to now
@@ -1000,6 +1059,34 @@ export interface components {
     KardexPageDto: {
       data: components['schemas']['KardexEntryDto'][];
       meta: components['schemas']['PageMetaDto'];
+    };
+    LocationDto: {
+      /** Format: uuid */
+      id: string;
+      /** @example Bodega principal */
+      name: string;
+      /** @description Where a movement lands when it names no location */
+      isDefault: boolean;
+      /** @description Movements that reference it. A used location cannot be deleted */
+      movementCount: number;
+    };
+    LocationPageDto: {
+      data: components['schemas']['LocationDto'][];
+      meta: components['schemas']['PageMetaDto'];
+    };
+    CreateLocationDto: {
+      /** @example Barra */
+      name: string;
+      /**
+       * @description Makes this the default and demotes the current one
+       * @default false
+       */
+      isDefault: boolean;
+    };
+    UpdateLocationDto: {
+      name?: string;
+      /** @description Only promoting is possible: demoting would leave the organization without one */
+      isDefault?: boolean;
     };
     ReportRangeEchoDto: {
       /** Format: date-time */
@@ -1900,8 +1987,7 @@ export interface operations {
         /** @description Exact match, from the values in /products/facets */
         age?: string;
         abv?: number;
-        /** @description Defaults to active products only */
-        isActive?: boolean;
+        status?: 'active' | 'inactive' | 'all';
         sort?: 'name' | '-name' | '-createdAt' | 'createdAt';
       };
       header?: never;
@@ -2050,6 +2136,8 @@ export interface operations {
         /** @description Only movements touching this product */
         productId?: string;
         createdByUserId?: string;
+        /** @description Movements touching this location, on either side of a transfer */
+        locationId?: string;
         from?: string;
         to?: string;
       };
@@ -2273,6 +2361,8 @@ export interface operations {
         categoryId?: string;
         /** @description Defaults to the default location */
         locationId?: string;
+        /** @description Comma-separated product ids. Narrows the page to those products */
+        productIds?: string;
       };
       header?: never;
       path?: never;
@@ -2362,6 +2452,170 @@ export interface operations {
       };
       /** @description No such product in this organization */
       404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  LocationsController_list: {
+    parameters: {
+      query?: {
+        /** @description Id of the last item on the previous page */
+        cursor?: string;
+        /** @description How many items to return */
+        limit?: number;
+        /** @description Matches part of the name, case-insensitively */
+        search?: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['LocationPageDto'];
+        };
+      };
+    };
+  };
+  LocationsController_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateLocationDto'];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['LocationDto'];
+        };
+      };
+      /** @description Insufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description The name is already in use */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  LocationsController_findOne: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['LocationDto'];
+        };
+      };
+      /** @description No such location in this organization */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  LocationsController_remove: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Deleted */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Insufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description It is the default, or movements reference it */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  LocationsController_update: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateLocationDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['LocationDto'];
+        };
+      };
+      /** @description Demoting a default is not allowed */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Insufficient permissions */
+      403: {
         headers: {
           [name: string]: unknown;
         };

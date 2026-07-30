@@ -3,8 +3,12 @@
 import type { ReactNode } from 'react';
 import { Badge, Button, Card, EmptyState, Spinner } from '@/components/ui';
 import { CatalogFilters, useProducts, type CatalogFiltersState } from '@/features/catalog';
+// The module, not the barrel: stock imports a movements component, so a barrel
+// import here would close the cycle.
+import { useStockAvailability } from '@/features/stock/api';
 import type { MovementUnit, Product } from '@/lib/api';
 import { cn, formatNumber } from '@/lib/utils';
+import { MOVEMENT_TYPES } from './movement-types';
 import type { MovementDraft } from './useMovementDraft';
 
 function MetaItem({ icon, children }: { icon: ReactNode; children: ReactNode }) {
@@ -21,11 +25,15 @@ function QuantityStepper({
   unitLabel,
   value,
   onChange,
+  canIncrease = true,
+  atLimitLabel,
 }: {
   label: string;
   unitLabel: string;
   value: number;
   onChange: (delta: number) => void;
+  canIncrease?: boolean;
+  atLimitLabel?: string;
 }) {
   return (
     <div className="flex items-center justify-between rounded-xl border border-border/30 bg-background/50 px-4 py-3 backdrop-blur-sm sm:justify-start sm:gap-4 sm:px-6 sm:py-4">
@@ -49,6 +57,8 @@ function QuantityStepper({
           size="icon-sm"
           onClick={() => onChange(1)}
           aria-label={`Add ${unitLabel}`}
+          disabled={!canIncrease}
+          title={canIncrease ? undefined : atLimitLabel}
           className="rounded-lg text-base font-light sm:h-10 sm:w-10 sm:text-lg"
         >
           +
@@ -62,12 +72,21 @@ function ProductRow({
   product,
   quantities,
   onAdjust,
+  available,
 }: {
   product: Product;
   quantities: Record<MovementUnit, number>;
   onAdjust: (unit: MovementUnit, delta: number) => void;
+  /** On hand at the origin, or null when this movement does not take stock out. */
+  available: number | null;
 }) {
   const isSelected = quantities.BOTTLE > 0 || quantities.CASE > 0;
+
+  // Both steppers spend the same pool, so the limit is on base units and not on
+  // either counter: six bottles and one case of twelve is eighteen off the shelf.
+  const taken = quantities.BOTTLE + quantities.CASE * product.caseSize;
+  const remaining = available === null ? Infinity : available - taken;
+  const atLimitLabel = `Only ${formatNumber(Math.max(remaining, 0))} left at this location`;
 
   return (
     <li
@@ -155,17 +174,33 @@ function ProductRow({
         </div>
 
         <div className="flex flex-col gap-2 sm:gap-3 lg:min-w-[300px] lg:gap-4">
+          {available !== null && (
+            <p
+              className={cn(
+                'text-right text-xs',
+                remaining <= 0 ? 'text-warning' : 'text-contrast/60',
+              )}
+            >
+              {formatNumber(available)} on hand
+              {taken > 0 && ` · ${formatNumber(Math.max(remaining, 0))} left`}
+            </p>
+          )}
+
           <QuantityStepper
             label="Bottles"
             unitLabel="bottle"
             value={quantities.BOTTLE}
             onChange={(delta) => onAdjust('BOTTLE', delta)}
+            canIncrease={remaining >= 1}
+            atLimitLabel={atLimitLabel}
           />
           <QuantityStepper
             label="Cases"
             unitLabel="case"
             value={quantities.CASE}
             onChange={(delta) => onAdjust('CASE', delta)}
+            canIncrease={remaining >= product.caseSize}
+            atLimitLabel={atLimitLabel}
           />
         </div>
       </div>
@@ -186,6 +221,21 @@ export function ProductPicker({
 
   const products = data?.pages.flatMap((page) => page.data) ?? [];
   const loadedCount = products.length;
+
+  // Only for the products on screen, and only when the movement takes stock out:
+  // an inbound has no ceiling, and an adjustment is what corrects the number this
+  // would be capping by.
+  const capped = MOVEMENT_TYPES[draft.type].takesFromOrigin;
+  const { levels, isReady } = useStockAvailability(
+    products.map((product) => product.id),
+    draft.locationId || undefined,
+    capped,
+  );
+
+  // Until the levels arrive there is no ceiling to enforce, which leaves the
+  // steppers as they were rather than blocking them on a pending request.
+  const availableOf = (productId: string): number | null =>
+    isReady ? (levels.get(productId) ?? 0) : null;
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -231,6 +281,7 @@ export function ProductPicker({
                   product={product}
                   quantities={draft.quantityOf(product.id)}
                   onAdjust={(unit, delta) => draft.adjust(product, unit, delta)}
+                  available={availableOf(product.id)}
                 />
               ))}
             </ul>

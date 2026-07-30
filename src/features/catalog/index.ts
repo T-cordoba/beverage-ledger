@@ -19,8 +19,10 @@ export { CatalogFilters } from './CatalogFilters';
 export { CatalogView } from './CatalogView';
 export { ProductFormDialog } from './ProductFormDialog';
 export {
+  PRODUCT_STATUS_OPTIONS,
   useCatalogFilters,
   type CatalogFilterKey,
   type CatalogFiltersState,
   type CatalogFilterValues,
+  type ProductStatus,
 } from './useCatalogFilters';

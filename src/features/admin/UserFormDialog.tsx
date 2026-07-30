@@ -64,15 +64,9 @@ export function UserFormDialog({
           email: email.trim(),
           name: name.trim(),
           role,
-          password: password.trim() || undefined,
+          password: password.trim(),
         });
-        notify(
-          'success',
-          'Member added',
-          password.trim()
-            ? `${name.trim()} can sign in now.`
-            : `${name.trim()} is invited, and needs a password set before signing in.`,
-        );
+        notify('success', 'Member added', `${name.trim()} can sign in now.`);
       }
 
       onOpenChange(false);
@@ -123,12 +117,14 @@ export function UserFormDialog({
 
               <Field
                 label="Password"
-                hint="Leave it empty to invite them: the account exists with no way in until a password is set."
+                hint="At least 12 characters, with lowercase, uppercase and a digit. Hand it over out of band; they can change it from their profile."
               >
                 {({ id, describedBy }) => (
                   <Input
                     id={id}
                     type="password"
+                    required
+                    minLength={12}
                     autoComplete="new-password"
                     aria-describedby={describedBy}
                     value={password}

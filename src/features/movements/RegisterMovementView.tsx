@@ -16,6 +16,7 @@ import {
 import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
 import { useCatalogFilters } from '@/features/catalog';
+import { LocationSelect } from '@/features/locations';
 import { describeError, type MovementType } from '@/lib/api';
 import { formatSignedNumber, parseDateKey, pluralize } from '@/lib/utils';
 import { useCancelMovement, useRegisterMovement } from './api';
@@ -78,12 +79,23 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
 
   const trimmedReason = draft.reason.trim();
   const isReasonMissing = meta.requiresReason && trimmedReason.length < MIN_REASON_LENGTH;
+  // Elsewhere an omitted location resolves to the default, which is a sane
+  // answer. On a transfer it is not: leaving the origin empty when the default
+  // is already the destination would ask to move stock onto itself, so both ends
+  // are named explicitly.
+  const isDestinationMissing = meta.needsDestination && draft.destinationLocationId === '';
+  const isOriginMissing = meta.needsDestination && draft.locationId === '';
+  const isIncomplete = isReasonMissing || isDestinationMissing || isOriginMissing;
 
   const submit = async () => {
     try {
       const movement = await register.mutateAsync({
         type,
         items: draft.toItems(),
+        locationId: draft.locationId || undefined,
+        destinationLocationId: meta.needsDestination
+          ? draft.destinationLocationId || undefined
+          : undefined,
         // A date key is a calendar day; the API takes an instant. Omitted means
         // now, which is what an empty picker stands for.
         occurredAt: draft.occurredAt ? parseDateKey(draft.occurredAt).toISOString() : undefined,
@@ -170,6 +182,46 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
           )}
         </Field>
 
+        <Field
+          label={meta.needsDestination ? 'From' : 'Location'}
+          hint={
+            meta.needsDestination
+              ? 'Where the stock is leaving from.'
+              : 'Which warehouse this movement lands on.'
+          }
+          error={isOriginMissing ? 'A transfer needs an origin.' : undefined}
+        >
+          {({ id, describedBy }) => (
+            <LocationSelect
+              id={id}
+              aria-describedby={describedBy}
+              anyLabel={meta.needsDestination ? 'Pick an origin' : undefined}
+              value={draft.locationId}
+              onValueChange={draft.setLocationId}
+              excludeId={meta.needsDestination ? draft.destinationLocationId : undefined}
+            />
+          )}
+        </Field>
+
+        {meta.needsDestination && (
+          <Field
+            label="To"
+            hint="Where it arrives. The total on hand does not change."
+            error={isDestinationMissing ? 'A transfer needs a destination.' : undefined}
+          >
+            {({ id, describedBy }) => (
+              <LocationSelect
+                id={id}
+                aria-describedby={describedBy}
+                anyLabel="Pick a destination"
+                value={draft.destinationLocationId}
+                onValueChange={draft.setDestinationLocationId}
+                excludeId={draft.locationId}
+              />
+            )}
+          </Field>
+        )}
+
         {meta.requiresReason && (
           <Field
             label="Reason"
@@ -240,7 +292,7 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
                   size="lg"
                   className="flex-1 sm:flex-initial"
                   onClick={() => setIsConfirmOpen(true)}
-                  disabled={isReasonMissing}
+                  disabled={isIncomplete}
                   isLoading={register.isPending}
                 >
                   Confirm
@@ -252,6 +304,12 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
           {isReasonMissing && (
             <p className="text-center text-sm text-warning">
               An adjustment needs a reason before it can be confirmed.
+            </p>
+          )}
+
+          {(isOriginMissing || isDestinationMissing) && (
+            <p className="text-center text-sm text-warning">
+              A transfer needs both ends named before it can be confirmed.
             </p>
           )}
         </>

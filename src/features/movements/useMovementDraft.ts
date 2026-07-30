@@ -16,6 +16,10 @@ interface DraftState {
   lines: Record<string, DraftLine>;
   /** `YYYY-MM-DD`, or empty for "now". */
   occurredAt: string;
+  /** Empty means the default location, which the API resolves. */
+  locationId: string;
+  /** Only a transfer uses it, and then it is required. */
+  destinationLocationId: string;
   reason: string;
   note: string;
   /**
@@ -28,6 +32,8 @@ interface DraftState {
 const EMPTY_STATE: DraftState = {
   lines: {},
   occurredAt: '',
+  locationId: '',
+  destinationLocationId: '',
   reason: '',
   note: '',
   pendingMovementId: null,
@@ -40,6 +46,10 @@ export interface MovementDraft {
   adjust: (product: Product, unit: MovementUnit, delta: number) => void;
   occurredAt: string;
   setOccurredAt: (value: string) => void;
+  locationId: string;
+  setLocationId: (value: string) => void;
+  destinationLocationId: string;
+  setDestinationLocationId: (value: string) => void;
   reason: string;
   setReason: (value: string) => void;
   note: string;
@@ -134,6 +144,23 @@ export function useMovementDraft(type: MovementType): MovementDraft {
     (occurredAt: string) => setState((current) => ({ ...current, occurredAt })),
     [],
   );
+  const setLocationId = useCallback(
+    (locationId: string) =>
+      setState((current) => ({
+        ...current,
+        locationId,
+        // A transfer cannot end where it starts, and the origin is the one that
+        // just moved, so the destination is the one to give up.
+        destinationLocationId:
+          current.destinationLocationId === locationId ? '' : current.destinationLocationId,
+      })),
+    [],
+  );
+  const setDestinationLocationId = useCallback(
+    (destinationLocationId: string) =>
+      setState((current) => ({ ...current, destinationLocationId })),
+    [],
+  );
   const setReason = useCallback(
     (reason: string) => setState((current) => ({ ...current, reason })),
     [],
@@ -155,6 +182,10 @@ export function useMovementDraft(type: MovementType): MovementDraft {
       adjust,
       occurredAt: state.occurredAt,
       setOccurredAt,
+      locationId: state.locationId,
+      setLocationId,
+      destinationLocationId: state.destinationLocationId,
+      setDestinationLocationId,
       reason: state.reason,
       setReason,
       note: state.note,
@@ -177,5 +208,16 @@ export function useMovementDraft(type: MovementType): MovementDraft {
             .map((unit) => ({ productId: line.product.id, quantity: line[unit], unit })),
         ),
     };
-  }, [adjust, clear, rememberPending, setNote, setOccurredAt, setReason, state, type]);
+  }, [
+    adjust,
+    clear,
+    rememberPending,
+    setDestinationLocationId,
+    setLocationId,
+    setNote,
+    setOccurredAt,
+    setReason,
+    state,
+    type,
+  ]);
 }

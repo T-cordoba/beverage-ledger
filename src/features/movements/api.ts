@@ -79,6 +79,10 @@ function invalidateLedger(queryClient: QueryClient): void {
 export interface RegisterMovementInput {
   type: MovementType;
   items: MovementLineInput[];
+  /** Omitted means the default location, which is what the API resolves. */
+  locationId?: string;
+  /** Only a transfer carries one, and the API rejects it on any other type. */
+  destinationLocationId?: string;
   occurredAt?: string;
   note?: string;
   reason?: string;

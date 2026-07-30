@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Button, Popover, PopoverContent, PopoverTrigger } from '@/components/ui';
+import { Button, Popover, PopoverClose, PopoverContent, PopoverTrigger } from '@/components/ui';
 import { MAIN_NAVIGATION, ROUTES, visibleNavigation } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
 import { cn } from '@/lib/utils';
@@ -72,9 +72,22 @@ export function Topbar() {
               <p className="truncate text-xs text-contrast/60">{user?.email}</p>
               <p className="text-xs uppercase tracking-wider text-accent/80">{user?.role}</p>
             </div>
-            <Button variant="secondary" size="sm" className="w-full" onClick={() => void signOut()}>
-              Sign out
-            </Button>
+            <div className="space-y-2">
+              {/* A client navigation leaves the popover mounted, so it has to be told to close. */}
+              <PopoverClose asChild>
+                <Button variant="ghost" size="sm" className="w-full justify-start" asChild>
+                  <Link href={ROUTES.profile}>Your profile</Link>
+                </Button>
+              </PopoverClose>
+              <Button
+                variant="secondary"
+                size="sm"
+                className="w-full"
+                onClick={() => void signOut()}
+              >
+                Sign out
+              </Button>
+            </div>
           </PopoverContent>
         </Popover>
       </div>
