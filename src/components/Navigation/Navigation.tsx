@@ -1,33 +1,41 @@
-import { NavTabButton } from '@/components/UI/Button';
+import type { ReactNode } from 'react';
+import { Button } from '@/components/ui';
+import { cn } from '@/lib/utils';
+
+type Section = 'seleccion' | 'historial' | 'estadisticas';
 
 interface NavigationProps {
-  activeSection: 'seleccion' | 'historial' | 'estadisticas';
-  onSectionChange: (section: 'seleccion' | 'historial' | 'estadisticas') => void;
+  activeSection: Section;
+  onSectionChange: (section: Section) => void;
 }
+
+const sections: { id: Section; label: ReactNode }[] = [
+  { id: 'seleccion', label: 'Liquor Selection' },
+  { id: 'historial', label: 'Movement History' },
+  { id: 'estadisticas', label: 'Statistics' },
+];
 
 export default function Navigation({ activeSection, onSectionChange }: NavigationProps) {
   return (
-    <nav className="border-b border-border bg-cardBg/50 backdrop-blur-sm sticky top-0 z-10">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="sticky top-0 z-sticky border-b border-border bg-cardBg/50 backdrop-blur-sm">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex">
-          <NavTabButton
-            isActive={activeSection === 'seleccion'}
-            onClick={() => onSectionChange('seleccion')}
-          >
-            Liquor Selection
-          </NavTabButton>
-          <NavTabButton
-            isActive={activeSection === 'historial'}
-            onClick={() => onSectionChange('historial')}
-          >
-            Movement History
-          </NavTabButton>
-          <NavTabButton
-            isActive={activeSection === 'estadisticas'}
-            onClick={() => onSectionChange('estadisticas')}
-          >
-            Statistics
-          </NavTabButton>
+          {sections.map(({ id, label }) => (
+            <Button
+              key={id}
+              variant="ghost"
+              size="lg"
+              className={cn(
+                'rounded-none border-b-2 px-4 text-sm hover:bg-transparent sm:px-6 sm:text-base',
+                activeSection === id
+                  ? 'border-accent text-accent'
+                  : 'border-transparent hover:border-contrast/30',
+              )}
+              onClick={() => onSectionChange(id)}
+            >
+              {label}
+            </Button>
+          ))}
         </div>
       </div>
     </nav>

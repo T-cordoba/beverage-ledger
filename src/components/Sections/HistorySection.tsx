@@ -1,17 +1,17 @@
 import type { Movimiento } from '@/app/actions';
-import MovementCard from '@/components/MovementCard';
 import Calendar from '@/components/Calendar';
+import MovementCard from '@/components/MovementCard';
+import { EmptyState, Input, Spinner } from '@/components/ui';
+import { formatLongDate, parseDateKey, toDateKey } from '@/lib/utils';
 
 interface HistorySectionProps {
   movimientos: Movimiento[];
   loadingMovimientos: boolean;
   movementSearchTerm: string;
   dateFilter: string;
-  showDatePicker: boolean;
   expandedMovements: Set<string>;
   onSearchChange: (value: string) => void;
   setDateFilter: (date: string) => void;
-  setShowDatePicker: (show: boolean) => void;
   onToggleExpansion: (id: string) => void;
 }
 
@@ -20,56 +20,51 @@ export default function HistorySection({
   loadingMovimientos,
   movementSearchTerm,
   dateFilter,
-  showDatePicker,
   expandedMovements,
   onSearchChange,
   setDateFilter,
-  setShowDatePicker,
   onToggleExpansion,
 }: HistorySectionProps) {
-  const formatDateLocal = (date: Date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
-
   const filteredMovimientos = movimientos.filter((movimiento) => {
     const matchesCode =
       !movementSearchTerm || movimiento.id.toLowerCase().includes(movementSearchTerm.toLowerCase());
-
-    const matchesDate = !dateFilter || formatDateLocal(new Date(movimiento.date)) === dateFilter;
+    const matchesDate = !dateFilter || toDateKey(movimiento.date) === dateFilter;
 
     return matchesCode && matchesDate;
   });
 
-  const filteredCount = filteredMovimientos.length;
+  const describeActiveFilters = () => {
+    const parts: string[] = [];
+    if (movementSearchTerm) parts.push(`"${movementSearchTerm}"`);
+    if (dateFilter) parts.push(`date "${formatLongDate(parseDateKey(dateFilter))}"`);
+    return parts.join(' and ');
+  };
 
   return (
     <section className="space-y-6 lg:space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 lg:mb-8 gap-2">
-        <h2 className="text-xl sm:text-2xl font-light text-primary">Movement History</h2>
-        <div className="text-xs sm:text-sm text-secondary/60 font-light">
-          {filteredCount} of {movimientos.length} movements{' '}
+      <div className="mb-6 flex flex-col justify-between gap-2 sm:flex-row sm:items-center lg:mb-8">
+        <h2 className="text-xl font-light text-foreground sm:text-2xl">Movement History</h2>
+        <div className="text-xs font-light text-contrast/60 sm:text-sm">
+          {filteredMovimientos.length} of {movimientos.length} movements{' '}
           {movementSearchTerm || dateFilter ? 'found' : 'total'}
         </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search by movement code..."
-            value={movementSearchTerm}
-            onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full px-4 py-3 bg-background/50 backdrop-blur-sm border border-white/20 rounded-xl text-secondary placeholder-secondary/50 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/25 transition-all duration-200 text-sm"
-          />
-          <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+        <Input
+          type="text"
+          placeholder="Search by movement code..."
+          value={movementSearchTerm}
+          onChange={(event) => onSearchChange(event.target.value)}
+          aria-label="Search by movement code"
+          className="border-contrast/20 bg-background/50 backdrop-blur-sm"
+          trailing={
             <svg
-              className="w-4 h-4 text-secondary/60"
+              className="h-4 w-4 text-contrast/60"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -78,63 +73,36 @@ export default function HistorySection({
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
-          </div>
-        </div>
-
-        <Calendar
-          dateFilter={dateFilter}
-          showDatePicker={showDatePicker}
-          setDateFilter={setDateFilter}
-          setShowDatePicker={setShowDatePicker}
+          }
         />
+
+        <Calendar dateFilter={dateFilter} setDateFilter={setDateFilter} />
       </div>
 
       {!movementSearchTerm && !dateFilter && (
-        <p className="text-xs text-secondary/50">
+        <p className="text-xs text-contrast/50">
           Search by movement code or filter by specific date
         </p>
       )}
 
       {loadingMovimientos ? (
         <div className="flex items-center justify-center py-12">
-          <div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin"></div>
+          <Spinner size="lg" label="Loading movements" />
         </div>
       ) : movimientos.length === 0 ? (
-        <div className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
-          No movements recorded.
-        </div>
+        <EmptyState title="No movements recorded." />
+      ) : filteredMovimientos.length === 0 ? (
+        <EmptyState title={`No movements found matching ${describeActiveFilters()}.`} />
       ) : (
         <div className="grid gap-4 sm:gap-6">
-          {filteredMovimientos.length === 0 && (movementSearchTerm || dateFilter) ? (
-            <div className="text-secondary/60 text-center py-12 lg:py-16 text-base lg:text-lg font-light">
-              {(() => {
-                const searchInfo = [];
-                if (movementSearchTerm) searchInfo.push(`"${movementSearchTerm}"`);
-                if (dateFilter) {
-                  const formattedDate = new Date(dateFilter + 'T00:00:00').toLocaleDateString(
-                    'en-US',
-                    {
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric',
-                    },
-                  );
-                  searchInfo.push(`date "${formattedDate}"`);
-                }
-
-                return `No movements found matching ${searchInfo.join(' and ')}.`;
-              })()}
-            </div>
-          ) : (
-            filteredMovimientos.map((movimiento) => (
-              <MovementCard
-                key={movimiento.id}
-                movimiento={movimiento}
-                isExpanded={expandedMovements.has(movimiento.id)}
-                onToggleExpansion={onToggleExpansion}
-              />
-            ))
-          )}
+          {filteredMovimientos.map((movimiento) => (
+            <MovementCard
+              key={movimiento.id}
+              movimiento={movimiento}
+              isExpanded={expandedMovements.has(movimiento.id)}
+              onToggleExpansion={onToggleExpansion}
+            />
+          ))}
         </div>
       )}
     </section>

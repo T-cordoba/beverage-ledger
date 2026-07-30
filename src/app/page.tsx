@@ -130,7 +130,6 @@ export default function HomePage() {
   const [expandedMovements, setExpandedMovements] = useState<Set<string>>(new Set());
   const [movementSearchTerm, setMovementSearchTerm] = useState('');
   const [dateFilter, setDateFilter] = useState('');
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const { notifications, showNotification, removeNotification } = useNotifications();
 
@@ -464,7 +463,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background text-primary">
-      <header className="border-b border-border bg-gradient-to-r from-background to-cardBg backdrop-blur-sm">
+      <header className="border-b border-border bg-gradient-to-r from-background to-cardBg/80 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
           <div className="flex flex-col items-center justify-center">
             <div className="mb-4">
@@ -512,11 +511,9 @@ export default function HomePage() {
                 loadingMovimientos={loadingMovimientos}
                 movementSearchTerm={movementSearchTerm}
                 dateFilter={dateFilter}
-                showDatePicker={showDatePicker}
                 expandedMovements={expandedMovements}
                 onSearchChange={setMovementSearchTerm}
                 setDateFilter={setDateFilter}
-                setShowDatePicker={setShowDatePicker}
                 onToggleExpansion={toggleMovementExpansion}
               />
             ) : uiState.activeSection === 'estadisticas' ? (

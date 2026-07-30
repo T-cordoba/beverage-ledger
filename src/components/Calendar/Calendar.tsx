@@ -1,236 +1,177 @@
-import { useRef, useEffect } from 'react';
+'use client';
+
+import { useState } from 'react';
+import { Button, Popover, PopoverContent, PopoverTrigger } from '@/components/ui';
+import {
+  cn,
+  formatLongDate,
+  formatMonthYear,
+  getWeekdayNames,
+  parseDateKey,
+  toDateKey,
+} from '@/lib/utils';
 
 interface CalendarProps {
+  /** `YYYY-MM-DD`, or empty for no filter. */
   dateFilter: string;
-  showDatePicker: boolean;
   setDateFilter: (date: string) => void;
-  setShowDatePicker: (show: boolean) => void;
 }
 
-export default function Calendar({
-  dateFilter,
-  showDatePicker,
-  setDateFilter,
-  setShowDatePicker,
-}: CalendarProps) {
-  const datePickerRef = useRef<HTMLDivElement>(null);
+const weekdayNames = getWeekdayNames();
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
-        setShowDatePicker(false);
-      }
-    };
+function startOfMonth(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth(), 1);
+}
 
-    if (showDatePicker) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+export default function Calendar({ dateFilter, setDateFilter }: CalendarProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // The month on screen is separate from the selected day: paging through
+  // months used to overwrite the filter with the 1st of each month visited.
+  const [viewMonth, setViewMonth] = useState(() =>
+    startOfMonth(dateFilter ? parseDateKey(dateFilter) : new Date()),
+  );
+
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      setViewMonth(startOfMonth(dateFilter ? parseDateKey(dateFilter) : new Date()));
     }
-  }, [showDatePicker, setShowDatePicker]);
-
-  const formatDateLocal = (date: Date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    setIsOpen(open);
   };
 
-  const parseDate = (dateString: string) => {
-    return dateString ? new Date(dateString + 'T00:00:00') : new Date();
+  const shiftMonth = (offset: number) => {
+    setViewMonth((current) => new Date(current.getFullYear(), current.getMonth() + offset, 1));
   };
 
-  const getDaysInMonth = (year: number, month: number) => {
-    return new Date(year, month + 1, 0).getDate();
-  };
-
-  const getFirstDayOfMonth = (year: number, month: number) => {
-    return new Date(year, month, 1).getDay();
-  };
-
-  const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-
-  const handleDateSelect = (date: string) => {
-    setDateFilter(date);
-    setShowDatePicker(false);
-  };
-
-  const clearDateFilter = () => {
-    setDateFilter('');
-    setShowDatePicker(false);
-  };
+  const year = viewMonth.getFullYear();
+  const month = viewMonth.getMonth();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstWeekday = viewMonth.getDay();
+  const todayKey = toDateKey(new Date());
 
   return (
-    <div className="relative" ref={datePickerRef}>
-      <button
-        type="button"
-        onClick={() => setShowDatePicker(!showDatePicker)}
-        className={`w-full flex items-center justify-between px-4 py-3 bg-background/50 backdrop-blur-sm border rounded-xl transition-all duration-200 text-sm ${
-          dateFilter
-            ? 'border-accent/50 text-accent'
-            : 'border-white/20 text-secondary hover:border-accent/30 hover:text-accent'
-        }`}
-      >
-        <div className="flex items-center gap-2">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
-          </svg>
-          <span>
-            {dateFilter
-              ? new Date(dateFilter + 'T00:00:00').toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })
-              : 'Filter by date'}
-          </span>
-        </div>
-
-        {dateFilter && (
+    <div className="relative">
+      <Popover open={isOpen} onOpenChange={handleOpenChange}>
+        <PopoverTrigger asChild>
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              clearDateFilter();
-            }}
-            className="ml-2 p-1 hover:bg-accent/20 rounded-lg transition-colors"
-            title="Clear date filter"
+            className={cn(
+              'flex w-full items-center gap-2 rounded-xl border bg-background/50 px-4 py-3 text-sm backdrop-blur-sm transition-colors',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20',
+              dateFilter
+                ? 'border-accent/50 text-accent'
+                : 'border-contrast/20 text-contrast hover:border-accent/30 hover:text-accent',
+              dateFilter && 'pr-12',
+            )}
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
               />
             </svg>
+            <span>{dateFilter ? formatLongDate(parseDateKey(dateFilter)) : 'Filter by date'}</span>
           </button>
-        )}
-      </button>
+        </PopoverTrigger>
 
-      {showDatePicker && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-background/95 backdrop-blur-sm border border-white/20 rounded-xl shadow-2xl z-50 p-4">
-          {(() => {
-            const today = new Date();
-            const currentDate = dateFilter ? parseDate(dateFilter) : today;
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-            const daysInMonth = getDaysInMonth(year, month);
-            const firstDay = getFirstDayOfMonth(year, month);
+        <PopoverContent className="w-[min(20rem,calc(100vw-2rem))] space-y-4">
+          <div className="flex items-center justify-between">
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => shiftMonth(-1)}
+              aria-label="Previous month"
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </Button>
+            <h3 className="font-medium text-accent">{formatMonthYear(viewMonth)}</h3>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => shiftMonth(1)}
+              aria-label="Next month"
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </Button>
+          </div>
 
-            const prevMonth = () => {
-              const newDate = new Date(year, month - 1, 1);
-              const newDateString = formatDateLocal(newDate);
-              setDateFilter(newDateString);
-            };
-
-            const nextMonth = () => {
-              const newDate = new Date(year, month + 1, 1);
-              const newDateString = formatDateLocal(newDate);
-              setDateFilter(newDateString);
-            };
-
-            return (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <button
-                    onClick={prevMonth}
-                    className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                  >
-                    <svg
-                      className="w-4 h-4 text-secondary"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 19l-7-7 7-7"
-                      />
-                    </svg>
-                  </button>
-                  <h3 className="text-accent font-medium">
-                    {monthNames[month]} {year}
-                  </h3>
-                  <button
-                    onClick={nextMonth}
-                    className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                  >
-                    <svg
-                      className="w-4 h-4 text-secondary"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-7 gap-1 text-xs text-secondary/60 font-medium">
-                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-                    <div key={day} className="p-2 text-center">
-                      {day}
-                    </div>
-                  ))}
-                </div>
-
-                <div className="grid grid-cols-7 gap-1">
-                  {Array.from({ length: firstDay }, (_, i) => (
-                    <div key={`empty-${i}`} className="p-2"></div>
-                  ))}
-
-                  {Array.from({ length: daysInMonth }, (_, i) => {
-                    const day = i + 1;
-                    const dateStr = formatDateLocal(new Date(year, month, day));
-                    const isSelected = dateFilter === dateStr;
-                    const isToday = formatDateLocal(today) === dateStr;
-
-                    return (
-                      <button
-                        key={day}
-                        onClick={() => handleDateSelect(dateStr)}
-                        className={`p-2 text-sm rounded-lg transition-all duration-200 hover:bg-accent/20 ${
-                          isSelected
-                            ? 'bg-accent text-background font-medium'
-                            : isToday
-                              ? 'bg-white/10 text-accent font-medium'
-                              : 'text-secondary hover:text-accent'
-                        }`}
-                      >
-                        {day}
-                      </button>
-                    );
-                  })}
-                </div>
+          <div className="grid grid-cols-7 gap-1 text-xs font-medium text-contrast/60">
+            {weekdayNames.map((day) => (
+              <div key={day} className="p-2 text-center">
+                {day}
               </div>
-            );
-          })()}
-        </div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-7 gap-1">
+            {Array.from({ length: firstWeekday }, (_, index) => (
+              <div key={`empty-${index}`} />
+            ))}
+
+            {Array.from({ length: daysInMonth }, (_, index) => {
+              const day = index + 1;
+              const dateKey = toDateKey(new Date(year, month, day));
+              const isSelected = dateFilter === dateKey;
+
+              return (
+                <Button
+                  key={day}
+                  variant="ghost"
+                  size="icon-sm"
+                  className={cn(
+                    'w-full text-sm',
+                    isSelected
+                      ? 'bg-accent font-medium text-background hover:bg-accent-hover'
+                      : dateKey === todayKey
+                        ? 'bg-contrast/10 font-medium text-accent'
+                        : 'text-contrast hover:text-accent',
+                  )}
+                  onClick={() => {
+                    setDateFilter(dateKey);
+                    setIsOpen(false);
+                  }}
+                >
+                  {day}
+                </Button>
+              );
+            })}
+          </div>
+        </PopoverContent>
+      </Popover>
+
+      {dateFilter && (
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          className="absolute right-2 top-1/2 -translate-y-1/2 text-accent"
+          onClick={() => setDateFilter('')}
+          aria-label="Clear date filter"
+        >
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </Button>
       )}
     </div>
   );

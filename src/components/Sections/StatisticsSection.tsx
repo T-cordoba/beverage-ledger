@@ -1,6 +1,7 @@
-type StatisticsData = { name: string; quantity: number };
+import { Button, EmptyState, Spinner } from '@/components/ui';
+import { cn, pluralize } from '@/lib/utils';
 
-import { FilterButton } from '@/components/UI/Button';
+type StatisticsData = { name: string; quantity: number };
 
 interface StatisticsSectionProps {
   statisticsData: StatisticsData[];
@@ -9,6 +10,53 @@ interface StatisticsSectionProps {
   loadingStatistics: boolean;
   onTimeRangeChange: (range: 'week' | 'month' | 'year') => void;
   onViewChange: (view: 'liquor' | 'type') => void;
+}
+
+const timeRanges = [
+  { value: 'week', label: 'Week' },
+  { value: 'month', label: 'Month' },
+  { value: 'year', label: 'Year' },
+] as const;
+
+const views = [
+  { value: 'liquor', label: 'By Liquor' },
+  { value: 'type', label: 'By Type' },
+] as const;
+
+function SegmentedControl<T extends string>({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  value: T;
+  options: readonly { value: T; label: string }[];
+  onChange: (value: T) => void;
+}) {
+  return (
+    <div className="flex w-full items-center justify-center gap-2 sm:w-auto">
+      <span className="shrink-0 text-sm font-medium text-contrast/80">{label}</span>
+      <div className="flex overflow-hidden rounded-lg border border-border bg-cardBg/80">
+        {options.map((option) => (
+          <Button
+            key={option.value}
+            variant="ghost"
+            size="sm"
+            className={cn(
+              'rounded-none',
+              value === option.value
+                ? 'bg-accent text-background hover:bg-accent-hover'
+                : 'bg-background/50 hover:bg-background/70',
+            )}
+            onClick={() => onChange(option.value)}
+          >
+            {option.label}
+          </Button>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default function StatisticsSection({
@@ -20,83 +68,62 @@ export default function StatisticsSection({
   onViewChange,
 }: StatisticsSectionProps) {
   return (
-    <section className="space-y-6 lg:space-y-8 w-full max-w-full overflow-hidden">
+    <section className="w-full max-w-full space-y-6 overflow-hidden lg:space-y-8">
       <div className="text-center">
-        <h2 className="text-xl sm:text-2xl font-light text-primary">Statistics</h2>
-        <p className="text-secondary/60 text-sm sm:text-base mt-2">
+        <h2 className="text-xl font-light text-foreground sm:text-2xl">Statistics</h2>
+        <p className="mt-2 text-sm text-contrast/60 sm:text-base">
           Analyze liquor consumption patterns and trends
         </p>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center px-4 sm:px-0">
-        <div className="flex items-center gap-2 w-full sm:w-auto justify-center">
-          <span className="text-secondary/80 text-sm font-medium flex-shrink-0">Period:</span>
-          <div className="flex bg-cardBg border border-border rounded-lg overflow-hidden">
-            {(['week', 'month', 'year'] as const).map((range) => (
-              <FilterButton
-                key={range}
-                onClick={() => onTimeRangeChange(range)}
-                isActive={statisticsTimeRange === range}
-                size="sm"
-                className="first:rounded-l-lg last:rounded-r-lg px-3 py-2"
-              >
-                {range === 'week' ? 'Week' : range === 'month' ? 'Month' : 'Year'}
-              </FilterButton>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2 w-full sm:w-auto justify-center">
-          <span className="text-secondary/80 text-sm font-medium flex-shrink-0">View:</span>
-          <div className="flex bg-cardBg border border-border rounded-lg overflow-hidden">
-            {(['liquor', 'type'] as const).map((view) => (
-              <FilterButton
-                key={view}
-                onClick={() => onViewChange(view)}
-                isActive={statisticsView === view}
-                size="sm"
-                className="first:rounded-l-lg last:rounded-r-lg px-3 py-2"
-              >
-                {view === 'liquor' ? 'By Liquor' : 'By Type'}
-              </FilterButton>
-            ))}
-          </div>
-        </div>
+      <div className="flex flex-col items-center justify-center gap-4 px-4 sm:flex-row sm:gap-6 sm:px-0">
+        <SegmentedControl
+          label="Period:"
+          value={statisticsTimeRange}
+          options={timeRanges}
+          onChange={onTimeRangeChange}
+        />
+        <SegmentedControl
+          label="View:"
+          value={statisticsView}
+          options={views}
+          onChange={onViewChange}
+        />
       </div>
 
       {loadingStatistics ? (
         <div className="flex items-center justify-center py-12">
-          <div className="w-8 h-8 border-2 border-accent/30 border-t-accent rounded-full animate-spin"></div>
+          <Spinner size="lg" label="Loading statistics" />
         </div>
       ) : statisticsData && statisticsData.length > 0 ? (
-        <div className="grid gap-4 sm:gap-6 lg:gap-8 lg:grid-cols-2 w-full max-w-full overflow-hidden">
-          <div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 min-w-0">
-            <h3 className="text-lg font-medium text-accent mb-4">
+        <div className="grid w-full max-w-full gap-4 overflow-hidden sm:gap-6 lg:grid-cols-2 lg:gap-8">
+          <div className="min-w-0 rounded-xl border border-contrast/10 bg-contrast/5 p-4 backdrop-blur-sm sm:rounded-2xl sm:p-6">
+            <h3 className="mb-4 text-lg font-medium text-accent">
               Most Requested {statisticsView === 'liquor' ? 'Liquors' : 'Types'}
             </h3>
             <div className="space-y-3">
-              {statisticsData.slice(0, 10).map((item: StatisticsData, index: number) => {
+              {statisticsData.slice(0, 10).map((item, index) => {
                 const maxQuantity = statisticsData[0]?.quantity || 1;
                 const percentage = (item.quantity / maxQuantity) * 100;
 
                 return (
                   <div key={item.name} className="relative w-full min-w-0">
-                    <div className="flex justify-between items-center mb-1 gap-2 min-w-0">
-                      <span className="text-sm font-medium text-secondary truncate flex-1 min-w-0">
+                    <div className="mb-1 flex min-w-0 items-center justify-between gap-2">
+                      <span className="min-w-0 flex-1 truncate text-sm font-medium text-contrast">
                         {item.name}
                       </span>
-                      <span className="text-xs text-accent font-medium flex-shrink-0">
+                      <span className="shrink-0 text-xs font-medium text-accent">
                         {item.quantity}
                       </span>
                     </div>
-                    <div className="w-full bg-white/10 rounded-full h-2">
+                    <div className="h-2 w-full rounded-full bg-contrast/10">
                       <div
-                        className="bg-gradient-to-r from-accent to-accentHover h-2 rounded-full transition-all duration-1000 ease-out"
+                        className="h-2 rounded-full bg-gradient-to-r from-accent to-accent-hover transition-all duration-1000 ease-out"
                         style={{ width: `${percentage}%` }}
-                      ></div>
+                      />
                     </div>
                     {index < 3 && (
-                      <div className="absolute -left-2 top-0 w-1 h-8 bg-accent/20 rounded-full"></div>
+                      <div className="absolute -left-2 top-0 h-8 w-1 rounded-full bg-accent/20" />
                     )}
                   </div>
                 );
@@ -104,40 +131,42 @@ export default function StatisticsSection({
             </div>
           </div>
 
-          <div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 min-w-0">
-            <h3 className="text-lg font-medium text-accent mb-4">Leaderboard</h3>
+          <div className="min-w-0 rounded-xl border border-contrast/10 bg-contrast/5 p-4 backdrop-blur-sm sm:rounded-2xl sm:p-6">
+            <h3 className="mb-4 text-lg font-medium text-accent">Leaderboard</h3>
             <div className="space-y-2">
-              {statisticsData.slice(0, 15).map((item: StatisticsData, index: number) => (
+              {statisticsData.slice(0, 15).map((item, index) => (
                 <div
                   key={item.name}
-                  className={`flex items-center justify-between p-2 sm:p-3 rounded-lg transition-all duration-200 gap-2 min-w-0 ${
+                  className={cn(
+                    'flex min-w-0 items-center justify-between gap-2 rounded-lg p-2 transition-colors sm:p-3',
                     index < 3
-                      ? 'bg-accent/10 border border-accent/20'
-                      : 'bg-white/5 hover:bg-white/10'
-                  }`}
+                      ? 'border border-accent/20 bg-accent/10'
+                      : 'bg-contrast/5 hover:bg-contrast/10',
+                  )}
                 >
-                  <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                  <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
                     <div
-                      className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
+                      className={cn(
+                        'flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold',
                         index === 0
-                          ? 'bg-yellow-500/20 text-yellow-400'
+                          ? 'bg-accent/20 text-accent'
                           : index === 1
-                            ? 'bg-gray-400/20 text-gray-300'
+                            ? 'bg-contrast/20 text-contrast/70'
                             : index === 2
-                              ? 'bg-amber-600/20 text-amber-400'
-                              : 'bg-white/10 text-secondary/60'
-                      }`}
+                              ? 'bg-warning/20 text-warning'
+                              : 'bg-contrast/10 text-contrast/60',
+                      )}
                     >
                       {index + 1}
                     </div>
-                    <span className="text-sm font-medium text-secondary truncate min-w-0">
+                    <span className="min-w-0 truncate text-sm font-medium text-contrast">
                       {item.name}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
-                    <span className="text-accent font-bold text-sm">{item.quantity}</span>
-                    <span className="text-xs text-secondary/60 hidden sm:inline">
-                      {item.quantity === 1 ? 'unit' : 'units'}
+                  <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+                    <span className="text-sm font-bold text-accent">{item.quantity}</span>
+                    <span className="hidden text-xs text-contrast/60 sm:inline">
+                      {pluralize(item.quantity, 'unit')}
                     </span>
                   </div>
                 </div>
@@ -146,9 +175,7 @@ export default function StatisticsSection({
           </div>
         </div>
       ) : (
-        <div className="text-center py-12">
-          <p className="text-secondary/60">No data available for the selected period</p>
-        </div>
+        <EmptyState title="No data available for the selected period" />
       )}
     </section>
   );
