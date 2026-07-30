@@ -43,6 +43,10 @@ Plan completo: `C:\Users\Tomas\.claude\plans\ok-voy-a-hacerle-tender-sprout.md`
 
 **El dominio ya está cubierto.** Con la Fase 6 no queda ninguna ruta de la API sin consumidor: existencias, kardex, entradas, ajustes, usuarios, taxonomía, organización y log de auditoría tienen vista. Lo que falta es de presentación —landing, i18n, branding— y es la Fase 7.
 
+**Ambos repos están desplegados**: el front en Vercel y la API en Render (`https://beverage-ledger-api.onrender.com`). Ver §9, que es donde el despliegue cambia cómo se trabaja en local.
+
+**La pantalla de perfil se hizo fuera del orden de fases**, en la rama `feat/profile-screen`, porque el hueco que tapaba era funcional y no de presentación: nadie podía cambiar su propia contraseña.
+
 ---
 
 ## 3. Comandos
@@ -60,6 +64,8 @@ pnpm lint                       # ESLint
 pnpm typecheck                  # tsc --noEmit
 pnpm format                     # Prettier --write
 ```
+
+`api:types` lee el origen de **`NEXT_PUBLIC_API_URL`** (`scripts/generate-api-types.mjs`), así que regenera contra lo que tengas configurado —API local o la de Render— sin editar el `package.json`. Antes estaba quemado a `localhost:3001`, lo que dejaba el contrato irregenerable cuando la API local no se podía levantar. El script usa la API de Node de `openapi-typescript` en vez del CLI, y el `pnpm format` posterior es lo que hace la salida idéntica a lo versionado.
 
 ### Por qué pnpm, y qué protege de verdad
 
@@ -333,12 +339,14 @@ src/
       movements/      historial · new/{outbound,inbound,adjustment} · [id]
       catalog/        productos, con CRUD si hay catalog:manage
       reports/        consumo
+      profile/        datos propios + cambio de contraseña
       admin/          layout con sub-nav + users · categories · brands ·
                       organization · audit
   components/
     ui/               primitivos (ver §5)
     layout/           AppShell, Topbar   (⬜ Sidebar y MarketingNav cuando hagan falta)
-  features/           auth · catalog · movements · stock · reports · dashboard · admin
+  features/           auth · catalog · movements · stock · reports · dashboard ·
+                      admin · profile
   lib/
     api/              schema.d.ts generado, cliente, sesión, errores
     query/            configuración del QueryClient
@@ -357,7 +365,10 @@ Imports siempre por alias `@/`, nunca relativos que suban de directorio (`../../
 
 ## 9. Trampas conocidas
 
-- **Cookie cross-site.** El plan de despliegue es Vercel (front) + Render (API) sin dominio propio, así que la cookie de refresh queda cross-site y obligada a `SameSite=None; Secure`. Safari la bloquea por ITP. Funciona en local y en Chrome/Edge/Firefox; el arreglo real es un dominio propio con `app.` y `api.` bajo el mismo padre.
+- **Cookie cross-site.** El despliegue es Vercel (front) + Render (API) sin dominio propio, así que la cookie de refresh queda cross-site y obligada a `SameSite=None; Secure`. Safari la bloquea por ITP. Funciona en Chrome/Edge/Firefox; el arreglo real es un dominio propio con `app.` y `api.` bajo el mismo padre.
+- **Front local contra la API desplegada.** Es el camino cuando la red bloquea el puerto de Supabase y la API no se puede levantar en local: basta apuntar `NEXT_PUBLIC_API_URL` a Render. Lo que hay que recordar es que **`CORS_ORIGINS` en Render tiene que incluir `http://localhost:3000`**, y que un preview deploy de Vercel estrena URL en cada rama, así que no está en esa lista y no habla con la API.
+
+  La cookie de refresh sí viaja: la pone una respuesta HTTPS y Chrome trata `localhost` como origen seguro. Si la sesión no sobrevive a un reload, eso es lo primero que hay que mirar.
 - **Pooler de Supabase.** El pooler en modo transacción (puerto 6543) no puede correr migraciones de Prisma. Hacen falta dos variables: `DATABASE_URL` (pooler, runtime) y `DIRECT_URL` (directa, puerto 5432, migraciones).
 - **Passwords en connection strings.** Si contienen `/`, `%`, `@` o `:` hay que URL-encodearlos o la conexión falla con un error de parseo poco descriptivo.
 - **La protección de rutas es del cliente, no de `middleware.ts`.** No es por `httpOnly` —el middleware de Next lee cookies httpOnly perfectamente, es el patrón habitual—: es que esa cookie **nunca llega al servidor de Next**. Va con `path=/api/v1/auth`, así que el navegador no la adjunta a una petición de `/movements` ni en local (donde las cookies ignoran el puerto y `:3000` y `:3001` comparten el host); y en producción la pone otro dominio registrable. Un middleware no tendría con qué decidir: bloquearía siempre. Además el servidor de Next no renderiza nada que proteger, porque todos los datos los pide el navegador con bearer token. `AuthGuard` solo evita pintar una pantalla que va a responder 401, y **la autorización real es de la API**.
@@ -404,7 +415,9 @@ Cerrado en la Fase 6:
 Sigue pendiente (Fase 7 en adelante):
 
 - **Copy en inglés incrustado en el JSX.** Es lo más grande que queda: sale a `i18n/` en la Fase 7, y ahí hay bastante más texto que antes.
-- **No hay pantalla de perfil.** `PATCH /users/me` y `POST /users/me/password` existen y nadie los llama: un usuario no puede cambiar su propia contraseña desde la app. El admin tampoco puede asignar una a un usuario `INVITED` — se crea con contraseña o se queda sin entrada.
+- **Un `INVITED` no tiene forma de entrar.** La pantalla de perfil (`features/profile`) cubrió el autoservicio —`PATCH /users/me` y `PUT /users/me/password`— pero un admin sigue sin poder asignarle contraseña a otro: no existe endpoint. Se crea con contraseña o se queda fuera. Arreglarlo es backend.
+
+  Dos detalles del contrato que la pantalla tuvo que asumir: `PUT /users/me/password` responde 204 y **revoca todas las sesiones**, así que al terminar hay que cerrar la local —de ahí el campo de confirmación, porque un typo te saca de todas partes a la vez— y `/auth/me` no dice si la cuenta tiene contraseña, así que el formulario exige la actual siempre. Un usuario solo-Google, para el que la API no la exige, no podría ponerse la primera.
 - **Multi-bodega sin exponer.** Todo va contra la ubicación por defecto; `locationId` existe en el contrato y ninguna vista lo ofrece.
 - **Límites del contrato que la UI hace visibles en vez de esconder**: el `caseSize` no se puede editar después de crear el producto, a un producto con marca no se le puede quitar la marca (`UpdateProductDto.brandId` no es nullable) y el filtro de estado del catálogo es "activos" o "desactivados", nunca ambos (`isActive` vale `true` cuando la query lo omite).
 - **El borrador local es por dispositivo.** Si retomas en otro navegador el borrador pendiente del servidor, no traes las líneas capturadas: hay que reconstruirlas o descartarlo.

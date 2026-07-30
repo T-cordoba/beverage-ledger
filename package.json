@@ -10,7 +10,7 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "api:types": "openapi-typescript http://localhost:3001/docs-json -o src/lib/api/schema.d.ts",
+    "api:types": "node scripts/generate-api-types.mjs && prettier --write src/lib/api/schema.d.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit",
