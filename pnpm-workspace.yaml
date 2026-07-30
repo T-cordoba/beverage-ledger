@@ -1,0 +1,18 @@
+# Supply-chain hardening. See CLAUDE.md §3.
+#
+# No dependency is allowed to run install scripts. sharp and unrs-resolver ask
+# for one, but both ship prebuilt platform binaries as optional dependencies and
+# their script is only a build-from-source fallback, so lint, typecheck and
+# build all pass without it. Listing them as ignored records that the decision
+# was made deliberately instead of leaving a warning on every install.
+onlyBuiltDependencies: []
+
+ignoredBuiltDependencies:
+  - sharp
+  - unrs-resolver
+
+# Refuse packages published less than 24h ago. Compromised versions are usually
+# detected and unpublished within hours, so this is what stops a freshly
+# published malicious release from landing here. It only affects resolution —
+# adding or bumping a dependency — not installs from the existing lockfile.
+minimumReleaseAge: 1440

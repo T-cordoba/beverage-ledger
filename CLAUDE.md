@@ -45,14 +45,30 @@ Plan completo: `C:\Users\Tomas\.claude\plans\ok-voy-a-hacerle-tender-sprout.md`
 
 ## 3. Comandos
 
+**El gestor de paquetes es pnpm**, fijado en `packageManager` del `package.json`. No uses `npm install` en este repo: generaría un `package-lock.json` paralelo y te saltarías la configuración de seguridad de abajo.
+
 ```bash
-npm run dev        # servidor de desarrollo (Turbopack) en :3000
-npm run build      # build de producción
-npm run start      # servir el build
-npm run lint       # ESLint
-npm run typecheck  # tsc --noEmit
-npm run format     # Prettier --write
+pnpm install                    # instalar dependencias
+pnpm install --frozen-lockfile  # lo que hace CI: falla si el lockfile no cuadra
+pnpm dev                        # servidor de desarrollo (Turbopack) en :3000
+pnpm build                      # build de producción
+pnpm start                      # servir el build
+pnpm lint                       # ESLint
+pnpm typecheck                  # tsc --noEmit
+pnpm format                     # Prettier --write
 ```
+
+### Por qué pnpm, y qué protege de verdad
+
+pnpm instala **del mismo registro que npm**: no te salva de que un paquete publique una versión comprometida. Lo que aporta son tres cosas concretas, configuradas en `pnpm-workspace.yaml`:
+
+- **Ningún paquete puede correr scripts de instalación.** `onlyBuiltDependencies` está vacío. Ese es el vector que usó el gusano Shai-Hulud en 2025, y en npm los `postinstall` corren todos sin preguntar. `sharp` y `unrs-resolver` piden uno, pero traen binarios precompilados como dependencias opcionales y su script es solo un fallback de compilación: lint, typecheck y build pasan sin él. Están en `ignoredBuiltDependencies` para dejar constancia de que la decisión es deliberada. (pnpm 10.32 sigue avisando en cada install de todos modos; es cosmético.)
+- **Cuarentena de 24h** (`minimumReleaseAge: 1440`). Una versión maliciosa se detecta y despublica en horas, así que nunca llegaría aquí. Solo afecta a resolver dependencias nuevas o subidas de versión, no a instalar desde el lockfile. Si necesitas un paquete recién publicado, `pnpm add --minimum-release-age 0 <pkg>`, a conciencia.
+- **`node_modules` estricto**: un paquete solo ve lo que declara. Es el fallo que se arregló en la Fase 0, cuando `react` y `react-dom` llegaban solo transitivamente vía `next`; ahora ese error no puede volver a colarse.
+
+⚠️ **`pnpm audit` reporta 31 avisos donde `npm audit` reportaba 11, y no significa que haya más riesgo**: son los mismos 10 paquetes, pnpm cuenta avisos individuales y npm cuenta paquetes afectados. El árbol se importó con `pnpm import`, así que las versiones resueltas son idénticas.
+
+**Nunca corras `audit fix --force`.** En este repo propone instalar `next@9.3.3`, o sea bajar de la 15 a una versión de 2020. De los avisos abiertos, la mayoría son ReDoS/DoS en tooling de desarrollo (la cadena de ESLint), que corre en tu máquina sobre tus propios archivos y no es alcanzable desde la app desplegada. Los de `postcss` y `sharp` cuelgan de `next` y esperan a que Next publique.
 
 Variables de entorno: copia `.env.example` a `.env`. **Nunca** commitees `.env` ni pegues credenciales en archivos versionados (incluido este).
 
@@ -64,7 +80,7 @@ Estas decisiones ya están tomadas. No las revisites sin hablarlo con el usuario
 
 **Front y back en repos separados.** El backend es un servicio propio, no un detalle de implementación de Next. Debe poder servir a otros clientes (móvil, integraciones) sin arrastrar el framework de front.
 
-**Contrato vía OpenAPI generado, no tipos escritos a mano.** Nest genera el OpenAPI desde sus DTOs; el front corre `npm run api:types` y regenera `src/lib/api/schema.d.ts` con `openapi-typescript`. Motivo: el código original tenía **cuatro declaraciones distintas** del tipo `Licor` que se desincronizaban en silencio. Con el contrato generado, un cambio en la API rompe la compilación del front en vez de romper producción.
+**Contrato vía OpenAPI generado, no tipos escritos a mano.** Nest genera el OpenAPI desde sus DTOs; el front corre `pnpm api:types` y regenera `src/lib/api/schema.d.ts` con `openapi-typescript`. Motivo: el código original tenía **cuatro declaraciones distintas** del tipo `Licor` que se desincronizaban en silencio. Con el contrato generado, un cambio en la API rompe la compilación del front en vez de romper producción.
 
 **Prisma sobre Supabase Postgres.** El problema más grave del código original era que el esquema **no existía en el repositorio** — ni un `CREATE TABLE`, solo la instancia viva. Prisma pone el esquema y las migraciones bajo control de versiones.
 
@@ -251,7 +267,7 @@ Los refresh tokens rotan y hay **detección de reuso**: si el front manda dos ve
 
 `GET /docs-json` expone el contrato completo: **30 rutas, 58 esquemas**, con la API corriendo en `:3001`.
 
-⚠️ El script `npm run api:types` y la dependencia `openapi-typescript` **todavía no existen en este repo**: montarlos es trabajo de la Fase 5, junto con el cliente y el wrapper de auth. La Fase 4 no los necesita. Lo esencial para diseñar las vistas:
+⚠️ El script `pnpm api:types` y la dependencia `openapi-typescript` **todavía no existen en este repo**: montarlos es trabajo de la Fase 5, junto con el cliente y el wrapper de auth. La Fase 4 no los necesita. Lo esencial para diseñar las vistas:
 
 - **Catálogo** — `/products`, `/categories`, `/brands`. Todo paginado por cursor con `search`, filtros y orden en el servidor: no descargues los 215. Leer es abierto a cualquier autenticado; escribir exige `catalog:manage`. Los productos no se borran, se desactivan con `isActive: false`.
 - **Movimientos** — el ciclo es **crear borrador → confirmar**, en dos llamadas. `POST /movements` abre un `DRAFT` que no toca existencias; `POST /movements/:id/confirm` aplica el delta. Eso es justamente lo que da el borrador persistente de la Fase 6. Anular es `POST /movements/:id/cancel` con motivo, y revierte el stock.
