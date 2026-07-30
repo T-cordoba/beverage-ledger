@@ -11,9 +11,14 @@ import {
 import { stockKeys } from '@/features/stock/keys';
 import {
   api,
+  assertOk,
   unwrap,
+  type CreateBrandInput,
+  type CreateCategoryInput,
   type CreateProductInput,
   type ProductListQuery,
+  type UpdateBrandInput,
+  type UpdateCategoryInput,
   type UpdateProductInput,
 } from '@/lib/api';
 
@@ -151,5 +156,75 @@ export function useUpdateProduct() {
     mutationFn: async ({ id, input }: { id: string; input: UpdateProductInput }) =>
       unwrap(await api.PATCH('/api/v1/products/{id}', { params: { path: { id } }, body: input })),
     onSuccess: () => invalidateCatalog(queryClient),
+  });
+}
+
+/**
+ * Renaming a category or a brand changes what every product row displays, so the
+ * product lists go too, not just the reference list.
+ */
+function invalidateReference(queryClient: QueryClient, key: readonly string[]): void {
+  void queryClient.invalidateQueries({ queryKey: key });
+  void queryClient.invalidateQueries({ queryKey: catalogKeys.all });
+}
+
+export function useCreateCategory() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (input: CreateCategoryInput) =>
+      unwrap(await api.POST('/api/v1/categories', { body: input })),
+    onSuccess: () => invalidateReference(queryClient, catalogKeys.categories),
+  });
+}
+
+export function useUpdateCategory() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, input }: { id: string; input: UpdateCategoryInput }) =>
+      unwrap(await api.PATCH('/api/v1/categories/{id}', { params: { path: { id } }, body: input })),
+    onSuccess: () => invalidateReference(queryClient, catalogKeys.categories),
+  });
+}
+
+/** Only ever succeeds on an unused category: the API answers 409 while products reference it. */
+export function useDeleteCategory() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) =>
+      assertOk(await api.DELETE('/api/v1/categories/{id}', { params: { path: { id } } })),
+    onSuccess: () => invalidateReference(queryClient, catalogKeys.categories),
+  });
+}
+
+export function useCreateBrand() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (input: CreateBrandInput) =>
+      unwrap(await api.POST('/api/v1/brands', { body: input })),
+    onSuccess: () => invalidateReference(queryClient, catalogKeys.brands),
+  });
+}
+
+export function useUpdateBrand() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, input }: { id: string; input: UpdateBrandInput }) =>
+      unwrap(await api.PATCH('/api/v1/brands/{id}', { params: { path: { id } }, body: input })),
+    onSuccess: () => invalidateReference(queryClient, catalogKeys.brands),
+  });
+}
+
+export function useDeleteBrand() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) =>
+      assertOk(await api.DELETE('/api/v1/brands/{id}', { params: { path: { id } } })),
+    onSuccess: () => invalidateReference(queryClient, catalogKeys.brands),
   });
 }

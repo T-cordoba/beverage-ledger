@@ -1,4 +1,5 @@
 export { AuthGuard } from './AuthGuard';
+export { PermissionGate } from './PermissionGate';
 export { LoginForm, RegisterForm } from './AuthForm';
 export {
   AuthProvider,
