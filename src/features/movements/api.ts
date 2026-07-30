@@ -6,7 +6,12 @@ import {
   useMutation,
   useQuery,
   useQueryClient,
+  type QueryClient,
 } from '@tanstack/react-query';
+// The key modules, not the barrels: stock imports a movements component, so a
+// barrel import here would close the cycle.
+import { reportKeys } from '@/features/reports/keys';
+import { stockKeys } from '@/features/stock/keys';
 import { api, unwrap, type MovementListQuery, type MovementLineInput } from '@/lib/api';
 
 export type MovementQuery = Omit<MovementListQuery, 'cursor'>;
@@ -14,6 +19,7 @@ export type MovementQuery = Omit<MovementListQuery, 'cursor'>;
 export const movementKeys = {
   all: ['movements'] as const,
   list: (query: MovementQuery) => ['movements', 'list', query] as const,
+  recent: (limit: number) => ['movements', 'recent', limit] as const,
   detail: (id: string) => ['movements', 'detail', id] as const,
 };
 
@@ -35,12 +41,32 @@ export function useMovements(query: MovementQuery) {
   });
 }
 
+/** The dashboard's shortlist: its own entry, so it never shares the history's cache. */
+export function useRecentMovements(limit: number, enabled = true) {
+  return useQuery({
+    queryKey: movementKeys.recent(limit),
+    queryFn: async () =>
+      unwrap(await api.GET('/api/v1/movements', { params: { query: { limit } } })),
+    enabled,
+  });
+}
+
 export function useMovement(id: string) {
   return useQuery({
     queryKey: movementKeys.detail(id),
     queryFn: async () =>
       unwrap(await api.GET('/api/v1/movements/{id}', { params: { path: { id } } })),
   });
+}
+
+/**
+ * Confirming or voiding a movement moves stock, and stock feeds the reports, so
+ * a write to the ledger has to invalidate all three caches, not just this one.
+ */
+function invalidateLedger(queryClient: QueryClient): void {
+  void queryClient.invalidateQueries({ queryKey: movementKeys.all });
+  void queryClient.invalidateQueries({ queryKey: stockKeys.all });
+  void queryClient.invalidateQueries({ queryKey: reportKeys.all });
 }
 
 export interface RegisterMovementInput {
@@ -69,7 +95,7 @@ export function useRegisterMovement() {
         await api.POST('/api/v1/movements/{id}/confirm', { params: { path: { id: draft.id } } }),
       );
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: movementKeys.all }),
+    onSuccess: () => invalidateLedger(queryClient),
   });
 }
 
@@ -84,7 +110,7 @@ export function useCancelMovement() {
           body: { reason },
         }),
       ),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: movementKeys.all }),
+    onSuccess: () => invalidateLedger(queryClient),
   });
 }
 

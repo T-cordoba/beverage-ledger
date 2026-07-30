@@ -1,4 +1,12 @@
-export { useBrands, useCategories, useProductFacets, useProducts, type ProductQuery } from './api';
+export {
+  catalogKeys,
+  useBrands,
+  useCategories,
+  useProduct,
+  useProductFacets,
+  useProducts,
+  type ProductQuery,
+} from './api';
 export { CatalogFilters } from './CatalogFilters';
 export {
   useCatalogFilters,

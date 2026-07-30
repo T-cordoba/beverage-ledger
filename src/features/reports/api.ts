@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { api, unwrap, type ConsumptionGroupBy } from '@/lib/api';
+import { reportKeys } from './keys';
 
 export interface ReportRange {
   from: string;
@@ -9,14 +10,6 @@ export interface ReportRange {
 }
 
 export type ActivityGranularity = 'day' | 'week' | 'month';
-
-const reportKeys = {
-  consumption: (groupBy: ConsumptionGroupBy, range: ReportRange, limit: number) =>
-    ['reports', 'consumption', groupBy, range, limit] as const,
-  summary: (range: ReportRange) => ['reports', 'summary', range] as const,
-  activity: (range: ReportRange, granularity: ActivityGranularity) =>
-    ['reports', 'activity', range, granularity] as const,
-};
 
 export function useConsumptionReport(
   groupBy: ConsumptionGroupBy,

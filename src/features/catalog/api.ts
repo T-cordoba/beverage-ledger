@@ -6,8 +6,9 @@ import { api, unwrap, type ProductListQuery } from '@/lib/api';
 /** Filters that reach the server. Everything the picker shows is one of these. */
 export type ProductQuery = Omit<ProductListQuery, 'cursor'>;
 
-const catalogKeys = {
+export const catalogKeys = {
   products: (query: ProductQuery) => ['products', query] as const,
+  product: (id: string) => ['products', 'detail', id] as const,
   facets: ['product-facets'] as const,
   categories: ['categories'] as const,
   brands: ['brands'] as const,
@@ -30,6 +31,14 @@ export function useProducts(query: ProductQuery) {
     // Every filter change is a new query key. Without this the list is replaced
     // by a spinner on each keystroke that settles, which reads as flicker.
     placeholderData: keepPreviousData,
+  });
+}
+
+export function useProduct(id: string) {
+  return useQuery({
+    queryKey: catalogKeys.product(id),
+    queryFn: async () =>
+      unwrap(await api.GET('/api/v1/products/{id}', { params: { path: { id } } })),
   });
 }
 
