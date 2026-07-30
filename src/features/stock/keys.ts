@@ -9,5 +9,6 @@ export const stockKeys = {
   all: ['stock'] as const,
   levels: (query: StockQuery) => ['stock', 'levels', query] as const,
   low: (limit: number) => ['stock', 'low', limit] as const,
-  kardex: (productId: string) => ['stock', 'kardex', productId] as const,
+  kardex: (productId: string, locationId?: string) =>
+    ['stock', 'kardex', productId, locationId ?? 'default'] as const,
 };

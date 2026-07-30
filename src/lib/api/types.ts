@@ -15,6 +15,10 @@ export type UpdateUserInput = Schemas['UpdateUserDto'];
 export type UpdateProfileInput = Schemas['UpdateProfileDto'];
 export type ChangePasswordInput = Schemas['ChangePasswordDto'];
 
+export type Location = Schemas['LocationDto'];
+export type CreateLocationInput = Schemas['CreateLocationDto'];
+export type UpdateLocationInput = Schemas['UpdateLocationDto'];
+
 export type Organization = Schemas['OrganizationDto'];
 export type UpdateOrganizationInput = Schemas['UpdateOrganizationDto'];
 

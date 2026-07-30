@@ -8,6 +8,8 @@ import { stockKeys } from './keys';
 export interface StockQuery {
   search?: string;
   categoryId?: string;
+  /** Omitted means the default location, which is what the API resolves. */
+  locationId?: string;
 }
 
 const PAGE_SIZE = 25;
@@ -38,14 +40,17 @@ export function useLowStock(limit: number, enabled = true) {
   });
 }
 
-export function useKardex(productId: string) {
+export function useKardex(productId: string, locationId?: string) {
   return useInfiniteQuery({
-    queryKey: stockKeys.kardex(productId),
+    queryKey: stockKeys.kardex(productId, locationId),
     initialPageParam: undefined as string | undefined,
     queryFn: async ({ pageParam }) =>
       unwrap(
         await api.GET('/api/v1/stock/{productId}/kardex', {
-          params: { path: { productId }, query: { limit: KARDEX_PAGE_SIZE, cursor: pageParam } },
+          params: {
+            path: { productId },
+            query: { limit: KARDEX_PAGE_SIZE, cursor: pageParam, ...(locationId ? { locationId } : {}) },
+          },
         }),
       ),
     getNextPageParam: (lastPage) => lastPage.meta.nextCursor ?? undefined,
