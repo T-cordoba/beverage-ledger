@@ -5,13 +5,8 @@ import { Badge, Button } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import type { MovementStatus, MovementSummary, MovementType } from '@/lib/api';
 import { formatDateTime, pluralize } from '@/lib/utils';
+import { MOVEMENT_TYPES } from './movement-types';
 import { MovementPdfButton } from './MovementPdfButton';
-
-const typeLabels: Record<MovementType, string> = {
-  INBOUND: 'Inbound',
-  OUTBOUND: 'Dispatch',
-  ADJUSTMENT: 'Adjustment',
-};
 
 const statusTones = {
   DRAFT: 'warning',
@@ -20,7 +15,7 @@ const statusTones = {
 } as const satisfies Record<MovementStatus, 'warning' | 'success' | 'danger'>;
 
 export function MovementTypeBadge({ type }: { type: MovementType }) {
-  return <Badge tone={type === 'OUTBOUND' ? 'accent' : 'info'}>{typeLabels[type]}</Badge>;
+  return <Badge tone={type === 'OUTBOUND' ? 'accent' : 'info'}>{MOVEMENT_TYPES[type].label}</Badge>;
 }
 
 export function MovementStatusBadge({ status }: { status: MovementStatus }) {

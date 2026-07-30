@@ -10,12 +10,11 @@ import { useDebouncedValue } from '@/lib/hooks';
 import { formatNumber, parseDateKey } from '@/lib/utils';
 import { useMovements, type MovementQuery } from './api';
 import { MovementCard } from './MovementCard';
+import { MOVEMENT_TYPE_ORDER, MOVEMENT_TYPES } from './movement-types';
 
 const typeOptions: { value: '' | MovementType; label: string }[] = [
   { value: '', label: 'All types' },
-  { value: 'OUTBOUND', label: 'Dispatch' },
-  { value: 'INBOUND', label: 'Inbound' },
-  { value: 'ADJUSTMENT', label: 'Adjustment' },
+  ...MOVEMENT_TYPE_ORDER.map((type) => ({ value: type, label: MOVEMENT_TYPES[type].label })),
 ];
 
 const statusOptions: { value: '' | MovementStatus; label: string }[] = [

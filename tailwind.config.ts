@@ -24,6 +24,10 @@ const config: Config = {
           DEFAULT: 'rgb(var(--color-accent) / <alpha-value>)',
           hover: 'rgb(var(--color-accent-hover) / <alpha-value>)',
         },
+        chart: {
+          1: 'rgb(var(--color-chart-1) / <alpha-value>)',
+          2: 'rgb(var(--color-chart-2) / <alpha-value>)',
+        },
         success: 'rgb(var(--color-success) / <alpha-value>)',
         warning: 'rgb(var(--color-warning) / <alpha-value>)',
         info: 'rgb(var(--color-info) / <alpha-value>)',

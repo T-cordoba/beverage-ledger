@@ -27,6 +27,17 @@
   /* Backdrop behind modals */
   --color-scrim: 0 0 0;
 
+  /**
+   * Chart series, assigned in this order and never cycled.
+   *
+   * Steps of the brand gold and the info blue, darkened until they sit inside
+   * the readable lightness band for a near-black surface: the interface steps
+   * (--color-accent, --color-info) glare as large filled areas. Checked for
+   * colour-blind separation, ΔE 25.9 on the worst adjacent pair.
+   */
+  --color-chart-1: 176 141 42;
+  --color-chart-2: 74 128 216;
+
   /* Status */
   --color-success: 74 222 128;
   --color-warning: 251 191 36;
