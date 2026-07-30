@@ -14,6 +14,8 @@ export const ROUTES = {
   movement: (id: string) => `/movements/${id}`,
   reports: '/reports',
   catalog: '/catalog',
+  /** Out of MAIN_NAVIGATION on purpose: it hangs off the account menu. */
+  profile: '/profile',
   admin: '/admin',
   adminUsers: '/admin/users',
   adminCategories: '/admin/categories',
