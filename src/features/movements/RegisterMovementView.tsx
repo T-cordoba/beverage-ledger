@@ -19,7 +19,7 @@ import { useCatalogFilters } from '@/features/catalog';
 import { LocationSelect } from '@/features/locations';
 import { describeError, type MovementType } from '@/lib/api';
 import { formatSignedNumber, parseDateKey, pluralize } from '@/lib/utils';
-import { useCancelMovement, useRegisterMovement } from './api';
+import { useCancelMovement, useOpenDraft, useRegisterMovement, useResumeDraft } from './api';
 import { MIN_REASON_LENGTH, MOVEMENT_TYPES } from './movement-types';
 import { ProductPicker } from './ProductPicker';
 import { useMovementDraft, type MovementDraft } from './useMovementDraft';
@@ -66,13 +66,31 @@ function DraftSummary({ draft, isSigned }: { draft: MovementDraft; isSigned: boo
 
 export function RegisterMovementView({ type }: { type: MovementType }) {
   const meta = MOVEMENT_TYPES[type];
-  const { can } = useAuth();
+  const { can, user } = useAuth();
   const filters = useCatalogFilters();
   const draft = useMovementDraft(type);
   const notify = useNotify();
   const router = useRouter();
   const register = useRegisterMovement();
   const cancel = useCancelMovement();
+  const resume = useResumeDraft();
+
+  const { data: openDraft } = useOpenDraft(type, user?.id);
+
+  // Offered only when there is nothing to lose here: a draft captured on this
+  // device is the one the user is looking at, and replacing it would throw away
+  // work to recover older work.
+  const resumable =
+    openDraft && draft.isEmpty && openDraft.id !== draft.pendingMovementId ? openDraft : null;
+
+  const pickUp = async (movementId: string) => {
+    try {
+      draft.restore(await resume.mutateAsync(movementId));
+      notify('info', 'Draft picked up', 'What was captured is back. Confirming reuses it.');
+    } catch (error) {
+      notify('error', 'Could not pick up the draft', describeError(error, 'Please try again.'));
+    }
+  };
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isDiscardOpen, setIsDiscardOpen] = useState(false);
@@ -168,6 +186,25 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
             </Link>
             .
           </p>
+        </Card>
+      )}
+
+      {resumable && (
+        <Card className="flex flex-col gap-3 border-info/30 bg-info/10 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-contrast/80">
+            <span className="font-medium text-foreground">{resumable.code}</span> is still a draft
+            here, with {resumable.itemCount} {pluralize(resumable.itemCount, 'line')}. It was left
+            open somewhere else — picking it up loads what was captured instead of starting again.
+          </p>
+          <Button
+            variant="secondary"
+            size="sm"
+            className="shrink-0"
+            isLoading={resume.isPending}
+            onClick={() => void pickUp(resumable.id)}
+          >
+            Pick it up
+          </Button>
         </Card>
       )}
 

@@ -47,6 +47,8 @@ Plan completo: `C:\Users\Tomas\.claude\plans\ok-voy-a-hacerle-tender-sprout.md`
 
 **La pantalla de perfil se hizo fuera del orden de fases**, en la rama `feat/profile-screen`, porque el hueco que tapaba era funcional y no de presentación: nadie podía cambiar su propia contraseña.
 
+**Las bodegas y los traspasos también.** Estaban modeladas desde la primera migración y nunca se habían expuesto; ahora tienen CRUD, selector y filtro, y existe un cuarto tipo de movimiento, `TRANSFER`. Eso cerró de paso tres límites del contrato que la UI tenía que enseñar en vez de esconder. Ver §10.
+
 ---
 
 ## 3. Comandos
@@ -264,6 +266,7 @@ El modelo sigue el principio de **segregación de funciones**, el control base d
 | Registrar salida (`OUTBOUND`) | ✅ | ✅ | ✅ |
 | Registrar entrada (`INBOUND`) | ❌ | ✅ | ✅ |
 | Registrar ajuste (`ADJUSTMENT`) | ❌ | ✅ *(motivo obligatorio)* | ✅ |
+| Registrar traspaso (`TRANSFER`) | ❌ | ✅ | ✅ |
 | Anular un movimiento confirmado | ❌ | ✅ | ✅ |
 | Ver historial y existencias | ✅ | ✅ | ✅ |
 | Ver reportes y estadísticas | ❌ | ✅ | ✅ |
@@ -315,7 +318,9 @@ Lo esencial del dominio:
 - **Catálogo** — `/products`, `/categories`, `/brands`. Todo paginado por cursor con `search`, filtros y orden en el servidor: no descargues los 215. Leer es abierto a cualquier autenticado; escribir exige `catalog:manage`. Los productos no se borran, se desactivan con `isActive: false`.
 - **Movimientos** — el ciclo es **crear borrador → confirmar**, en dos llamadas. `POST /movements` abre un `DRAFT` que no toca existencias; `POST /movements/:id/confirm` aplica el delta. `useRegisterMovement` encadena las dos; si la segunda falla —una salida mayor al stock— el borrador se queda ahí en vez de tirar lo que el usuario capturó, y su id queda guardado con el borrador local: el siguiente intento hace `PATCH /movements/:id` sobre **ese mismo** movimiento en vez de abrir otro. Solo se abandona si respondió 404 o 409, o sea si ya no es un borrador. Anular es `POST /movements/:id/cancel` con motivo, y revierte el stock; sobre un `DRAFT` la misma llamada es "descartar", porque nunca aplicó nada.
 - **Cantidades** — `quantity` va **positiva** en `INBOUND` y `OUTBOUND` (el tipo lleva la dirección) y **con signo** en `ADJUSTMENT`, que corrige hacia ambos lados y **exige `reason`**. La unidad es `BOTTLE` o `CASE`; la API normaliza con el `caseSize` del producto.
-- **Existencias** — `/stock` paginado, `/stock/low` para la tarjeta de "bajo mínimo" del dashboard, `/stock/:productId/kardex` para el histórico de un producto con saldo corrido.
+- **Bodegas** — `/locations` con CRUD tras `catalog:manage`; leer es abierto porque capturar un movimiento lo necesita. La default se reemplaza promoviendo otra, nunca vaciándola, y no se borra una que el ledger referencie. Todo lo que elige bodega pasa por `LocationSelect`.
+- **Traspasos** — `TRANSFER` mueve stock entre dos bodegas y **no cambia el total**: la API escribe una línea por lado, con signo. El movimiento lleva origen en `locationId` y destino en `destinationLocationId`, y `MovementItemDto` trae su propia `locationId`, así que el detalle de un traspaso tiene dos líneas por producto. La captura exige **ambas puntas explícitas**: en cualquier otro tipo omitir la bodega significa "la default", pero aquí dejar el origen vacío cuando la default ya es el destino pediría mover stock sobre sí mismo.
+- **Existencias** — `/stock` paginado, `/stock/low` para la tarjeta de "bajo mínimo" del dashboard, `/stock/:productId/kardex` para el histórico de un producto con saldo corrido. Todos aceptan `locationId`, y el kardex de un traspaso aparece en las dos bodegas con el signo que cada una vio. `/stock?productIds=` (separado por comas, tope 200) responde por un conjunto conocido: es lo que usa el picker para saber cuánto puede sacar, pedido en tandas de 50 porque la lista crece al cargar más páginas.
 - **Reportes** — `/reports/summary` (tarjetas del dashboard), `/reports/consumption` (`groupBy=product|category|brand`) y `/reports/activity` (serie temporal del gráfico). Rango omitido = últimos 30 días.
 - **Administración** — `/users` (crear, editar rol y estado; sin `DELETE`, se suspende), `/organization` (branding), `/audit-logs` (filtrable por entidad, acción, usuario y rango). Las categorías y marcas sí tienen `DELETE`, y responde 409 mientras algún producto las referencie.
 - **PDF** — `GET /movements/:id/pdf`. Ya no es un IDOR: va scopeado a la organización.
@@ -336,17 +341,17 @@ src/
     (app)/            layout = AuthGuard + AppShell
       dashboard/      tarjetas, gráfico de actividad, bajo mínimo, últimos movimientos
       stock/          existencias · [productId] = kardex
-      movements/      historial · new/{outbound,inbound,adjustment} · [id]
+      movements/      historial · new/{outbound,inbound,transfer,adjustment} · [id]
       catalog/        productos, con CRUD si hay catalog:manage
       reports/        consumo
       profile/        datos propios + cambio de contraseña
       admin/          layout con sub-nav + users · categories · brands ·
-                      organization · audit
+                      locations · organization · audit
   components/
     ui/               primitivos (ver §5)
     layout/           AppShell, Topbar   (⬜ Sidebar y MarketingNav cuando hagan falta)
   features/           auth · catalog · movements · stock · reports · dashboard ·
-                      admin · profile
+                      admin · profile · locations
   lib/
     api/              schema.d.ts generado, cliente, sesión, errores
     query/            configuración del QueryClient
@@ -374,6 +379,7 @@ Imports siempre por alias `@/`, nunca relativos que suban de directorio (`../../
 - **La protección de rutas es del cliente, no de `middleware.ts`.** No es por `httpOnly` —el middleware de Next lee cookies httpOnly perfectamente, es el patrón habitual—: es que esa cookie **nunca llega al servidor de Next**. Va con `path=/api/v1/auth`, así que el navegador no la adjunta a una petición de `/movements` ni en local (donde las cookies ignoran el puerto y `:3000` y `:3001` comparten el host); y en producción la pone otro dominio registrable. Un middleware no tendría con qué decidir: bloquearía siempre. Además el servidor de Next no renderiza nada que proteger, porque todos los datos los pide el navegador con bearer token. `AuthGuard` solo evita pintar una pantalla que va a responder 401, y **la autorización real es de la API**.
 
   Si algún día molesta el parpadeo del spinner, el patrón es que **el front** escriba una cookie *pista* first-party y sin secreto (`bl_session=1`) al iniciar sesión, y que el middleware redirija con eso. Es una segunda fuente de verdad que se desincroniza cuando la sesión se revoca, así que es pulido de UX, nunca un control.
+- **El tope del picker es una cortesía, no un control.** Los steppers se frenan en lo que hay en la bodega de origen para que capturar de más no se descubra recién al confirmar, pero el stock se mueve entre una cosa y la otra: la API sigue siendo la autoridad y sigue rechazando bajar de cero. El techo va sobre **unidades base**, no sobre cada contador, porque botellas y cajas gastan el mismo stock. No aplica a ajustes: un ajuste existe porque el número registrado está mal, así que toparlo por ese número sería circular.
 - **Casing de los directorios.** Windows no distingue mayúsculas y Linux sí: `src/components/UI` estuvo versionado así mientras los imports decían `ui`, lo que compilaba en local y habría roto el build en Vercel. Si renombras solo el caso, `git rm -r --cached` y volver a añadir.
 
 ---
@@ -418,6 +424,7 @@ Sigue pendiente (Fase 7 en adelante):
 - **Un `INVITED` no tiene forma de entrar.** La pantalla de perfil (`features/profile`) cubrió el autoservicio —`PATCH /users/me` y `PUT /users/me/password`— pero un admin sigue sin poder asignarle contraseña a otro: no existe endpoint. Se crea con contraseña o se queda fuera. Arreglarlo es backend.
 
   Dos detalles del contrato que la pantalla tuvo que asumir: `PUT /users/me/password` responde 204 y **revoca todas las sesiones**, así que al terminar hay que cerrar la local —de ahí el campo de confirmación, porque un typo te saca de todas partes a la vez— y `/auth/me` no dice si la cuenta tiene contraseña, así que el formulario exige la actual siempre. Un usuario solo-Google, para el que la API no la exige, no podría ponerse la primera.
-- **Multi-bodega sin exponer.** Todo va contra la ubicación por defecto; `locationId` existe en el contrato y ninguna vista lo ofrece.
-- **Límites del contrato que la UI hace visibles en vez de esconder**: el `caseSize` no se puede editar después de crear el producto, a un producto con marca no se le puede quitar la marca (`UpdateProductDto.brandId` no es nullable) y el filtro de estado del catálogo es "activos" o "desactivados", nunca ambos (`isActive` vale `true` cuando la query lo omite).
-- **El borrador local es por dispositivo.** Si retomas en otro navegador el borrador pendiente del servidor, no traes las líneas capturadas: hay que reconstruirlas o descartarlo.
+- **El `caseSize` no se puede editar** después de crear el producto, y eso se queda así: es el divisor con el que se calculó cada `quantity_base` histórico, así que cambiarlo reescribiría en silencio lo que el ledger dice. Si de verdad cambió el empaque, es un producto nuevo. La UI lo muestra deshabilitado en vez de fingir que se puede.
+
+  Los otros dos límites que había aquí sí eran descuidos y se arreglaron: `UpdateProductDto.brandId` acepta `null` para desvincular, y el filtro de estado del catálogo pasó a `status: active | inactive | all`, que es el "ambos" que un booleano no podía expresar.
+- ~~El borrador local es por dispositivo~~ → la pantalla de captura pregunta a la API si ya hay un `DRAFT` abierto de ese tipo hecho por ti, y ofrece recogerlo. Recogerlo son **dos** peticiones y no una: la línea del ledger guarda un snapshot del nombre pero apunta al producto por id, y el borrador necesita el producto entero, porque su `caseSize` es lo que convierte cajas en unidades. Solo se ofrece cuando el borrador local está vacío: reemplazar lo capturado aquí sería tirar trabajo para recuperar trabajo más viejo. De un traspaso se lee solo la mitad saliente, o cada línea se duplicaría.

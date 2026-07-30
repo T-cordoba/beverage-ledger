@@ -39,6 +39,17 @@ const EMPTY_STATE: DraftState = {
   pendingMovementId: null,
 };
 
+/** A movement read back from the API, in the shape the draft stores it. */
+export interface RestoredDraft {
+  movementId: string;
+  lines: DraftLine[];
+  occurredAt: string;
+  locationId: string;
+  destinationLocationId: string;
+  reason: string;
+  note: string;
+}
+
 export interface MovementDraft {
   type: MovementType;
   lines: DraftLine[];
@@ -56,6 +67,8 @@ export interface MovementDraft {
   setNote: (value: string) => void;
   pendingMovementId: string | null;
   rememberPending: (id: string) => void;
+  /** Replaces the whole draft with one the API already holds. */
+  restore: (state: RestoredDraft) => void;
   clear: () => void;
   isEmpty: boolean;
   productCount: number;
@@ -171,6 +184,18 @@ export function useMovementDraft(type: MovementType): MovementDraft {
     [],
   );
 
+  const restore = useCallback((restored: RestoredDraft) => {
+    setState({
+      lines: Object.fromEntries(restored.lines.map((line) => [line.product.id, line])),
+      occurredAt: restored.occurredAt,
+      locationId: restored.locationId,
+      destinationLocationId: restored.destinationLocationId,
+      reason: restored.reason,
+      note: restored.note,
+      pendingMovementId: restored.movementId,
+    });
+  }, []);
+
   return useMemo(() => {
     const lines = Object.values(state.lines);
     const counts = (unit: MovementUnit) => lines.reduce((sum, line) => sum + line[unit], 0);
@@ -192,6 +217,7 @@ export function useMovementDraft(type: MovementType): MovementDraft {
       setNote,
       pendingMovementId: state.pendingMovementId,
       rememberPending,
+      restore,
       clear,
       isEmpty: lines.length === 0,
       productCount: lines.length,
@@ -212,6 +238,7 @@ export function useMovementDraft(type: MovementType): MovementDraft {
     adjust,
     clear,
     rememberPending,
+    restore,
     setDestinationLocationId,
     setLocationId,
     setNote,
