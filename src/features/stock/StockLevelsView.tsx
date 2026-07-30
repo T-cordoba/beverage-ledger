@@ -13,7 +13,6 @@ import {
   type DataTableColumn,
 } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
-import { useAuth } from '@/features/auth';
 import { useCategories } from '@/features/catalog';
 import type { StockLevel } from '@/lib/api';
 import { useDebouncedValue } from '@/lib/hooks';
@@ -88,8 +87,6 @@ const columns: DataTableColumn<StockLevel>[] = [
 ];
 
 export function StockLevelsView() {
-  const { can } = useAuth();
-
   const [search, setSearch] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const debouncedSearch = useDebouncedValue(search);
@@ -106,15 +103,6 @@ export function StockLevelsView() {
 
   const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
     useStockLevels(query);
-
-  if (!can('stock:read')) {
-    return (
-      <EmptyState
-        title="You cannot see stock levels."
-        description="Ask an administrator for the permission if you need it."
-      />
-    );
-  }
 
   const rows = data?.pages.flatMap((page) => page.data) ?? [];
   const hasFilters = Boolean(search || categoryId);

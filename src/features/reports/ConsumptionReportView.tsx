@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react';
 import { Card, EmptyState, SegmentedControl, Spinner, StatTile } from '@/components/ui';
-import { useAuth } from '@/features/auth';
 import type { ConsumptionGroupBy, ConsumptionRow } from '@/lib/api';
 import { cn, formatNumber, formatShortDate, pluralize } from '@/lib/utils';
 import { useConsumptionReport, useSummaryReport } from './api';
@@ -85,7 +84,6 @@ function ConsumptionTable({ rows }: { rows: ConsumptionRow[] }) {
 }
 
 export function ConsumptionReportView() {
-  const { can } = useAuth();
   const [period, setPeriod] = useState<ReportPeriod>('month');
   const [groupBy, setGroupBy] = useState<ConsumptionGroupBy>('product');
 
@@ -93,15 +91,6 @@ export function ConsumptionReportView() {
 
   const consumption = useConsumptionReport(groupBy, range, TOP_ROWS);
   const summary = useSummaryReport(range);
-
-  if (!can('report:read')) {
-    return (
-      <EmptyState
-        title="You cannot see reports."
-        description="Ask an administrator for the permission if you need it."
-      />
-    );
-  }
 
   const rows = consumption.data?.data ?? [];
 

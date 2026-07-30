@@ -1,3 +1,4 @@
+import { PermissionGate } from '@/features/auth';
 import { KardexView } from '@/features/stock';
 
 export const metadata = { title: 'Kardex · Beverage Ledger' };
@@ -9,5 +10,9 @@ export default async function ProductStockPage({
 }) {
   const { productId } = await params;
 
-  return <KardexView productId={productId} />;
+  return (
+    <PermissionGate permission="stock:read" title="You cannot see stock levels.">
+      <KardexView productId={productId} />
+    </PermissionGate>
+  );
 }

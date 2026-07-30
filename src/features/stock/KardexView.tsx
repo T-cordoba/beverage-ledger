@@ -12,7 +12,6 @@ import {
   type DataTableColumn,
 } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
-import { useAuth } from '@/features/auth';
 import { useProduct } from '@/features/catalog';
 import { MovementTypeBadge } from '@/features/movements';
 import type { KardexEntry } from '@/lib/api';
@@ -71,18 +70,8 @@ const columns: DataTableColumn<KardexEntry>[] = [
 ];
 
 export function KardexView({ productId }: { productId: string }) {
-  const { can } = useAuth();
   const product = useProduct(productId);
   const kardex = useKardex(productId);
-
-  if (!can('stock:read')) {
-    return (
-      <EmptyState
-        title="You cannot see stock levels."
-        description="Ask an administrator for the permission if you need it."
-      />
-    );
-  }
 
   if (product.isPending) {
     return (

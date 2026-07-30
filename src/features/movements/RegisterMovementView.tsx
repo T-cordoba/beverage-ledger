@@ -8,7 +8,6 @@ import {
   Card,
   ConfirmDialog,
   DatePicker,
-  EmptyState,
   Field,
   Input,
   Textarea,
@@ -76,15 +75,6 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isDiscardOpen, setIsDiscardOpen] = useState(false);
-
-  if (!can(meta.permission)) {
-    return (
-      <EmptyState
-        title={`You cannot register ${meta.label.toLowerCase()} movements.`}
-        description="Ask an administrator for the permission if you need it."
-      />
-    );
-  }
 
   const trimmedReason = draft.reason.trim();
   const isReasonMissing = meta.requiresReason && trimmedReason.length < MIN_REASON_LENGTH;
