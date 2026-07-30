@@ -30,6 +30,34 @@ export function useStockLevels(query: StockQuery) {
   });
 }
 
+/**
+ * What is on hand for a known set of products, at one location.
+ *
+ * Asks by id rather than paging the catalogue: the capture screen already knows
+ * which products it is showing, and needs to know how many of each it may take
+ * out before the user asks for more than exists.
+ */
+export function useStockAvailability(productIds: string[], locationId?: string, enabled = true) {
+  const ids = [...productIds].sort();
+
+  return useQuery({
+    queryKey: stockKeys.availability(ids, locationId),
+    queryFn: async () =>
+      unwrap(
+        await api.GET('/api/v1/stock', {
+          params: {
+            query: {
+              productIds: ids.join(','),
+              limit: Math.max(ids.length, 1),
+              ...(locationId ? { locationId } : {}),
+            },
+          },
+        }),
+      ),
+    enabled: enabled && ids.length > 0,
+  });
+}
+
 /** A shortlist, not a page: the endpoint returns the worst offenders and stops. */
 export function useLowStock(limit: number, enabled = true) {
   return useQuery({

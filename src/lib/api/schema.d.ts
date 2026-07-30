@@ -2361,6 +2361,8 @@ export interface operations {
         categoryId?: string;
         /** @description Defaults to the default location */
         locationId?: string;
+        /** @description Comma-separated product ids. Narrows the page to those products */
+        productIds?: string;
       };
       header?: never;
       path?: never;
