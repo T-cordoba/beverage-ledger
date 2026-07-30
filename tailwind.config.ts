@@ -31,14 +31,6 @@ const config: Config = {
           DEFAULT: 'rgb(var(--color-danger) / <alpha-value>)',
           strong: 'rgb(var(--color-danger-strong) / <alpha-value>)',
         },
-
-        // Deprecated aliases. They resolve to the same tokens as the names
-        // above and exist only so the pre-Phase-5 views keep compiling; they
-        // are removed together with those views.
-        primary: 'rgb(var(--color-text) / <alpha-value>)',
-        secondary: 'rgb(var(--color-text-contrast) / <alpha-value>)',
-        accentHover: 'rgb(var(--color-accent-hover) / <alpha-value>)',
-        cardBg: 'rgb(var(--color-surface) / <alpha-value>)',
       },
       fontFamily: {
         sans: ['var(--font-sans)'],
