@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button, Popover, PopoverContent, PopoverTrigger } from '@/components/ui';
-import { MAIN_NAVIGATION, ROUTES } from '@/config/navigation';
+import { MAIN_NAVIGATION, ROUTES, visibleNavigation } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
 import { cn } from '@/lib/utils';
 
@@ -19,12 +19,12 @@ export function Topbar() {
   const { user, organization, can, signOut } = useAuth();
   const pathname = usePathname();
 
-  const items = MAIN_NAVIGATION.filter((item) => !item.permission || can(item.permission));
+  const items = visibleNavigation(MAIN_NAVIGATION, can);
 
   return (
     <header className="sticky top-0 z-sticky border-b border-border bg-surface/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
-        <Link href={ROUTES.movements} className="flex shrink-0 items-center gap-3">
+        <Link href={ROUTES.dashboard} className="flex shrink-0 items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element -- the logo is a static asset, not a remote upload */}
           <img src="/bl-logo.png" alt="" className="h-9 w-auto" aria-hidden="true" />
           <span className="hidden text-sm font-light text-foreground sm:inline">

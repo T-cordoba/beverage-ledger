@@ -80,7 +80,7 @@ export function MovementHistoryView() {
 
         {can('movement:create-outbound') && (
           <Button size="lg" asChild>
-            <Link href={ROUTES.newMovement}>Register a dispatch</Link>
+            <Link href={ROUTES.newMovement('OUTBOUND')}>Register a dispatch</Link>
           </Button>
         )}
       </header>

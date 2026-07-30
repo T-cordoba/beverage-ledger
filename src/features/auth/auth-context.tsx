@@ -162,7 +162,7 @@ export function useGoogleCallback(): { failed: boolean } {
       }
 
       await queryClient.invalidateQueries({ queryKey: sessionQueryKey });
-      router.replace(ROUTES.movements);
+      router.replace(ROUTES.dashboard);
       return session;
     },
   });
