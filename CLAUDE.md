@@ -29,8 +29,8 @@ El nombre no es casual: la fuente de verdad del inventario es un **ledger inmuta
 | 1 | Repo API: scaffold Nest, Prisma, esquema, seed, `common/` | ✅ Hecha |
 | 2 | API: auth (local + Google OAuth), JWT, refresh, matriz de permisos | ✅ Hecha |
 | 3 | API: catálogo, inventario con stock, reportes, PDF | ✅ Hecha |
-| 4 | Front: design system (tokens CSS, primitivos Radix, `cn()`) | 🔄 Siguiente |
-| 5 | Front: reestructura a rutas reales + corte a la API nueva | ⬜ Pendiente |
+| 4 | Front: design system (tokens CSS, primitivos Radix, `cn()`) | ✅ Hecha |
+| 5 | Front: reestructura a rutas reales + corte a la API nueva | 🔄 Siguiente |
 | 6 | Front: dashboard de existencias + panel de administración | ⬜ Pendiente |
 | 7 | Front: landing page + i18n + parametrización de branding | ⬜ Pendiente |
 | 8 | READMEs y documentación final | ⬜ Pendiente |
@@ -121,7 +121,7 @@ Si un fragmento necesita un comentario para entenderse, primero considera si un 
 
 ### Nada quemado
 Ni colores, ni z-index, ni endpoints, ni textos, ni valores de negocio, ni nombres de empresa. Si un valor aparece dos veces, es un token o una constante. Los sitios donde vivir:
-- Colores, tipografía, espaciado, radios, z-index → `src/styles/tokens.css` (CSS custom properties), consumidas por `tailwind.config.js`.
+- Colores, tipografía, radios, z-index, motion → `src/styles/tokens.css` (CSS custom properties), consumidas por `tailwind.config.ts`. El espaciado es la escala de Tailwind, no se redefine.
 - Constantes de negocio y navegación → `src/config/`.
 - Textos → `src/i18n/messages/`.
 - Branding (nombre, logo, datos legales) → viene de la API, de la organización.
@@ -129,8 +129,8 @@ Ni colores, ni z-index, ni endpoints, ni textos, ni valores de negocio, ni nombr
 ### Tres niveles de componente
 ```
 components/ui/       Primitivos globales. Sin lógica de negocio, sin llamadas a la API.
-                     Button, Input, Select, Dropdown, Modal, Card, Badge, Spinner,
-                     EmptyState, Pagination, DataTable.
+                     Hoy existen: Button, Input, Select, Dialog, ConfirmDialog,
+                     Popover, Card, Badge, Spinner, EmptyState.
 components/layout/   Estructura: AppShell, Sidebar, Topbar, MarketingNav, Footer.
 features/<dominio>/  Funcionalidad: componentes, hooks y lógica de un dominio concreto
                      (catalog, movements, reports, auth, admin).
@@ -143,12 +143,23 @@ Regla de dirección de dependencias: `app/` → `features/` → `components/ui/`
 - **Estado de UI local**: dentro del componente que lo posee. Un dropdown gestiona su propio `isOpen`; no se sube al padre.
 - **Estado de negocio compartido**: hooks propios en `features/` (`useMovementDraft`, `useCatalogFilters`).
 
-Antipatrón a evitar (es literalmente el estado actual de `src/app/page.tsx`): un componente con 600 líneas, 11 `useState`, 2 `useReducer`, fetching, agregación de datos y manipulación del DOM, que pasa 22 props a un hijo.
+Antipatrón a evitar (es literalmente el estado actual de `src/app/page.tsx`): un componente con 560 líneas, 10 `useState`, 2 `useReducer`, fetching, agregación de datos y manipulación del DOM. Se desmonta en la Fase 5.
 
 ### Estilos
-- Tailwind con tokens del tema. **Nunca** `!important` en las clases: si necesitas pisar un estilo, el componente base está mal diseñado. Usa `cn()` (clsx + tailwind-merge) para componer clases.
-- **Nunca** valores arbitrarios de color (`bg-[#D4AF37]`) ni de z-index (`z-[9999]`). Usa tokens.
+- Tailwind con tokens del tema. **Nunca** `!important` en las clases: si necesitas pisar un estilo, el componente base está mal diseñado. Usa `cn()` (`@/lib/utils`, clsx + tailwind-merge) para componer clases — con tailwind-merge la clase del call site gana sin `!important`.
+- **Nunca** valores arbitrarios de color (`bg-[#D4AF37]`) ni de z-index (`z-[9999]`). Usa tokens. ESLint avisa de ambos.
 - Un solo componente responsive, no una versión mobile y otra desktop duplicadas.
+
+**Nombres de color disponibles** (todos con modificador de alfa, `bg-accent/20` funciona):
+`background`, `foreground`, `contrast`, `placeholder`, `border`, `scrim`, `surface`, `surface-raised`, `accent`, `accent-hover`, `success`, `warning`, `info`, `danger`, `danger-strong`.
+
+⚠️ Sobreviven cuatro alias **deprecados** apuntando a los mismos tokens, para que las vistas pre-Fase-5 sigan compilando: `primary` (= `foreground`), `secondary` (= `contrast`), `accentHover`, `cardBg` (= `surface`). **No los uses en código nuevo**; se borran con esas vistas en la Fase 5.
+
+**Escala de z-index** (en vez de los `z-[9999]` de antes): `z-sticky` < `z-floating` < `z-overlay` < `z-modal` < `z-dropdown` = `z-popover` < `z-toast`. Los dropdowns van por encima del modal a propósito: un `Select` abierto dentro de un `Dialog` tiene que pintarse sobre él.
+
+**Formatters**: `@/lib/utils` (`toDateKey`, `parseDateKey`, `formatLongDate`, `formatShortDate`, `formatDateTime`, `formatMonthYear`, `getMonthNames`, `getWeekdayNames`, `pluralize`, `formatNumber`). El locale sale de `@/config/locale`, no de literales `'en-US'`.
+
+`DataTable` y `Pagination` quedan sin construir a propósito: la API pagina por cursor, y un componente de paginación numerada diseñado sin ese contrato delante saldría mal. Se hacen en la Fase 5/6 con el consumidor real.
 
 ### Accesibilidad
 Los overlays (dropdown, select, modal, popover) se construyen sobre **Radix UI**, no con `div`s y `onClick`. Radix da gratis roles ARIA, navegación por teclado, focus trap y cierre con Escape — nada de lo cual existe en el código original.
@@ -289,14 +300,24 @@ Imports siempre por alias `@/`, nunca relativos que suban de directorio (`../../
 
 ## 10. Deuda del código original (contexto histórico)
 
-Lo que había antes de la reescritura, para que se entienda por qué las convenciones son las que son. Todo esto desaparece entre las Fases 4 y 5:
+Lo que había antes de la reescritura, para que se entienda por qué las convenciones son las que son.
 
-- `src/app/page.tsx`: 600 líneas con toda la aplicación dentro. Navegación por string en estado, sin rutas — sin deep links ni botón atrás.
-- Cuatro declaraciones del tipo `Licor`; la paleta de colores definida tres veces (`tailwind.config.js`, `globals.css`, `pdf.ts`).
-- El mismo dropdown copiado siete veces, con z-index ajustados a mano entre `z-[110]` y `z-[9999]`.
-- La tarjeta de licor escrita dos veces, una para móvil y otra para escritorio (~220 líneas duplicadas).
-- `AdvancedFilters` con 22 props, diez de ellas pares `isOpen`/`setIsOpen` que deberían ser estado interno.
-- Sistema de botones con 13 variantes que los call sites pisaban con `!important`.
+Cerrado en la Fase 4:
+
+- ~~El mismo dropdown copiado siete veces, con z-index ajustados a mano entre `z-[110]` y `z-[9999]`~~ → un `Select` de Radix, escala de z-index tokenizada.
+- ~~La tarjeta de licor escrita dos veces, una para móvil y otra para escritorio (~220 líneas duplicadas)~~ → un bloque responsive. Las clases `sm:` de la versión móvil ya coincidían con los valores fijos de la de escritorio, así que unificar no cambió nada visualmente.
+- ~~`AdvancedFilters` con 22 props, diez de ellas pares `isOpen`/`setIsOpen`~~ → 4 props y los cinco campos en una definición declarativa; cada `Select` gestiona su propio estado. 395 líneas → 90.
+- ~~Sistema de botones con 13 variantes + 13 wrappers que los call sites pisaban con `!important`~~ → 5 variantes, 6 tamaños, cero `!important` en el repo.
+- ~~La paleta definida tres veces~~ → una vez en `tokens.css`. Queda la de `pdf.ts`, que muere con el corte a la API en la Fase 5 (ese PDF ya está reimplementado en el backend).
+- ~~El mismo spinner copiado en tres sitios~~ y ~~`formatDateLocal` duplicado~~ → `Spinner` y `@/lib/utils`.
+- Modales sin focus trap, dropdowns sin roles ARIA, notificaciones sin `aria-live` → resuelto vía Radix y una live region que se monta siempre.
+- Un bug de paso: navegar de mes en el date picker sobrescribía el filtro de fecha con el día 1 del mes visitado. El mes visible es ahora estado propio.
+
+Pendiente para la Fase 5:
+
+- `src/app/page.tsx`: 560 líneas con toda la aplicación dentro. Navegación por string en estado, sin rutas — sin deep links ni botón atrás.
+- Cuatro declaraciones del tipo `Licor`.
 - API sin autenticación, sin validación de entrada y sin manejo de errores; PDFs descargables por UUID sin comprobar propiedad.
-- `SELECT * FROM movimientos` sin paginación: la tabla entera viajaba al navegador en cada carga de historial y de estadísticas, que además se agregaban en el cliente.
-- El inventario se llamaba inventario pero no existían las existencias en ninguna parte.
+- `SELECT * FROM movimientos` sin paginación: la tabla entera viaja al navegador en cada carga de historial y de estadísticas, que además se agregan en el cliente.
+- El inventario se llama inventario pero no existen las existencias en ninguna parte.
+- Nombres de dominio en español dentro del código (`cantidades`, `botellas`, `cajas`, `licores`): se van cuando las vistas pasen a consumir la API nueva.
