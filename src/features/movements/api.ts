@@ -20,6 +20,8 @@ import {
   type MovementListQuery,
   type MovementType,
 } from '@/lib/api';
+import { toDateKey } from '@/lib/utils';
+import { EMPTY_LINE, type DraftLine, type RestoredDraft } from './useMovementDraft';
 
 export type MovementQuery = Omit<MovementListQuery, 'cursor'>;
 
@@ -28,6 +30,8 @@ export const movementKeys = {
   list: (query: MovementQuery) => ['movements', 'list', query] as const,
   recent: (limit: number) => ['movements', 'recent', limit] as const,
   detail: (id: string) => ['movements', 'detail', id] as const,
+  openDraft: (type: MovementType, userId: string | undefined) =>
+    ['movements', 'open-draft', type, userId ?? 'anonymous'] as const,
 };
 
 const PAGE_SIZE = 20;
@@ -63,6 +67,27 @@ export function useMovement(id: string) {
     queryKey: movementKeys.detail(id),
     queryFn: async () =>
       unwrap(await api.GET('/api/v1/movements/{id}', { params: { path: { id } } })),
+  });
+}
+
+/**
+ * The draft this user already has open for this type, if any.
+ *
+ * The local draft only knows about drafts opened on this device, so a confirm
+ * that failed on the laptop is invisible from the phone: the movement sits in
+ * the history and the capture screen starts blank. This is what lets the screen
+ * notice it and offer to pick it up.
+ */
+export function useOpenDraft(type: MovementType, createdByUserId: string | undefined) {
+  return useQuery({
+    queryKey: movementKeys.openDraft(type, createdByUserId),
+    queryFn: async () =>
+      unwrap(
+        await api.GET('/api/v1/movements', {
+          params: { query: { type, status: 'DRAFT', createdByUserId, limit: 1 } },
+        }),
+      ).data[0],
+    enabled: createdByUserId !== undefined,
   });
 }
 
@@ -137,6 +162,71 @@ export function useRegisterMovement() {
       );
     },
     onSuccess: () => invalidateLedger(queryClient),
+  });
+}
+
+/**
+ * Reads a draft back into the shape the capture screen edits.
+ *
+ * Two requests and not one: the ledger line keeps a name snapshot but points at
+ * the product by id, and the draft needs the product itself — its case size is
+ * what turns cases into units.
+ *
+ * A transfer stores each product twice, once per side. Only the outgoing half is
+ * read back; both carry the same captured quantity, and restoring both would
+ * double every line.
+ */
+export function useResumeDraft() {
+  return useMutation({
+    mutationFn: async (movementId: string): Promise<RestoredDraft> => {
+      const movement = unwrap(
+        await api.GET('/api/v1/movements/{id}', { params: { path: { id: movementId } } }),
+      );
+
+      const items =
+        movement.type === 'TRANSFER'
+          ? movement.items.filter((item) => item.quantityBase < 0)
+          : movement.items;
+
+      const productIds = [...new Set(items.map((item) => item.productId))].sort();
+
+      const products = unwrap(
+        await api.GET('/api/v1/products', {
+          params: {
+            query: {
+              productIds: productIds.join(','),
+              status: 'all',
+              limit: Math.max(productIds.length, 1),
+            },
+          },
+        }),
+      ).data;
+
+      const byId = new Map(products.map((product) => [product.id, product]));
+      const lines = new Map<string, DraftLine>();
+
+      for (const item of items) {
+        const product = byId.get(item.productId);
+
+        // A product the catalogue no longer returns cannot be edited as a line,
+        // and guessing its case size would restate the quantity. Dropping it is
+        // visible in the totals, which is better than a wrong number.
+        if (!product) continue;
+
+        const line = lines.get(product.id) ?? { product, ...EMPTY_LINE };
+        lines.set(product.id, { ...line, [item.unit]: line[item.unit] + item.quantity });
+      }
+
+      return {
+        movementId: movement.id,
+        lines: [...lines.values()],
+        occurredAt: toDateKey(new Date(movement.occurredAt)),
+        locationId: movement.locationId,
+        destinationLocationId: movement.destinationLocationId ?? '',
+        reason: movement.reason ?? '',
+        note: movement.note ?? '',
+      };
+    },
   });
 }
 

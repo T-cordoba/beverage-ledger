@@ -1988,6 +1988,8 @@ export interface operations {
         age?: string;
         abv?: number;
         status?: 'active' | 'inactive' | 'all';
+        /** @description Comma-separated product ids. Narrows the page to those products */
+        productIds?: string;
         sort?: 'name' | '-name' | '-createdAt' | 'createdAt';
       };
       header?: never;
