@@ -66,9 +66,17 @@ pnpm instala **del mismo registro que npm**: no te salva de que un paquete publi
 - **Cuarentena de 24h** (`minimumReleaseAge: 1440`). Una versión maliciosa se detecta y despublica en horas, así que nunca llegaría aquí. Solo afecta a resolver dependencias nuevas o subidas de versión, no a instalar desde el lockfile. Si necesitas un paquete recién publicado, `pnpm add --minimum-release-age 0 <pkg>`, a conciencia.
 - **`node_modules` estricto**: un paquete solo ve lo que declara. Es el fallo que se arregló en la Fase 0, cuando `react` y `react-dom` llegaban solo transitivamente vía `next`; ahora ese error no puede volver a colarse.
 
-⚠️ **`pnpm audit` reporta 31 avisos donde `npm audit` reportaba 11, y no significa que haya más riesgo**: son los mismos 10 paquetes, pnpm cuenta avisos individuales y npm cuenta paquetes afectados. El árbol se importó con `pnpm import`, así que las versiones resueltas son idénticas.
+### Avisos de seguridad: qué está arreglado y qué no
 
-**Nunca corras `audit fix --force`.** En este repo propone instalar `next@9.3.3`, o sea bajar de la 15 a una versión de 2020. De los avisos abiertos, la mayoría son ReDoS/DoS en tooling de desarrollo (la cadena de ESLint), que corre en tu máquina sobre tus propios archivos y no es alcanzable desde la app desplegada. Los de `postcss` y `sharp` cuelgan de `next` y esperan a que Next publique.
+Los avisos de las dependencias transitivas se cierran con **`overrides` en `pnpm-workspace.yaml`**, que es la forma de parchear algo que upstream todavía no ha subido. Se pasó de 31 avisos a **2**.
+
+**No los escribas con `pnpm audit --fix`.** Genera una entrada por aviso: selectores solapados y, lo importante, reemplazos tipo `'>=1.1.16'` que pnpm resuelve a la versión más alta del registro y **cruzan de major en silencio**. Los overrides de este repo están escritos a mano, uno por línea de major y con `^`, para que un parche no se convierta en un salto de versión mayor.
+
+**Nunca corras `audit fix --force`.** Propone instalar `next@9.3.3`, o sea bajar de la 15 a una versión de 2020.
+
+**Los 2 avisos que quedan abiertos son deliberados.** Son el mismo, GHSA-mh99-v99m-4gvg de `brace-expansion`, que solo está marcado como corregido en `>=5.0.8`. En la 5.x el export de CommonJS pasó a ser un objeto namespace (`{ EXPANSION_MAX, EXPANSION_MAX_LENGTH, expand }`), y `minimatch` hace `require(...)` y lo llama como función: forzarlo hace que **minimatch 3 y 9 lancen en cualquier patrón con llaves** — comprobado. Y lo peor es que `eslint` sigue saliendo limpio, así que no se notaría hasta que un patrón con llaves pasara por ahí. Se espera a que `minimatch` suba de versión.
+
+El riesgo residual es aceptable: es un DoS por expansión de llaves en *tooling de desarrollo*, con patrones que salen de nuestra propia config de ESLint, no de una entrada de usuario. Nada de esto es alcanzable desde la app desplegada.
 
 Variables de entorno: copia `.env.example` a `.env`. **Nunca** commitees `.env` ni pegues credenciales en archivos versionados (incluido este).
 
