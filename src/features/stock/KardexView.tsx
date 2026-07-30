@@ -23,6 +23,7 @@ const columns: DataTableColumn<KardexEntry>[] = [
   {
     key: 'occurredAt',
     header: 'Occurred at',
+    className: 'whitespace-nowrap',
     cell: (entry) => <span className="text-contrast/70">{formatDateTime(entry.occurredAt)}</span>,
   },
   {

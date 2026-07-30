@@ -28,6 +28,8 @@ const columns: DataTableColumn<AuditLog>[] = [
   {
     key: 'createdAt',
     header: 'When',
+    // Without this the timestamp wraps onto four lines and the row grows tall.
+    className: 'whitespace-nowrap',
     cell: (log) => <span className="text-contrast/70">{formatDateTime(log.createdAt)}</span>,
   },
   {

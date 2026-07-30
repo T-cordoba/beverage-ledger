@@ -31,8 +31,8 @@ El nombre no es casual: la fuente de verdad del inventario es un **ledger inmuta
 | 3 | API: catálogo, inventario con stock, reportes, PDF | ✅ Hecha |
 | 4 | Front: design system (tokens CSS, primitivos Radix, `cn()`) | ✅ Hecha |
 | 5 | Front: reestructura a rutas reales + corte a la API nueva | ✅ Hecha |
-| 6 | Front: dashboard de existencias + panel de administración | 🔄 Siguiente |
-| 7 | Front: landing page + i18n + parametrización de branding | ⬜ Pendiente |
+| 6 | Front: dashboard de existencias + panel de administración | ✅ Hecha |
+| 7 | Front: landing page + i18n + parametrización de branding | 🔄 Siguiente |
 | 8 | READMEs y documentación final | ⬜ Pendiente |
 
 Plan completo: `C:\Users\Tomas\.claude\plans\ok-voy-a-hacerle-tender-sprout.md`
@@ -40,6 +40,8 @@ Plan completo: `C:\Users\Tomas\.claude\plans\ok-voy-a-hacerle-tender-sprout.md`
 **El backend está terminado.** Las fases 1 a 3 ocurrieron enteras en `beverage-ledger-api`; a partir de aquí todo el trabajo es de este repositorio.
 
 **El corte ya ocurrió.** Este repo no habla con ninguna base de datos: `actions.ts`, `actions-licores.ts` y `src/app/api/` están borrados, igual que `@neondatabase/serverless` y `pdf-lib`. Todo pasa por `beverage-ledger-api`, que tiene que estar levantada en `:3001` para que la app funcione. Neon ya se puede apagar; la connection string que quede en tu `.env` local no la lee nadie.
+
+**El dominio ya está cubierto.** Con la Fase 6 no queda ninguna ruta de la API sin consumidor: existencias, kardex, entradas, ajustes, usuarios, taxonomía, organización y log de auditoría tienen vista. Lo que falta es de presentación —landing, i18n, branding— y es la Fase 7.
 
 ---
 
@@ -154,11 +156,12 @@ Ni colores, ni z-index, ni endpoints, ni textos, ni valores de negocio, ni nombr
 ### Tres niveles de componente
 ```
 components/ui/       Primitivos globales. Sin lógica de negocio, sin llamadas a la API.
-                     Hoy existen: Button, Input, Select, Dialog, ConfirmDialog,
-                     Popover, Card, Badge, Spinner, EmptyState.
+                     Hoy existen: Button, Input, Textarea, Select, Field, Dialog,
+                     ConfirmDialog, Popover, DatePicker, Card, Badge, DataTable,
+                     StatTile, SegmentedControl, Spinner, EmptyState, Notifications.
 components/layout/   Estructura: AppShell, Sidebar, Topbar, MarketingNav, Footer.
 features/<dominio>/  Funcionalidad: componentes, hooks y lógica de un dominio concreto
-                     (catalog, movements, reports, auth, admin).
+                     (auth, catalog, movements, stock, reports, dashboard, admin).
 app/**/page.tsx      Vistas. Componen features y layout. Delgadas.
 ```
 Regla de dirección de dependencias: `app/` → `features/` → `components/ui/`. Nunca al revés. Un componente de `ui/` que importe algo de `features/` está mal ubicado.
@@ -176,13 +179,17 @@ Antipatrón a evitar (era literalmente el `src/app/page.tsx` de antes): un compo
 - Un solo componente responsive, no una versión mobile y otra desktop duplicadas.
 
 **Nombres de color disponibles** (todos con modificador de alfa, `bg-accent/20` funciona):
-`background`, `foreground`, `contrast`, `placeholder`, `border`, `scrim`, `surface`, `surface-raised`, `accent`, `accent-hover`, `success`, `warning`, `info`, `danger`, `danger-strong`.
+`background`, `foreground`, `contrast`, `placeholder`, `border`, `scrim`, `surface`, `surface-raised`, `accent`, `accent-hover`, `success`, `warning`, `info`, `danger`, `danger-strong`, `chart-1`, `chart-2`.
+
+**`chart-1` y `chart-2` son solo para series de datos**, y se asignan siempre en ese orden: si una serie es `chart-1` en una vista, lo es en todas. No son `accent` ni `info` porque esos pasos, pensados para texto e iconos sobre un fondo casi negro, deslumbran como áreas rellenas grandes; son pasos más oscuros de las mismas tintas y están comprobados para daltonismo. Los colores de estado (`success`, `warning`, `danger`) no se reutilizan como serie: significan estado.
 
 **Escala de z-index** (en vez de los `z-[9999]` de antes): `z-sticky` < `z-floating` < `z-overlay` < `z-modal` < `z-dropdown` = `z-popover` < `z-toast`. Los dropdowns van por encima del modal a propósito: un `Select` abierto dentro de un `Dialog` tiene que pintarse sobre él.
 
-**Formatters**: `@/lib/utils` (`toDateKey`, `parseDateKey`, `formatLongDate`, `formatShortDate`, `formatDateTime`, `formatMonthYear`, `getMonthNames`, `getWeekdayNames`, `pluralize`, `formatNumber`). El locale sale de `@/config/locale`, no de literales `'en-US'`.
+**Formatters**: `@/lib/utils` (`toDateKey`, `parseDateKey`, `formatLongDate`, `formatShortDate`, `formatDateTime`, `formatMonthYear`, `getMonthNames`, `getWeekdayNames`, `pluralize`, `formatNumber`, `formatSignedNumber`). El locale sale de `@/config/locale`, no de literales `'en-US'`.
 
-No hay `Pagination` numerada y no la va a haber: la API pagina por cursor, así que las listas crecen con un botón de "cargar más". Un componente de páginas numeradas necesitaría un total que el contrato no da. `DataTable` sigue sin construirse hasta que haya un consumidor real (Fase 6).
+No hay `Pagination` numerada y no la va a haber: la API pagina por cursor, así que las listas crecen con un botón de "cargar más". Un componente de páginas numeradas necesitaría un total que el contrato no da. `DataTable` sí existe desde la Fase 6, cuando aparecieron cinco consumidores reales (existencias, kardex, catálogo, usuarios, taxonomía, auditoría); recibe columnas declarativas y se encarga del estado vacío y del de carga.
+
+**Formularios**: `Field` envuelve etiqueta, pista y error, y le pasa al control los ids que genera (`{({ id, describedBy }) => …}`). Es la única forma de garantizar que la asociación exista; no escribas `<label htmlFor>` a mano.
 
 ### Accesibilidad
 Los overlays (dropdown, select, modal, popover) se construyen sobre **Radix UI**, no con `div`s y `onClick`. Radix da gratis roles ARIA, navegación por teclado, focus trap y cierre con Escape — nada de lo cual existe en el código original.
@@ -266,6 +273,14 @@ Nada de `if (user.role === 'admin')` desperdigado por el código.
 
 `GET /auth/me` devuelve `{ user, organization, permissions }`. La lista de `permissions` es de strings tipo `movement:create-outbound` o `catalog:manage`; el front condiciona la UI sobre esa lista con `can()` de `useAuth()`, nunca sobre `role`.
 
+Hay tres formas de usarla, y cada una tiene su sitio:
+
+- **`PermissionGate`** (`features/auth`) envuelve la vista **en la página**, no dentro de la vista. Así el componente no se monta y sus queries nunca salen hacia un endpoint que va a responder 403. Es el patrón por defecto para una sección entera.
+- **`visibleNavigation()`** (`config/navigation`) filtra los elementos de navegación. Un item puede declarar varios permisos y se muestra si la sesión tiene **alguno**: el item de administración agrupa páginas guardadas por cuatro permisos distintos.
+- **`can()` dentro de un componente** para decisiones parciales: qué botones de "registrar" pinta `NewMovementActions`, si el detalle de un movimiento ofrece confirmar o anular, si el catálogo muestra las columnas de acciones.
+
+Los roles asignables desde la UI son `OPERATOR`, `MANAGER` y `ORG_ADMIN` (`features/admin/roles.ts`). `PLATFORM_ADMIN` está por encima de la organización y la API lo rechaza, así que se muestra si un usuario ya lo tiene pero nunca se ofrece.
+
 La sesión son dos piezas: un **access token JWT corto que vive en memoria** (`src/lib/api/session.ts`) —nunca en `localStorage`, porque lo que un script puede leer, un script inyectado puede exfiltrar— y una **cookie de refresh httpOnly** que el navegador maneja solo. Perder el token al recargar es el diseño: la cookie sobrevive y compra uno nuevo.
 
 El token se renueva **antes de vencer**, no tras un 401: reintentar una petición ya enviada obliga a conservar un clon de cada request por si hay que repetir el body. Comprobar la expiración en `onRequest` sale gratis y deja al 401 significando lo único que debería significar, que la sesión terminó (`forgetSession()` → el guard manda a `/login`).
@@ -292,10 +307,11 @@ El contrato completo son **30 rutas (43 operaciones) y 58 esquemas**, con la API
 Lo esencial del dominio:
 
 - **Catálogo** — `/products`, `/categories`, `/brands`. Todo paginado por cursor con `search`, filtros y orden en el servidor: no descargues los 215. Leer es abierto a cualquier autenticado; escribir exige `catalog:manage`. Los productos no se borran, se desactivan con `isActive: false`.
-- **Movimientos** — el ciclo es **crear borrador → confirmar**, en dos llamadas. `POST /movements` abre un `DRAFT` que no toca existencias; `POST /movements/:id/confirm` aplica el delta. `useRegisterMovement` encadena las dos; si la segunda falla —una salida mayor al stock— el borrador se queda ahí en vez de tirar lo que el usuario capturó. Retomarlo es trabajo de la Fase 6. Anular es `POST /movements/:id/cancel` con motivo, y revierte el stock.
+- **Movimientos** — el ciclo es **crear borrador → confirmar**, en dos llamadas. `POST /movements` abre un `DRAFT` que no toca existencias; `POST /movements/:id/confirm` aplica el delta. `useRegisterMovement` encadena las dos; si la segunda falla —una salida mayor al stock— el borrador se queda ahí en vez de tirar lo que el usuario capturó, y su id queda guardado con el borrador local: el siguiente intento hace `PATCH /movements/:id` sobre **ese mismo** movimiento en vez de abrir otro. Solo se abandona si respondió 404 o 409, o sea si ya no es un borrador. Anular es `POST /movements/:id/cancel` con motivo, y revierte el stock; sobre un `DRAFT` la misma llamada es "descartar", porque nunca aplicó nada.
 - **Cantidades** — `quantity` va **positiva** en `INBOUND` y `OUTBOUND` (el tipo lleva la dirección) y **con signo** en `ADJUSTMENT`, que corrige hacia ambos lados y **exige `reason`**. La unidad es `BOTTLE` o `CASE`; la API normaliza con el `caseSize` del producto.
 - **Existencias** — `/stock` paginado, `/stock/low` para la tarjeta de "bajo mínimo" del dashboard, `/stock/:productId/kardex` para el histórico de un producto con saldo corrido.
-- **Reportes** — `/reports/summary`, `/reports/consumption` (`groupBy=product|category|brand`, que es lo que hoy calcula el navegador) y `/reports/activity` (serie temporal). Rango omitido = últimos 30 días.
+- **Reportes** — `/reports/summary` (tarjetas del dashboard), `/reports/consumption` (`groupBy=product|category|brand`) y `/reports/activity` (serie temporal del gráfico). Rango omitido = últimos 30 días.
+- **Administración** — `/users` (crear, editar rol y estado; sin `DELETE`, se suspende), `/organization` (branding), `/audit-logs` (filtrable por entidad, acción, usuario y rango). Las categorías y marcas sí tienen `DELETE`, y responde 409 mientras algún producto las referencie.
 - **PDF** — `GET /movements/:id/pdf`. Ya no es un IDOR: va scopeado a la organización.
 - **Errores** — todos con la misma forma: `{ statusCode, error, message, path, timestamp }`, donde `message` puede ser un string o un array (los errores de validación).
 
@@ -308,17 +324,21 @@ Lo que existe hoy, con lo pendiente marcado:
 ```
 src/
   app/
-    page.tsx          redirige a /movements (⬜ landing en la Fase 7)
+    page.tsx          redirige a /dashboard (⬜ landing en la Fase 7)
     providers.tsx     QueryClient + notificaciones + AuthProvider
     (auth)/           login · register · auth/callback
     (app)/            layout = AuthGuard + AppShell
-      movements/      historial · new · [id]
-      reports/
-      ⬜ dashboard/ catalog/ admin/   (Fase 6)
+      dashboard/      tarjetas, gráfico de actividad, bajo mínimo, últimos movimientos
+      stock/          existencias · [productId] = kardex
+      movements/      historial · new/{outbound,inbound,adjustment} · [id]
+      catalog/        productos, con CRUD si hay catalog:manage
+      reports/        consumo
+      admin/          layout con sub-nav + users · categories · brands ·
+                      organization · audit
   components/
     ui/               primitivos (ver §5)
     layout/           AppShell, Topbar   (⬜ Sidebar y MarketingNav cuando hagan falta)
-  features/           auth · catalog · movements · reports   (⬜ admin en la Fase 6)
+  features/           auth · catalog · movements · stock · reports · dashboard · admin
   lib/
     api/              schema.d.ts generado, cliente, sesión, errores
     query/            configuración del QueryClient
@@ -371,9 +391,20 @@ Cerrado en la Fase 5:
 - ~~Nombres de dominio en español dentro del código~~ → todo inglés; `botellas`/`cajas` son ahora `BOTTLE`/`CASE`, la unidad que habla la API.
 - ~~El scroll animado a mano con `document.querySelector` y `requestAnimationFrame`~~ → una barra sticky con el resumen del borrador.
 
-Sigue pendiente (Fase 6 en adelante):
+Cerrado en la Fase 6:
 
-- El inventario se llama inventario y todavía no muestra existencias: `/stock` y `/stock/low` existen en la API y no los consume nadie.
-- El borrador se pierde al recargar, `occurredAt` es siempre ahora, y solo se registran salidas: entradas y ajustes tienen endpoint pero no vista.
-- Un confirm fallido deja un `DRAFT` huérfano que no hay forma de retomar desde la UI.
-- Copy en inglés incrustado en el JSX; sale a `i18n/` en la Fase 7.
+- ~~El inventario se llama inventario y no muestra existencias~~ → `/stock` con búsqueda y filtro server-side, kardex por producto con saldo corrido, y la tarjeta de bajo mínimo en el dashboard.
+- ~~Solo se registran salidas~~ → una ruta por tipo (`/movements/new/{outbound,inbound,adjustment}`), cada una tras su permiso, con cantidades con signo y motivo obligatorio en los ajustes.
+- ~~El borrador se pierde al recargar~~ → vive en `localStorage`, una entrada por tipo de movimiento.
+- ~~`occurredAt` es siempre ahora~~ → lo elige el usuario; vacío sigue significando ahora.
+- ~~Un confirm fallido deja un `DRAFT` huérfano sin salida~~ → su id se guarda con el borrador y el siguiente intento lo reutiliza (`PATCH` + confirmar); además un borrador se puede confirmar o descartar desde su propia página.
+- ~~No hay panel de administración~~ → usuarios y roles, categorías, marcas, branding de la organización y log de auditoría.
+- ~~Cuatro vistas repetían el mismo chequeo de permiso~~ → `PermissionGate` en la página, antes de montar la vista y de disparar sus queries.
+
+Sigue pendiente (Fase 7 en adelante):
+
+- **Copy en inglés incrustado en el JSX.** Es lo más grande que queda: sale a `i18n/` en la Fase 7, y ahí hay bastante más texto que antes.
+- **No hay pantalla de perfil.** `PATCH /users/me` y `POST /users/me/password` existen y nadie los llama: un usuario no puede cambiar su propia contraseña desde la app. El admin tampoco puede asignar una a un usuario `INVITED` — se crea con contraseña o se queda sin entrada.
+- **Multi-bodega sin exponer.** Todo va contra la ubicación por defecto; `locationId` existe en el contrato y ninguna vista lo ofrece.
+- **Límites del contrato que la UI hace visibles en vez de esconder**: el `caseSize` no se puede editar después de crear el producto, a un producto con marca no se le puede quitar la marca (`UpdateProductDto.brandId` no es nullable) y el filtro de estado del catálogo es "activos" o "desactivados", nunca ambos (`isActive` vale `true` cuando la query lo omite).
+- **El borrador local es por dispositivo.** Si retomas en otro navegador el borrador pendiente del servidor, no traes las líneas capturadas: hay que reconstruirlas o descartarlo.
