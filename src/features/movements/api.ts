@@ -12,7 +12,14 @@ import {
 // barrel import here would close the cycle.
 import { reportKeys } from '@/features/reports/keys';
 import { stockKeys } from '@/features/stock/keys';
-import { api, unwrap, type MovementListQuery, type MovementLineInput } from '@/lib/api';
+import {
+  api,
+  unwrap,
+  type Movement,
+  type MovementLineInput,
+  type MovementListQuery,
+  type MovementType,
+} from '@/lib/api';
 
 export type MovementQuery = Omit<MovementListQuery, 'cursor'>;
 
@@ -70,11 +77,38 @@ function invalidateLedger(queryClient: QueryClient): void {
 }
 
 export interface RegisterMovementInput {
-  type: 'INBOUND' | 'OUTBOUND' | 'ADJUSTMENT';
+  type: MovementType;
   items: MovementLineInput[];
   occurredAt?: string;
   note?: string;
   reason?: string;
+  /** A draft a previous confirm left behind: updated rather than duplicated. */
+  draftId?: string | null;
+  /** Called once the draft exists, so a failed confirm can be retried on it. */
+  onDraftOpened?: (id: string) => void;
+}
+
+/** Statuses that make a draft unusable: someone else confirmed, voided or removed it. */
+const GONE_DRAFT_STATUSES = new Set([404, 409]);
+
+async function openDraft({ draftId, ...input }: RegisterMovementInput): Promise<Movement> {
+  if (draftId) {
+    const updated = await api.PATCH('/api/v1/movements/{id}', {
+      params: { path: { id: draftId } },
+      body: {
+        items: input.items,
+        occurredAt: input.occurredAt,
+        reason: input.reason,
+        note: input.note,
+      },
+    });
+
+    // Only fall through when the draft is beyond reuse. Any other failure is
+    // the user's to see, not something to paper over with a second movement.
+    if (!GONE_DRAFT_STATUSES.has(updated.response.status)) return unwrap(updated);
+  }
+
+  return unwrap(await api.POST('/api/v1/movements', { body: input }));
 }
 
 /**
@@ -82,19 +116,33 @@ export interface RegisterMovementInput {
  * does not touch stock, confirming applies the delta in one transaction.
  *
  * A failure on the second call — a dispatch larger than what is on hand, say —
- * leaves the draft behind rather than discarding what the user captured.
+ * leaves the draft behind rather than discarding what the user captured. The
+ * caller remembers its id and passes it back on the next attempt, so fixing the
+ * quantities reuses that draft instead of littering the ledger with orphans.
  */
 export function useRegisterMovement() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (input: RegisterMovementInput) => {
-      const draft = unwrap(await api.POST('/api/v1/movements', { body: input }));
+      const draft = await openDraft(input);
+      input.onDraftOpened?.(draft.id);
 
       return unwrap(
         await api.POST('/api/v1/movements/{id}/confirm', { params: { path: { id: draft.id } } }),
       );
     },
+    onSuccess: () => invalidateLedger(queryClient),
+  });
+}
+
+/** Confirms a draft that already exists, from the movement's own page. */
+export function useConfirmMovement() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) =>
+      unwrap(await api.POST('/api/v1/movements/{id}/confirm', { params: { path: { id } } })),
     onSuccess: () => invalidateLedger(queryClient),
   });
 }

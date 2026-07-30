@@ -1,16 +1,14 @@
 'use client';
 
-import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { Button, DatePicker, EmptyState, Input, Select, Spinner } from '@/components/ui';
-import { ROUTES } from '@/config/navigation';
-import { useAuth } from '@/features/auth';
 import type { MovementStatus, MovementType } from '@/lib/api';
 import { useDebouncedValue } from '@/lib/hooks';
 import { formatNumber, parseDateKey } from '@/lib/utils';
 import { useMovements, type MovementQuery } from './api';
 import { MovementCard } from './MovementCard';
 import { MOVEMENT_TYPE_ORDER, MOVEMENT_TYPES } from './movement-types';
+import { NewMovementActions } from './NewMovementActions';
 
 const typeOptions: { value: '' | MovementType; label: string }[] = [
   { value: '', label: 'All types' },
@@ -34,8 +32,6 @@ function dayBounds(dateKey: string): { from: string; to: string } {
 }
 
 export function MovementHistoryView() {
-  const { can } = useAuth();
-
   const [search, setSearch] = useState('');
   const [type, setType] = useState('');
   const [status, setStatus] = useState('');
@@ -77,11 +73,7 @@ export function MovementHistoryView() {
           </p>
         </div>
 
-        {can('movement:create-outbound') && (
-          <Button size="lg" asChild>
-            <Link href={ROUTES.newMovement('OUTBOUND')}>Register a dispatch</Link>
-          </Button>
-        )}
+        <NewMovementActions />
       </header>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

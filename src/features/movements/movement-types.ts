@@ -44,5 +44,11 @@ export const MOVEMENT_TYPES: Record<MovementType, MovementTypeMeta> = {
   },
 };
 
+/**
+ * Enough of a reason to mean something on an audit trail. The API only demands
+ * a non-empty string, so this is the front end asking for a little more.
+ */
+export const MIN_REASON_LENGTH = 4;
+
 /** Dispatch first: it is the movement of the day, the other two are exceptions. */
 export const MOVEMENT_TYPE_ORDER: MovementType[] = ['OUTBOUND', 'INBOUND', 'ADJUSTMENT'];

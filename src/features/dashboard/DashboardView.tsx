@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 import { Button, Card, EmptyState, SegmentedControl, Spinner, StatTile } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
-import { MOVEMENT_TYPE_ORDER, MOVEMENT_TYPES, RecentMovementsCard } from '@/features/movements';
+import { NewMovementActions, RecentMovementsCard } from '@/features/movements';
 import {
   granularityFor,
   rangeFor,
@@ -29,7 +29,6 @@ export function DashboardView() {
   const summary = useSummaryReport(range, canSeeReports);
   const activity = useActivityReport(range, granularity, canSeeReports);
 
-  const registrable = MOVEMENT_TYPE_ORDER.filter((type) => can(MOVEMENT_TYPES[type].permission));
   const activityRows = activity.data?.data ?? [];
 
   return (
@@ -56,15 +55,7 @@ export function DashboardView() {
         )}
       </header>
 
-      {registrable.length > 0 && (
-        <div className="flex flex-wrap gap-3">
-          {registrable.map((type, index) => (
-            <Button key={type} size="lg" variant={index === 0 ? 'primary' : 'secondary'} asChild>
-              <Link href={ROUTES.newMovement(type)}>{MOVEMENT_TYPES[type].action}</Link>
-            </Button>
-          ))}
-        </div>
-      )}
+      <NewMovementActions />
 
       {canSeeReports &&
         (summary.isPending ? (

@@ -19,11 +19,10 @@ import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
 import { describeError, type Movement } from '@/lib/api';
 import { formatDateTime, pluralize } from '@/lib/utils';
-import { useCancelMovement, useMovement } from './api';
+import { useCancelMovement, useConfirmMovement, useMovement } from './api';
+import { MIN_REASON_LENGTH, MOVEMENT_TYPES } from './movement-types';
 import { MovementPdfButton } from './MovementPdfButton';
 import { MovementStatusBadge, MovementTypeBadge } from './MovementCard';
-
-const MIN_REASON_LENGTH = 4;
 
 function Detail({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -34,11 +33,18 @@ function Detail({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
+/**
+ * Voiding and discarding are the same call: cancelling. Only the copy differs,
+ * because a draft never touched stock and so has nothing to give back.
+ */
 function CancelMovementDialog({ movement }: { movement: Movement }) {
   const [isOpen, setIsOpen] = useState(false);
   const [reason, setReason] = useState('');
   const cancel = useCancelMovement();
   const notify = useNotify();
+
+  const isDraft = movement.status === 'DRAFT';
+  const verb = isDraft ? 'Discard' : 'Void';
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
@@ -47,25 +53,38 @@ function CancelMovementDialog({ movement }: { movement: Movement }) {
       await cancel.mutateAsync({ id: movement.id, reason });
       setIsOpen(false);
       setReason('');
-      notify('success', 'Movement voided', `${movement.code} was reverted and stock returned.`);
+      notify(
+        'success',
+        isDraft ? 'Draft discarded' : 'Movement voided',
+        isDraft
+          ? `${movement.code} was closed without ever touching stock.`
+          : `${movement.code} was reverted and stock returned.`,
+      );
     } catch (error) {
-      notify('error', 'Could not void the movement', describeError(error, 'Please try again.'));
+      notify(
+        'error',
+        `Could not ${verb.toLowerCase()} the movement`,
+        describeError(error, 'Please try again.'),
+      );
     }
   };
 
   return (
     <>
       <Button variant="danger-outline" size="sm" onClick={() => setIsOpen(true)}>
-        Void
+        {verb}
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
           <form onSubmit={(event) => void submit(event)} className="space-y-4">
-            <DialogTitle>Void {movement.code}?</DialogTitle>
+            <DialogTitle>
+              {verb} {movement.code}?
+            </DialogTitle>
             <DialogDescription>
-              Whatever this movement took from stock goes back. The movement is kept, marked as
-              cancelled — the ledger is never rewritten.
+              {isDraft
+                ? 'The draft is closed and stops showing up as pending. Stock is untouched, because a draft never applied.'
+                : 'Whatever this movement took from stock goes back. The movement is kept, marked as cancelled — the ledger is never rewritten.'}
             </DialogDescription>
 
             <div className="space-y-2 text-left">
@@ -81,7 +100,7 @@ function CancelMovementDialog({ movement }: { movement: Movement }) {
                 minLength={MIN_REASON_LENGTH}
                 value={reason}
                 onChange={(event) => setReason(event.target.value)}
-                placeholder="Why is it being voided?"
+                placeholder={isDraft ? 'Why is it being discarded?' : 'Why is it being voided?'}
               />
             </div>
 
@@ -103,13 +122,33 @@ function CancelMovementDialog({ movement }: { movement: Movement }) {
                 className="flex-1"
                 isLoading={cancel.isPending}
               >
-                Void
+                {verb}
               </Button>
             </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
     </>
+  );
+}
+
+function ConfirmDraftButton({ movement }: { movement: Movement }) {
+  const confirm = useConfirmMovement();
+  const notify = useNotify();
+
+  const submit = async () => {
+    try {
+      await confirm.mutateAsync(movement.id);
+      notify('success', 'Movement confirmed', `${movement.code} was applied to stock.`);
+    } catch (error) {
+      notify('error', 'Could not confirm the movement', describeError(error, 'Please try again.'));
+    }
+  };
+
+  return (
+    <Button size="sm" isLoading={confirm.isPending} onClick={() => void submit()}>
+      Confirm
+    </Button>
   );
 }
 
@@ -139,7 +178,9 @@ export function MovementDetailView({ id }: { id: string }) {
     );
   }
 
-  const canVoid = can('movement:cancel') && movement.status === 'CONFIRMED';
+  const isDraft = movement.status === 'DRAFT';
+  const canCancel = can('movement:cancel') && movement.status !== 'CANCELLED';
+  const canConfirm = isDraft && can(MOVEMENT_TYPES[movement.type].permission);
 
   return (
     <div className="space-y-6">
@@ -155,11 +196,21 @@ export function MovementDetailView({ id }: { id: string }) {
           </div>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <MovementPdfButton id={movement.id} code={movement.code} />
-          {canVoid && <CancelMovementDialog movement={movement} />}
+          {canConfirm && <ConfirmDraftButton movement={movement} />}
+          {canCancel && <CancelMovementDialog movement={movement} />}
         </div>
       </div>
+
+      {isDraft && (
+        <Card className="border-warning/30 bg-warning/10">
+          <p className="text-sm text-contrast/80">
+            This is a draft: it is captured but has not touched stock. Confirming applies it in a
+            single transaction; discarding closes it without moving anything.
+          </p>
+        </Card>
+      )}
 
       <Card>
         <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

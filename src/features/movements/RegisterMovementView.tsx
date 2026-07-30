@@ -1,27 +1,47 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Button, Card, ConfirmDialog, EmptyState, useNotify } from '@/components/ui';
+import {
+  Button,
+  Card,
+  ConfirmDialog,
+  DatePicker,
+  EmptyState,
+  Field,
+  Input,
+  Textarea,
+  useNotify,
+} from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
-import { useCatalogFilters } from '@/features/catalog';
 import { useAuth } from '@/features/auth';
-import { describeError } from '@/lib/api';
-import { pluralize } from '@/lib/utils';
-import { useRegisterMovement } from './api';
+import { useCatalogFilters } from '@/features/catalog';
+import { describeError, type MovementType } from '@/lib/api';
+import { formatSignedNumber, parseDateKey, pluralize } from '@/lib/utils';
+import { useCancelMovement, useRegisterMovement } from './api';
+import { MIN_REASON_LENGTH, MOVEMENT_TYPES } from './movement-types';
 import { ProductPicker } from './ProductPicker';
 import { useMovementDraft, type MovementDraft } from './useMovementDraft';
 
-function DraftSummary({ draft }: { draft: MovementDraft }) {
+/** Signed quantities read as `-2 bottles`, so the noun follows the magnitude. */
+function describeUnit(quantity: number, unit: string): string {
+  return `${formatSignedNumber(quantity)} ${pluralize(Math.abs(quantity), unit)}`;
+}
+
+function DraftSummary({ draft, isSigned }: { draft: MovementDraft; isSigned: boolean }) {
+  const format = (quantity: number, unit: string) =>
+    isSigned ? describeUnit(quantity, unit) : `${quantity} ${pluralize(quantity, unit)}`;
+
   return (
     <Card className="bg-contrast/5">
-      <h3 className="mb-4 text-lg font-light text-foreground sm:text-xl">Dispatch summary</h3>
+      <h3 className="mb-4 text-lg font-light text-foreground sm:text-xl">Lines</h3>
 
       <ul className="mb-4 space-y-2">
         {draft.lines.map((line) => {
           const parts: string[] = [];
-          if (line.BOTTLE > 0) parts.push(`${line.BOTTLE} ${pluralize(line.BOTTLE, 'bottle')}`);
-          if (line.CASE > 0) parts.push(`${line.CASE} ${pluralize(line.CASE, 'case')}`);
+          if (line.BOTTLE !== 0) parts.push(format(line.BOTTLE, 'bottle'));
+          if (line.CASE !== 0) parts.push(format(line.CASE, 'case'));
 
           return (
             <li key={line.product.id} className="flex justify-between gap-4 text-sm sm:text-base">
@@ -35,42 +55,53 @@ function DraftSummary({ draft }: { draft: MovementDraft }) {
       <div className="flex items-center justify-between border-t border-contrast/10 pt-3 text-sm">
         <span className="font-medium text-contrast/80">Total</span>
         <div className="flex items-center gap-4">
-          <span className="font-semibold text-accent">
-            {draft.totalBottles} {pluralize(draft.totalBottles, 'bottle')}
-          </span>
+          <span className="font-semibold text-accent">{format(draft.totalBottles, 'bottle')}</span>
           <span className="text-contrast/60">•</span>
-          <span className="font-semibold text-accent">
-            {draft.totalCases} {pluralize(draft.totalCases, 'case')}
-          </span>
+          <span className="font-semibold text-accent">{format(draft.totalCases, 'case')}</span>
         </div>
       </div>
     </Card>
   );
 }
 
-export function RegisterMovementView() {
+export function RegisterMovementView({ type }: { type: MovementType }) {
+  const meta = MOVEMENT_TYPES[type];
   const { can } = useAuth();
   const filters = useCatalogFilters();
-  const draft = useMovementDraft();
+  const draft = useMovementDraft(type);
   const notify = useNotify();
   const router = useRouter();
   const register = useRegisterMovement();
+  const cancel = useCancelMovement();
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isDiscardOpen, setIsDiscardOpen] = useState(false);
 
-  if (!can('movement:create-outbound')) {
+  if (!can(meta.permission)) {
     return (
       <EmptyState
-        title="You cannot register dispatches."
+        title={`You cannot register ${meta.label.toLowerCase()} movements.`}
         description="Ask an administrator for the permission if you need it."
       />
     );
   }
 
+  const trimmedReason = draft.reason.trim();
+  const isReasonMissing = meta.requiresReason && trimmedReason.length < MIN_REASON_LENGTH;
+
   const submit = async () => {
     try {
-      const movement = await register.mutateAsync({ type: 'OUTBOUND', items: draft.toItems() });
+      const movement = await register.mutateAsync({
+        type,
+        items: draft.toItems(),
+        // A date key is a calendar day; the API takes an instant. Omitted means
+        // now, which is what an empty picker stands for.
+        occurredAt: draft.occurredAt ? parseDateKey(draft.occurredAt).toISOString() : undefined,
+        reason: trimmedReason || undefined,
+        note: draft.note.trim() || undefined,
+        draftId: draft.pendingMovementId,
+        onDraftOpened: draft.rememberPending,
+      });
 
       draft.clear();
       setIsConfirmOpen(false);
@@ -86,34 +117,123 @@ export function RegisterMovementView() {
     }
   };
 
-  const discard = () => {
+  /**
+   * Clearing the local draft is not enough when the API already holds one: that
+   * would leave exactly the orphan this flow is meant to avoid. Voiding it needs
+   * the permission, so an operator's draft stays for a manager to close.
+   */
+  const discard = async () => {
+    const pending = draft.pendingMovementId;
+    const canVoid = can('movement:cancel');
+
     draft.clear();
     setIsDiscardOpen(false);
-    notify('info', 'Selection cleared', 'Nothing was sent to the ledger.');
+
+    if (pending && canVoid) {
+      try {
+        await cancel.mutateAsync({ id: pending, reason: 'Draft discarded before confirmation' });
+      } catch {
+        // Already voided, or gone. Either way there is nothing left to discard.
+      }
+    }
+
+    notify(
+      'info',
+      'Draft discarded',
+      pending && !canVoid
+        ? 'What you captured is cleared. The open draft stays in the history for a manager to void.'
+        : 'Nothing was sent to the ledger.',
+    );
   };
 
   return (
     <div className="space-y-6">
       <header className="space-y-1">
-        <h1 className="text-2xl font-light text-foreground sm:text-3xl">Register a dispatch</h1>
-        <p className="text-sm text-contrast/60">
-          Stock leaves the cellar when you confirm. Nothing moves before that.
-        </p>
+        <h1 className="text-2xl font-light text-foreground sm:text-3xl">{meta.action}</h1>
+        <p className="text-sm text-contrast/60">{meta.effect}</p>
       </header>
+
+      {draft.pendingMovementId && (
+        <Card className="border-warning/30 bg-warning/10">
+          <p className="text-sm text-contrast/80">
+            A draft is already open from an attempt that could not be confirmed. Fixing the
+            quantities and confirming again reuses it, so no second movement is created.{' '}
+            <Link
+              href={ROUTES.movement(draft.pendingMovementId)}
+              className="text-accent hover:underline"
+            >
+              Open the draft
+            </Link>
+            .
+          </p>
+        </Card>
+      )}
+
+      <Card className="grid gap-4 bg-contrast/5 sm:grid-cols-2">
+        <Field
+          label="Occurred at"
+          hint="Leave it empty to record it as happening now."
+          className="sm:col-span-1"
+        >
+          {() => (
+            <DatePicker value={draft.occurredAt} onChange={draft.setOccurredAt} placeholder="Now" />
+          )}
+        </Field>
+
+        {meta.requiresReason && (
+          <Field
+            label="Reason"
+            hint="Required, and kept on the audit trail."
+            error={
+              draft.reason.length > 0 && isReasonMissing
+                ? `At least ${MIN_REASON_LENGTH} characters.`
+                : undefined
+            }
+          >
+            {({ id, describedBy }) => (
+              <Input
+                id={id}
+                aria-describedby={describedBy}
+                value={draft.reason}
+                onChange={(event) => draft.setReason(event.target.value)}
+                placeholder="Breakage, count variance, ..."
+              />
+            )}
+          </Field>
+        )}
+
+        <Field
+          label="Note"
+          hint="Optional context for whoever reads this later."
+          className="sm:col-span-2"
+        >
+          {({ id, describedBy }) => (
+            <Textarea
+              id={id}
+              aria-describedby={describedBy}
+              value={draft.note}
+              onChange={(event) => draft.setNote(event.target.value)}
+              placeholder="Delivery number, shift, requesting bar..."
+            />
+          )}
+        </Field>
+      </Card>
 
       <ProductPicker filters={filters} draft={draft} />
 
       {!draft.isEmpty && (
         <>
-          <DraftSummary draft={draft} />
+          <DraftSummary draft={draft} isSigned={meta.isSigned} />
 
           <div className="sticky bottom-4 z-floating">
             <Card className="flex flex-col items-center gap-3 border-accent/30 bg-surface/95 sm:flex-row sm:justify-between">
               <p className="text-sm text-contrast/80">
                 <span className="font-medium text-accent">{draft.productCount}</span>{' '}
                 {pluralize(draft.productCount, 'product')} ·{' '}
-                <span className="font-medium text-accent">{draft.totalBaseUnits}</span>{' '}
-                {pluralize(draft.totalBaseUnits, 'unit')}
+                <span className="font-medium text-accent">
+                  {meta.isSigned ? formatSignedNumber(draft.totalBaseUnits) : draft.totalBaseUnits}
+                </span>{' '}
+                {pluralize(Math.abs(draft.totalBaseUnits), 'unit')}
               </p>
 
               <div className="flex w-full gap-3 sm:w-auto">
@@ -130,13 +250,20 @@ export function RegisterMovementView() {
                   size="lg"
                   className="flex-1 sm:flex-initial"
                   onClick={() => setIsConfirmOpen(true)}
+                  disabled={isReasonMissing}
                   isLoading={register.isPending}
                 >
-                  Confirm dispatch
+                  Confirm
                 </Button>
               </div>
             </Card>
           </div>
+
+          {isReasonMissing && (
+            <p className="text-center text-sm text-warning">
+              An adjustment needs a reason before it can be confirmed.
+            </p>
+          )}
         </>
       )}
 
@@ -153,18 +280,19 @@ export function RegisterMovementView() {
             />
           </svg>
         }
-        title="Confirm the dispatch"
+        title={`Confirm this ${meta.label.toLowerCase()}?`}
         description={
           <>
             This writes{' '}
             <span className="font-medium text-accent">
               {draft.productCount} {pluralize(draft.productCount, 'product')}
             </span>{' '}
-            to the ledger and takes{' '}
+            to the ledger and moves{' '}
             <span className="font-medium text-accent">
-              {draft.totalBaseUnits} {pluralize(draft.totalBaseUnits, 'unit')}
+              {meta.isSigned ? formatSignedNumber(draft.totalBaseUnits) : draft.totalBaseUnits}{' '}
+              {pluralize(Math.abs(draft.totalBaseUnits), 'unit')}
             </span>{' '}
-            out of stock — cases counted by their case size.
+            — cases counted by their case size.
           </>
         }
         cancelLabel="Go back"
@@ -177,11 +305,11 @@ export function RegisterMovementView() {
         open={isDiscardOpen}
         onOpenChange={setIsDiscardOpen}
         tone="danger"
-        title="Discard the selection?"
-        description="Everything you have picked will be cleared. No movement is created."
+        title="Discard what you captured?"
+        description="Every line, the date and the note are cleared. No movement is created."
         cancelLabel="Keep it"
         confirmLabel="Discard"
-        onConfirm={discard}
+        onConfirm={() => void discard()}
       />
     </div>
   );

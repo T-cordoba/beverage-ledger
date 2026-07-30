@@ -1,7 +1,7 @@
-import { RegisterMovementView } from '@/features/movements';
+import { redirect } from 'next/navigation';
+import { ROUTES } from '@/config/navigation';
 
-export const metadata = { title: 'Register a dispatch · Beverage Ledger' };
-
+/** Dispatch is the movement everyone may record, so a bare /new lands there. */
 export default function NewMovementPage() {
-  return <RegisterMovementView />;
+  redirect(ROUTES.newMovement('OUTBOUND'));
 }
