@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { Button, Card, Input, Select, type SelectOption } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { useBrands, useCategories, useProductFacets } from './api';
-import type { CatalogFilterKey, CatalogFiltersState } from './useCatalogFilters';
+import { PRODUCT_STATUS_OPTIONS } from './useCatalogFilters';
+import type { CatalogFilterKey, CatalogFiltersState, ProductStatus } from './useCatalogFilters';
 
 const toOptions = (values: string[], format?: (value: string) => string): SelectOption[] =>
   values.map((value) => ({ value, label: format ? format(value) : value }));
@@ -103,13 +104,10 @@ export function CatalogFilters({
         {showStatus && (
           <div className="flex-1 sm:min-w-[160px] sm:flex-initial">
             <Select
-              value={state.isActive ? 'active' : 'inactive'}
-              onValueChange={(value) => state.setIsActive(value === 'active')}
+              value={state.status}
+              onValueChange={(value) => state.setStatus(value as ProductStatus)}
               aria-label="Filter by status"
-              options={[
-                { value: 'active', label: 'Active' },
-                { value: 'inactive', label: 'Deactivated' },
-              ]}
+              options={PRODUCT_STATUS_OPTIONS}
             />
           </div>
         )}
