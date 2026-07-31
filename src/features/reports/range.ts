@@ -2,11 +2,8 @@ import type { ReportRange } from './api';
 
 export type ReportPeriod = 'week' | 'month' | 'year';
 
-export const REPORT_PERIODS: { value: ReportPeriod; label: string }[] = [
-  { value: 'week', label: 'Week' },
-  { value: 'month', label: 'Month' },
-  { value: 'year', label: 'Year' },
-];
+/** Labelled from `reports.periods`, keyed by these same values. */
+export const REPORT_PERIODS: ReportPeriod[] = ['week', 'month', 'year'];
 
 /** Every report takes a range; the presets are what the UI actually offers. */
 export function rangeFor(period: ReportPeriod): ReportRange {
