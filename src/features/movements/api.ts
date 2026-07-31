@@ -73,12 +73,17 @@ export function useMovement(id: string) {
 export function useOpenDraft(type: MovementType, createdByUserId: string | undefined) {
   return useQuery({
     queryKey: movementKeys.openDraft(type, createdByUserId),
-    queryFn: async () =>
-      unwrap(
+    queryFn: async () => {
+      const page = unwrap(
         await api.GET('/api/v1/movements', {
           params: { query: { type, status: 'DRAFT', createdByUserId, pageSize: 1 } },
         }),
-      ).data[0],
+      );
+
+      // Null and not the bare lookup: TanStack Query refuses `undefined` as data
+      // and logs an error, and "no draft open" is the ordinary answer here.
+      return page.data[0] ?? null;
+    },
     enabled: createdByUserId !== undefined,
   });
 }
