@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';
-import { Button, Card, Field, Input, useNotify } from '@/components/ui';
+import { Button, Card, Field, PasswordInput, useNotify } from '@/components/ui';
 import { useAuth } from '@/features/auth';
 import { describeError } from '@/lib/api';
 import { useChangePassword } from './api';
@@ -60,9 +60,8 @@ export function ChangePasswordForm() {
       <form onSubmit={(event) => void submit(event)} className="space-y-4">
         <Field label={t('current')}>
           {({ id, describedBy }) => (
-            <Input
+            <PasswordInput
               id={id}
-              type="password"
               required
               autoComplete="current-password"
               aria-describedby={describedBy}
@@ -74,9 +73,8 @@ export function ChangePasswordForm() {
 
         <Field label={t('new')} hint={tCommon('passwordPolicy')}>
           {({ id, describedBy }) => (
-            <Input
+            <PasswordInput
               id={id}
-              type="password"
               required
               minLength={MIN_PASSWORD_LENGTH}
               autoComplete="new-password"
@@ -89,9 +87,8 @@ export function ChangePasswordForm() {
 
         <Field label={t('repeat')} error={mismatch ? t('mismatch') : undefined}>
           {({ id, describedBy }) => (
-            <Input
+            <PasswordInput
               id={id}
-              type="password"
               required
               autoComplete="new-password"
               aria-describedby={describedBy}

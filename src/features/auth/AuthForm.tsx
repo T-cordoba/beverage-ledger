@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
-import { Button, Field, Input } from '@/components/ui';
+import { Button, Field, Input, PasswordInput } from '@/components/ui';
 import { GOOGLE_SIGN_IN_URL, IS_GOOGLE_SIGN_IN_ENABLED } from '@/config/api';
 import { RETURN_TO_PARAM, ROUTES, safeReturnTo } from '@/config/navigation';
 import { describeError } from '@/lib/api';
@@ -85,9 +85,8 @@ export function LoginForm() {
 
       <Field label={t('fields.password')}>
         {({ id }) => (
-          <Input
+          <PasswordInput
             id={id}
-            type="password"
             autoComplete="current-password"
             required
             value={password}
@@ -171,9 +170,8 @@ export function RegisterForm() {
 
       <Field label={t('fields.password')} hint={tCommon('passwordPolicy')}>
         {({ id, describedBy }) => (
-          <Input
+          <PasswordInput
             id={id}
-            type="password"
             autoComplete="new-password"
             required
             aria-describedby={describedBy}

@@ -41,6 +41,10 @@
       "previousMonth": "Mes anterior",
       "nextMonth": "Mes siguiente",
       "clear": "Quitar la fecha"
+    },
+    "password": {
+      "show": "Mostrar la contraseña",
+      "hide": "Ocultar la contraseña"
     }
   },
   "marketing": {

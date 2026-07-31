@@ -41,6 +41,10 @@
       "previousMonth": "Previous month",
       "nextMonth": "Next month",
       "clear": "Clear the date"
+    },
+    "password": {
+      "show": "Show password",
+      "hide": "Hide password"
     }
   },
   "marketing": {
