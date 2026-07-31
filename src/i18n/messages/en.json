@@ -761,7 +761,7 @@
       "month": "month"
     },
     "title": "Consumption",
-    "subtitle": "What left the cellar between {from} and {to}. Aggregated by the API, in SQL.",
+    "subtitle": "What left the cellar between {from} and {to}.",
     "groupLabel": "Group:",
     "groupings": {
       "product": "By product",
@@ -775,6 +775,7 @@
       "productsMoved": "Products moved"
     },
     "loading": "Loading the report",
+    "loadingSummary": "Loading the summary",
     "loadFailed": "The report could not be loaded.",
     "empty": "Nothing was dispatched in this period.",
     "mostDispatched": "Most dispatched",

@@ -761,7 +761,7 @@
       "month": "mes"
     },
     "title": "Consumo",
-    "subtitle": "Lo que salió de la bodega entre {from} y {to}. Agregado por la API, en SQL.",
+    "subtitle": "Lo que salió de la bodega entre {from} y {to}.",
     "groupLabel": "Agrupar:",
     "groupings": {
       "product": "Por producto",
@@ -775,6 +775,7 @@
       "productsMoved": "Productos movidos"
     },
     "loading": "Cargando el reporte",
+    "loadingSummary": "Cargando el resumen",
     "loadFailed": "No se pudo cargar el reporte.",
     "empty": "No se despachó nada en este periodo.",
     "mostDispatched": "Lo más despachado",

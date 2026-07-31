@@ -12,6 +12,29 @@ const GROUPINGS: ConsumptionGroupBy[] = ['product', 'category', 'brand'];
 
 const TOP_ROWS = 15;
 
+/** The four tiles the summary paints, so its placeholder is the same grid. */
+const SUMMARY_TILES = 4;
+
+/**
+ * A card the size of the one that replaces it.
+ *
+ * Two flat blocks were standing in for two cards of stacked rows: they were a
+ * third of the height, so the page settled and then jumped when the numbers
+ * arrived. The heading and the rows are drawn because that is what lands here.
+ */
+function ReportCardSkeleton({ rows }: { rows: number }) {
+  return (
+    <Card className="min-w-0 space-y-4 bg-contrast/5">
+      <Skeleton className="h-6 w-40" />
+      <div className="space-y-3">
+        {Array.from({ length: rows }, (_, index) => (
+          <Skeleton key={index} className="h-9" />
+        ))}
+      </div>
+    </Card>
+  );
+}
+
 function ConsumptionBars({ rows }: { rows: ConsumptionRow[] }) {
   const format = useFormatter();
   const top = rows[0]?.quantityBase || 1;
@@ -130,22 +153,38 @@ export function ConsumptionReportView() {
         />
       </div>
 
-      {summary.data && (
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-          <StatTile label={t('tiles.movements')} value={format.number(summary.data.movements)} />
-          <StatTile label={t('tiles.unitsOut')} value={format.number(summary.data.unitsOut)} />
-          <StatTile label={t('tiles.unitsIn')} value={format.number(summary.data.unitsIn)} />
-          <StatTile
-            label={t('tiles.productsMoved')}
-            value={format.number(summary.data.productsMoved)}
-          />
+      {summary.isPending ? (
+        <div
+          role="status"
+          aria-label={t('loadingSummary')}
+          className="grid grid-cols-2 gap-3 lg:grid-cols-4"
+        >
+          {Array.from({ length: SUMMARY_TILES }, (_, index) => (
+            <Card key={index} className="space-y-2 bg-contrast/5">
+              <Skeleton className="mx-auto h-8 w-20" />
+              <Skeleton className="mx-auto h-3 w-24" />
+            </Card>
+          ))}
         </div>
+      ) : (
+        summary.data && (
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+            <StatTile label={t('tiles.movements')} value={format.number(summary.data.movements)} />
+            <StatTile label={t('tiles.unitsOut')} value={format.number(summary.data.unitsOut)} />
+            <StatTile label={t('tiles.unitsIn')} value={format.number(summary.data.unitsIn)} />
+            <StatTile
+              label={t('tiles.productsMoved')}
+              value={format.number(summary.data.productsMoved)}
+            />
+          </div>
+        )
       )}
 
       {consumption.isPending ? (
         <div role="status" aria-label={t('loading')} className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-          <Skeleton className="h-64" />
-          <Skeleton className="h-64" />
+          {/* The bar chart draws ten, the ranking fifteen. */}
+          <ReportCardSkeleton rows={10} />
+          <ReportCardSkeleton rows={TOP_ROWS} />
         </div>
       ) : consumption.error ? (
         <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />
