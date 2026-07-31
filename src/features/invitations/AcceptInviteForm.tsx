@@ -3,10 +3,11 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState, type FormEvent } from 'react';
-import { Button, Card, Field, Input, PasswordInput, Spinner } from '@/components/ui';
+import { useState } from 'react';
+import { Button, Card, Field, FormAlert, Input, PasswordInput, Spinner } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { describeError, storeSession } from '@/lib/api';
+import { rules, useFormValidation } from '@/lib/forms';
 import { useAcceptInvitation, useInvitationPreview } from './api';
 
 /**
@@ -28,8 +29,12 @@ export function AcceptInviteForm({ token }: { token: string }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  const submit = async (event: FormEvent) => {
-    event.preventDefault();
+  const form = useFormValidation({
+    name: rules.text(name, { minLength: 2 }),
+    password: rules.secret(password, { minLength: MIN_PASSWORD_LENGTH }),
+  });
+
+  const submit = async () => {
     setError(null);
 
     try {
@@ -75,39 +80,45 @@ export function AcceptInviteForm({ token }: { token: string }) {
         </p>
       </div>
 
-      <form onSubmit={(event) => void submit(event)} className="space-y-5">
-        {error && (
-          <p
-            role="alert"
-            className="rounded-xl border border-danger/30 bg-danger/10 p-3 text-sm text-danger"
-          >
-            {error}
-          </p>
-        )}
+      <form
+        ref={form.ref}
+        noValidate
+        onSubmit={form.onSubmit(() => void submit())}
+        className="space-y-5"
+      >
+        {error && <FormAlert title={error} />}
+        {form.alert && <FormAlert title={form.alert} />}
 
-        <Field label={t('name')}>
-          {({ id }) => (
+        <Field label={t('name')} error={form.errorFor('name')}>
+          {({ id, describedBy, invalid }) => (
             <Input
               id={id}
               required
-              minLength={2}
               autoComplete="name"
+              aria-describedby={describedBy}
+              aria-invalid={invalid}
               value={name}
               onChange={(event) => setName(event.target.value)}
+              onBlur={() => form.touch('name')}
             />
           )}
         </Field>
 
-        <Field label={t('password')} hint={tCommon('passwordPolicy')}>
-          {({ id, describedBy }) => (
+        <Field
+          label={t('password')}
+          hint={tCommon('passwordPolicy')}
+          error={form.errorFor('password')}
+        >
+          {({ id, describedBy, invalid }) => (
             <PasswordInput
               id={id}
               required
-              minLength={MIN_PASSWORD_LENGTH}
               autoComplete="new-password"
               aria-describedby={describedBy}
+              aria-invalid={invalid}
               value={password}
               onChange={(event) => setPassword(event.target.value)}
+              onBlur={() => form.touch('password')}
             />
           )}
         </Field>

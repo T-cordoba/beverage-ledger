@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormatter, useTranslations } from 'next-intl';
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
 import {
   Badge,
   Button,
@@ -16,11 +16,14 @@ import {
   EmptyState,
   Field,
   FloatingAction,
+  FormAlert,
   Input,
+  Skeleton,
   useNotify,
   type DataTableColumn,
 } from '@/components/ui';
 import { describeError, type Location } from '@/lib/api';
+import { rules, useFormValidation } from '@/lib/forms';
 import { useCreateLocation, useDeleteLocation, useLocations, useUpdateLocation } from './api';
 
 function LocationFormDialog({
@@ -41,28 +44,38 @@ function LocationFormDialog({
   const [name, setName] = useState(location?.name ?? '');
   const [isDefault, setIsDefault] = useState(location?.isDefault ?? false);
 
-  const submit = async (event: FormEvent) => {
-    event.preventDefault();
+  const validation = useFormValidation({ name: rules.text(name, { minLength: 2 }) });
+
+  const submit = async () => {
     await onSubmit({ name: name.trim(), isDefault });
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
-        <form onSubmit={(event) => void submit(event)} className="space-y-4 text-left">
+        <form
+          ref={validation.ref}
+          noValidate
+          onSubmit={validation.onSubmit(() => void submit())}
+          className="space-y-4 text-left"
+        >
           <DialogTitle>
             {location ? t('editTitle', { name: location.name }) : t('createTitle')}
           </DialogTitle>
           <DialogDescription>{t('description')}</DialogDescription>
 
-          <Field label={t('name')}>
-            {({ id }) => (
+          {validation.alert && <FormAlert title={validation.alert} />}
+
+          <Field label={t('name')} error={validation.errorFor('name')}>
+            {({ id, describedBy, invalid }) => (
               <Input
                 id={id}
                 required
-                minLength={2}
+                aria-describedby={describedBy}
+                aria-invalid={invalid}
                 value={name}
                 onChange={(event) => setName(event.target.value)}
+                onBlur={() => validation.touch('name')}
               />
             )}
           </Field>
@@ -181,6 +194,7 @@ export function LocationsView() {
     {
       key: 'name',
       header: t('columns.name'),
+      skeleton: <Skeleton className="h-6 w-40" />,
       cell: (location) => (
         <span className="flex items-center gap-2">
           <span className="font-medium text-foreground">{location.name}</span>
@@ -193,6 +207,7 @@ export function LocationsView() {
       header: t('columns.movementCount'),
       align: 'end',
       hideBelow: 'sm',
+      skeleton: <Skeleton className="ml-auto h-5 w-10" />,
       cell: (location) => (
         <span className="text-contrast/70">{format.number(location.movementCount)}</span>
       ),
@@ -201,6 +216,14 @@ export function LocationsView() {
       key: 'actions',
       header: t('columns.actions'),
       align: 'end',
+      // Three buttons, and they are what set this row's height.
+      skeleton: (
+        <div className="flex justify-end gap-2">
+          <Skeleton className="h-9 w-28" />
+          <Skeleton className="h-9 w-20" />
+          <Skeleton className="h-9 w-20" />
+        </div>
+      ),
       cell: (location) => (
         <div className="flex justify-end gap-2">
           {!location.isDefault && (

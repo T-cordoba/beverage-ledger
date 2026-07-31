@@ -10,6 +10,7 @@ export function Textarea({ className, rows = 3, ...props }: ComponentPropsWithRe
         'placeholder:text-placeholder',
         'transition-colors focus-visible:border-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20',
         'disabled:cursor-not-allowed disabled:opacity-50',
+        'aria-invalid:border-danger/60 aria-invalid:focus-visible:ring-danger/20',
         className,
       )}
       {...props}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
 import {
   Button,
   Dialog,
@@ -10,11 +10,13 @@ import {
   DialogFooter,
   DialogTitle,
   Field,
+  FormAlert,
   Input,
   Select,
   useNotify,
 } from '@/components/ui';
 import { describeError, type User, type UserRole, type UserStatus } from '@/lib/api';
+import { rules, useFormValidation } from '@/lib/forms';
 import { useUpdateUser } from './api';
 import { ASSIGNABLE_ROLES, ASSIGNABLE_STATUSES } from './roles';
 
@@ -52,8 +54,9 @@ export function UserFormDialog({
   const update = useUpdateUser();
   const notify = useNotify();
 
-  const submit = async (event: FormEvent) => {
-    event.preventDefault();
+  const form = useFormValidation({ name: rules.text(name, { minLength: 2 }) });
+
+  const submit = async () => {
     const trimmedName = name.trim();
 
     try {
@@ -76,18 +79,27 @@ export function UserFormDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
-        <form onSubmit={(event) => void submit(event)} className="space-y-4 text-left">
+        <form
+          ref={form.ref}
+          noValidate
+          onSubmit={form.onSubmit(() => void submit())}
+          className="space-y-4 text-left"
+        >
           <DialogTitle>{t('editTitle', { name: user.name })}</DialogTitle>
           <DialogDescription>{t('description')}</DialogDescription>
 
-          <Field label={t('name')}>
-            {({ id }) => (
+          {form.alert && <FormAlert title={form.alert} />}
+
+          <Field label={t('name')} error={form.errorFor('name')}>
+            {({ id, describedBy, invalid }) => (
               <Input
                 id={id}
                 required
-                minLength={2}
+                aria-describedby={describedBy}
+                aria-invalid={invalid}
                 value={name}
                 onChange={(event) => setName(event.target.value)}
+                onBlur={() => form.touch('name')}
               />
             )}
           </Field>

@@ -1,10 +1,11 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useState, type FormEvent } from 'react';
-import { Button, Card, Field, Input, useNotify } from '@/components/ui';
+import { useState } from 'react';
+import { Button, Card, Field, FormAlert, Input, useNotify } from '@/components/ui';
 import { useAuth } from '@/features/auth';
 import { describeError } from '@/lib/api';
+import { rules, useFormValidation } from '@/lib/forms';
 import { useUpdateProfile } from './api';
 
 interface DetailsForm {
@@ -24,11 +25,17 @@ export function ProfileDetailsForm() {
 
   const [form, setForm] = useState<DetailsForm | null>(null);
 
-  if (!user) return null;
-
-  const saved: DetailsForm = { name: user.name, avatarUrl: user.avatarUrl ?? '' };
-  // Seeded from the session on first render, then owned by the form.
+  const saved: DetailsForm = { name: user?.name ?? '', avatarUrl: user?.avatarUrl ?? '' };
+  // Seeded from the session on first render, then owned by the form. Read above
+  // the early return below, because the hook under it cannot be.
   const values: DetailsForm = form ?? saved;
+
+  const validation = useFormValidation({
+    name: rules.text(values.name, { minLength: 2 }),
+    avatarUrl: rules.url(values.avatarUrl),
+  });
+
+  if (!user) return null;
 
   // Compared rather than read off `form !== null`, so typing a change and
   // undoing it disables the button again instead of offering a no-op save.
@@ -38,9 +45,7 @@ export function ProfileDetailsForm() {
   const set = <K extends keyof DetailsForm>(key: K, value: string) =>
     setForm({ ...values, [key]: value });
 
-  const submit = async (event: FormEvent) => {
-    event.preventDefault();
-
+  const submit = async () => {
     const avatarUrl = values.avatarUrl.trim();
 
     try {
@@ -58,29 +63,43 @@ export function ProfileDetailsForm() {
 
   return (
     <Card className="max-w-2xl">
-      <form onSubmit={(event) => void submit(event)} className="space-y-4">
-        <Field label={t('name')} hint={t('nameHint')}>
-          {({ id, describedBy }) => (
+      <form
+        ref={validation.ref}
+        noValidate
+        onSubmit={validation.onSubmit(() => void submit())}
+        className="space-y-4"
+      >
+        {validation.alert && <FormAlert title={validation.alert} />}
+
+        <Field label={t('name')} hint={t('nameHint')} error={validation.errorFor('name')}>
+          {({ id, describedBy, invalid }) => (
             <Input
               id={id}
               required
-              minLength={2}
               autoComplete="name"
               aria-describedby={describedBy}
+              aria-invalid={invalid}
               value={values.name}
               onChange={(event) => set('name', event.target.value)}
+              onBlur={() => validation.touch('name')}
             />
           )}
         </Field>
 
-        <Field label={t('avatarUrl')} hint={t('avatarUrlHint')}>
-          {({ id, describedBy }) => (
+        <Field
+          label={t('avatarUrl')}
+          hint={t('avatarUrlHint')}
+          error={validation.errorFor('avatarUrl')}
+        >
+          {({ id, describedBy, invalid }) => (
             <Input
               id={id}
               type="url"
               aria-describedby={describedBy}
+              aria-invalid={invalid}
               value={values.avatarUrl}
               onChange={(event) => set('avatarUrl', event.target.value)}
+              onBlur={() => validation.touch('avatarUrl')}
               placeholder="https://..."
             />
           )}

@@ -7,6 +7,8 @@ export interface FieldControlProps {
   id: string;
   /** Undefined when there is nothing to describe, which is what the attribute wants. */
   describedBy: string | undefined;
+  /** Goes straight into `aria-invalid`, and turns the control's border red. */
+  invalid: boolean;
 }
 
 interface FieldProps {
@@ -31,7 +33,10 @@ export function Field({ label, hint, error, children, className }: FieldProps) {
   const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
 
   return (
-    <div className={cn('space-y-2', className)}>
+    // `data-invalid` is what a failed submit looks for when it jumps to the
+    // first field that needs attention: marking the wrapper means a form gets
+    // that for free, without a ref per control.
+    <div data-invalid={error ? '' : undefined} className={cn('space-y-2', className)}>
       <label
         htmlFor={id}
         className="block text-xs font-medium uppercase tracking-wider text-contrast/70"
@@ -39,7 +44,7 @@ export function Field({ label, hint, error, children, className }: FieldProps) {
         {label}
       </label>
 
-      {children({ id, describedBy })}
+      {children({ id, describedBy, invalid: Boolean(error) })}
 
       {hint && (
         <p id={hintId} className="text-xs text-contrast/50">

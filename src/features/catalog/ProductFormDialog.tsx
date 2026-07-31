@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
 import {
   Button,
   Dialog,
@@ -10,11 +10,13 @@ import {
   DialogFooter,
   DialogTitle,
   Field,
+  FormAlert,
   Input,
   Select,
   useNotify,
 } from '@/components/ui';
 import { describeError, type Product } from '@/lib/api';
+import { rules, useFormValidation } from '@/lib/forms';
 import { useBrands, useCategories, useCreateProduct, useUpdateProduct } from './api';
 
 interface ProductForm {
@@ -83,8 +85,20 @@ export function ProductFormDialog({
   const set = <K extends keyof ProductForm>(key: K, value: ProductForm[K]) =>
     setForm((current) => ({ ...current, [key]: value }));
 
-  const submit = async (event: FormEvent) => {
-    event.preventDefault();
+  const validation = useFormValidation({
+    name: rules.text(form.name, { minLength: 2 }),
+    categoryId: rules.chosen(form.categoryId),
+    abv: rules.numeric(form.abv, { min: 0, max: 100 }),
+    minimumStock: rules.numeric(form.minimumStock, { min: 0, integer: true }),
+    // Only ever filled in at creation: on an edit the control is disabled
+    // because the case size is the divisor behind every quantity already in the
+    // ledger.
+    caseSize: isEditing
+      ? undefined
+      : rules.numeric(form.caseSize, { optional: false, min: 1, integer: true }),
+  });
+
+  const submit = async () => {
     const name = form.name.trim();
 
     try {
@@ -133,32 +147,48 @@ export function ProductFormDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-xl">
-        <form onSubmit={(event) => void submit(event)} className="space-y-4">
+        <form
+          ref={validation.ref}
+          noValidate
+          onSubmit={validation.onSubmit(() => void submit())}
+          className="space-y-4"
+        >
           <DialogTitle>
             {isEditing ? t('editTitle', { name: product.name }) : t('createTitle')}
           </DialogTitle>
           <DialogDescription>{t('description')}</DialogDescription>
 
+          {validation.alert && <FormAlert title={validation.alert} />}
+
           <div className="grid gap-4 text-left sm:grid-cols-2">
-            <Field label={t('name')} className="sm:col-span-2">
-              {({ id }) => (
+            <Field label={t('name')} className="sm:col-span-2" error={validation.errorFor('name')}>
+              {({ id, describedBy, invalid }) => (
                 <Input
                   id={id}
                   required
-                  minLength={2}
+                  aria-describedby={describedBy}
+                  aria-invalid={invalid}
                   value={form.name}
                   onChange={(event) => set('name', event.target.value)}
+                  onBlur={() => validation.touch('name')}
                   placeholder={t('namePlaceholder')}
                 />
               )}
             </Field>
 
-            <Field label={t('category')}>
-              {({ id }) => (
+            <Field label={t('category')} error={validation.errorFor('categoryId')}>
+              {({ id, describedBy, invalid }) => (
                 <Select
                   id={id}
                   value={form.categoryId}
-                  onValueChange={(value) => set('categoryId', value)}
+                  aria-describedby={describedBy}
+                  aria-invalid={invalid}
+                  // A Radix trigger has no blur to hang this on, and picking the
+                  // placeholder back is exactly the moment worth reporting.
+                  onValueChange={(value) => {
+                    set('categoryId', value);
+                    validation.touch('categoryId');
+                  }}
                   options={[
                     { value: '', label: t('pickCategory') },
                     ...categories.map((category) => ({
@@ -210,16 +240,19 @@ export function ProductFormDialog({
               )}
             </Field>
 
-            <Field label={t('abv')}>
-              {({ id }) => (
+            <Field label={t('abv')} error={validation.errorFor('abv')}>
+              {({ id, describedBy, invalid }) => (
                 <Input
                   id={id}
                   type="number"
                   min={0}
                   max={100}
                   step="0.1"
+                  aria-describedby={describedBy}
+                  aria-invalid={invalid}
                   value={form.abv}
                   onChange={(event) => set('abv', event.target.value)}
+                  onBlur={() => validation.touch('abv')}
                 />
               )}
             </Field>
@@ -238,8 +271,9 @@ export function ProductFormDialog({
             <Field
               label={t('caseSize')}
               hint={isEditing ? t('caseSizeHintEdit') : t('caseSizeHintNew')}
+              error={validation.errorFor('caseSize')}
             >
-              {({ id, describedBy }) => (
+              {({ id, describedBy, invalid }) => (
                 <Input
                   id={id}
                   type="number"
@@ -247,21 +281,29 @@ export function ProductFormDialog({
                   required
                   disabled={isEditing}
                   aria-describedby={describedBy}
+                  aria-invalid={invalid}
                   value={form.caseSize}
                   onChange={(event) => set('caseSize', event.target.value)}
+                  onBlur={() => validation.touch('caseSize')}
                 />
               )}
             </Field>
 
-            <Field label={t('minimumStock')} hint={t('minimumStockHint')}>
-              {({ id, describedBy }) => (
+            <Field
+              label={t('minimumStock')}
+              hint={t('minimumStockHint')}
+              error={validation.errorFor('minimumStock')}
+            >
+              {({ id, describedBy, invalid }) => (
                 <Input
                   id={id}
                   type="number"
                   min={0}
                   aria-describedby={describedBy}
+                  aria-invalid={invalid}
                   value={form.minimumStock}
                   onChange={(event) => set('minimumStock', event.target.value)}
+                  onBlur={() => validation.touch('minimumStock')}
                 />
               )}
             </Field>
@@ -278,13 +320,9 @@ export function ProductFormDialog({
             >
               {tActions('cancel')}
             </Button>
-            <Button
-              type="submit"
-              size="lg"
-              className="flex-1"
-              isLoading={isSaving}
-              disabled={!form.categoryId}
-            >
+            {/* Not disabled while the category is missing: a dead button says
+                nothing about why. Submitting is what points at the field. */}
+            <Button type="submit" size="lg" className="flex-1" isLoading={isSaving}>
               {isEditing ? tActions('save') : tActions('create')}
             </Button>
           </DialogFooter>

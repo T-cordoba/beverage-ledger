@@ -2,7 +2,7 @@
 
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useState, type FormEvent, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
   Button,
   Card,
@@ -12,6 +12,8 @@ import {
   DialogFooter,
   DialogTitle,
   EmptyState,
+  Field,
+  FormAlert,
   Input,
   Spinner,
   useNotify,
@@ -19,6 +21,7 @@ import {
 import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
 import { describeError, type Movement } from '@/lib/api';
+import { rules, useFormValidation } from '@/lib/forms';
 import { useCancelMovement, useConfirmMovement, useMovement } from './api';
 import { MIN_REASON_LENGTH, MOVEMENT_TYPES } from './movement-types';
 import { MovementPdfButton } from './MovementPdfButton';
@@ -47,9 +50,11 @@ function CancelMovementDialog({ movement }: { movement: Movement }) {
 
   const variant = movement.status === 'DRAFT' ? 'draft' : 'confirmed';
 
-  const submit = async (event: FormEvent) => {
-    event.preventDefault();
+  const validation = useFormValidation({
+    reason: rules.text(reason, { minLength: MIN_REASON_LENGTH }),
+  });
 
+  const submit = async () => {
     try {
       await cancel.mutateAsync({ id: movement.id, reason });
       setIsOpen(false);
@@ -72,26 +77,31 @@ function CancelMovementDialog({ movement }: { movement: Movement }) {
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
-          <form onSubmit={(event) => void submit(event)} className="space-y-4">
+          <form
+            ref={validation.ref}
+            noValidate
+            onSubmit={validation.onSubmit(() => void submit())}
+            className="space-y-4"
+          >
             <DialogTitle>{t(`${variant}.title`, { code: movement.code })}</DialogTitle>
             <DialogDescription>{t(`${variant}.description`)}</DialogDescription>
 
-            <div className="space-y-2 text-left">
-              <label
-                htmlFor="cancel-reason"
-                className="block text-xs font-medium uppercase tracking-wider text-contrast/70"
-              >
-                {t('reason')}
-              </label>
-              <Input
-                id="cancel-reason"
-                required
-                minLength={MIN_REASON_LENGTH}
-                value={reason}
-                onChange={(event) => setReason(event.target.value)}
-                placeholder={t(`${variant}.placeholder`)}
-              />
-            </div>
+            {validation.alert && <FormAlert title={validation.alert} />}
+
+            <Field label={t('reason')} className="text-left" error={validation.errorFor('reason')}>
+              {({ id, describedBy, invalid }) => (
+                <Input
+                  id={id}
+                  required
+                  aria-describedby={describedBy}
+                  aria-invalid={invalid}
+                  value={reason}
+                  onChange={(event) => setReason(event.target.value)}
+                  onBlur={() => validation.touch('reason')}
+                  placeholder={t(`${variant}.placeholder`)}
+                />
+              )}
+            </Field>
 
             <DialogFooter>
               <Button

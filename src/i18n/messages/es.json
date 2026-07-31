@@ -35,6 +35,18 @@
       "unit": "{count, plural, one {unidad} other {unidades}}"
     },
     "passwordPolicy": "Al menos 12 caracteres, con minúscula, mayúscula y un dígito.",
+    "validation": {
+      "required": "Este campo no puede quedar vacío.",
+      "minLength": "Escribe al menos {count} caracteres.",
+      "email": "Escribe un correo con la forma nombre@dominio.com.",
+      "url": "Escribe una dirección que empiece por http:// o https://.",
+      "number": "Escribe un número.",
+      "integer": "Escribe un número entero, sin decimales.",
+      "min": "Tiene que ser {min} o más.",
+      "max": "Tiene que ser {max} o menos.",
+      "mismatch": "No coincide con lo que escribiste arriba.",
+      "summary": "{count, plural, one {Falta un campo por revisar.} other {Faltan # campos por revisar.}}"
+    },
     "datePicker": {
       "placeholder": "Elegir fecha",
       "previousMonth": "Mes anterior",
@@ -383,7 +395,6 @@
         "counts": "<strong>{products}</strong> {products, plural, one {producto} other {productos}} · <strong>{units}</strong> {unitsAbs, plural, one {unidad} other {unidades}}"
       },
       "reasonRequired": "Un ajuste necesita un motivo antes de poder confirmarse.",
-      "bothEndsRequired": "Un traspaso necesita las dos puntas antes de poder confirmarse.",
       "confirm": "Confirmar",
       "confirmDescription": "Esto escribe <strong>{products} {products, plural, one {producto} other {productos}}</strong> en el ledger y mueve <strong>{units} {unitsAbs, plural, one {unidad} other {unidades}}</strong> — las cajas cuentan según su tamaño.",
       "goBack": "Volver",
@@ -705,7 +716,6 @@
       "current": "Contraseña actual",
       "new": "Contraseña nueva",
       "repeat": "Repite la contraseña nueva",
-      "mismatch": "Las dos contraseñas no coinciden.",
       "warning": "Cierra todas las sesiones, incluida esta. Volverás a entrar con la contraseña nueva.",
       "submit": "Cambiar",
       "changedTitle": "Contraseña cambiada",

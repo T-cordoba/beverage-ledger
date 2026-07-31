@@ -35,6 +35,18 @@
       "unit": "{count, plural, one {unit} other {units}}"
     },
     "passwordPolicy": "At least 12 characters, with lowercase, uppercase and a digit.",
+    "validation": {
+      "required": "This field cannot be left empty.",
+      "minLength": "Write at least {count} characters.",
+      "email": "Write an address shaped like name@domain.com.",
+      "url": "Write an address starting with http:// or https://.",
+      "number": "Write a number.",
+      "integer": "Write a whole number, no decimals.",
+      "min": "It has to be {min} or more.",
+      "max": "It has to be {max} or less.",
+      "mismatch": "It does not match what you wrote above.",
+      "summary": "{count, plural, one {One field needs a look.} other {# fields need a look.}}"
+    },
     "datePicker": {
       "placeholder": "Pick a date",
       "previousMonth": "Previous month",
@@ -383,7 +395,6 @@
         "counts": "<strong>{products}</strong> {products, plural, one {product} other {products}} · <strong>{units}</strong> {unitsAbs, plural, one {unit} other {units}}"
       },
       "reasonRequired": "An adjustment needs a reason before it can be confirmed.",
-      "bothEndsRequired": "A transfer needs both ends named before it can be confirmed.",
       "confirm": "Confirm",
       "confirmDescription": "This writes <strong>{products} {products, plural, one {product} other {products}}</strong> to the ledger and moves <strong>{units} {unitsAbs, plural, one {unit} other {units}}</strong> — cases counted by their case size.",
       "goBack": "Go back",
@@ -705,7 +716,6 @@
       "current": "Current password",
       "new": "New password",
       "repeat": "Repeat the new password",
-      "mismatch": "The two passwords do not match.",
       "warning": "Signs out every session, this one included. You will sign in again with the new password.",
       "submit": "Change",
       "changedTitle": "Password changed",

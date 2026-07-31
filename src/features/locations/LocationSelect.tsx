@@ -10,6 +10,7 @@ interface LocationSelectProps {
   onValueChange: (value: string) => void;
   'aria-describedby'?: string;
   'aria-label'?: string;
+  'aria-invalid'?: boolean;
   /** Rendered first and selected by nothing: for a filter that means "everywhere". */
   anyLabel?: string;
   /** Hidden from the options, so a transfer cannot pick its own origin. */

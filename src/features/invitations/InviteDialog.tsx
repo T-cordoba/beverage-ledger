@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
 import {
   Button,
   Dialog,
@@ -10,12 +10,14 @@ import {
   DialogFooter,
   DialogTitle,
   Field,
+  FormAlert,
   Input,
   Select,
   useNotify,
 } from '@/components/ui';
 import { ASSIGNABLE_ROLES } from '@/features/admin';
 import { describeError, type UserRole } from '@/lib/api';
+import { rules, useFormValidation } from '@/lib/forms';
 import { useCreateInvitation } from './api';
 
 /**
@@ -58,9 +60,9 @@ export function InviteDialog({
     }, 200);
   };
 
-  const submit = async (event: FormEvent) => {
-    event.preventDefault();
+  const form = useFormValidation({ email: rules.email(email) });
 
+  const submit = async () => {
     try {
       const issued = await invite.mutateAsync({ email: email.trim(), role });
       setIssuedUrl(issued.acceptUrl);
@@ -131,19 +133,29 @@ export function InviteDialog({
   return (
     <Dialog open={open} onOpenChange={(next) => !next && close()}>
       <DialogContent>
-        <form onSubmit={(event) => void submit(event)} className="space-y-4 text-left">
+        <form
+          ref={form.ref}
+          noValidate
+          onSubmit={form.onSubmit(() => void submit())}
+          className="space-y-4 text-left"
+        >
           <DialogTitle>{t('title')}</DialogTitle>
           <DialogDescription>{t('description')}</DialogDescription>
 
-          <Field label={t('email')}>
-            {({ id }) => (
+          {form.alert && <FormAlert title={form.alert} />}
+
+          <Field label={t('email')} error={form.errorFor('email')}>
+            {({ id, describedBy, invalid }) => (
               <Input
                 id={id}
                 type="email"
                 required
                 autoComplete="off"
+                aria-describedby={describedBy}
+                aria-invalid={invalid}
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
+                onBlur={() => form.touch('email')}
               />
             )}
           </Field>

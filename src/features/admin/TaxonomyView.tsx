@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormatter, useTranslations } from 'next-intl';
-import { useState, type FormEvent } from 'react';
+import { useState } from 'react';
 import {
   Button,
   Card,
@@ -15,10 +15,13 @@ import {
   EmptyState,
   Field,
   FloatingAction,
+  FormAlert,
   Input,
   Pagination,
+  Skeleton,
   type DataTableColumn,
 } from '@/components/ui';
+import { rules, useFormValidation } from '@/lib/forms';
 import { usePagination } from '@/lib/hooks';
 
 export interface TaxonomyItem {
@@ -91,40 +94,61 @@ function TaxonomyFormDialog({
   const [name, setName] = useState(item?.name ?? '');
   const [sortOrder, setSortOrder] = useState(String(item?.sortOrder ?? 0));
 
-  const submit = async (event: FormEvent) => {
-    event.preventDefault();
+  const validation = useFormValidation({
+    name: rules.text(name, { minLength: 2 }),
+    sortOrder: withSortOrder
+      ? rules.numeric(sortOrder, { optional: false, min: 0, integer: true })
+      : undefined,
+  });
+
+  const submit = async () => {
     await onSubmit({ name: name.trim(), sortOrder: Number(sortOrder) || 0 });
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
-        <form onSubmit={(event) => void submit(event)} className="space-y-4 text-left">
+        <form
+          ref={validation.ref}
+          noValidate
+          onSubmit={validation.onSubmit(() => void submit())}
+          className="space-y-4 text-left"
+        >
           <DialogTitle>{item ? copy.editTitle(item.name) : copy.createTitle}</DialogTitle>
           <DialogDescription>{copy.formDescription}</DialogDescription>
 
-          <Field label={t('name')}>
-            {({ id }) => (
+          {validation.alert && <FormAlert title={validation.alert} />}
+
+          <Field label={t('name')} error={validation.errorFor('name')}>
+            {({ id, describedBy, invalid }) => (
               <Input
                 id={id}
                 required
-                minLength={2}
+                aria-describedby={describedBy}
+                aria-invalid={invalid}
                 value={name}
                 onChange={(event) => setName(event.target.value)}
+                onBlur={() => validation.touch('name')}
               />
             )}
           </Field>
 
           {withSortOrder && (
-            <Field label={t('sortOrder')} hint={t('sortOrderHint')}>
-              {({ id, describedBy }) => (
+            <Field
+              label={t('sortOrder')}
+              hint={t('sortOrderHint')}
+              error={validation.errorFor('sortOrder')}
+            >
+              {({ id, describedBy, invalid }) => (
                 <Input
                   id={id}
                   type="number"
                   min={0}
                   aria-describedby={describedBy}
+                  aria-invalid={invalid}
                   value={sortOrder}
                   onChange={(event) => setSortOrder(event.target.value)}
+                  onBlur={() => validation.touch('sortOrder')}
                 />
               )}
             </Field>
@@ -192,6 +216,7 @@ export function TaxonomyView({
     {
       key: 'name',
       header: t('columns.name'),
+      skeleton: <Skeleton className="h-5 w-40" />,
       cell: (item) => <span className="font-medium text-foreground">{item.name}</span>,
     },
     ...(withSortOrder
@@ -201,6 +226,7 @@ export function TaxonomyView({
             header: t('columns.sortOrder'),
             align: 'end',
             hideBelow: 'sm',
+            skeleton: <Skeleton className="ml-auto h-5 w-8" />,
             cell: (item) => (
               <span className="text-contrast/70">{format.number(item.sortOrder ?? 0)}</span>
             ),
@@ -211,12 +237,20 @@ export function TaxonomyView({
       key: 'productCount',
       header: t('columns.productCount'),
       align: 'end',
+      skeleton: <Skeleton className="ml-auto h-5 w-8" />,
       cell: (item) => <span className="text-contrast/70">{format.number(item.productCount)}</span>,
     },
     {
       key: 'actions',
       header: t('columns.actions'),
       align: 'end',
+      // Two buttons, and they are what set this row's height.
+      skeleton: (
+        <div className="flex justify-end gap-2">
+          <Skeleton className="h-9 w-20" />
+          <Skeleton className="h-9 w-20" />
+        </div>
+      ),
       cell: (item) => (
         <div className="flex justify-end gap-2">
           <Button variant="secondary" size="sm" onClick={() => openForm(item)}>
@@ -263,6 +297,9 @@ export function TaxonomyView({
             rows={visible}
             rowKey={(item) => item.id}
             isLoading={isPending}
+            // The whole list arrives in one request and pages in the browser, so
+            // there is no page total to go on yet: a full page is the guess.
+            skeletonRows={pagination.pageSize}
             loadingLabel={copy.loading}
             className="px-2 py-1 sm:px-4 sm:py-2"
             empty={<EmptyState title={copy.empty} />}

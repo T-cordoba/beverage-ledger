@@ -1,9 +1,19 @@
 'use client';
 
 import { useFormatter, useTranslations } from 'next-intl';
-import { useState, type FormEvent } from 'react';
-import { Button, Card, EmptyState, Field, Input, Spinner, useNotify } from '@/components/ui';
+import { useState } from 'react';
+import {
+  Button,
+  Card,
+  EmptyState,
+  Field,
+  FormAlert,
+  Input,
+  Spinner,
+  useNotify,
+} from '@/components/ui';
 import { describeError } from '@/lib/api';
+import { rules, useFormValidation } from '@/lib/forms';
 import { useOrganization, useUpdateOrganization } from './api';
 
 interface OrganizationForm {
@@ -25,6 +35,21 @@ export function OrganizationView() {
 
   const [form, setForm] = useState<OrganizationForm | null>(null);
 
+  // Seeded from the response on first render, then owned by the form. Read
+  // before the early returns below, because the hooks under it cannot be.
+  const values: OrganizationForm = form ?? {
+    name: organization?.name ?? '',
+    legalName: organization?.legalName ?? '',
+    logoUrl: organization?.logoUrl ?? '',
+    timezone: organization?.timezone ?? '',
+  };
+
+  const validation = useFormValidation({
+    name: rules.text(values.name, { minLength: 2 }),
+    timezone: rules.text(values.timezone),
+    logoUrl: rules.url(values.logoUrl),
+  });
+
   if (isPending) {
     return (
       <div className="flex items-center justify-center py-16">
@@ -37,20 +62,10 @@ export function OrganizationView() {
     return <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />;
   }
 
-  // Seeded from the response on first render, then owned by the form.
-  const values: OrganizationForm = form ?? {
-    name: organization.name,
-    legalName: organization.legalName ?? '',
-    logoUrl: organization.logoUrl ?? '',
-    timezone: organization.timezone,
-  };
-
   const set = <K extends keyof OrganizationForm>(key: K, value: string) =>
     setForm({ ...values, [key]: value });
 
-  const submit = async (event: FormEvent) => {
-    event.preventDefault();
-
+  const submit = async () => {
     try {
       await update.mutateAsync({
         name: values.name.trim(),
@@ -72,16 +87,24 @@ export function OrganizationView() {
       </header>
 
       <Card className="max-w-2xl">
-        <form onSubmit={(event) => void submit(event)} className="space-y-4">
-          <Field label={t('name')} hint={t('nameHint')}>
-            {({ id, describedBy }) => (
+        <form
+          ref={validation.ref}
+          noValidate
+          onSubmit={validation.onSubmit(() => void submit())}
+          className="space-y-4"
+        >
+          {validation.alert && <FormAlert title={validation.alert} />}
+
+          <Field label={t('name')} hint={t('nameHint')} error={validation.errorFor('name')}>
+            {({ id, describedBy, invalid }) => (
               <Input
                 id={id}
                 required
-                minLength={2}
                 aria-describedby={describedBy}
+                aria-invalid={invalid}
                 value={values.name}
                 onChange={(event) => set('name', event.target.value)}
+                onBlur={() => validation.touch('name')}
               />
             )}
           </Field>
@@ -97,27 +120,39 @@ export function OrganizationView() {
             )}
           </Field>
 
-          <Field label={t('logoUrl')} hint={t('logoUrlHint')}>
-            {({ id, describedBy }) => (
+          <Field
+            label={t('logoUrl')}
+            hint={t('logoUrlHint')}
+            error={validation.errorFor('logoUrl')}
+          >
+            {({ id, describedBy, invalid }) => (
               <Input
                 id={id}
                 type="url"
                 aria-describedby={describedBy}
+                aria-invalid={invalid}
                 value={values.logoUrl}
                 onChange={(event) => set('logoUrl', event.target.value)}
+                onBlur={() => validation.touch('logoUrl')}
                 placeholder="https://..."
               />
             )}
           </Field>
 
-          <Field label={t('timezone')} hint={t('timezoneHint')}>
-            {({ id, describedBy }) => (
+          <Field
+            label={t('timezone')}
+            hint={t('timezoneHint')}
+            error={validation.errorFor('timezone')}
+          >
+            {({ id, describedBy, invalid }) => (
               <Input
                 id={id}
                 required
                 aria-describedby={describedBy}
+                aria-invalid={invalid}
                 value={values.timezone}
                 onChange={(event) => set('timezone', event.target.value)}
+                onBlur={() => validation.touch('timezone')}
               />
             )}
           </Field>

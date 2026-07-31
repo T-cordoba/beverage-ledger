@@ -33,6 +33,11 @@ interface SelectProps {
   /** Lands on the trigger, so a `<label htmlFor>` can point at it. */
   id?: string;
   'aria-label'?: string;
+  // Declared one by one on purpose: TypeScript does not check hyphenated JSX
+  // attributes against the props type, so anything not named here is accepted at
+  // the call site and then silently dropped.
+  'aria-describedby'?: string;
+  'aria-invalid'?: boolean;
 }
 
 export function Select({
@@ -44,6 +49,8 @@ export function Select({
   disabled,
   id,
   'aria-label': ariaLabel,
+  'aria-describedby': describedBy,
+  'aria-invalid': invalid,
 }: SelectProps) {
   return (
     <SelectPrimitive.Root
@@ -54,11 +61,14 @@ export function Select({
       <SelectPrimitive.Trigger
         id={id}
         aria-label={ariaLabel}
+        aria-describedby={describedBy}
+        aria-invalid={invalid}
         className={cn(
           'group flex w-full items-center justify-between gap-2 border border-border bg-surface/80 font-medium text-foreground',
           'transition-colors hover:border-accent/30',
           'focus-visible:border-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20',
           'disabled:cursor-not-allowed disabled:opacity-50',
+          'aria-invalid:border-danger/60 aria-invalid:focus-visible:ring-danger/20',
           triggerSizes[size],
           className,
         )}

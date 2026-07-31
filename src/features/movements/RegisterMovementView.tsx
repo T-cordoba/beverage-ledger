@@ -15,6 +15,7 @@ import {
   DialogFooter,
   DialogTitle,
   Field,
+  FormAlert,
   Input,
   Textarea,
   useNotify,
@@ -24,6 +25,7 @@ import { useAuth } from '@/features/auth';
 import { useCatalogFilters } from '@/features/catalog';
 import { LocationSelect } from '@/features/locations';
 import { describeError, type MovementType } from '@/lib/api';
+import { rules, useFormValidation } from '@/lib/forms';
 import { parseDateKey } from '@/lib/utils';
 import { useCancelMovement, useOpenDraft, useRegisterMovement, useResumeDraft } from './api';
 import { MIN_REASON_LENGTH, MOVEMENT_TYPES } from './movement-types';
@@ -155,7 +157,24 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
   // are named explicitly.
   const isDestinationMissing = meta.needsDestination && draft.destinationLocationId === '';
   const isOriginMissing = meta.needsDestination && draft.locationId === '';
-  const isIncomplete = isReasonMissing || isDestinationMissing || isOriginMissing;
+
+  const validation = useFormValidation<'origin' | 'destination' | 'reason', HTMLDivElement>({
+    origin: meta.needsDestination ? rules.chosen(draft.locationId) : undefined,
+    destination: meta.needsDestination ? rules.chosen(draft.destinationLocationId) : undefined,
+    reason: meta.requiresReason
+      ? rules.text(draft.reason, { minLength: MIN_REASON_LENGTH })
+      : undefined,
+  });
+
+  /** Said in the terms of the movement, which a field-level message cannot be. */
+  const blockers = [
+    isOriginMissing && t('fields.origin.missing'),
+    isDestinationMissing && t('fields.destination.missing'),
+    isReasonMissing &&
+      (trimmedReason.length === 0
+        ? t('reasonRequired')
+        : t('fields.reason.tooShort', { count: MIN_REASON_LENGTH })),
+  ].filter((blocker): blocker is string => typeof blocker === 'string');
 
   const totalUnits = meta.isSigned
     ? format.number(draft.totalBaseUnits, 'signed')
@@ -217,7 +236,7 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
   };
 
   return (
-    <div className="space-y-6">
+    <div ref={validation.ref} className="space-y-6">
       <header className="space-y-1">
         <h1 className="text-2xl font-light text-foreground sm:text-3xl">
           {tTypes(`${type}.action`)}
@@ -279,15 +298,21 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
         <Field
           label={meta.needsDestination ? t('fields.origin.label') : t('fields.location.label')}
           hint={meta.needsDestination ? t('fields.origin.hint') : t('fields.location.hint')}
-          error={isOriginMissing ? t('fields.origin.missing') : undefined}
+          error={validation.errorFor('origin')}
         >
-          {({ id, describedBy }) => (
+          {({ id, describedBy, invalid }) => (
             <LocationSelect
               id={id}
               aria-describedby={describedBy}
+              aria-invalid={invalid}
               anyLabel={meta.needsDestination ? t('fields.origin.any') : undefined}
               value={draft.locationId}
-              onValueChange={draft.setLocationId}
+              // A Radix trigger has no blur to hang this on, and picking the
+              // placeholder back is exactly the moment worth reporting.
+              onValueChange={(value) => {
+                draft.setLocationId(value);
+                validation.touch('origin');
+              }}
               excludeId={meta.needsDestination ? draft.destinationLocationId : undefined}
             />
           )}
@@ -297,15 +322,19 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
           <Field
             label={t('fields.destination.label')}
             hint={t('fields.destination.hint')}
-            error={isDestinationMissing ? t('fields.destination.missing') : undefined}
+            error={validation.errorFor('destination')}
           >
-            {({ id, describedBy }) => (
+            {({ id, describedBy, invalid }) => (
               <LocationSelect
                 id={id}
                 aria-describedby={describedBy}
+                aria-invalid={invalid}
                 anyLabel={t('fields.destination.any')}
                 value={draft.destinationLocationId}
-                onValueChange={draft.setDestinationLocationId}
+                onValueChange={(value) => {
+                  draft.setDestinationLocationId(value);
+                  validation.touch('destination');
+                }}
                 excludeId={draft.locationId}
               />
             )}
@@ -316,18 +345,17 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
           <Field
             label={t('fields.reason.label')}
             hint={t('fields.reason.hint')}
-            error={
-              draft.reason.length > 0 && isReasonMissing
-                ? t('fields.reason.tooShort', { count: MIN_REASON_LENGTH })
-                : undefined
-            }
+            error={validation.errorFor('reason')}
           >
-            {({ id, describedBy }) => (
+            {({ id, describedBy, invalid }) => (
               <Input
                 id={id}
+                required
                 aria-describedby={describedBy}
+                aria-invalid={invalid}
                 value={draft.reason}
                 onChange={(event) => draft.setReason(event.target.value)}
+                onBlur={() => validation.touch('reason')}
                 placeholder={t('fields.reason.placeholder')}
               />
             )}
@@ -388,11 +416,16 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
                 >
                   {t('discard')}
                 </Button>
+                {/* Not `disabled`: a dead button swallows the click and with it
+                    the one chance to say what is missing. It looks and reads as
+                    unavailable, and pressing it points at the offending field. */}
                 <Button
                   size="lg"
-                  className="flex-1 sm:flex-initial"
-                  onClick={() => setIsConfirmOpen(true)}
-                  disabled={isIncomplete}
+                  className="flex-1 aria-disabled:opacity-50 sm:flex-initial"
+                  onClick={() => {
+                    if (validation.attempt()) setIsConfirmOpen(true);
+                  }}
+                  aria-disabled={!validation.isValid}
                   isLoading={register.isPending}
                 >
                   {t('confirm')}
@@ -401,12 +434,14 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
             </Card>
           </div>
 
-          {isReasonMissing && (
-            <p className="text-center text-sm text-warning">{t('reasonRequired')}</p>
-          )}
-
-          {(isOriginMissing || isDestinationMissing) && (
-            <p className="text-center text-sm text-warning">{t('bothEndsRequired')}</p>
+          {validation.alert && (
+            <FormAlert tone="warning" title={validation.alert}>
+              <ul className="list-disc space-y-1 pl-5">
+                {blockers.map((blocker) => (
+                  <li key={blocker}>{blocker}</li>
+                ))}
+              </ul>
+            </FormAlert>
           )}
         </>
       )}

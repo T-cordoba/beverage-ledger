@@ -2,23 +2,13 @@
 
 import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, type FormEvent } from 'react';
-import { Button, Field, Input, PasswordInput } from '@/components/ui';
+import { useState } from 'react';
+import { Button, Field, FormAlert, Input, PasswordInput } from '@/components/ui';
 import { GOOGLE_SIGN_IN_URL, IS_GOOGLE_SIGN_IN_ENABLED } from '@/config/api';
 import { RETURN_TO_PARAM, safeReturnTo } from '@/config/navigation';
 import { describeError } from '@/lib/api';
+import { rules, useFormValidation } from '@/lib/forms';
 import { useAuth } from './auth-context';
-
-function FormError({ message }: { message: string }) {
-  return (
-    <p
-      role="alert"
-      className="rounded-xl border border-danger/30 bg-danger/10 p-3 text-sm text-danger"
-    >
-      {message}
-    </p>
-  );
-}
 
 function GoogleButton({ label }: { label: string }) {
   const t = useTranslations('auth.google');
@@ -51,8 +41,12 @@ export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
+  const form = useFormValidation({
+    email: rules.email(email),
+    password: rules.secret(password),
+  });
+
+  const handleSubmit = async () => {
     setError(null);
     setIsSubmitting(true);
 
@@ -66,30 +60,42 @@ export function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      {error && <FormError message={error} />}
+    <form
+      ref={form.ref}
+      noValidate
+      onSubmit={form.onSubmit(() => void handleSubmit())}
+      className="space-y-5"
+    >
+      {error && <FormAlert title={error} />}
+      {form.alert && <FormAlert title={form.alert} />}
 
-      <Field label={t('fields.email')}>
-        {({ id }) => (
+      <Field label={t('fields.email')} error={form.errorFor('email')}>
+        {({ id, describedBy, invalid }) => (
           <Input
             id={id}
             type="email"
             autoComplete="email"
             required
+            aria-describedby={describedBy}
+            aria-invalid={invalid}
             value={email}
             onChange={(event) => setEmail(event.target.value)}
+            onBlur={() => form.touch('email')}
           />
         )}
       </Field>
 
-      <Field label={t('fields.password')}>
-        {({ id }) => (
+      <Field label={t('fields.password')} error={form.errorFor('password')}>
+        {({ id, describedBy, invalid }) => (
           <PasswordInput
             id={id}
             autoComplete="current-password"
             required
+            aria-describedby={describedBy}
+            aria-invalid={invalid}
             value={password}
             onChange={(event) => setPassword(event.target.value)}
+            onBlur={() => form.touch('password')}
           />
         )}
       </Field>

@@ -1,10 +1,11 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useState, type FormEvent } from 'react';
-import { Button, Card, Field, PasswordInput, useNotify } from '@/components/ui';
+import { useState } from 'react';
+import { Button, Card, Field, FormAlert, PasswordInput, useNotify } from '@/components/ui';
 import { useAuth } from '@/features/auth';
 import { describeError } from '@/lib/api';
+import { rules, useFormValidation } from '@/lib/forms';
 import { useChangePassword } from './api';
 
 /**
@@ -25,23 +26,19 @@ export function ChangePasswordForm() {
   const notify = useNotify();
 
   const [values, setValues] = useState(EMPTY);
-  const [mismatch, setMismatch] = useState(false);
 
-  const set = <K extends keyof typeof EMPTY>(key: K, value: string) => {
+  // A typo would lock the account out of every session at once, so the
+  // confirmation has to agree before anything is sent.
+  const validation = useFormValidation({
+    currentPassword: rules.secret(values.currentPassword),
+    newPassword: rules.secret(values.newPassword, { minLength: MIN_PASSWORD_LENGTH }),
+    confirmation: rules.matches(values.confirmation, values.newPassword),
+  });
+
+  const set = <K extends keyof typeof EMPTY>(key: K, value: string) =>
     setValues((current) => ({ ...current, [key]: value }));
-    if (key !== 'currentPassword') setMismatch(false);
-  };
 
-  const submit = async (event: FormEvent) => {
-    event.preventDefault();
-
-    // A typo here would lock the account out of every session at once, so the
-    // confirmation is checked before anything is sent.
-    if (values.newPassword !== values.confirmation) {
-      setMismatch(true);
-      return;
-    }
-
+  const submit = async () => {
     try {
       await change.mutateAsync({
         currentPassword: values.currentPassword,
@@ -57,43 +54,59 @@ export function ChangePasswordForm() {
 
   return (
     <Card className="max-w-2xl">
-      <form onSubmit={(event) => void submit(event)} className="space-y-4">
-        <Field label={t('current')}>
-          {({ id, describedBy }) => (
+      <form
+        ref={validation.ref}
+        noValidate
+        onSubmit={validation.onSubmit(() => void submit())}
+        className="space-y-4"
+      >
+        {validation.alert && <FormAlert title={validation.alert} />}
+
+        <Field label={t('current')} error={validation.errorFor('currentPassword')}>
+          {({ id, describedBy, invalid }) => (
             <PasswordInput
               id={id}
               required
               autoComplete="current-password"
               aria-describedby={describedBy}
+              aria-invalid={invalid}
               value={values.currentPassword}
               onChange={(event) => set('currentPassword', event.target.value)}
+              onBlur={() => validation.touch('currentPassword')}
             />
           )}
         </Field>
 
-        <Field label={t('new')} hint={tCommon('passwordPolicy')}>
-          {({ id, describedBy }) => (
+        <Field
+          label={t('new')}
+          hint={tCommon('passwordPolicy')}
+          error={validation.errorFor('newPassword')}
+        >
+          {({ id, describedBy, invalid }) => (
             <PasswordInput
               id={id}
               required
-              minLength={MIN_PASSWORD_LENGTH}
               autoComplete="new-password"
               aria-describedby={describedBy}
+              aria-invalid={invalid}
               value={values.newPassword}
               onChange={(event) => set('newPassword', event.target.value)}
+              onBlur={() => validation.touch('newPassword')}
             />
           )}
         </Field>
 
-        <Field label={t('repeat')} error={mismatch ? t('mismatch') : undefined}>
-          {({ id, describedBy }) => (
+        <Field label={t('repeat')} error={validation.errorFor('confirmation')}>
+          {({ id, describedBy, invalid }) => (
             <PasswordInput
               id={id}
               required
               autoComplete="new-password"
               aria-describedby={describedBy}
+              aria-invalid={invalid}
               value={values.confirmation}
               onChange={(event) => set('confirmation', event.target.value)}
+              onBlur={() => validation.touch('confirmation')}
             />
           )}
         </Field>
