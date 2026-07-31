@@ -51,6 +51,16 @@
     "password": {
       "show": "Show password",
       "hide": "Hide password"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "summary": "{from}–{to} of {total, plural, one {# result} other {# results}}",
+      "empty": "No results",
+      "pageSize": "Per page",
+      "previous": "Previous page",
+      "next": "Next page",
+      "goToPage": "Go to page {page}",
+      "current": "Page {page} of {pageCount}"
     }
   },
   "marketing": {
