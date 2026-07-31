@@ -21,6 +21,18 @@ import {
 
 export const sessionQueryKey = ['session'] as const;
 
+/**
+ * Whether the session that just ended was ended on purpose.
+ *
+ * `signOut` navigates to the sign-in page, but the guarded layout is still
+ * mounted and `AuthGuard` reacts to the same state change by redirecting too —
+ * stamping the abandoned view into `?next=`. That is right for a deep link and
+ * wrong here: the next person to sign in would land on the previous user's
+ * screen. Module scope rather than context because only this file reads it, and
+ * the value is per tab exactly like the access token in `session.ts`.
+ */
+let isLeavingDeliberately = false;
+
 export interface Credentials {
   email: string;
   password: string;
@@ -93,6 +105,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signIn = useMutation({
     mutationFn: async (credentials: Credentials) => {
       storeSession(unwrap(await api.POST('/api/v1/auth/login', { body: credentials })));
+      isLeavingDeliberately = false;
       await queryClient.invalidateQueries({ queryKey: sessionQueryKey });
     },
   }).mutateAsync;
@@ -100,11 +113,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = useMutation({
     mutationFn: async (registration: Registration) => {
       storeSession(unwrap(await api.POST('/api/v1/auth/register', { body: registration })));
+      isLeavingDeliberately = false;
       await queryClient.invalidateQueries({ queryKey: sessionQueryKey });
     },
   }).mutateAsync;
 
   const signOut = useCallback(async () => {
+    // Set before the request, not after: the guard has to see it whichever way
+    // the logout ends.
+    isLeavingDeliberately = true;
+
     try {
       assertOk(await api.POST('/api/v1/auth/logout'));
     } finally {
@@ -113,7 +131,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       forgetSession();
       queryClient.setQueryData(sessionQueryKey, null);
       queryClient.clear();
-      router.push(ROUTES.signIn);
+      router.replace(ROUTES.signIn);
     }
   }, [queryClient, router]);
 
@@ -173,5 +191,5 @@ export function useGoogleCallback(): { failed: boolean } {
 /** Where to send someone back to after they sign in. */
 export function useSignInPath(): string {
   const pathname = usePathname();
-  return signInPath(pathname);
+  return isLeavingDeliberately ? ROUTES.signIn : signInPath(pathname);
 }
