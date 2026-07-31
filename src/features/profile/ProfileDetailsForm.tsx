@@ -26,8 +26,14 @@ export function ProfileDetailsForm() {
 
   if (!user) return null;
 
+  const saved: DetailsForm = { name: user.name, avatarUrl: user.avatarUrl ?? '' };
   // Seeded from the session on first render, then owned by the form.
-  const values: DetailsForm = form ?? { name: user.name, avatarUrl: user.avatarUrl ?? '' };
+  const values: DetailsForm = form ?? saved;
+
+  // Compared rather than read off `form !== null`, so typing a change and
+  // undoing it disables the button again instead of offering a no-op save.
+  const isDirty =
+    values.name.trim() !== saved.name.trim() || values.avatarUrl.trim() !== saved.avatarUrl.trim();
 
   const set = <K extends keyof DetailsForm>(key: K, value: string) =>
     setForm({ ...values, [key]: value });
@@ -101,12 +107,12 @@ export function ProfileDetailsForm() {
             type="button"
             variant="secondary"
             size="lg"
-            disabled={form === null || update.isPending}
+            disabled={!isDirty || update.isPending}
             onClick={() => setForm(null)}
           >
             {t('reset')}
           </Button>
-          <Button type="submit" size="lg" isLoading={update.isPending}>
+          <Button type="submit" size="lg" disabled={!isDirty} isLoading={update.isPending}>
             {tActions('save')}
           </Button>
         </div>
