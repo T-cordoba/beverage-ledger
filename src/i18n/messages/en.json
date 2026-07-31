@@ -1,0 +1,767 @@
+{
+  "metadata": {
+    "description": "Liquor inventory for bars, casinos and restaurants: live stock, an auditable ledger of movements and consumption reports."
+  },
+  "common": {
+    "language": {
+      "label": "Language"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "clearFilters": "Clear filters",
+      "close": "Close",
+      "create": "Create",
+      "delete": "Delete",
+      "edit": "Edit",
+      "loadMore": "Load more",
+      "retry": "Retry",
+      "save": "Save",
+      "search": "Search"
+    },
+    "states": {
+      "loading": "Loading…",
+      "loadedCount": "{count} loaded",
+      "moreAvailable": "— more available",
+      "nothingToShow": "Nothing to show.",
+      "none": "—",
+      "tryAgain": "Please try again.",
+      "apiUnreachable": "Check that the API is reachable and try again."
+    },
+    "units": {
+      "bottle": "{count, plural, one {bottle} other {bottles}}",
+      "case": "{count, plural, one {case} other {cases}}",
+      "line": "{count, plural, one {line} other {lines}}",
+      "movement": "{count, plural, one {movement} other {movements}}",
+      "product": "{count, plural, one {product} other {products}}",
+      "unit": "{count, plural, one {unit} other {units}}"
+    },
+    "passwordPolicy": "At least 12 characters, with lowercase, uppercase and a digit.",
+    "datePicker": {
+      "placeholder": "Pick a date",
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month",
+      "clear": "Clear the date"
+    }
+  },
+  "nav": {
+    "main": "Main",
+    "items": {
+      "dashboard": "Dashboard",
+      "stock": "Stock",
+      "movements": "Movements",
+      "catalog": "Catalogue",
+      "reports": "Reports",
+      "admin": "Admin",
+      "adminUsers": "Users",
+      "adminCategories": "Categories",
+      "adminBrands": "Brands",
+      "adminLocations": "Locations",
+      "adminOrganization": "Organization",
+      "adminAudit": "Audit log"
+    },
+    "account": {
+      "menu": "Account menu",
+      "menuFor": "Account menu for {name}",
+      "profile": "Your profile",
+      "signOut": "Sign out"
+    }
+  },
+  "auth": {
+    "tagline": "Liquor inventory management",
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "password": "Password"
+    },
+    "signIn": {
+      "title": "Sign in",
+      "submit": "Sign in",
+      "loadingForm": "Loading the form",
+      "failed": "Could not sign in. Please try again.",
+      "noAccount": "No account yet?",
+      "createOne": "Create one"
+    },
+    "register": {
+      "title": "Create an account",
+      "submit": "Create account",
+      "failed": "Could not create the account. Please try again.",
+      "haveAccount": "Already registered?",
+      "signIn": "Sign in"
+    },
+    "google": {
+      "separator": "or",
+      "signIn": "Continue with Google",
+      "signUp": "Sign up with Google"
+    },
+    "callback": {
+      "failedTitle": "Sign-in did not complete",
+      "failedDescription": "Google sent you back without a usable session. Please try again.",
+      "backToSignIn": "Back to sign in",
+      "completing": "Completing sign-in…"
+    },
+    "guard": {
+      "loadingSession": "Loading your session"
+    },
+    "permissionGate": {
+      "title": "You do not have access to this section.",
+      "description": "Ask an administrator for the permission if you need it."
+    }
+  },
+  "movements": {
+    "types": {
+      "OUTBOUND": {
+        "label": "Dispatch",
+        "action": "Register a dispatch",
+        "effect": "Stock leaves the cellar when you confirm. Nothing moves before that.",
+        "confirmQuestion": "Confirm this dispatch?",
+        "denied": "You cannot register dispatches."
+      },
+      "INBOUND": {
+        "label": "Inbound",
+        "action": "Register an inbound",
+        "effect": "What the supplier delivered. Confirming adds it to stock.",
+        "confirmQuestion": "Confirm this inbound?",
+        "denied": "You cannot register inbounds."
+      },
+      "ADJUSTMENT": {
+        "label": "Adjustment",
+        "action": "Register an adjustment",
+        "effect": "Breakage, spillage or a count that did not match. Quantities go negative to take units out, positive to put them back, and the reason is part of the record.",
+        "confirmQuestion": "Confirm this adjustment?",
+        "denied": "You cannot register adjustments."
+      },
+      "TRANSFER": {
+        "label": "Transfer",
+        "action": "Register a transfer",
+        "effect": "Moves stock from one location to another. The total on hand does not change: confirming writes both sides at once.",
+        "confirmQuestion": "Confirm this transfer?",
+        "denied": "You cannot register transfers."
+      }
+    },
+    "status": {
+      "DRAFT": "draft",
+      "CONFIRMED": "confirmed",
+      "CANCELLED": "cancelled"
+    },
+    "history": {
+      "title": "Movement history",
+      "searchPlaceholder": "Search by code…",
+      "searchLabel": "Search movements by code",
+      "filterType": "Filter by type",
+      "filterStatus": "Filter by status",
+      "filterDate": "Filter by date",
+      "allTypes": "All types",
+      "allStatuses": "All statuses",
+      "loading": "Loading movements",
+      "loadFailed": "The history could not be loaded.",
+      "emptyFiltered": "No movements match those filters.",
+      "empty": "No movements recorded yet."
+    },
+    "card": {
+      "details": "Details",
+      "pdfTitle": "Download {code} as PDF",
+      "pdfFailed": "The PDF could not be downloaded"
+    },
+    "recent": {
+      "title": "Latest movements",
+      "fullHistory": "Full history",
+      "loading": "Loading the latest movements",
+      "loadFailed": "The latest movements could not be loaded.",
+      "empty": "Nothing has been recorded yet."
+    },
+    "detail": {
+      "metaTitle": "Movement",
+      "loading": "Loading the movement",
+      "notFound": "That movement is not available.",
+      "notFoundDescription": "It may have been removed, or it belongs to another organization.",
+      "backToHistory": "Movement history",
+      "draftNotice": "This is a draft: it is captured but has not touched stock. Confirming applies it in a single transaction; discarding closes it without moving anything.",
+      "occurredAt": "Occurred at",
+      "registeredBy": "Registered by",
+      "createdAt": "Created at",
+      "confirmedAt": "Confirmed at",
+      "cancelledAt": "Cancelled at",
+      "reason": "Reason",
+      "note": "Note",
+      "lines": "Lines ({count})",
+      "baseUnits": "{count} base {count, plural, one {unit} other {units}}",
+      "confirm": "Confirm",
+      "confirmedTitle": "Movement confirmed",
+      "confirmedDescription": "{code} was applied to stock.",
+      "confirmFailed": "Could not confirm the movement",
+      "cancel": {
+        "reason": "Reason",
+        "keep": "Keep it",
+        "draft": {
+          "verb": "Discard",
+          "title": "Discard {code}?",
+          "description": "The draft is closed and stops showing up as pending. Stock is untouched, because a draft never applied.",
+          "placeholder": "Why is it being discarded?",
+          "successTitle": "Draft discarded",
+          "successDescription": "{code} was closed without ever touching stock.",
+          "failed": "Could not discard the movement"
+        },
+        "confirmed": {
+          "verb": "Void",
+          "title": "Void {code}?",
+          "description": "Whatever this movement took from stock goes back. The movement is kept, marked as cancelled — the ledger is never rewritten.",
+          "placeholder": "Why is it being voided?",
+          "successTitle": "Movement voided",
+          "successDescription": "{code} was reverted and stock returned.",
+          "failed": "Could not void the movement"
+        }
+      }
+    },
+    "picker": {
+      "title": "Select products",
+      "loading": "Loading products",
+      "loadFailed": "The catalogue could not be loaded.",
+      "empty": "No products match those filters.",
+      "loadMore": "Load more products",
+      "perCase": "{count} per case",
+      "onHand": "{count} on hand",
+      "left": "{count} left",
+      "atLimit": "Only {count} left at this location",
+      "add": "Add {unit}",
+      "remove": "Remove {unit}"
+    },
+    "register": {
+      "pendingDraft": "A draft is already open from an attempt that could not be confirmed. Fixing the quantities and confirming again reuses it, so no second movement is created.",
+      "openDraft": "Open the draft",
+      "resumable": "<strong>{code}</strong> is still a draft here, with {count} {count, plural, one {line} other {lines}}. It was left open somewhere else — picking it up loads what was captured instead of starting again.",
+      "pickUp": "Pick it up",
+      "pickedUpTitle": "Draft picked up",
+      "pickedUpDescription": "What was captured is back. Confirming reuses it.",
+      "pickUpFailed": "Could not pick up the draft",
+      "fields": {
+        "occurredAt": {
+          "label": "Occurred at",
+          "hint": "Leave it empty to record it as happening now.",
+          "placeholder": "Now"
+        },
+        "location": {
+          "label": "Location",
+          "hint": "Which warehouse this movement lands on."
+        },
+        "origin": {
+          "label": "From",
+          "hint": "Where the stock is leaving from.",
+          "any": "Pick an origin",
+          "missing": "A transfer needs an origin."
+        },
+        "destination": {
+          "label": "To",
+          "hint": "Where it arrives. The total on hand does not change.",
+          "any": "Pick a destination",
+          "missing": "A transfer needs a destination."
+        },
+        "reason": {
+          "label": "Reason",
+          "hint": "Required, and kept on the audit trail.",
+          "placeholder": "Breakage, count variance…",
+          "tooShort": "At least {count} characters."
+        },
+        "note": {
+          "label": "Note",
+          "hint": "Optional context for whoever reads this later.",
+          "placeholder": "Delivery number, shift, requesting bar…"
+        }
+      },
+      "summary": {
+        "lines": "Lines",
+        "total": "Total",
+        "counts": "<strong>{products}</strong> {products, plural, one {product} other {products}} · <strong>{units}</strong> {unitsAbs, plural, one {unit} other {units}}"
+      },
+      "reasonRequired": "An adjustment needs a reason before it can be confirmed.",
+      "bothEndsRequired": "A transfer needs both ends named before it can be confirmed.",
+      "confirm": "Confirm",
+      "confirmDescription": "This writes <strong>{products} {products, plural, one {product} other {products}}</strong> to the ledger and moves <strong>{units} {unitsAbs, plural, one {unit} other {units}}</strong> — cases counted by their case size.",
+      "goBack": "Go back",
+      "registeredTitle": "Movement registered",
+      "registeredDescription": "{code} was confirmed and applied to stock.",
+      "registerFailed": "Could not register the movement",
+      "discard": "Discard",
+      "discardTitle": "Discard what you captured?",
+      "discardDescription": "Every line, the date and the note are cleared. No movement is created.",
+      "keep": "Keep it",
+      "discardedTitle": "Draft discarded",
+      "discardedNothingSent": "Nothing was sent to the ledger.",
+      "discardedDraftKept": "What you captured is cleared. The open draft stays in the history for a manager to void."
+    }
+  },
+  "stock": {
+    "denied": "You cannot see stock levels.",
+    "levels": {
+      "title": "Stock on hand",
+      "subtitle": "What the ledger says is in the cellar right now. A product that has never moved sits at zero.",
+      "searchPlaceholder": "Search by product…",
+      "searchLabel": "Search stock by product",
+      "filterCategory": "Filter by category",
+      "allCategories": "All categories",
+      "filterLocation": "Filter by location",
+      "loadFailed": "Stock could not be loaded.",
+      "loading": "Loading stock",
+      "caption": "Stock on hand by product",
+      "emptyFiltered": "No products match those filters.",
+      "empty": "The catalogue is empty.",
+      "columns": {
+        "product": "Product",
+        "category": "Category",
+        "onHand": "On hand",
+        "minimum": "Minimum",
+        "status": "Status"
+      },
+      "belowMinimum": "Below minimum",
+      "ok": "OK"
+    },
+    "low": {
+      "title": "Below minimum",
+      "all": "All stock",
+      "loading": "Loading the reorder list",
+      "loadFailed": "The reorder list could not be loaded.",
+      "empty": "Nothing is under its reorder threshold.",
+      "out": "Out"
+    },
+    "kardex": {
+      "metaTitle": "Kardex",
+      "loadingProduct": "Loading the product",
+      "notFound": "That product is not available.",
+      "notFoundDescription": "It may have been removed, or it belongs to another organization.",
+      "backToStock": "Stock on hand",
+      "inactive": "Inactive",
+      "onHand": "On hand",
+      "perCase": "{count} per case",
+      "minimum": "Minimum",
+      "caseSize": "Case size",
+      "linesLoaded": "Lines loaded",
+      "moreAvailable": "more available",
+      "loadFailed": "The kardex could not be loaded.",
+      "title": "Ledger lines",
+      "caption": "Confirmed ledger lines for {product}",
+      "loading": "Loading the kardex",
+      "empty": "This product has never moved.",
+      "emptyDescription": "Its stock stays at zero until a movement is confirmed.",
+      "columns": {
+        "occurredAt": "Occurred at",
+        "movement": "Movement",
+        "captured": "Captured",
+        "change": "Change",
+        "balance": "Balance"
+      }
+    }
+  },
+  "admin": {
+    "nav": "Administration",
+    "home": {
+      "empty": "Nothing here for your role.",
+      "emptyDescription": "Administration covers users, the catalogue taxonomy, branding and the audit log.",
+      "opening": "Opening administration"
+    },
+    "roles": {
+      "PLATFORM_ADMIN": "Platform admin",
+      "ORG_ADMIN": "Administrator",
+      "MANAGER": "Manager",
+      "OPERATOR": "Operator"
+    },
+    "roleDescriptions": {
+      "OPERATOR": "Registers dispatches and reads stock and history.",
+      "MANAGER": "Also inbounds, adjustments, voids and reports.",
+      "ORG_ADMIN": "Also the catalogue, users, branding and the audit log."
+    },
+    "statuses": {
+      "ACTIVE": "Active",
+      "INVITED": "Invited",
+      "SUSPENDED": "Suspended"
+    },
+    "users": {
+      "title": "Users",
+      "subtitle": "Who may do what. Segregation of duties is the point: whoever moves the stock is not who adjusts the numbers behind it.",
+      "new": "New member",
+      "loadFailed": "The members could not be loaded.",
+      "loading": "Loading members",
+      "caption": "Members of the organization",
+      "empty": "No members yet.",
+      "you": "you",
+      "never": "never",
+      "columns": {
+        "member": "Member",
+        "role": "Role",
+        "status": "Status",
+        "lastLogin": "Last sign-in",
+        "actions": "Actions"
+      },
+      "form": {
+        "createTitle": "New member",
+        "editTitle": "Edit {name}",
+        "description": "Roles come from one declarative matrix in the API. Hiding a button is not the control — the API enforces it.",
+        "name": "Name",
+        "email": "Email",
+        "password": "Password",
+        "passwordHandover": "Hand it over out of band; they can change it from their profile.",
+        "role": "Role",
+        "roleLockedSelf": "You cannot change your own role.",
+        "status": "Status",
+        "statusLockedSelf": "You cannot suspend your own account.",
+        "statusHint": "Suspending keeps the history and closes the door.",
+        "add": "Add",
+        "createdTitle": "Member added",
+        "createdDescription": "{name} can sign in now.",
+        "createFailed": "Could not add the member",
+        "savedTitle": "Member saved",
+        "savedDescription": "{name} was updated.",
+        "saveFailed": "Could not save the member"
+      }
+    },
+    "taxonomy": {
+      "name": "Name",
+      "rename": "Rename",
+      "sortOrder": "Display order",
+      "sortOrderHint": "Ascending. Ties fall back to the name.",
+      "columns": {
+        "name": "Name",
+        "sortOrder": "Order",
+        "productCount": "Products",
+        "actions": "Actions"
+      }
+    },
+    "categories": {
+      "title": "Categories",
+      "subtitle": "What a product is: rum, gin, whisky. They used to be loose strings on the product row.",
+      "new": "New category",
+      "loadFailed": "The categories could not be loaded.",
+      "loading": "Loading categories",
+      "empty": "No categories yet.",
+      "form": {
+        "createTitle": "New category",
+        "editTitle": "Rename {name}",
+        "description": "The slug it is unique by is derived from the name, so two categories cannot share one."
+      },
+      "delete": {
+        "title": "Delete {name}?",
+        "description": "Nothing references it, so it can go. Products already using another category keep it.",
+        "blockedInUse": "{count} {count, plural, one {product still references} other {products still reference}} it"
+      },
+      "notify": {
+        "created": "Category created",
+        "createdDescription": "{name} is available to products.",
+        "createFailed": "Could not create the category",
+        "saved": "Category saved",
+        "savedDescription": "{name} was updated.",
+        "saveFailed": "Could not save the category",
+        "deleted": "Category deleted",
+        "deletedDescription": "{name} is gone.",
+        "deleteFailed": "Could not delete the category"
+      }
+    },
+    "brands": {
+      "title": "Brands",
+      "subtitle": "Who makes it. A product may have none, which is why the field is optional.",
+      "new": "New brand",
+      "loadFailed": "The brands could not be loaded.",
+      "loading": "Loading brands",
+      "empty": "No brands yet.",
+      "form": {
+        "createTitle": "New brand",
+        "editTitle": "Rename {name}",
+        "description": "The slug it is unique by is derived from the name, so two brands cannot share one."
+      },
+      "delete": {
+        "title": "Delete {name}?",
+        "description": "Nothing references it, so it can go. Products already using another brand keep it.",
+        "blockedInUse": "{count} {count, plural, one {product still references} other {products still reference}} it"
+      },
+      "notify": {
+        "created": "Brand created",
+        "createdDescription": "{name} is available to products.",
+        "createFailed": "Could not create the brand",
+        "saved": "Brand saved",
+        "savedDescription": "{name} was updated.",
+        "saveFailed": "Could not save the brand",
+        "deleted": "Brand deleted",
+        "deletedDescription": "{name} is gone.",
+        "deleteFailed": "Could not delete the brand"
+      }
+    },
+    "organization": {
+      "title": "Organization",
+      "subtitle": "Where the branding comes from. Nothing here is hard-coded in the app: the interface and every PDF read these fields.",
+      "loading": "Loading the organization",
+      "loadFailed": "The organization could not be loaded.",
+      "name": "Trading name",
+      "nameHint": "Heads the interface and every document.",
+      "legalName": "Registered name",
+      "legalNameHint": "For documents that need the legal entity.",
+      "logoUrl": "Logo URL",
+      "logoUrlHint": "Absolute URL. Empty leaves the current one in place.",
+      "timezone": "Time zone",
+      "timezoneHint": "IANA name, like America/Bogota. Reports bucket by it.",
+      "slug": "Slug",
+      "created": "Created",
+      "reset": "Reset",
+      "savedTitle": "Organization saved",
+      "savedDescription": "The branding is updated everywhere it is read from.",
+      "saveFailed": "Could not save the organization"
+    },
+    "audit": {
+      "title": "Audit log",
+      "subtitle": "Who did what, when, and from where. Before this existed the app could not answer any of those.",
+      "entityPlaceholder": "Entity, like movement",
+      "entityLabel": "Filter by entity",
+      "actionPlaceholder": "Action, like movement.confirmed",
+      "actionLabel": "Filter by action",
+      "userLabel": "Filter by user",
+      "anyone": "Anyone",
+      "dateLabel": "Filter by date",
+      "loadFailed": "The audit log could not be loaded.",
+      "loading": "Loading the audit log",
+      "caption": "Audit trail",
+      "emptyFiltered": "Nothing matches those filters.",
+      "empty": "Nothing recorded yet.",
+      "system": "system",
+      "columns": {
+        "when": "When",
+        "who": "Who",
+        "action": "Action",
+        "entity": "Entity",
+        "detail": "Detail",
+        "from": "From"
+      }
+    }
+  },
+  "profile": {
+    "title": "Your profile",
+    "subtitle": "What the rest of the organization sees of you, and the password you sign in with.",
+    "details": {
+      "name": "Name",
+      "nameHint": "Shown on your movements and in the audit log.",
+      "avatarUrl": "Avatar URL",
+      "avatarUrlHint": "Absolute URL. Empty removes the current one.",
+      "email": "Email",
+      "role": "Role",
+      "immutable": "Neither can be changed here: the email identifies the account, and the role is an administrator’s call.",
+      "reset": "Reset",
+      "savedTitle": "Profile saved",
+      "savedDescription": "Your name is updated everywhere it is shown.",
+      "saveFailed": "Could not save the profile"
+    },
+    "password": {
+      "title": "Password",
+      "current": "Current password",
+      "new": "New password",
+      "repeat": "Repeat the new password",
+      "mismatch": "The two passwords do not match.",
+      "warning": "Signs out every session, this one included. You will sign in again with the new password.",
+      "submit": "Change",
+      "changedTitle": "Password changed",
+      "changedDescription": "Every session was signed out. Sign in again.",
+      "changeFailed": "Could not change the password"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Stock as it stands, and what has been recorded lately.",
+    "subtitleWithReports": "Stock as it stands, and what moved between {from} and {to}.",
+    "loadingSummary": "Loading the summary",
+    "summaryFailed": "The summary could not be loaded.",
+    "hints": {
+      "now": "right now",
+      "period": "in the period",
+      "confirmedInPeriod": "confirmed in the period"
+    },
+    "tiles": {
+      "unitsOnHand": "Units on hand",
+      "belowMinimum": "Below minimum",
+      "activeProducts": "Active products",
+      "productsMoved": "Products moved",
+      "movements": "Movements",
+      "unitsIn": "Units received",
+      "unitsOut": "Units dispatched",
+      "netAdjusted": "Net adjusted"
+    },
+    "activity": {
+      "title": "Activity",
+      "link": "Consumption",
+      "loading": "Loading the activity",
+      "loadFailed": "The activity could not be loaded.",
+      "empty": "Nothing moved in this period.",
+      "received": "Received",
+      "dispatched": "Dispatched",
+      "peak": "peak {count} units",
+      "chartLabel": "Units received and dispatched per {granularity} between {from} and {to}",
+      "caption": "Units received and dispatched per period",
+      "period": "Period",
+      "tooltip": "{period} — {in} in, {out} out"
+    }
+  },
+  "reports": {
+    "denied": "You cannot see reports.",
+    "periodLabel": "Period:",
+    "periods": {
+      "week": "Week",
+      "month": "Month",
+      "year": "Year"
+    },
+    "granularity": {
+      "day": "day",
+      "week": "week",
+      "month": "month"
+    },
+    "title": "Consumption",
+    "subtitle": "What left the cellar between {from} and {to}. Aggregated by the API, in SQL.",
+    "groupLabel": "Group:",
+    "groupings": {
+      "product": "By product",
+      "category": "By category",
+      "brand": "By brand"
+    },
+    "tiles": {
+      "movements": "Movements",
+      "unitsOut": "Units dispatched",
+      "unitsIn": "Units received",
+      "productsMoved": "Products moved"
+    },
+    "loading": "Loading the report",
+    "loadFailed": "The report could not be loaded.",
+    "empty": "Nothing was dispatched in this period.",
+    "mostDispatched": "Most dispatched",
+    "ranking": "Ranking",
+    "inMovements": "in {count} {count, plural, one {movement} other {movements}}"
+  },
+  "catalog": {
+    "title": "Catalogue",
+    "subtitleManage": "What can be moved, and the case size every quantity is normalized with.",
+    "subtitleRead": "What can be moved. Editing it needs the catalogue permission.",
+    "new": "New product",
+    "loadFailed": "The catalogue could not be loaded.",
+    "loading": "Loading the catalogue",
+    "caption": "Products in the catalogue",
+    "empty": "No products match those filters.",
+    "noBrand": "No brand",
+    "active": "Active",
+    "deactivated": "Deactivated",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "columns": {
+      "product": "Product",
+      "category": "Category",
+      "details": "Details",
+      "caseSize": "Per case",
+      "minimum": "Minimum",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "toggle": {
+      "activateTitle": "Activate {name}?",
+      "activateDescription": "It becomes available for new movements again.",
+      "deactivateTitle": "Deactivate {name}?",
+      "deactivateDescription": "It stays in the ledger and in every past movement, but stops being offered for new ones.",
+      "activatedTitle": "Product activated",
+      "activatedDescription": "{name} is available again.",
+      "deactivatedTitle": "Product deactivated",
+      "deactivatedDescription": "{name} stops showing up when registering movements.",
+      "failed": "Could not change the product"
+    },
+    "filters": {
+      "searchPlaceholder": "Search by name…",
+      "searchLabel": "Search products",
+      "category": "Filter by category",
+      "allCategories": "All categories",
+      "status": "Filter by status",
+      "statuses": {
+        "active": "Active",
+        "inactive": "Deactivated",
+        "all": "Any status"
+      },
+      "advanced": "Advanced",
+      "clearAdvanced": "Clear advanced",
+      "brand": "Brand",
+      "allBrands": "All brands",
+      "origin": "Origin",
+      "allOrigins": "All origins",
+      "subcategory": "Subcategory",
+      "allSubcategories": "All subcategories",
+      "age": "Age",
+      "allAges": "All ages",
+      "abv": "ABV",
+      "allAbvs": "All ABVs"
+    },
+    "form": {
+      "createTitle": "New product",
+      "editTitle": "Edit {name}",
+      "description": "Products are never deleted, only deactivated: the ledger references them.",
+      "name": "Name",
+      "namePlaceholder": "Havana Club 7 Años",
+      "category": "Category",
+      "pickCategory": "Pick a category",
+      "brand": "Brand",
+      "noBrand": "No brand",
+      "brandHint": "A brand can be changed, not removed.",
+      "subcategory": "Subcategory",
+      "subcategoryPlaceholder": "Añejo",
+      "origin": "Origin",
+      "originPlaceholder": "Cuba",
+      "abv": "ABV (%)",
+      "age": "Age",
+      "agePlaceholder": "7 años",
+      "caseSize": "Case size",
+      "caseSizeHintNew": "Singles per case. Quantities are normalized with it.",
+      "caseSizeHintEdit": "Fixed after creation: it is the divisor behind every quantity already recorded.",
+      "minimumStock": "Minimum stock",
+      "minimumStockHint": "Reorder threshold, in singles. Empty means no alert.",
+      "createdTitle": "Product created",
+      "createdDescription": "{name} joined the catalogue.",
+      "createFailed": "Could not create the product",
+      "updatedTitle": "Product updated",
+      "updatedDescription": "{name} was saved.",
+      "updateFailed": "Could not update the product"
+    }
+  },
+  "locations": {
+    "select": {
+      "default": "Default location",
+      "isDefault": "{name} (default)"
+    },
+    "title": "Locations",
+    "subtitle": "Where stock lives. Every level and every ledger line belongs to one, and a transfer moves units between two without changing the total.",
+    "new": "New location",
+    "loadFailed": "The locations could not be loaded.",
+    "loading": "Loading locations",
+    "caption": "Locations",
+    "empty": "No locations yet.",
+    "columns": {
+      "name": "Name",
+      "movementCount": "Ledger lines",
+      "actions": "Actions"
+    },
+    "default": "Default",
+    "makeDefault": "Make default",
+    "rename": "Rename",
+    "form": {
+      "createTitle": "New location",
+      "editTitle": "Rename {name}",
+      "description": "Where stock lives. A movement that names none lands on the default.",
+      "name": "Name",
+      "makeDefault": "Make it the default",
+      "makeDefaultHint": "The current default is demoted. There is always exactly one."
+    },
+    "notify": {
+      "created": "Location created",
+      "createdDescription": "{name} can receive stock now.",
+      "saved": "Location saved",
+      "savedDescription": "{name} was updated.",
+      "saveFailed": "Could not save the location",
+      "deleted": "Location deleted",
+      "deletedDescription": "{name} is gone.",
+      "deleteFailed": "Could not delete the location",
+      "defaultChanged": "Default changed",
+      "defaultChangedDescription": "{name} is where movements land now.",
+      "defaultChangeFailed": "Could not change the default"
+    },
+    "delete": {
+      "title": "Delete {name}?",
+      "description": "No ledger line references it, so it can go without leaving a gap in the history.",
+      "blockedDefault": "The default cannot be deleted: promote another one first",
+      "blockedInUse": "{count} ledger {count, plural, one {line references} other {lines reference}} it"
+    }
+  }
+}

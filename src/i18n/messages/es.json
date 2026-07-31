@@ -1,0 +1,767 @@
+{
+  "metadata": {
+    "description": "Inventario de licores para bares, casinos y restaurantes: existencias en vivo, movimientos auditables y reportes de consumo."
+  },
+  "common": {
+    "language": {
+      "label": "Idioma"
+    },
+    "actions": {
+      "cancel": "Cancelar",
+      "clearFilters": "Limpiar filtros",
+      "close": "Cerrar",
+      "create": "Crear",
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "loadMore": "Cargar más",
+      "retry": "Reintentar",
+      "save": "Guardar",
+      "search": "Buscar"
+    },
+    "states": {
+      "loading": "Cargando…",
+      "loadedCount": "{count} cargados",
+      "moreAvailable": "— hay más",
+      "nothingToShow": "No hay nada que mostrar.",
+      "none": "—",
+      "tryAgain": "Inténtalo de nuevo.",
+      "apiUnreachable": "Comprueba que la API esté disponible e inténtalo de nuevo."
+    },
+    "units": {
+      "bottle": "{count, plural, one {botella} other {botellas}}",
+      "case": "{count, plural, one {caja} other {cajas}}",
+      "line": "{count, plural, one {línea} other {líneas}}",
+      "movement": "{count, plural, one {movimiento} other {movimientos}}",
+      "product": "{count, plural, one {producto} other {productos}}",
+      "unit": "{count, plural, one {unidad} other {unidades}}"
+    },
+    "passwordPolicy": "Al menos 12 caracteres, con minúscula, mayúscula y un dígito.",
+    "datePicker": {
+      "placeholder": "Elegir fecha",
+      "previousMonth": "Mes anterior",
+      "nextMonth": "Mes siguiente",
+      "clear": "Quitar la fecha"
+    }
+  },
+  "nav": {
+    "main": "Principal",
+    "items": {
+      "dashboard": "Panel",
+      "stock": "Existencias",
+      "movements": "Movimientos",
+      "catalog": "Catálogo",
+      "reports": "Reportes",
+      "admin": "Administración",
+      "adminUsers": "Usuarios",
+      "adminCategories": "Categorías",
+      "adminBrands": "Marcas",
+      "adminLocations": "Bodegas",
+      "adminOrganization": "Organización",
+      "adminAudit": "Auditoría"
+    },
+    "account": {
+      "menu": "Menú de la cuenta",
+      "menuFor": "Menú de la cuenta de {name}",
+      "profile": "Tu perfil",
+      "signOut": "Cerrar sesión"
+    }
+  },
+  "auth": {
+    "tagline": "Gestión de inventario de licores",
+    "fields": {
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "password": "Contraseña"
+    },
+    "signIn": {
+      "title": "Iniciar sesión",
+      "submit": "Entrar",
+      "loadingForm": "Cargando el formulario",
+      "failed": "No se pudo iniciar sesión. Inténtalo de nuevo.",
+      "noAccount": "¿Aún no tienes cuenta?",
+      "createOne": "Crea una"
+    },
+    "register": {
+      "title": "Crear una cuenta",
+      "submit": "Crear cuenta",
+      "failed": "No se pudo crear la cuenta. Inténtalo de nuevo.",
+      "haveAccount": "¿Ya tienes cuenta?",
+      "signIn": "Inicia sesión"
+    },
+    "google": {
+      "separator": "o",
+      "signIn": "Continuar con Google",
+      "signUp": "Registrarse con Google"
+    },
+    "callback": {
+      "failedTitle": "El inicio de sesión no se completó",
+      "failedDescription": "Google te devolvió sin una sesión utilizable. Inténtalo de nuevo.",
+      "backToSignIn": "Volver a iniciar sesión",
+      "completing": "Completando el inicio de sesión…"
+    },
+    "guard": {
+      "loadingSession": "Cargando tu sesión"
+    },
+    "permissionGate": {
+      "title": "No tienes acceso a esta sección.",
+      "description": "Pídele el permiso a un administrador si lo necesitas."
+    }
+  },
+  "movements": {
+    "types": {
+      "OUTBOUND": {
+        "label": "Salida",
+        "action": "Registrar una salida",
+        "effect": "La mercancía sale de la bodega al confirmar. Antes de eso no se mueve nada.",
+        "confirmQuestion": "¿Confirmar esta salida?",
+        "denied": "No puedes registrar salidas."
+      },
+      "INBOUND": {
+        "label": "Entrada",
+        "action": "Registrar una entrada",
+        "effect": "Lo que entregó el proveedor. Al confirmar se suma a las existencias.",
+        "confirmQuestion": "¿Confirmar esta entrada?",
+        "denied": "No puedes registrar entradas."
+      },
+      "ADJUSTMENT": {
+        "label": "Ajuste",
+        "action": "Registrar un ajuste",
+        "effect": "Rotura, derrame o un conteo que no cuadró. Las cantidades van en negativo para descontar y en positivo para devolver, y el motivo queda en el registro.",
+        "confirmQuestion": "¿Confirmar este ajuste?",
+        "denied": "No puedes registrar ajustes."
+      },
+      "TRANSFER": {
+        "label": "Traspaso",
+        "action": "Registrar un traspaso",
+        "effect": "Mueve existencias de una bodega a otra. El total no cambia: al confirmar se escriben las dos puntas a la vez.",
+        "confirmQuestion": "¿Confirmar este traspaso?",
+        "denied": "No puedes registrar traspasos."
+      }
+    },
+    "status": {
+      "DRAFT": "borrador",
+      "CONFIRMED": "confirmado",
+      "CANCELLED": "anulado"
+    },
+    "history": {
+      "title": "Historial de movimientos",
+      "searchPlaceholder": "Buscar por código…",
+      "searchLabel": "Buscar movimientos por código",
+      "filterType": "Filtrar por tipo",
+      "filterStatus": "Filtrar por estado",
+      "filterDate": "Filtrar por fecha",
+      "allTypes": "Todos los tipos",
+      "allStatuses": "Todos los estados",
+      "loading": "Cargando movimientos",
+      "loadFailed": "No se pudo cargar el historial.",
+      "emptyFiltered": "Ningún movimiento coincide con esos filtros.",
+      "empty": "Todavía no se ha registrado ningún movimiento."
+    },
+    "card": {
+      "details": "Detalle",
+      "pdfTitle": "Descargar {code} en PDF",
+      "pdfFailed": "No se pudo descargar el PDF"
+    },
+    "recent": {
+      "title": "Últimos movimientos",
+      "fullHistory": "Ver el historial",
+      "loading": "Cargando los últimos movimientos",
+      "loadFailed": "No se pudieron cargar los últimos movimientos.",
+      "empty": "Todavía no se ha registrado nada."
+    },
+    "detail": {
+      "metaTitle": "Movimiento",
+      "loading": "Cargando el movimiento",
+      "notFound": "Ese movimiento no está disponible.",
+      "notFoundDescription": "Puede que se haya eliminado, o que pertenezca a otra organización.",
+      "backToHistory": "Historial de movimientos",
+      "draftNotice": "Esto es un borrador: está capturado pero no ha tocado las existencias. Confirmarlo lo aplica en una sola transacción; descartarlo lo cierra sin mover nada.",
+      "occurredAt": "Ocurrió el",
+      "registeredBy": "Registrado por",
+      "createdAt": "Creado el",
+      "confirmedAt": "Confirmado el",
+      "cancelledAt": "Anulado el",
+      "reason": "Motivo",
+      "note": "Nota",
+      "lines": "Líneas ({count})",
+      "baseUnits": "{count} {count, plural, one {unidad base} other {unidades base}}",
+      "confirm": "Confirmar",
+      "confirmedTitle": "Movimiento confirmado",
+      "confirmedDescription": "{code} se aplicó a las existencias.",
+      "confirmFailed": "No se pudo confirmar el movimiento",
+      "cancel": {
+        "reason": "Motivo",
+        "keep": "Conservarlo",
+        "draft": {
+          "verb": "Descartar",
+          "title": "¿Descartar {code}?",
+          "description": "El borrador se cierra y deja de aparecer como pendiente. Las existencias quedan intactas, porque un borrador nunca llegó a aplicarse.",
+          "placeholder": "¿Por qué se descarta?",
+          "successTitle": "Borrador descartado",
+          "successDescription": "{code} se cerró sin haber tocado las existencias.",
+          "failed": "No se pudo descartar el movimiento"
+        },
+        "confirmed": {
+          "verb": "Anular",
+          "title": "¿Anular {code}?",
+          "description": "Lo que este movimiento tomó de las existencias vuelve. El movimiento se conserva, marcado como anulado: el ledger no se reescribe.",
+          "placeholder": "¿Por qué se anula?",
+          "successTitle": "Movimiento anulado",
+          "successDescription": "{code} se revirtió y las existencias volvieron.",
+          "failed": "No se pudo anular el movimiento"
+        }
+      }
+    },
+    "picker": {
+      "title": "Selecciona los productos",
+      "loading": "Cargando productos",
+      "loadFailed": "No se pudo cargar el catálogo.",
+      "empty": "Ningún producto coincide con esos filtros.",
+      "loadMore": "Cargar más productos",
+      "perCase": "{count} por caja",
+      "onHand": "{count} en existencia",
+      "left": "quedan {count}",
+      "atLimit": "Solo quedan {count} en esta bodega",
+      "add": "Añadir {unit}",
+      "remove": "Quitar {unit}"
+    },
+    "register": {
+      "pendingDraft": "Ya hay un borrador abierto de un intento que no se pudo confirmar. Si corriges las cantidades y confirmas otra vez, se reutiliza y no se crea un segundo movimiento.",
+      "openDraft": "Abrir el borrador",
+      "resumable": "<strong>{code}</strong> sigue como borrador aquí, con {count} {count, plural, one {línea} other {líneas}}. Quedó abierto en otro sitio: recuperarlo carga lo que ya se había capturado en vez de empezar de cero.",
+      "pickUp": "Recuperarlo",
+      "pickedUpTitle": "Borrador recuperado",
+      "pickedUpDescription": "Lo que se había capturado está de vuelta. Al confirmar se reutiliza.",
+      "pickUpFailed": "No se pudo recuperar el borrador",
+      "fields": {
+        "occurredAt": {
+          "label": "Ocurrió el",
+          "hint": "Déjalo vacío para registrarlo como ahora.",
+          "placeholder": "Ahora"
+        },
+        "location": {
+          "label": "Bodega",
+          "hint": "En qué bodega cae este movimiento."
+        },
+        "origin": {
+          "label": "Desde",
+          "hint": "De dónde sale la mercancía.",
+          "any": "Elige un origen",
+          "missing": "Un traspaso necesita un origen."
+        },
+        "destination": {
+          "label": "Hacia",
+          "hint": "A dónde llega. El total en existencia no cambia.",
+          "any": "Elige un destino",
+          "missing": "Un traspaso necesita un destino."
+        },
+        "reason": {
+          "label": "Motivo",
+          "hint": "Obligatorio, y queda en la traza de auditoría.",
+          "placeholder": "Rotura, diferencia de conteo…",
+          "tooShort": "Al menos {count} caracteres."
+        },
+        "note": {
+          "label": "Nota",
+          "hint": "Contexto opcional para quien lea esto más adelante.",
+          "placeholder": "Número de remisión, turno, barra que lo pidió…"
+        }
+      },
+      "summary": {
+        "lines": "Líneas",
+        "total": "Total",
+        "counts": "<strong>{products}</strong> {products, plural, one {producto} other {productos}} · <strong>{units}</strong> {unitsAbs, plural, one {unidad} other {unidades}}"
+      },
+      "reasonRequired": "Un ajuste necesita un motivo antes de poder confirmarse.",
+      "bothEndsRequired": "Un traspaso necesita las dos puntas antes de poder confirmarse.",
+      "confirm": "Confirmar",
+      "confirmDescription": "Esto escribe <strong>{products} {products, plural, one {producto} other {productos}}</strong> en el ledger y mueve <strong>{units} {unitsAbs, plural, one {unidad} other {unidades}}</strong> — las cajas cuentan según su tamaño.",
+      "goBack": "Volver",
+      "registeredTitle": "Movimiento registrado",
+      "registeredDescription": "{code} se confirmó y se aplicó a las existencias.",
+      "registerFailed": "No se pudo registrar el movimiento",
+      "discard": "Descartar",
+      "discardTitle": "¿Descartar lo que capturaste?",
+      "discardDescription": "Se limpian todas las líneas, la fecha y la nota. No se crea ningún movimiento.",
+      "keep": "Conservarlo",
+      "discardedTitle": "Borrador descartado",
+      "discardedNothingSent": "No se envió nada al ledger.",
+      "discardedDraftKept": "Lo que capturaste se limpió. El borrador abierto queda en el historial para que un encargado lo anule."
+    }
+  },
+  "stock": {
+    "denied": "No puedes ver las existencias.",
+    "levels": {
+      "title": "Existencias",
+      "subtitle": "Lo que el ledger dice que hay en bodega ahora mismo. Un producto que nunca se ha movido está en cero.",
+      "searchPlaceholder": "Buscar por producto…",
+      "searchLabel": "Buscar existencias por producto",
+      "filterCategory": "Filtrar por categoría",
+      "allCategories": "Todas las categorías",
+      "filterLocation": "Filtrar por bodega",
+      "loadFailed": "No se pudieron cargar las existencias.",
+      "loading": "Cargando existencias",
+      "caption": "Existencias por producto",
+      "emptyFiltered": "Ningún producto coincide con esos filtros.",
+      "empty": "El catálogo está vacío.",
+      "columns": {
+        "product": "Producto",
+        "category": "Categoría",
+        "onHand": "En existencia",
+        "minimum": "Mínimo",
+        "status": "Estado"
+      },
+      "belowMinimum": "Bajo mínimo",
+      "ok": "OK"
+    },
+    "low": {
+      "title": "Bajo mínimo",
+      "all": "Ver existencias",
+      "loading": "Cargando la lista de reposición",
+      "loadFailed": "No se pudo cargar la lista de reposición.",
+      "empty": "Nada está por debajo de su mínimo.",
+      "out": "Agotado"
+    },
+    "kardex": {
+      "metaTitle": "Kardex",
+      "loadingProduct": "Cargando el producto",
+      "notFound": "Ese producto no está disponible.",
+      "notFoundDescription": "Puede que se haya eliminado, o que pertenezca a otra organización.",
+      "backToStock": "Existencias",
+      "inactive": "Inactivo",
+      "onHand": "En existencia",
+      "perCase": "{count} por caja",
+      "minimum": "Mínimo",
+      "caseSize": "Tamaño de caja",
+      "linesLoaded": "Líneas cargadas",
+      "moreAvailable": "hay más",
+      "loadFailed": "No se pudo cargar el kardex.",
+      "title": "Líneas del ledger",
+      "caption": "Líneas confirmadas del ledger de {product}",
+      "loading": "Cargando el kardex",
+      "empty": "Este producto nunca se ha movido.",
+      "emptyDescription": "Sus existencias quedan en cero hasta que se confirme un movimiento.",
+      "columns": {
+        "occurredAt": "Ocurrió el",
+        "movement": "Movimiento",
+        "captured": "Capturado",
+        "change": "Cambio",
+        "balance": "Saldo"
+      }
+    }
+  },
+  "admin": {
+    "nav": "Administración",
+    "home": {
+      "empty": "Aquí no hay nada para tu rol.",
+      "emptyDescription": "La administración cubre usuarios, la taxonomía del catálogo, la marca de la organización y el log de auditoría.",
+      "opening": "Abriendo la administración"
+    },
+    "roles": {
+      "PLATFORM_ADMIN": "Admin de plataforma",
+      "ORG_ADMIN": "Administrador",
+      "MANAGER": "Encargado",
+      "OPERATOR": "Operador"
+    },
+    "roleDescriptions": {
+      "OPERATOR": "Registra salidas y consulta existencias e historial.",
+      "MANAGER": "Además entradas, ajustes, anulaciones y reportes.",
+      "ORG_ADMIN": "Además el catálogo, los usuarios, la marca y el log de auditoría."
+    },
+    "statuses": {
+      "ACTIVE": "Activo",
+      "INVITED": "Invitado",
+      "SUSPENDED": "Suspendido"
+    },
+    "users": {
+      "title": "Usuarios",
+      "subtitle": "Quién puede hacer qué. La segregación de funciones es el punto: quien mueve la mercancía no es quien ajusta los números que la respaldan.",
+      "new": "Nuevo miembro",
+      "loadFailed": "No se pudieron cargar los miembros.",
+      "loading": "Cargando miembros",
+      "caption": "Miembros de la organización",
+      "empty": "Todavía no hay miembros.",
+      "you": "tú",
+      "never": "nunca",
+      "columns": {
+        "member": "Miembro",
+        "role": "Rol",
+        "status": "Estado",
+        "lastLogin": "Último ingreso",
+        "actions": "Acciones"
+      },
+      "form": {
+        "createTitle": "Nuevo miembro",
+        "editTitle": "Editar a {name}",
+        "description": "Los roles salen de una única matriz declarativa en la API. Ocultar un botón no es el control: quien lo aplica es la API.",
+        "name": "Nombre",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "passwordHandover": "Entrégasela por otro canal; puede cambiarla desde su perfil.",
+        "role": "Rol",
+        "roleLockedSelf": "No puedes cambiar tu propio rol.",
+        "status": "Estado",
+        "statusLockedSelf": "No puedes suspender tu propia cuenta.",
+        "statusHint": "Suspender conserva el historial y cierra la puerta.",
+        "add": "Añadir",
+        "createdTitle": "Miembro añadido",
+        "createdDescription": "{name} ya puede iniciar sesión.",
+        "createFailed": "No se pudo añadir al miembro",
+        "savedTitle": "Miembro guardado",
+        "savedDescription": "{name} se actualizó.",
+        "saveFailed": "No se pudo guardar al miembro"
+      }
+    },
+    "taxonomy": {
+      "name": "Nombre",
+      "rename": "Renombrar",
+      "sortOrder": "Orden de visualización",
+      "sortOrderHint": "Ascendente. Los empates se resuelven por nombre.",
+      "columns": {
+        "name": "Nombre",
+        "sortOrder": "Orden",
+        "productCount": "Productos",
+        "actions": "Acciones"
+      }
+    },
+    "categories": {
+      "title": "Categorías",
+      "subtitle": "Qué es un producto: ron, ginebra, whisky. Antes eran cadenas sueltas en la fila del producto.",
+      "new": "Nueva categoría",
+      "loadFailed": "No se pudieron cargar las categorías.",
+      "loading": "Cargando categorías",
+      "empty": "Todavía no hay categorías.",
+      "form": {
+        "createTitle": "Nueva categoría",
+        "editTitle": "Renombrar {name}",
+        "description": "El slug por el que es única se deriva del nombre, así que dos categorías no pueden compartirlo."
+      },
+      "delete": {
+        "title": "¿Eliminar {name}?",
+        "description": "Nada la referencia, así que puede irse. Los productos que ya usan otra categoría la conservan.",
+        "blockedInUse": "{count} {count, plural, one {producto la referencia} other {productos la referencian}}"
+      },
+      "notify": {
+        "created": "Categoría creada",
+        "createdDescription": "{name} ya está disponible para los productos.",
+        "createFailed": "No se pudo crear la categoría",
+        "saved": "Categoría guardada",
+        "savedDescription": "{name} se actualizó.",
+        "saveFailed": "No se pudo guardar la categoría",
+        "deleted": "Categoría eliminada",
+        "deletedDescription": "{name} ya no existe.",
+        "deleteFailed": "No se pudo eliminar la categoría"
+      }
+    },
+    "brands": {
+      "title": "Marcas",
+      "subtitle": "Quién lo hace. Un producto puede no tener ninguna, y por eso el campo es opcional.",
+      "new": "Nueva marca",
+      "loadFailed": "No se pudieron cargar las marcas.",
+      "loading": "Cargando marcas",
+      "empty": "Todavía no hay marcas.",
+      "form": {
+        "createTitle": "Nueva marca",
+        "editTitle": "Renombrar {name}",
+        "description": "El slug por el que es única se deriva del nombre, así que dos marcas no pueden compartirlo."
+      },
+      "delete": {
+        "title": "¿Eliminar {name}?",
+        "description": "Nada la referencia, así que puede irse. Los productos que ya usan otra marca la conservan.",
+        "blockedInUse": "{count} {count, plural, one {producto la referencia} other {productos la referencian}}"
+      },
+      "notify": {
+        "created": "Marca creada",
+        "createdDescription": "{name} ya está disponible para los productos.",
+        "createFailed": "No se pudo crear la marca",
+        "saved": "Marca guardada",
+        "savedDescription": "{name} se actualizó.",
+        "saveFailed": "No se pudo guardar la marca",
+        "deleted": "Marca eliminada",
+        "deletedDescription": "{name} ya no existe.",
+        "deleteFailed": "No se pudo eliminar la marca"
+      }
+    },
+    "organization": {
+      "title": "Organización",
+      "subtitle": "De aquí sale la marca. Nada de esto está quemado en la aplicación: la interfaz y cada PDF leen estos campos.",
+      "loading": "Cargando la organización",
+      "loadFailed": "No se pudo cargar la organización.",
+      "name": "Nombre comercial",
+      "nameHint": "Encabeza la interfaz y todos los documentos.",
+      "legalName": "Razón social",
+      "legalNameHint": "Para los documentos que necesitan la entidad legal.",
+      "logoUrl": "URL del logo",
+      "logoUrlHint": "URL absoluta. Vacío deja el actual en su sitio.",
+      "timezone": "Zona horaria",
+      "timezoneHint": "Nombre IANA, como America/Bogota. Los reportes agrupan por ella.",
+      "slug": "Slug",
+      "created": "Creada",
+      "reset": "Restablecer",
+      "savedTitle": "Organización guardada",
+      "savedDescription": "La marca queda actualizada en todos los sitios que la leen.",
+      "saveFailed": "No se pudo guardar la organización"
+    },
+    "audit": {
+      "title": "Log de auditoría",
+      "subtitle": "Quién hizo qué, cuándo y desde dónde. Antes de que esto existiera la aplicación no podía responder a ninguna de las tres.",
+      "entityPlaceholder": "Entidad, por ejemplo movement",
+      "entityLabel": "Filtrar por entidad",
+      "actionPlaceholder": "Acción, por ejemplo movement.confirmed",
+      "actionLabel": "Filtrar por acción",
+      "userLabel": "Filtrar por usuario",
+      "anyone": "Cualquiera",
+      "dateLabel": "Filtrar por fecha",
+      "loadFailed": "No se pudo cargar el log de auditoría.",
+      "loading": "Cargando el log de auditoría",
+      "caption": "Traza de auditoría",
+      "emptyFiltered": "Nada coincide con esos filtros.",
+      "empty": "Todavía no se ha registrado nada.",
+      "system": "sistema",
+      "columns": {
+        "when": "Cuándo",
+        "who": "Quién",
+        "action": "Acción",
+        "entity": "Entidad",
+        "detail": "Detalle",
+        "from": "Desde"
+      }
+    }
+  },
+  "profile": {
+    "title": "Tu perfil",
+    "subtitle": "Lo que el resto de la organización ve de ti, y la contraseña con la que entras.",
+    "details": {
+      "name": "Nombre",
+      "nameHint": "Aparece en tus movimientos y en el log de auditoría.",
+      "avatarUrl": "URL del avatar",
+      "avatarUrlHint": "URL absoluta. Vacío quita la actual.",
+      "email": "Correo electrónico",
+      "role": "Rol",
+      "immutable": "Ninguno de los dos se cambia aquí: el correo identifica la cuenta, y el rol lo decide un administrador.",
+      "reset": "Restablecer",
+      "savedTitle": "Perfil guardado",
+      "savedDescription": "Tu nombre queda actualizado en todos los sitios donde se muestra.",
+      "saveFailed": "No se pudo guardar el perfil"
+    },
+    "password": {
+      "title": "Contraseña",
+      "current": "Contraseña actual",
+      "new": "Contraseña nueva",
+      "repeat": "Repite la contraseña nueva",
+      "mismatch": "Las dos contraseñas no coinciden.",
+      "warning": "Cierra todas las sesiones, incluida esta. Volverás a entrar con la contraseña nueva.",
+      "submit": "Cambiar",
+      "changedTitle": "Contraseña cambiada",
+      "changedDescription": "Se cerraron todas las sesiones. Vuelve a iniciar sesión.",
+      "changeFailed": "No se pudo cambiar la contraseña"
+    }
+  },
+  "dashboard": {
+    "title": "Panel",
+    "subtitle": "Las existencias tal como están, y lo que se ha registrado últimamente.",
+    "subtitleWithReports": "Las existencias tal como están, y lo que se movió entre {from} y {to}.",
+    "loadingSummary": "Cargando el resumen",
+    "summaryFailed": "No se pudo cargar el resumen.",
+    "hints": {
+      "now": "ahora mismo",
+      "period": "en el periodo",
+      "confirmedInPeriod": "confirmados en el periodo"
+    },
+    "tiles": {
+      "unitsOnHand": "Unidades en existencia",
+      "belowMinimum": "Bajo mínimo",
+      "activeProducts": "Productos activos",
+      "productsMoved": "Productos movidos",
+      "movements": "Movimientos",
+      "unitsIn": "Unidades recibidas",
+      "unitsOut": "Unidades despachadas",
+      "netAdjusted": "Ajuste neto"
+    },
+    "activity": {
+      "title": "Actividad",
+      "link": "Consumo",
+      "loading": "Cargando la actividad",
+      "loadFailed": "No se pudo cargar la actividad.",
+      "empty": "No se movió nada en este periodo.",
+      "received": "Recibido",
+      "dispatched": "Despachado",
+      "peak": "pico de {count} unidades",
+      "chartLabel": "Unidades recibidas y despachadas por {granularity} entre {from} y {to}",
+      "caption": "Unidades recibidas y despachadas por periodo",
+      "period": "Periodo",
+      "tooltip": "{period} — {in} recibidas, {out} despachadas"
+    }
+  },
+  "reports": {
+    "denied": "No puedes ver los reportes.",
+    "periodLabel": "Periodo:",
+    "periods": {
+      "week": "Semana",
+      "month": "Mes",
+      "year": "Año"
+    },
+    "granularity": {
+      "day": "día",
+      "week": "semana",
+      "month": "mes"
+    },
+    "title": "Consumo",
+    "subtitle": "Lo que salió de la bodega entre {from} y {to}. Agregado por la API, en SQL.",
+    "groupLabel": "Agrupar:",
+    "groupings": {
+      "product": "Por producto",
+      "category": "Por categoría",
+      "brand": "Por marca"
+    },
+    "tiles": {
+      "movements": "Movimientos",
+      "unitsOut": "Unidades despachadas",
+      "unitsIn": "Unidades recibidas",
+      "productsMoved": "Productos movidos"
+    },
+    "loading": "Cargando el reporte",
+    "loadFailed": "No se pudo cargar el reporte.",
+    "empty": "No se despachó nada en este periodo.",
+    "mostDispatched": "Lo más despachado",
+    "ranking": "Ranking",
+    "inMovements": "en {count} {count, plural, one {movimiento} other {movimientos}}"
+  },
+  "catalog": {
+    "title": "Catálogo",
+    "subtitleManage": "Lo que se puede mover, y el tamaño de caja con el que se normaliza cada cantidad.",
+    "subtitleRead": "Lo que se puede mover. Editarlo necesita el permiso de catálogo.",
+    "new": "Nuevo producto",
+    "loadFailed": "No se pudo cargar el catálogo.",
+    "loading": "Cargando el catálogo",
+    "caption": "Productos del catálogo",
+    "empty": "Ningún producto coincide con esos filtros.",
+    "noBrand": "Sin marca",
+    "active": "Activo",
+    "deactivated": "Desactivado",
+    "activate": "Activar",
+    "deactivate": "Desactivar",
+    "columns": {
+      "product": "Producto",
+      "category": "Categoría",
+      "details": "Detalles",
+      "caseSize": "Por caja",
+      "minimum": "Mínimo",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "toggle": {
+      "activateTitle": "¿Activar {name}?",
+      "activateDescription": "Vuelve a estar disponible para nuevos movimientos.",
+      "deactivateTitle": "¿Desactivar {name}?",
+      "deactivateDescription": "Se conserva en el ledger y en todos los movimientos pasados, pero deja de ofrecerse para los nuevos.",
+      "activatedTitle": "Producto activado",
+      "activatedDescription": "{name} vuelve a estar disponible.",
+      "deactivatedTitle": "Producto desactivado",
+      "deactivatedDescription": "{name} deja de aparecer al registrar movimientos.",
+      "failed": "No se pudo cambiar el producto"
+    },
+    "filters": {
+      "searchPlaceholder": "Buscar por nombre…",
+      "searchLabel": "Buscar productos",
+      "category": "Filtrar por categoría",
+      "allCategories": "Todas las categorías",
+      "status": "Filtrar por estado",
+      "statuses": {
+        "active": "Activos",
+        "inactive": "Desactivados",
+        "all": "Cualquier estado"
+      },
+      "advanced": "Avanzado",
+      "clearAdvanced": "Limpiar los avanzados",
+      "brand": "Marca",
+      "allBrands": "Todas las marcas",
+      "origin": "Origen",
+      "allOrigins": "Todos los orígenes",
+      "subcategory": "Subcategoría",
+      "allSubcategories": "Todas las subcategorías",
+      "age": "Añejamiento",
+      "allAges": "Todos los añejamientos",
+      "abv": "Graduación",
+      "allAbvs": "Todas las graduaciones"
+    },
+    "form": {
+      "createTitle": "Nuevo producto",
+      "editTitle": "Editar {name}",
+      "description": "Los productos no se eliminan, solo se desactivan: el ledger los referencia.",
+      "name": "Nombre",
+      "namePlaceholder": "Havana Club 7 Años",
+      "category": "Categoría",
+      "pickCategory": "Elige una categoría",
+      "brand": "Marca",
+      "noBrand": "Sin marca",
+      "brandHint": "Una marca se puede cambiar, no quitar.",
+      "subcategory": "Subcategoría",
+      "subcategoryPlaceholder": "Añejo",
+      "origin": "Origen",
+      "originPlaceholder": "Cuba",
+      "abv": "Graduación (%)",
+      "age": "Añejamiento",
+      "agePlaceholder": "7 años",
+      "caseSize": "Tamaño de caja",
+      "caseSizeHintNew": "Unidades por caja. Con él se normalizan las cantidades.",
+      "caseSizeHintEdit": "Fijo después de crearlo: es el divisor detrás de cada cantidad ya registrada.",
+      "minimumStock": "Existencia mínima",
+      "minimumStockHint": "Umbral de reposición, en unidades. Vacío significa sin alerta.",
+      "createdTitle": "Producto creado",
+      "createdDescription": "{name} entró al catálogo.",
+      "createFailed": "No se pudo crear el producto",
+      "updatedTitle": "Producto actualizado",
+      "updatedDescription": "{name} se guardó.",
+      "updateFailed": "No se pudo actualizar el producto"
+    }
+  },
+  "locations": {
+    "select": {
+      "default": "Bodega por defecto",
+      "isDefault": "{name} (por defecto)"
+    },
+    "title": "Bodegas",
+    "subtitle": "Dónde vive la mercancía. Cada existencia y cada línea del ledger pertenece a una, y un traspaso mueve unidades entre dos sin cambiar el total.",
+    "new": "Nueva bodega",
+    "loadFailed": "No se pudieron cargar las bodegas.",
+    "loading": "Cargando bodegas",
+    "caption": "Bodegas",
+    "empty": "Todavía no hay bodegas.",
+    "columns": {
+      "name": "Nombre",
+      "movementCount": "Líneas del ledger",
+      "actions": "Acciones"
+    },
+    "default": "Por defecto",
+    "makeDefault": "Hacerla por defecto",
+    "rename": "Renombrar",
+    "form": {
+      "createTitle": "Nueva bodega",
+      "editTitle": "Renombrar {name}",
+      "description": "Dónde vive la mercancía. Un movimiento que no nombre ninguna cae en la que está por defecto.",
+      "name": "Nombre",
+      "makeDefault": "Hacerla la bodega por defecto",
+      "makeDefaultHint": "La actual deja de serlo. Siempre hay exactamente una."
+    },
+    "notify": {
+      "created": "Bodega creada",
+      "createdDescription": "{name} ya puede recibir mercancía.",
+      "saved": "Bodega guardada",
+      "savedDescription": "{name} se actualizó.",
+      "saveFailed": "No se pudo guardar la bodega",
+      "deleted": "Bodega eliminada",
+      "deletedDescription": "{name} ya no existe.",
+      "deleteFailed": "No se pudo eliminar la bodega",
+      "defaultChanged": "Bodega por defecto cambiada",
+      "defaultChangedDescription": "Los movimientos caen ahora en {name}.",
+      "defaultChangeFailed": "No se pudo cambiar la bodega por defecto"
+    },
+    "delete": {
+      "title": "¿Eliminar {name}?",
+      "description": "Ninguna línea del ledger la referencia, así que puede irse sin dejar un hueco en el historial.",
+      "blockedDefault": "La bodega por defecto no se puede eliminar: promueve otra primero",
+      "blockedInUse": "{count} {count, plural, one {línea del ledger la referencia} other {líneas del ledger la referencian}}"
+    }
+  }
+}
