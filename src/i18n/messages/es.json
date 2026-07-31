@@ -40,7 +40,13 @@
       "placeholder": "Elegir fecha",
       "previousMonth": "Mes anterior",
       "nextMonth": "Mes siguiente",
-      "clear": "Quitar la fecha"
+      "clear": "Quitar la fecha",
+      "selectMonth": "Elegir mes",
+      "selectYear": "Elegir año",
+      "previousYear": "Año anterior",
+      "nextYear": "Año siguiente",
+      "previousYears": "Años anteriores",
+      "nextYears": "Años siguientes"
     },
     "password": {
       "show": "Mostrar la contraseña",

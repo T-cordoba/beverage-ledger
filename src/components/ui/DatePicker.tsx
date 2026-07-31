@@ -2,7 +2,7 @@
 
 import { useFormatter, useLocale, useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
-import { cn, getWeekdayNames, parseDateKey, toDateKey } from '@/lib/utils';
+import { cn, getMonthNames, getWeekdayNames, parseDateKey, toDateKey } from '@/lib/utils';
 import { Button } from './Button';
 import { Popover, PopoverContent, PopoverTrigger } from './Popover';
 
@@ -14,8 +14,30 @@ interface DatePickerProps {
   className?: string;
 }
 
+/**
+ * What the popover is showing. Paging a month at a time is fine for last week
+ * and useless for a movement from two years ago, so the heading zooms out.
+ */
+type CalendarMode = 'day' | 'month' | 'year';
+
+/** One screen of years. Twelve so the grid matches the month view's shape. */
+const YEARS_PER_PAGE = 12;
+
 function startOfMonth(date: Date) {
   return new Date(date.getFullYear(), date.getMonth(), 1);
+}
+
+function ChevronIcon({ direction }: { direction: 'left' | 'right' }) {
+  return (
+    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d={direction === 'left' ? 'M15 19l-7-7 7-7' : 'M9 5l7 7-7 7'}
+      />
+    </svg>
+  );
 }
 
 export function DatePicker({ value, onChange, placeholder, className }: DatePickerProps) {
@@ -23,7 +45,9 @@ export function DatePicker({ value, onChange, placeholder, className }: DatePick
   const format = useFormatter();
   const locale = useLocale();
   const weekdayNames = useMemo(() => getWeekdayNames(locale), [locale]);
+  const monthNames = useMemo(() => getMonthNames(locale), [locale]);
   const [isOpen, setIsOpen] = useState(false);
+  const [mode, setMode] = useState<CalendarMode>('day');
 
   // The month on screen is separate from the selected day: paging through
   // months used to overwrite the value with the 1st of each month visited.
@@ -34,11 +58,12 @@ export function DatePicker({ value, onChange, placeholder, className }: DatePick
   const handleOpenChange = (open: boolean) => {
     if (open) {
       setViewMonth(startOfMonth(value ? parseDateKey(value) : new Date()));
+      setMode('day');
     }
     setIsOpen(open);
   };
 
-  const shiftMonth = (offset: number) => {
+  const shiftMonths = (offset: number) => {
     setViewMonth((current) => new Date(current.getFullYear(), current.getMonth() + offset, 1));
   };
 
@@ -47,6 +72,54 @@ export function DatePicker({ value, onChange, placeholder, className }: DatePick
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const firstWeekday = viewMonth.getDay();
   const todayKey = toDateKey(new Date());
+  const today = new Date();
+
+  // Paging years moves the view rather than a separate cursor, so selecting one
+  // needs no reconciliation: what is on screen is what will be picked.
+  const yearPageStart = Math.floor(year / YEARS_PER_PAGE) * YEARS_PER_PAGE;
+  const years = Array.from({ length: YEARS_PER_PAGE }, (_, index) => yearPageStart + index);
+
+  // Years are strings on purpose: as numbers the formatter groups them, and
+  // 2026 comes out as "2.026".
+  const header = {
+    day: {
+      title: format.dateTime(viewMonth, 'monthYear'),
+      zoomOut: () => setMode('month'),
+      zoomOutLabel: t('selectMonth'),
+      step: shiftMonths,
+      stepBy: 1,
+      previousLabel: t('previousMonth'),
+      nextLabel: t('nextMonth'),
+    },
+    month: {
+      title: String(year),
+      zoomOut: () => setMode('year'),
+      zoomOutLabel: t('selectYear'),
+      step: shiftMonths,
+      stepBy: 12,
+      previousLabel: t('previousYear'),
+      nextLabel: t('nextYear'),
+    },
+    year: {
+      title: `${yearPageStart}–${yearPageStart + YEARS_PER_PAGE - 1}`,
+      zoomOut: undefined,
+      zoomOutLabel: undefined,
+      step: shiftMonths,
+      stepBy: 12 * YEARS_PER_PAGE,
+      previousLabel: t('previousYears'),
+      nextLabel: t('nextYears'),
+    },
+  }[mode];
+
+  const cellClasses = (isSelected: boolean, isToday: boolean) =>
+    cn(
+      'w-full text-sm',
+      isSelected
+        ? 'bg-accent font-medium text-background hover:bg-accent-hover'
+        : isToday
+          ? 'bg-contrast/10 font-medium text-accent'
+          : 'text-contrast hover:text-accent',
+    );
 
   return (
     <div className={cn('relative', className)}>
@@ -79,81 +152,125 @@ export function DatePicker({ value, onChange, placeholder, className }: DatePick
         </PopoverTrigger>
 
         <PopoverContent className="w-[min(20rem,calc(100vw-2rem))] space-y-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-1">
             <Button
               variant="ghost"
               size="icon-sm"
-              onClick={() => shiftMonth(-1)}
-              aria-label={t('previousMonth')}
+              onClick={() => header.step(-header.stepBy)}
+              aria-label={header.previousLabel}
             >
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
+              <ChevronIcon direction="left" />
             </Button>
-            <h3 className="font-medium text-accent">{format.dateTime(viewMonth, 'monthYear')}</h3>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => shiftMonth(1)}
-              aria-label={t('nextMonth')}
-            >
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </Button>
-          </div>
 
-          <div className="grid grid-cols-7 gap-1 text-xs font-medium text-contrast/60">
-            {weekdayNames.map((day) => (
-              <div key={day} className="p-2 text-center">
-                {day}
-              </div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-7 gap-1">
-            {Array.from({ length: firstWeekday }, (_, index) => (
-              <div key={`empty-${index}`} />
-            ))}
-
-            {Array.from({ length: daysInMonth }, (_, index) => {
-              const day = index + 1;
-              const dateKey = toDateKey(new Date(year, month, day));
-              const isSelected = value === dateKey;
-
-              return (
+            <h3 className="min-w-0 flex-1 text-center">
+              {header.zoomOut ? (
                 <Button
-                  key={day}
                   variant="ghost"
-                  size="icon-sm"
-                  className={cn(
-                    'w-full text-sm',
-                    isSelected
-                      ? 'bg-accent font-medium text-background hover:bg-accent-hover'
-                      : dateKey === todayKey
-                        ? 'bg-contrast/10 font-medium text-accent'
-                        : 'text-contrast hover:text-accent',
+                  size="sm"
+                  className="w-full font-medium text-accent hover:bg-accent/10"
+                  onClick={header.zoomOut}
+                  aria-label={header.zoomOutLabel}
+                >
+                  {header.title}
+                </Button>
+              ) : (
+                <span className="block py-1 font-medium text-accent">{header.title}</span>
+              )}
+            </h3>
+
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => header.step(header.stepBy)}
+              aria-label={header.nextLabel}
+            >
+              <ChevronIcon direction="right" />
+            </Button>
+          </div>
+
+          {mode === 'day' && (
+            <>
+              <div className="grid grid-cols-7 gap-1 text-xs font-medium text-contrast/60">
+                {weekdayNames.map((day) => (
+                  <div key={day} className="p-2 text-center">
+                    {day}
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-7 gap-1">
+                {Array.from({ length: firstWeekday }, (_, index) => (
+                  <div key={`empty-${index}`} />
+                ))}
+
+                {Array.from({ length: daysInMonth }, (_, index) => {
+                  const day = index + 1;
+                  const dateKey = toDateKey(new Date(year, month, day));
+
+                  return (
+                    <Button
+                      key={day}
+                      variant="ghost"
+                      size="icon-sm"
+                      className={cellClasses(value === dateKey, dateKey === todayKey)}
+                      onClick={() => {
+                        onChange(dateKey);
+                        setIsOpen(false);
+                      }}
+                    >
+                      {day}
+                    </Button>
+                  );
+                })}
+              </div>
+            </>
+          )}
+
+          {mode === 'month' && (
+            <div className="grid grid-cols-3 gap-1">
+              {monthNames.map((name, index) => (
+                <Button
+                  key={name}
+                  variant="ghost"
+                  size="sm"
+                  className={cellClasses(
+                    value !== '' &&
+                      parseDateKey(value).getFullYear() === year &&
+                      parseDateKey(value).getMonth() === index,
+                    today.getFullYear() === year && today.getMonth() === index,
                   )}
                   onClick={() => {
-                    onChange(dateKey);
-                    setIsOpen(false);
+                    setViewMonth(new Date(year, index, 1));
+                    setMode('day');
                   }}
                 >
-                  {day}
+                  {name}
                 </Button>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+          )}
+
+          {mode === 'year' && (
+            <div className="grid grid-cols-3 gap-1">
+              {years.map((candidate) => (
+                <Button
+                  key={candidate}
+                  variant="ghost"
+                  size="sm"
+                  className={cellClasses(
+                    value !== '' && parseDateKey(value).getFullYear() === candidate,
+                    today.getFullYear() === candidate,
+                  )}
+                  onClick={() => {
+                    setViewMonth(new Date(candidate, month, 1));
+                    setMode('month');
+                  }}
+                >
+                  {candidate}
+                </Button>
+              ))}
+            </div>
+          )}
         </PopoverContent>
       </Popover>
 

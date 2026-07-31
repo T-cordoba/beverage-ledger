@@ -40,7 +40,13 @@
       "placeholder": "Pick a date",
       "previousMonth": "Previous month",
       "nextMonth": "Next month",
-      "clear": "Clear the date"
+      "clear": "Clear the date",
+      "selectMonth": "Pick a month",
+      "selectYear": "Pick a year",
+      "previousYear": "Previous year",
+      "nextYear": "Next year",
+      "previousYears": "Previous years",
+      "nextYears": "Next years"
     },
     "password": {
       "show": "Show password",
