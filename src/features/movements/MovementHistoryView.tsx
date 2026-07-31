@@ -79,15 +79,14 @@ export function MovementHistoryView() {
 
   return (
     <div className="space-y-6">
-      <header className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
-          <p className="text-sm text-contrast/60">{t('subtitle')}</p>
-        </div>
-
-        <NewMovementActions className="hidden sm:flex" />
+      <header className="space-y-1">
+        <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
+        <p className="text-sm text-contrast/60">{t('subtitle')}</p>
       </header>
 
+      {/* On its own line rather than beside the heading: four named actions do
+          not fit next to a title without wrapping into it. */}
+      <NewMovementActions className="hidden sm:flex" />
       <NewMovementFab />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -144,7 +143,7 @@ export function MovementHistoryView() {
         />
       ) : (
         <>
-          <div className="grid gap-4">
+          <div ref={pagination.anchorRef} className="grid scroll-mt-20 gap-4">
             {movements.map((movement) => (
               <MovementCard key={movement.id} movement={movement} />
             ))}

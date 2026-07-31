@@ -209,6 +209,10 @@
     }
   },
   "movements": {
+    "new": {
+      "title": "Record a movement",
+      "subtitle": "Nothing moves until you confirm."
+    },
     "types": {
       "OUTBOUND": {
         "label": "Dispatch",

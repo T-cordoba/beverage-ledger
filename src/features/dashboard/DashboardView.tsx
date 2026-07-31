@@ -6,7 +6,7 @@ import { useMemo, useState } from 'react';
 import { Button, Card, EmptyState, SegmentedControl, Skeleton, StatTile } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
-import { NewMovementActions, RecentMovementsCard } from '@/features/movements';
+import { NewMovementFab, NewMovementPanel, RecentMovementsCard } from '@/features/movements';
 import {
   granularityFor,
   rangeFor,
@@ -70,7 +70,8 @@ export function DashboardView() {
         )}
       </header>
 
-      <NewMovementActions />
+      <NewMovementPanel />
+      <NewMovementFab />
 
       {canSeeReports &&
         (summary.isPending ? (

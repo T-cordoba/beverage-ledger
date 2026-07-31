@@ -209,6 +209,10 @@
     }
   },
   "movements": {
+    "new": {
+      "title": "Registrar un movimiento",
+      "subtitle": "Nada se mueve hasta que confirmes."
+    },
     "types": {
       "OUTBOUND": {
         "label": "Salida",
