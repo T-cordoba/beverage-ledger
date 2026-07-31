@@ -43,11 +43,6 @@ export function Footer() {
                 {t('nav.signIn')}
               </Link>
             </li>
-            <li>
-              <Link href={ROUTES.signUp} className="text-contrast/70 hover:text-accent">
-                {t('nav.signUp')}
-              </Link>
-            </li>
           </ul>
         </div>
       </div>

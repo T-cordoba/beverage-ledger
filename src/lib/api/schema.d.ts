@@ -21,23 +21,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/v1/auth/register': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** Register and open a session */
-    post: operations['AuthController_register'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   '/api/v1/auth/login': {
     parameters: {
       query?: never;
@@ -167,8 +150,7 @@ export interface paths {
     /** List the organization members */
     get: operations['UsersController_list'];
     put?: never;
-    /** Add a member to the organization */
-    post: operations['UsersController_create'];
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -191,6 +173,75 @@ export interface paths {
     head?: never;
     /** Change a member name, role or status */
     patch: operations['UsersController_update'];
+    trace?: never;
+  };
+  '/api/v1/invitations': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List the invitations this organization has issued */
+    get: operations['InvitationsController_list'];
+    put?: never;
+    /** Invite someone, and get the link to hand them */
+    post: operations['InvitationsController_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/invitations/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Revoke an invitation that has not been used */
+    delete: operations['InvitationsController_revoke'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/invitations/lookup': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Read what an invitation link stands for */
+    post: operations['InvitationsController_lookup'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/invitations/accept': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Take up an invitation and open a session */
+    post: operations['InvitationsController_accept'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
     trace?: never;
   };
   '/api/v1/organization': {
@@ -624,19 +675,13 @@ export interface components {
       data: components['schemas']['AuditLogDto'][];
       meta: components['schemas']['PageMetaDto'];
     };
-    RegisterDto: {
+    LoginDto: {
       /**
        * Format: email
-       * @example operario@beverageledger.local
+       * @example admin@beverageledger.local
        */
       email: string;
-      /** @example Ana Restrepo */
-      name: string;
-      /**
-       * Format: password
-       * @description At least 12 characters, with lowercase, uppercase and a digit
-       * @example Inventario2026!
-       */
+      /** Format: password */
       password: string;
     };
     /** @enum {string} */
@@ -659,15 +704,6 @@ export interface components {
       /** @description Seconds until the access token expires */
       expiresIn: number;
       user: components['schemas']['SessionUserDto'];
-    };
-    LoginDto: {
-      /**
-       * Format: email
-       * @example admin@beverageledger.local
-       */
-      email: string;
-      /** Format: password */
-      password: string;
     };
     SessionOrganizationDto: {
       /** Format: uuid */
@@ -739,23 +775,67 @@ export interface components {
       data: components['schemas']['UserDto'][];
       meta: components['schemas']['PageMetaDto'];
     };
-    CreateUserDto: {
+    UpdateUserDto: {
+      name?: string;
+      role?: components['schemas']['UserRole'];
+      status?: components['schemas']['UserStatus'];
+    };
+    InvitationDto: {
+      /** Format: uuid */
+      id: string;
       /** Format: email */
       email: string;
-      name: string;
+      role: components['schemas']['UserRole'];
+      /** Format: date-time */
+      expiresAt: string;
+      /** Format: date-time */
+      acceptedAt: string | null;
+      /** Format: date-time */
+      revokedAt: string | null;
+      /** @description Who sent it */
+      invitedByName: string;
+      /** Format: date-time */
+      createdAt: string;
+    };
+    InvitationPageDto: {
+      data: components['schemas']['InvitationDto'][];
+      meta: components['schemas']['PageMetaDto'];
+    };
+    CreateInvitationDto: {
+      /** Format: email */
+      email: string;
       /** @example OPERATOR */
       role: components['schemas']['UserRole'];
+    };
+    IssuedInvitationDto: {
+      invitation: components['schemas']['InvitationDto'];
+      /** @description The link to pass to the invitee. Shown once */
+      acceptUrl: string;
+    };
+    InvitationTokenDto: {
+      /** @description The token from the invitation link */
+      token: string;
+    };
+    InvitationPreviewDto: {
+      /** Format: email */
+      email: string;
+      role: components['schemas']['UserRole'];
+      /** @description The organization being joined */
+      organizationName: string;
+      /** Format: date-time */
+      expiresAt: string;
+    };
+    AcceptInvitationDto: {
+      /** @description The token from the invitation link */
+      token: string;
+      /** @example Ana Restrepo */
+      name: string;
       /**
        * Format: password
        * @description At least 12 characters, with lowercase, uppercase and a digit
        * @example Inventario2026!
        */
       password: string;
-    };
-    UpdateUserDto: {
-      name?: string;
-      role?: components['schemas']['UserRole'];
-      status?: components['schemas']['UserStatus'];
     };
     OrganizationDto: {
       /** Format: uuid */
@@ -1214,43 +1294,6 @@ export interface operations {
       };
     };
   };
-  AuthController_register: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['RegisterDto'];
-      };
-    };
-    responses: {
-      201: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['SessionDto'];
-        };
-      };
-      /** @description The email is already registered */
-      409: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description Rate limit exceeded */
-      429: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-    };
-  };
   AuthController_login: {
     parameters: {
       query?: never;
@@ -1492,43 +1535,6 @@ export interface operations {
       };
     };
   };
-  UsersController_create: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['CreateUserDto'];
-      };
-    };
-    responses: {
-      201: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['UserDto'];
-        };
-      };
-      /** @description Insufficient permissions */
-      403: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-      /** @description The email already belongs to a user */
-      409: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
-      };
-    };
-  };
   UsersController_findOne: {
     parameters: {
       query?: never;
@@ -1596,6 +1602,182 @@ export interface operations {
       };
       /** @description Insufficient permissions */
       403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  InvitationsController_list: {
+    parameters: {
+      query?: {
+        /** @description 1-based page number */
+        page?: number;
+        /** @description How many items a page holds */
+        pageSize?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['InvitationPageDto'];
+        };
+      };
+      /** @description Insufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  InvitationsController_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateInvitationDto'];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['IssuedInvitationDto'];
+        };
+      };
+      /** @description Insufficient permissions, or a role that cannot be given */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Already a member, or already invited */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  InvitationsController_revoke: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Revoked */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Insufficient permissions */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description No such invitation in this organization */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Already used or already revoked */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  InvitationsController_lookup: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['InvitationTokenDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['InvitationPreviewDto'];
+        };
+      };
+      /** @description Unknown, spent, revoked or expired */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  InvitationsController_accept: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AcceptInvitationDto'];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SessionDto'];
+        };
+      };
+      /** @description Unknown, spent, revoked or expired */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description That email already belongs to a member */
+      409: {
         headers: {
           [name: string]: unknown;
         };

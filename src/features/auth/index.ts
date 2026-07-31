@@ -1,6 +1,6 @@
 export { AuthGuard } from './AuthGuard';
 export { PermissionGate } from './PermissionGate';
-export { LoginForm, RegisterForm } from './AuthForm';
+export { LoginForm } from './AuthForm';
 export {
   AuthProvider,
   sessionQueryKey,
@@ -8,5 +8,4 @@ export {
   useGoogleCallback,
   useSignInPath,
   type Credentials,
-  type Registration,
 } from './auth-context';

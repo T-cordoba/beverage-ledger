@@ -7,7 +7,6 @@ import {
   api,
   unwrap,
   type AuditLogListQuery,
-  type CreateUserInput,
   type UpdateOrganizationInput,
   type UpdateUserInput,
 } from '@/lib/api';
@@ -27,16 +26,6 @@ export function useUsers(page: PageParams, enabled = true) {
     queryFn: async () => unwrap(await api.GET('/api/v1/users', { params: { query: page } })),
     placeholderData: keepPreviousData,
     enabled,
-  });
-}
-
-export function useCreateUser() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (input: CreateUserInput) =>
-      unwrap(await api.POST('/api/v1/users', { body: input })),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: adminKeys.users }),
   });
 }
 

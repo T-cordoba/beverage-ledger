@@ -53,7 +53,7 @@ export default function LandingPage() {
 
           <div className="flex flex-col gap-3 sm:flex-row">
             <Button size="lg" asChild>
-              <Link href={ROUTES.signUp}>{t('hero.primary')}</Link>
+              <Link href={ROUTES.signIn}>{t('hero.primary')}</Link>
             </Button>
             <Button variant="secondary" size="lg" asChild>
               <a href="#how">{t('hero.secondary')}</a>
@@ -131,14 +131,9 @@ export default function LandingPage() {
         <Card className="mx-auto flex max-w-4xl flex-col items-center gap-4 border-accent/30 bg-accent/5 p-8 text-center sm:p-12">
           <h2 className="text-2xl font-light text-foreground sm:text-3xl">{t('cta.title')}</h2>
           <p className="max-w-2xl text-base text-contrast/70">{t('cta.body')}</p>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Button size="lg" asChild>
-              <Link href={ROUTES.signUp}>{t('cta.primary')}</Link>
-            </Button>
-            <Button variant="secondary" size="lg" asChild>
-              <Link href={ROUTES.signIn}>{t('cta.secondary')}</Link>
-            </Button>
-          </div>
+          <Button size="lg" asChild>
+            <Link href={ROUTES.signIn}>{t('cta.primary')}</Link>
+          </Button>
         </Card>
       </section>
     </>

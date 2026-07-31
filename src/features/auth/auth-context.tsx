@@ -38,10 +38,6 @@ export interface Credentials {
   password: string;
 }
 
-export interface Registration extends Credentials {
-  name: string;
-}
-
 interface AuthContextValue {
   isLoading: boolean;
   isAuthenticated: boolean;
@@ -50,7 +46,6 @@ interface AuthContextValue {
   permissions: Permission[];
   can: (permission: Permission) => boolean;
   signIn: (credentials: Credentials) => Promise<void>;
-  register: (registration: Registration) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -110,14 +105,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
   }).mutateAsync;
 
-  const register = useMutation({
-    mutationFn: async (registration: Registration) => {
-      storeSession(unwrap(await api.POST('/api/v1/auth/register', { body: registration })));
-      isLeavingDeliberately = false;
-      await queryClient.invalidateQueries({ queryKey: sessionQueryKey });
-    },
-  }).mutateAsync;
-
   const signOut = useCallback(async () => {
     // Set before the request, not after: the guard has to see it whichever way
     // the logout ends.
@@ -148,12 +135,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signIn: async (credentials) => {
         await signIn(credentials);
       },
-      register: async (registration) => {
-        await register(registration);
-      },
       signOut,
     };
-  }, [isPending, register, session, signIn, signOut]);
+  }, [isPending, session, signIn, signOut]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

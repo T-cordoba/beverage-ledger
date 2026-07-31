@@ -10,8 +10,13 @@ export type SessionUser = Schemas['SessionUserDto'];
 export type SessionOrganization = Schemas['SessionOrganizationDto'];
 
 export type User = Schemas['UserDto'];
-export type CreateUserInput = Schemas['CreateUserDto'];
 export type UpdateUserInput = Schemas['UpdateUserDto'];
+
+export type Invitation = Schemas['InvitationDto'];
+export type IssuedInvitation = Schemas['IssuedInvitationDto'];
+export type CreateInvitationInput = Schemas['CreateInvitationDto'];
+export type InvitationPreview = Schemas['InvitationPreviewDto'];
+export type AcceptInvitationInput = Schemas['AcceptInvitationDto'];
 export type UpdateProfileInput = Schemas['UpdateProfileDto'];
 export type ChangePasswordInput = Schemas['ChangePasswordDto'];
 

@@ -4,7 +4,8 @@ import type { MovementType, Permission } from '@/lib/api';
 export const ROUTES = {
   home: '/',
   signIn: '/login',
-  signUp: '/register',
+  /** The token comes from the invitation link; there is no page without one. */
+  acceptInvite: (token: string) => `/invite/${token}`,
   oauthCallback: '/auth/callback',
   dashboard: '/dashboard',
   stock: '/stock',

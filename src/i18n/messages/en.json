@@ -68,7 +68,6 @@
       "how": "How it works",
       "faq": "Questions",
       "signIn": "Sign in",
-      "signUp": "Create account",
       "dashboard": "Go to the dashboard"
     },
     "hero": {
@@ -143,8 +142,7 @@
     "cta": {
       "title": "Start with stock at zero",
       "body": "A new business starts with nothing on hand: stock appears when somebody records the first inbound. Nothing is invented for you.",
-      "primary": "Create an account",
-      "secondary": "I already have an account"
+      "primary": "Create an account"
     },
     "footer": {
       "tagline": "Liquor inventory for hospitality operations.",
@@ -189,20 +187,11 @@
       "submit": "Sign in",
       "loadingForm": "Loading the form",
       "failed": "Could not sign in. Please try again.",
-      "noAccount": "No account yet?",
-      "createOne": "Create one"
-    },
-    "register": {
-      "title": "Create an account",
-      "submit": "Create account",
-      "failed": "Could not create the account. Please try again.",
-      "haveAccount": "Already registered?",
-      "signIn": "Sign in"
+      "byInvitation": "Accounts come from an invitation. Ask whoever administers your organization."
     },
     "google": {
       "separator": "or",
-      "signIn": "Continue with Google",
-      "signUp": "Sign up with Google"
+      "signIn": "Continue with Google"
     },
     "callback": {
       "failedTitle": "Sign-in did not complete",
@@ -489,7 +478,7 @@
     "users": {
       "title": "Users",
       "subtitle": "Who may do what. Segregation of duties is the point: whoever moves the stock is not who adjusts the numbers behind it.",
-      "new": "New member",
+      "new": "Invite someone",
       "loadFailed": "The members could not be loaded.",
       "loading": "Loading members",
       "caption": "Members of the organization",
@@ -504,22 +493,14 @@
         "actions": "Actions"
       },
       "form": {
-        "createTitle": "New member",
         "editTitle": "Edit {name}",
         "description": "Roles come from one declarative matrix in the API. Hiding a button is not the control — the API enforces it.",
         "name": "Name",
-        "email": "Email",
-        "password": "Password",
-        "passwordHandover": "Hand it over out of band; they can change it from their profile.",
         "role": "Role",
         "roleLockedSelf": "You cannot change your own role.",
         "status": "Status",
         "statusLockedSelf": "You cannot suspend your own account.",
         "statusHint": "Suspending keeps the history and closes the door.",
-        "add": "Add",
-        "createdTitle": "Member added",
-        "createdDescription": "{name} can sign in now.",
-        "createFailed": "Could not add the member",
         "savedTitle": "Member saved",
         "savedDescription": "{name} was updated.",
         "saveFailed": "Could not save the member"
@@ -638,6 +619,50 @@
         "entity": "Entity",
         "detail": "Detail",
         "from": "From"
+      }
+    },
+    "invitations": {
+      "title": "Invitations",
+      "subtitle": "Who has one outstanding, and who has already used theirs.",
+      "loading": "Loading invitations",
+      "loadFailed": "The invitations could not be loaded.",
+      "empty": "You have not invited anyone yet.",
+      "emptyDescription": "Inviting someone is the only way to add them to the organization.",
+      "revoke": "Cancel",
+      "revoked": "Invitation cancelled",
+      "revokedDescription": "The link you sent to {email} no longer works.",
+      "revokeFailed": "The invitation could not be cancelled.",
+      "revokeTitle": "Cancel the invitation for {email}?",
+      "revokeDescription": "The link stops working immediately. If this is a mistake, you will have to invite again.",
+      "columns": {
+        "email": "Email",
+        "role": "Role",
+        "state": "State",
+        "expires": "Expires",
+        "invitedBy": "Invited by",
+        "actions": "Actions"
+      },
+      "states": {
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "revoked": "Cancelled",
+        "expired": "Expired"
+      },
+      "form": {
+        "title": "Invite someone",
+        "description": "This mints a single-use link. You pass it on yourself; the system sends no email.",
+        "email": "Email",
+        "role": "Role",
+        "submit": "Create the link",
+        "failed": "The invitation could not be created.",
+        "issuedTitle": "Link ready",
+        "issuedDescription": "Pass this link to {email}.",
+        "link": "Invitation link",
+        "linkHint": "Shown only now: the server keeps a hash of it and nothing else. If you lose it, cancel the invitation and issue another.",
+        "copy": "Copy",
+        "copied": "Copied",
+        "copyFailed": "Could not copy",
+        "copyFailedDescription": "Select the link and copy it by hand."
       }
     }
   },
@@ -890,5 +915,18 @@
       "retry": "Try again",
       "backHome": "Back to the home page"
     }
+  },
+  "invite": {
+    "metaTitle": "Accept invitation",
+    "title": "You were invited to {organization}",
+    "subtitle": "You will join as {email}, with the {role} role.",
+    "name": "Your name",
+    "password": "Choose a password",
+    "submit": "Create my account",
+    "loading": "Checking the invitation",
+    "failed": "The account could not be created.",
+    "invalidTitle": "This invitation no longer works",
+    "invalidDescription": "It may have been cancelled, already used, or left too long. Ask for a new one.",
+    "backToSignIn": "Go to sign in"
   }
 }

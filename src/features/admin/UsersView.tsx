@@ -12,6 +12,7 @@ import {
   type DataTableColumn,
 } from '@/components/ui';
 import { useAuth } from '@/features/auth';
+import { InvitationsCard, InviteDialog } from '@/features/invitations';
 import type { User } from '@/lib/api';
 import { usePagination } from '@/lib/hooks';
 import { useUsers } from './api';
@@ -28,17 +29,12 @@ export function UsersView() {
 
   const { user: currentUser } = useAuth();
   const [editing, setEditing] = useState<User | null>(null);
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isInviteOpen, setIsInviteOpen] = useState(false);
 
   // No filters on this list, so the key never changes and the page never resets.
   const pagination = usePagination('users');
   const { data, error, isPending } = useUsers(pagination.params);
   const users = data?.data ?? [];
-
-  const openForm = (user: User | null) => {
-    setEditing(user);
-    setIsFormOpen(true);
-  };
 
   const columns: DataTableColumn<User>[] = [
     {
@@ -81,7 +77,7 @@ export function UsersView() {
       header: t('columns.actions'),
       align: 'end',
       cell: (user) => (
-        <Button variant="secondary" size="sm" onClick={() => openForm(user)}>
+        <Button variant="secondary" size="sm" onClick={() => setEditing(user)}>
           {tActions('edit')}
         </Button>
       ),
@@ -95,7 +91,7 @@ export function UsersView() {
           <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
           <p className="text-sm text-contrast/60">{t('subtitle')}</p>
         </div>
-        <Button size="lg" onClick={() => openForm(null)}>
+        <Button size="lg" onClick={() => setIsInviteOpen(true)}>
           {t('new')}
         </Button>
       </header>
@@ -128,14 +124,21 @@ export function UsersView() {
         />
       )}
 
-      {/* Keyed so the form seeds itself from whichever member is being edited. */}
-      <UserFormDialog
-        key={editing?.id ?? 'new'}
-        user={editing}
-        isSelf={editing?.id === currentUser?.id}
-        open={isFormOpen}
-        onOpenChange={setIsFormOpen}
-      />
+      <InvitationsCard />
+
+      {/* Keyed and mounted only while editing, so the form always seeds itself
+          from the member it was opened on. */}
+      {editing && (
+        <UserFormDialog
+          key={editing.id}
+          user={editing}
+          isSelf={editing.id === currentUser?.id}
+          open
+          onOpenChange={(open) => !open && setEditing(null)}
+        />
+      )}
+
+      <InviteDialog open={isInviteOpen} onOpenChange={setIsInviteOpen} />
     </div>
   );
 }

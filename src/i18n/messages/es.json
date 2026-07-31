@@ -68,7 +68,6 @@
       "how": "Cómo funciona",
       "faq": "Preguntas",
       "signIn": "Iniciar sesión",
-      "signUp": "Crear cuenta",
       "dashboard": "Ir al panel"
     },
     "hero": {
@@ -143,8 +142,7 @@
     "cta": {
       "title": "Empieza con el inventario en cero",
       "body": "Un negocio nuevo arranca sin existencias: el stock aparece cuando alguien registra la primera entrada. Nada se inventa por ti.",
-      "primary": "Crear una cuenta",
-      "secondary": "Ya tengo cuenta"
+      "primary": "Crear una cuenta"
     },
     "footer": {
       "tagline": "Inventario de licores para operaciones de hostelería.",
@@ -189,20 +187,11 @@
       "submit": "Entrar",
       "loadingForm": "Cargando el formulario",
       "failed": "No se pudo iniciar sesión. Inténtalo de nuevo.",
-      "noAccount": "¿Aún no tienes cuenta?",
-      "createOne": "Crea una"
-    },
-    "register": {
-      "title": "Crear una cuenta",
-      "submit": "Crear cuenta",
-      "failed": "No se pudo crear la cuenta. Inténtalo de nuevo.",
-      "haveAccount": "¿Ya tienes cuenta?",
-      "signIn": "Inicia sesión"
+      "byInvitation": "Se entra por invitación. Pídesela a quien administre tu organización."
     },
     "google": {
       "separator": "o",
-      "signIn": "Continuar con Google",
-      "signUp": "Registrarse con Google"
+      "signIn": "Continuar con Google"
     },
     "callback": {
       "failedTitle": "El inicio de sesión no se completó",
@@ -489,7 +478,7 @@
     "users": {
       "title": "Usuarios",
       "subtitle": "Quién puede hacer qué. La segregación de funciones es el punto: quien mueve la mercancía no es quien ajusta los números que la respaldan.",
-      "new": "Nuevo miembro",
+      "new": "Invitar a alguien",
       "loadFailed": "No se pudieron cargar los miembros.",
       "loading": "Cargando miembros",
       "caption": "Miembros de la organización",
@@ -504,22 +493,14 @@
         "actions": "Acciones"
       },
       "form": {
-        "createTitle": "Nuevo miembro",
         "editTitle": "Editar a {name}",
         "description": "Los roles salen de una única matriz declarativa en la API. Ocultar un botón no es el control: quien lo aplica es la API.",
         "name": "Nombre",
-        "email": "Correo electrónico",
-        "password": "Contraseña",
-        "passwordHandover": "Entrégasela por otro canal; puede cambiarla desde su perfil.",
         "role": "Rol",
         "roleLockedSelf": "No puedes cambiar tu propio rol.",
         "status": "Estado",
         "statusLockedSelf": "No puedes suspender tu propia cuenta.",
         "statusHint": "Suspender conserva el historial y cierra la puerta.",
-        "add": "Añadir",
-        "createdTitle": "Miembro añadido",
-        "createdDescription": "{name} ya puede iniciar sesión.",
-        "createFailed": "No se pudo añadir al miembro",
         "savedTitle": "Miembro guardado",
         "savedDescription": "{name} se actualizó.",
         "saveFailed": "No se pudo guardar al miembro"
@@ -638,6 +619,50 @@
         "entity": "Entidad",
         "detail": "Detalle",
         "from": "Desde"
+      }
+    },
+    "invitations": {
+      "title": "Invitaciones",
+      "subtitle": "Quién tiene una invitación abierta y quién ya la usó.",
+      "loading": "Cargando invitaciones",
+      "loadFailed": "No se pudieron cargar las invitaciones.",
+      "empty": "Todavía no has invitado a nadie.",
+      "emptyDescription": "Invitar a alguien es la única forma de sumarlo a la organización.",
+      "revoke": "Cancelar",
+      "revoked": "Invitación cancelada",
+      "revokedDescription": "El enlace que enviaste a {email} ya no funciona.",
+      "revokeFailed": "No se pudo cancelar la invitación.",
+      "revokeTitle": "¿Cancelar la invitación de {email}?",
+      "revokeDescription": "El enlace deja de funcionar de inmediato. Si te equivocas, tendrás que invitar de nuevo.",
+      "columns": {
+        "email": "Correo",
+        "role": "Rol",
+        "state": "Estado",
+        "expires": "Vence",
+        "invitedBy": "Invitó",
+        "actions": "Acciones"
+      },
+      "states": {
+        "pending": "Pendiente",
+        "accepted": "Aceptada",
+        "revoked": "Cancelada",
+        "expired": "Vencida"
+      },
+      "form": {
+        "title": "Invitar a alguien",
+        "description": "Se genera un enlace de un solo uso. Tú se lo haces llegar; el sistema no envía correos.",
+        "email": "Correo",
+        "role": "Rol",
+        "submit": "Generar el enlace",
+        "failed": "No se pudo crear la invitación.",
+        "issuedTitle": "Enlace listo",
+        "issuedDescription": "Hazle llegar este enlace a {email}.",
+        "link": "Enlace de invitación",
+        "linkHint": "Solo se muestra ahora: del enlace únicamente se guarda un hash. Si lo pierdes, cancela la invitación y crea otra.",
+        "copy": "Copiar",
+        "copied": "Copiado",
+        "copyFailed": "No se pudo copiar",
+        "copyFailedDescription": "Selecciona el enlace y cópialo a mano."
       }
     }
   },
@@ -890,5 +915,18 @@
       "retry": "Reintentar",
       "backHome": "Volver al inicio"
     }
+  },
+  "invite": {
+    "metaTitle": "Aceptar invitación",
+    "title": "Te invitaron a {organization}",
+    "subtitle": "Entrarás como {email}, con el rol de {role}.",
+    "name": "Tu nombre",
+    "password": "Elige una contraseña",
+    "submit": "Crear mi cuenta",
+    "loading": "Comprobando la invitación",
+    "failed": "No se pudo crear la cuenta.",
+    "invalidTitle": "Esta invitación ya no sirve",
+    "invalidDescription": "Puede que la hayan cancelado, que ya se haya usado o que se le haya pasado el plazo. Pide una nueva.",
+    "backToSignIn": "Ir a iniciar sesión"
   }
 }

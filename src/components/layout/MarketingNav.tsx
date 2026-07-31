@@ -39,14 +39,11 @@ export function MarketingNav() {
               <Link href={ROUTES.dashboard}>{t('dashboard')}</Link>
             </Button>
           ) : (
-            <>
-              <Button variant="ghost" size="sm" asChild>
-                <Link href={ROUTES.signIn}>{t('signIn')}</Link>
-              </Button>
-              <Button size="sm" asChild>
-                <Link href={ROUTES.signUp}>{t('signUp')}</Link>
-              </Button>
-            </>
+            // No sign-up: membership comes from an invitation, so the only door
+            // for a stranger is the one their administrator opened.
+            <Button size="sm" asChild>
+              <Link href={ROUTES.signIn}>{t('signIn')}</Link>
+            </Button>
           )}
         </div>
       </div>
