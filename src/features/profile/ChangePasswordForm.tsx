@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';
 import { Button, Card, Field, Input, useNotify } from '@/components/ui';
 import { useAuth } from '@/features/auth';
@@ -8,14 +9,17 @@ import { useChangePassword } from './api';
 
 /**
  * Mirrors the policy the API enforces, which is the authority: this only spares
- * the user a round trip to be told what a hint could have said upfront.
+ * the user a round trip to be told what a hint could have said upfront. The
+ * sentence itself lives in `common.passwordPolicy`, next to the length.
  */
 const MIN_PASSWORD_LENGTH = 12;
-const POLICY_HINT = 'At least 12 characters, with lowercase, uppercase and a digit.';
 
 const EMPTY = { currentPassword: '', newPassword: '', confirmation: '' };
 
 export function ChangePasswordForm() {
+  const t = useTranslations('profile.password');
+  const tCommon = useTranslations('common');
+
   const { signOut } = useAuth();
   const change = useChangePassword();
   const notify = useNotify();
@@ -44,17 +48,17 @@ export function ChangePasswordForm() {
         newPassword: values.newPassword,
       });
       setValues(EMPTY);
-      notify('success', 'Password changed', 'Every session was signed out. Sign in again.');
+      notify('success', t('changedTitle'), t('changedDescription'));
       await signOut();
     } catch (cause) {
-      notify('error', 'Could not change the password', describeError(cause, 'Please try again.'));
+      notify('error', t('changeFailed'), describeError(cause, tCommon('states.tryAgain')));
     }
   };
 
   return (
     <Card className="max-w-2xl">
       <form onSubmit={(event) => void submit(event)} className="space-y-4">
-        <Field label="Current password">
+        <Field label={t('current')}>
           {({ id, describedBy }) => (
             <Input
               id={id}
@@ -68,7 +72,7 @@ export function ChangePasswordForm() {
           )}
         </Field>
 
-        <Field label="New password" hint={POLICY_HINT}>
+        <Field label={t('new')} hint={tCommon('passwordPolicy')}>
           {({ id, describedBy }) => (
             <Input
               id={id}
@@ -83,10 +87,7 @@ export function ChangePasswordForm() {
           )}
         </Field>
 
-        <Field
-          label="Repeat the new password"
-          error={mismatch ? 'The two passwords do not match.' : undefined}
-        >
+        <Field label={t('repeat')} error={mismatch ? t('mismatch') : undefined}>
           {({ id, describedBy }) => (
             <Input
               id={id}
@@ -101,12 +102,9 @@ export function ChangePasswordForm() {
         </Field>
 
         <div className="flex items-center justify-between gap-4 border-t border-border/40 pt-4">
-          <p className="text-xs text-contrast/50">
-            Signs out every session, this one included. You will sign in again with the new
-            password.
-          </p>
+          <p className="text-xs text-contrast/50">{t('warning')}</p>
           <Button type="submit" size="lg" isLoading={change.isPending}>
-            Change
+            {t('submit')}
           </Button>
         </div>
       </form>

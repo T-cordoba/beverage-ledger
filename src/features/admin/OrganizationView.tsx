@@ -1,9 +1,9 @@
 'use client';
 
+import { useFormatter, useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';
 import { Button, Card, EmptyState, Field, Input, Spinner, useNotify } from '@/components/ui';
 import { describeError } from '@/lib/api';
-import { formatLongDate } from '@/lib/utils';
 import { useOrganization, useUpdateOrganization } from './api';
 
 interface OrganizationForm {
@@ -14,6 +14,11 @@ interface OrganizationForm {
 }
 
 export function OrganizationView() {
+  const t = useTranslations('admin.organization');
+  const tStates = useTranslations('common.states');
+  const tActions = useTranslations('common.actions');
+  const format = useFormatter();
+
   const { data: organization, error, isPending } = useOrganization();
   const update = useUpdateOrganization();
   const notify = useNotify();
@@ -23,18 +28,13 @@ export function OrganizationView() {
   if (isPending) {
     return (
       <div className="flex items-center justify-center py-16">
-        <Spinner size="lg" label="Loading the organization" />
+        <Spinner size="lg" label={t('loading')} />
       </div>
     );
   }
 
   if (error || !organization) {
-    return (
-      <EmptyState
-        title="The organization could not be loaded."
-        description="Check that the API is reachable and try again."
-      />
-    );
+    return <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />;
   }
 
   // Seeded from the response on first render, then owned by the form.
@@ -58,29 +58,22 @@ export function OrganizationView() {
         timezone: values.timezone.trim(),
         ...(values.logoUrl.trim() ? { logoUrl: values.logoUrl.trim() } : {}),
       });
-      notify(
-        'success',
-        'Organization saved',
-        'The branding is updated everywhere it is read from.',
-      );
+      notify('success', t('savedTitle'), t('savedDescription'));
     } catch (cause) {
-      notify('error', 'Could not save the organization', describeError(cause, 'Please try again.'));
+      notify('error', t('saveFailed'), describeError(cause, tStates('tryAgain')));
     }
   };
 
   return (
     <div className="space-y-6">
       <header className="space-y-1">
-        <h1 className="text-2xl font-light text-foreground sm:text-3xl">Organization</h1>
-        <p className="text-sm text-contrast/60">
-          Where the branding comes from. Nothing here is hard-coded in the app: the interface and
-          every PDF read these fields.
-        </p>
+        <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
+        <p className="text-sm text-contrast/60">{t('subtitle')}</p>
       </header>
 
       <Card className="max-w-2xl">
         <form onSubmit={(event) => void submit(event)} className="space-y-4">
-          <Field label="Trading name" hint="Heads the interface and every document.">
+          <Field label={t('name')} hint={t('nameHint')}>
             {({ id, describedBy }) => (
               <Input
                 id={id}
@@ -93,7 +86,7 @@ export function OrganizationView() {
             )}
           </Field>
 
-          <Field label="Registered name" hint="For documents that need the legal entity.">
+          <Field label={t('legalName')} hint={t('legalNameHint')}>
             {({ id, describedBy }) => (
               <Input
                 id={id}
@@ -104,7 +97,7 @@ export function OrganizationView() {
             )}
           </Field>
 
-          <Field label="Logo URL" hint="Absolute URL. Empty leaves the current one in place.">
+          <Field label={t('logoUrl')} hint={t('logoUrlHint')}>
             {({ id, describedBy }) => (
               <Input
                 id={id}
@@ -117,7 +110,7 @@ export function OrganizationView() {
             )}
           </Field>
 
-          <Field label="Time zone" hint="IANA name, like America/Bogota. Reports bucket by it.">
+          <Field label={t('timezone')} hint={t('timezoneHint')}>
             {({ id, describedBy }) => (
               <Input
                 id={id}
@@ -132,15 +125,17 @@ export function OrganizationView() {
           <dl className="grid gap-4 border-t border-border/40 pt-4 sm:grid-cols-2">
             <div className="space-y-1">
               <dt className="text-xs font-medium uppercase tracking-wider text-contrast/60">
-                Slug
+                {t('slug')}
               </dt>
               <dd className="font-mono text-sm text-contrast/80">{organization.slug}</dd>
             </div>
             <div className="space-y-1">
               <dt className="text-xs font-medium uppercase tracking-wider text-contrast/60">
-                Created
+                {t('created')}
               </dt>
-              <dd className="text-sm text-contrast/80">{formatLongDate(organization.createdAt)}</dd>
+              <dd className="text-sm text-contrast/80">
+                {format.dateTime(new Date(organization.createdAt), 'long')}
+              </dd>
             </div>
           </dl>
 
@@ -152,10 +147,10 @@ export function OrganizationView() {
               disabled={form === null || update.isPending}
               onClick={() => setForm(null)}
             >
-              Reset
+              {t('reset')}
             </Button>
             <Button type="submit" size="lg" isLoading={update.isPending}>
-              Save
+              {tActions('save')}
             </Button>
           </div>
         </form>

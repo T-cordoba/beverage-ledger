@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';
 import {
   Button,
@@ -33,6 +34,13 @@ export function UserFormDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  const t = useTranslations('admin.users.form');
+  const tRoles = useTranslations('admin.roles');
+  const tRoleDescriptions = useTranslations('admin.roleDescriptions');
+  const tStatuses = useTranslations('admin.statuses');
+  const tCommon = useTranslations('common');
+  const tActions = useTranslations('common.actions');
+
   const [name, setName] = useState(user?.name ?? '');
   const [email, setEmail] = useState(user?.email ?? '');
   const [role, setRole] = useState<UserRole>(user?.role ?? 'OPERATOR');
@@ -48,48 +56,53 @@ export function UserFormDialog({
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
+    const trimmedName = name.trim();
 
     try {
       if (user) {
         await update.mutateAsync({
           id: user.id,
           input: {
-            name: name.trim(),
+            name: trimmedName,
             ...(isSelf ? {} : { role, status }),
           },
         });
-        notify('success', 'Member saved', `${name.trim()} was updated.`);
+        notify('success', t('savedTitle'), t('savedDescription', { name: trimmedName }));
       } else {
         await create.mutateAsync({
           email: email.trim(),
-          name: name.trim(),
+          name: trimmedName,
           role,
           password: password.trim(),
         });
-        notify('success', 'Member added', `${name.trim()} can sign in now.`);
+        notify('success', t('createdTitle'), t('createdDescription', { name: trimmedName }));
       }
 
       onOpenChange(false);
     } catch (error) {
       notify(
         'error',
-        isEditing ? 'Could not save the member' : 'Could not add the member',
-        describeError(error, 'Please try again.'),
+        isEditing ? t('saveFailed') : t('createFailed'),
+        describeError(error, tCommon('states.tryAgain')),
       );
     }
   };
+
+  /** Only assignable roles carry a description; a PLATFORM_ADMIN never lands here. */
+  const roleHint = ASSIGNABLE_ROLES.includes(role)
+    ? tRoleDescriptions(role as 'OPERATOR' | 'MANAGER' | 'ORG_ADMIN')
+    : undefined;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <form onSubmit={(event) => void submit(event)} className="space-y-4 text-left">
-          <DialogTitle>{isEditing ? `Edit ${user.name}` : 'New member'}</DialogTitle>
-          <DialogDescription>
-            Roles come from one declarative matrix in the API. Hiding a button is not the control —
-            the API enforces it.
-          </DialogDescription>
+          <DialogTitle>
+            {isEditing ? t('editTitle', { name: user.name }) : t('createTitle')}
+          </DialogTitle>
+          <DialogDescription>{t('description')}</DialogDescription>
 
-          <Field label="Name">
+          <Field label={t('name')}>
             {({ id }) => (
               <Input
                 id={id}
@@ -103,7 +116,7 @@ export function UserFormDialog({
 
           {!isEditing && (
             <>
-              <Field label="Email">
+              <Field label={t('email')}>
                 {({ id }) => (
                   <Input
                     id={id}
@@ -116,8 +129,8 @@ export function UserFormDialog({
               </Field>
 
               <Field
-                label="Password"
-                hint="At least 12 characters, with lowercase, uppercase and a digit. Hand it over out of band; they can change it from their profile."
+                label={t('password')}
+                hint={`${tCommon('passwordPolicy')} ${t('passwordHandover')}`}
               >
                 {({ id, describedBy }) => (
                   <Input
@@ -135,14 +148,7 @@ export function UserFormDialog({
             </>
           )}
 
-          <Field
-            label="Role"
-            hint={
-              isSelf
-                ? 'You cannot change your own role.'
-                : ASSIGNABLE_ROLES.find((option) => option.value === role)?.description
-            }
-          >
+          <Field label={t('role')} hint={isSelf ? t('roleLockedSelf') : roleHint}>
             {({ id, describedBy }) => (
               <Select
                 id={id}
@@ -150,20 +156,13 @@ export function UserFormDialog({
                 onValueChange={(value) => setRole(value as UserRole)}
                 disabled={isSelf}
                 aria-describedby={describedBy}
-                options={ASSIGNABLE_ROLES}
+                options={ASSIGNABLE_ROLES.map((value) => ({ value, label: tRoles(value) }))}
               />
             )}
           </Field>
 
           {isEditing && (
-            <Field
-              label="Status"
-              hint={
-                isSelf
-                  ? 'You cannot suspend your own account.'
-                  : 'Suspending keeps the history and closes the door.'
-              }
-            >
+            <Field label={t('status')} hint={isSelf ? t('statusLockedSelf') : t('statusHint')}>
               {({ id, describedBy }) => (
                 <Select
                   id={id}
@@ -171,7 +170,10 @@ export function UserFormDialog({
                   onValueChange={(value) => setStatus(value as UserStatus)}
                   disabled={isSelf}
                   aria-describedby={describedBy}
-                  options={ASSIGNABLE_STATUSES}
+                  options={ASSIGNABLE_STATUSES.map((value) => ({
+                    value,
+                    label: tStatuses(value),
+                  }))}
                 />
               )}
             </Field>
@@ -186,10 +188,10 @@ export function UserFormDialog({
               disabled={isSaving}
               onClick={() => onOpenChange(false)}
             >
-              Cancel
+              {tActions('cancel')}
             </Button>
             <Button type="submit" size="lg" className="flex-1" isLoading={isSaving}>
-              {isEditing ? 'Save' : 'Add'}
+              {isEditing ? tActions('save') : t('add')}
             </Button>
           </DialogFooter>
         </form>
