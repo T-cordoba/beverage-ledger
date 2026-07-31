@@ -23,6 +23,7 @@ function MetaItem({ icon, children }: { icon: ReactNode; children: ReactNode }) 
 
 function QuantityStepper({
   label,
+  note,
   unitLabel,
   value,
   onChange,
@@ -30,6 +31,8 @@ function QuantityStepper({
   atLimitLabel,
 }: {
   label: string;
+  /** What a unit of this stepper is worth, when it is not one base unit. */
+  note?: string;
   unitLabel: string;
   value: number;
   onChange: (delta: number) => void;
@@ -42,6 +45,7 @@ function QuantityStepper({
     <div className="flex items-center justify-between rounded-xl border border-border/30 bg-background/50 px-4 py-3 backdrop-blur-sm sm:justify-start sm:gap-4 sm:px-6 sm:py-4">
       <span className="min-w-[60px] text-xs font-light uppercase tracking-wider text-contrast/80 sm:min-w-[80px] sm:text-sm">
         {label}
+        {note && <span className="block normal-case tracking-normal text-accent/80">{note}</span>}
       </span>
       <div className="flex items-center gap-2 sm:gap-3">
         <Button
@@ -201,12 +205,21 @@ function ProductRow({
           />
           <QuantityStepper
             label={tUnits('case', { count: 2 })}
+            // On the control itself, not only in the product's meta row: what a
+            // case costs the shelf is the number this stepper is really moving.
+            note={t('unitsPerCase', { count: product.caseSize })}
             unitLabel={tUnits('case', { count: 1 })}
             value={quantities.CASE}
             onChange={(delta) => onAdjust('CASE', delta)}
             canIncrease={remaining >= product.caseSize}
             atLimitLabel={atLimitLabel}
           />
+
+          {taken > 0 && (
+            <p className="text-right text-sm font-medium text-accent">
+              {t('takenTotal', { count: taken })}
+            </p>
+          )}
         </div>
       </div>
     </li>

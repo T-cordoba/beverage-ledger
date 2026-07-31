@@ -326,7 +326,9 @@
       "left": "quedan {count}",
       "atLimit": "Solo quedan {count} en esta bodega",
       "add": "Añadir {unit}",
-      "remove": "Quitar {unit}"
+      "remove": "Quitar {unit}",
+      "unitsPerCase": "{count, plural, one {× # unidad} other {× # unidades}}",
+      "takenTotal": "{count, plural, one {# unidad en total} other {# unidades en total}}"
     },
     "register": {
       "pendingDraft": "Ya hay un borrador abierto de un intento que no se pudo confirmar. Si corriges las cantidades y confirmas otra vez, se reutiliza y no se crea un segundo movimiento.",

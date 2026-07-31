@@ -326,7 +326,9 @@
       "left": "{count} left",
       "atLimit": "Only {count} left at this location",
       "add": "Add {unit}",
-      "remove": "Remove {unit}"
+      "remove": "Remove {unit}",
+      "unitsPerCase": "{count, plural, one {× # unit} other {× # units}}",
+      "takenTotal": "{count, plural, one {# unit in total} other {# units in total}}"
     },
     "register": {
       "pendingDraft": "A draft is already open from an attempt that could not be confirmed. Fixing the quantities and confirming again reuses it, so no second movement is created.",
