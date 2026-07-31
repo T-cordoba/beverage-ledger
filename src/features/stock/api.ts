@@ -82,7 +82,10 @@ export function useStockAvailability(
     }
   }
 
-  return { levels, isReady: enabled && results.length > 0 && results.every((one) => one.isSuccess) };
+  return {
+    levels,
+    isReady: enabled && results.length > 0 && results.every((one) => one.isSuccess),
+  };
 }
 
 /** A shortlist, not a page: the endpoint returns the worst offenders and stops. */
@@ -104,7 +107,11 @@ export function useKardex(productId: string, locationId?: string) {
         await api.GET('/api/v1/stock/{productId}/kardex', {
           params: {
             path: { productId },
-            query: { limit: KARDEX_PAGE_SIZE, cursor: pageParam, ...(locationId ? { locationId } : {}) },
+            query: {
+              limit: KARDEX_PAGE_SIZE,
+              cursor: pageParam,
+              ...(locationId ? { locationId } : {}),
+            },
           },
         }),
       ),

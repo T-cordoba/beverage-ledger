@@ -1,13 +1,17 @@
 # Supply-chain hardening. See CLAUDE.md §3.
 #
-# No dependency is allowed to run install scripts. unrs-resolver asks for one,
-# but it ships prebuilt platform binaries as optional dependencies and its script
-# is only a build-from-source fallback, so lint, typecheck and build all pass
-# without it. Listing it as ignored records that the decision was made
+# No dependency is allowed to run install scripts. The three below ask for one,
+# but each ships prebuilt platform binaries as optional dependencies and its
+# script is only a build-from-source fallback, so lint, typecheck and build all
+# pass without it. Listing them as ignored records that the decision was made
 # deliberately instead of leaving a warning on every install.
+#
+# @parcel/watcher and @swc/core arrived with next-intl's compiler plugin.
 onlyBuiltDependencies: []
 
 ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - '@swc/core'
   - unrs-resolver
 
 # Refuse packages published less than 24h ago. Compromised versions are usually

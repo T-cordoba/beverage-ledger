@@ -5,5 +5,5 @@ export { AuditLogView } from './AuditLogView';
 export { BrandsView } from './BrandsView';
 export { CategoriesView } from './CategoriesView';
 export { OrganizationView } from './OrganizationView';
-export { ROLE_LABELS, STATUS_LABELS } from './roles';
+export { ASSIGNABLE_ROLES, ASSIGNABLE_STATUSES, STATUS_TONES } from './roles';
 export { UsersView } from './UsersView';

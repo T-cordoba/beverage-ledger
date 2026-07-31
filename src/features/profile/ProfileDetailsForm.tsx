@@ -1,8 +1,8 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';
 import { Button, Card, Field, Input, useNotify } from '@/components/ui';
-import { ROLE_LABELS } from '@/features/admin';
 import { useAuth } from '@/features/auth';
 import { describeError } from '@/lib/api';
 import { useUpdateProfile } from './api';
@@ -13,6 +13,11 @@ interface DetailsForm {
 }
 
 export function ProfileDetailsForm() {
+  const t = useTranslations('profile.details');
+  const tRoles = useTranslations('admin.roles');
+  const tStates = useTranslations('common.states');
+  const tActions = useTranslations('common.actions');
+
   const { user } = useAuth();
   const update = useUpdateProfile();
   const notify = useNotify();
@@ -39,16 +44,16 @@ export function ProfileDetailsForm() {
         avatarUrl: avatarUrl || null,
       });
       setForm(null);
-      notify('success', 'Profile saved', 'Your name is updated everywhere it is shown.');
+      notify('success', t('savedTitle'), t('savedDescription'));
     } catch (cause) {
-      notify('error', 'Could not save the profile', describeError(cause, 'Please try again.'));
+      notify('error', t('saveFailed'), describeError(cause, tStates('tryAgain')));
     }
   };
 
   return (
     <Card className="max-w-2xl">
       <form onSubmit={(event) => void submit(event)} className="space-y-4">
-        <Field label="Name" hint="Shown on your movements and in the audit log.">
+        <Field label={t('name')} hint={t('nameHint')}>
           {({ id, describedBy }) => (
             <Input
               id={id}
@@ -62,7 +67,7 @@ export function ProfileDetailsForm() {
           )}
         </Field>
 
-        <Field label="Avatar URL" hint="Absolute URL. Empty removes the current one.">
+        <Field label={t('avatarUrl')} hint={t('avatarUrlHint')}>
           {({ id, describedBy }) => (
             <Input
               id={id}
@@ -77,18 +82,19 @@ export function ProfileDetailsForm() {
 
         <dl className="grid gap-4 border-t border-border/40 pt-4 sm:grid-cols-2">
           <div className="space-y-1">
-            <dt className="text-xs font-medium uppercase tracking-wider text-contrast/60">Email</dt>
+            <dt className="text-xs font-medium uppercase tracking-wider text-contrast/60">
+              {t('email')}
+            </dt>
             <dd className="truncate text-sm text-contrast/80">{user.email}</dd>
           </div>
           <div className="space-y-1">
-            <dt className="text-xs font-medium uppercase tracking-wider text-contrast/60">Role</dt>
-            <dd className="text-sm text-contrast/80">{ROLE_LABELS[user.role]}</dd>
+            <dt className="text-xs font-medium uppercase tracking-wider text-contrast/60">
+              {t('role')}
+            </dt>
+            <dd className="text-sm text-contrast/80">{tRoles(user.role)}</dd>
           </div>
         </dl>
-        <p className="text-xs text-contrast/50">
-          Neither can be changed here: the email identifies the account, and the role is an
-          administrator&rsquo;s call.
-        </p>
+        <p className="text-xs text-contrast/50">{t('immutable')}</p>
 
         <div className="flex justify-end gap-3">
           <Button
@@ -98,10 +104,10 @@ export function ProfileDetailsForm() {
             disabled={form === null || update.isPending}
             onClick={() => setForm(null)}
           >
-            Reset
+            {t('reset')}
           </Button>
           <Button type="submit" size="lg" isLoading={update.isPending}>
-            Save
+            {tActions('save')}
           </Button>
         </div>
       </form>

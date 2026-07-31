@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useEffect, type ReactNode } from 'react';
 import { Spinner } from '@/components/ui';
@@ -16,6 +17,7 @@ import { useAuth, useSignInPath } from './auth-context';
  * answer 401.
  */
 export function AuthGuard({ children }: { children: ReactNode }) {
+  const t = useTranslations('auth.guard');
   const { isLoading, isAuthenticated } = useAuth();
   const router = useRouter();
   const signInPath = useSignInPath();
@@ -29,7 +31,7 @@ export function AuthGuard({ children }: { children: ReactNode }) {
   if (isLoading || !isAuthenticated) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <Spinner size="lg" label="Loading your session" />
+        <Spinner size="lg" label={t('loadingSession')} />
       </div>
     );
   }

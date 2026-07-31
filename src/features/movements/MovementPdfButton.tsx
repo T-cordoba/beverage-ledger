@@ -1,11 +1,14 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Button, useNotify } from '@/components/ui';
 import { describeError } from '@/lib/api';
 import { downloadMovementPdf } from './api';
 
 export function MovementPdfButton({ id, code }: { id: string; code: string }) {
+  const t = useTranslations('movements.card');
+  const tStates = useTranslations('common.states');
   const notify = useNotify();
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -15,7 +18,7 @@ export function MovementPdfButton({ id, code }: { id: string; code: string }) {
     try {
       await downloadMovementPdf(id, code);
     } catch (error) {
-      notify('error', 'The PDF could not be downloaded', describeError(error, 'Please try again.'));
+      notify('error', t('pdfFailed'), describeError(error, tStates('tryAgain')));
     } finally {
       setIsDownloading(false);
     }
@@ -26,7 +29,7 @@ export function MovementPdfButton({ id, code }: { id: string; code: string }) {
       size="sm"
       onClick={() => void download()}
       isLoading={isDownloading}
-      title={`Download ${code} as PDF`}
+      title={t('pdfTitle', { code })}
     >
       {!isDownloading && (
         <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

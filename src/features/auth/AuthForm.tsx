@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
@@ -21,13 +22,15 @@ function FormError({ message }: { message: string }) {
 }
 
 function GoogleButton({ label }: { label: string }) {
+  const t = useTranslations('auth.google');
+
   if (!IS_GOOGLE_SIGN_IN_ENABLED) return null;
 
   return (
     <>
       <div className="flex items-center gap-3 text-xs uppercase tracking-widest text-contrast/40">
         <span className="h-px flex-1 bg-border" />
-        or
+        {t('separator')}
         <span className="h-px flex-1 bg-border" />
       </div>
       <Button variant="secondary" size="lg" className="w-full" asChild>
@@ -39,6 +42,7 @@ function GoogleButton({ label }: { label: string }) {
 }
 
 export function LoginForm() {
+  const t = useTranslations('auth');
   const { signIn } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -57,7 +61,7 @@ export function LoginForm() {
       await signIn({ email, password });
       router.replace(safeReturnTo(searchParams.get(RETURN_TO_PARAM)));
     } catch (cause) {
-      setError(describeError(cause, 'Could not sign in. Please try again.'));
+      setError(describeError(cause, t('signIn.failed')));
       setIsSubmitting(false);
     }
   };
@@ -66,7 +70,7 @@ export function LoginForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       {error && <FormError message={error} />}
 
-      <Field label="Email">
+      <Field label={t('fields.email')}>
         {({ id }) => (
           <Input
             id={id}
@@ -79,7 +83,7 @@ export function LoginForm() {
         )}
       </Field>
 
-      <Field label="Password">
+      <Field label={t('fields.password')}>
         {({ id }) => (
           <Input
             id={id}
@@ -93,15 +97,15 @@ export function LoginForm() {
       </Field>
 
       <Button type="submit" size="lg" className="w-full" isLoading={isSubmitting}>
-        Sign in
+        {t('signIn.submit')}
       </Button>
 
-      <GoogleButton label="Continue with Google" />
+      <GoogleButton label={t('google.signIn')} />
 
       <p className="text-center text-sm text-contrast/60">
-        No account yet?{' '}
+        {t('signIn.noAccount')}{' '}
         <Link href={ROUTES.signUp} className="text-accent hover:underline">
-          Create one
+          {t('signIn.createOne')}
         </Link>
       </p>
     </form>
@@ -109,6 +113,8 @@ export function LoginForm() {
 }
 
 export function RegisterForm() {
+  const t = useTranslations('auth');
+  const tCommon = useTranslations('common');
   const { register } = useAuth();
   const router = useRouter();
 
@@ -127,7 +133,7 @@ export function RegisterForm() {
       await register({ name, email, password });
       router.replace(ROUTES.dashboard);
     } catch (cause) {
-      setError(describeError(cause, 'Could not create the account. Please try again.'));
+      setError(describeError(cause, t('register.failed')));
       setIsSubmitting(false);
     }
   };
@@ -136,7 +142,7 @@ export function RegisterForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       {error && <FormError message={error} />}
 
-      <Field label="Name">
+      <Field label={t('fields.name')}>
         {({ id }) => (
           <Input
             id={id}
@@ -150,7 +156,7 @@ export function RegisterForm() {
         )}
       </Field>
 
-      <Field label="Email">
+      <Field label={t('fields.email')}>
         {({ id }) => (
           <Input
             id={id}
@@ -163,7 +169,7 @@ export function RegisterForm() {
         )}
       </Field>
 
-      <Field label="Password" hint="At least 12 characters, with lowercase, uppercase and a digit.">
+      <Field label={t('fields.password')} hint={tCommon('passwordPolicy')}>
         {({ id, describedBy }) => (
           <Input
             id={id}
@@ -178,15 +184,15 @@ export function RegisterForm() {
       </Field>
 
       <Button type="submit" size="lg" className="w-full" isLoading={isSubmitting}>
-        Create account
+        {t('register.submit')}
       </Button>
 
-      <GoogleButton label="Sign up with Google" />
+      <GoogleButton label={t('google.signUp')} />
 
       <p className="text-center text-sm text-contrast/60">
-        Already registered?{' '}
+        {t('register.haveAccount')}{' '}
         <Link href={ROUTES.signIn} className="text-accent hover:underline">
-          Sign in
+          {t('register.signIn')}
         </Link>
       </p>
     </form>

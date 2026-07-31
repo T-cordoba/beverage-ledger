@@ -1,5 +1,6 @@
 'use client';
 
+import { useFormatter, useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';
 import {
   Badge,
@@ -19,7 +20,6 @@ import {
   type DataTableColumn,
 } from '@/components/ui';
 import { describeError, type Location } from '@/lib/api';
-import { formatNumber, pluralize } from '@/lib/utils';
 import { useCreateLocation, useDeleteLocation, useLocations, useUpdateLocation } from './api';
 
 function LocationFormDialog({
@@ -35,6 +35,8 @@ function LocationFormDialog({
   onOpenChange: (open: boolean) => void;
   onSubmit: (values: { name: string; isDefault: boolean }) => Promise<void>;
 }) {
+  const t = useTranslations('locations.form');
+  const tActions = useTranslations('common.actions');
   const [name, setName] = useState(location?.name ?? '');
   const [isDefault, setIsDefault] = useState(location?.isDefault ?? false);
 
@@ -47,12 +49,12 @@ function LocationFormDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <form onSubmit={(event) => void submit(event)} className="space-y-4 text-left">
-          <DialogTitle>{location ? `Rename ${location.name}` : 'New location'}</DialogTitle>
-          <DialogDescription>
-            Where stock lives. A movement that names none lands on the default.
-          </DialogDescription>
+          <DialogTitle>
+            {location ? t('editTitle', { name: location.name }) : t('createTitle')}
+          </DialogTitle>
+          <DialogDescription>{t('description')}</DialogDescription>
 
-          <Field label="Name">
+          <Field label={t('name')}>
             {({ id }) => (
               <Input
                 id={id}
@@ -75,10 +77,8 @@ function LocationFormDialog({
                 className="mt-1 h-4 w-4 accent-accent"
               />
               <span>
-                Make it the default
-                <span className="block text-xs text-contrast/50">
-                  The current default is demoted. There is always exactly one.
-                </span>
+                {t('makeDefault')}
+                <span className="block text-xs text-contrast/50">{t('makeDefaultHint')}</span>
               </span>
             </label>
           )}
@@ -92,10 +92,10 @@ function LocationFormDialog({
               disabled={isSaving}
               onClick={() => onOpenChange(false)}
             >
-              Cancel
+              {tActions('cancel')}
             </Button>
             <Button type="submit" size="lg" className="flex-1" isLoading={isSaving}>
-              {location ? 'Save' : 'Create'}
+              {location ? tActions('save') : tActions('create')}
             </Button>
           </DialogFooter>
         </form>
@@ -105,6 +105,11 @@ function LocationFormDialog({
 }
 
 export function LocationsView() {
+  const t = useTranslations('locations');
+  const tStates = useTranslations('common.states');
+  const tActions = useTranslations('common.actions');
+  const format = useFormatter();
+
   const { data, isPending, isError } = useLocations();
   const create = useCreateLocation();
   const update = useUpdateLocation();
@@ -130,58 +135,70 @@ export function LocationsView() {
           id: editing.id,
           input: { name: values.name, ...(values.isDefault ? { isDefault: true } : {}) },
         });
-        notify('success', 'Location saved', `${values.name} was updated.`);
+        notify('success', t('notify.saved'), t('notify.savedDescription', { name: values.name }));
       } else {
         await create.mutateAsync({ name: values.name, isDefault: values.isDefault });
-        notify('success', 'Location created', `${values.name} can receive stock now.`);
+        notify(
+          'success',
+          t('notify.created'),
+          t('notify.createdDescription', { name: values.name }),
+        );
       }
       setIsFormOpen(false);
     } catch (error) {
-      notify('error', 'Could not save the location', describeError(error, 'Please try again.'));
+      notify('error', t('notify.saveFailed'), describeError(error, tStates('tryAgain')));
     }
   };
 
   const destroy = async (location: Location) => {
     try {
       await remove.mutateAsync(location.id);
-      notify('success', 'Location deleted', `${location.name} is gone.`);
+      notify(
+        'success',
+        t('notify.deleted'),
+        t('notify.deletedDescription', { name: location.name }),
+      );
     } catch (error) {
-      notify('error', 'Could not delete the location', describeError(error, 'Please try again.'));
+      notify('error', t('notify.deleteFailed'), describeError(error, tStates('tryAgain')));
     }
   };
 
   const promote = async (location: Location) => {
     try {
       await update.mutateAsync({ id: location.id, input: { isDefault: true } });
-      notify('success', 'Default changed', `${location.name} is where movements land now.`);
+      notify(
+        'success',
+        t('notify.defaultChanged'),
+        t('notify.defaultChangedDescription', { name: location.name }),
+      );
     } catch (error) {
-      notify('error', 'Could not change the default', describeError(error, 'Please try again.'));
+      notify('error', t('notify.defaultChangeFailed'), describeError(error, tStates('tryAgain')));
     }
   };
 
   const columns: DataTableColumn<Location>[] = [
     {
       key: 'name',
-      header: 'Name',
+      header: t('columns.name'),
       cell: (location) => (
         <span className="flex items-center gap-2">
           <span className="font-medium text-foreground">{location.name}</span>
-          {location.isDefault && <Badge tone="info">Default</Badge>}
+          {location.isDefault && <Badge tone="info">{t('default')}</Badge>}
         </span>
       ),
     },
     {
       key: 'movementCount',
-      header: 'Ledger lines',
+      header: t('columns.movementCount'),
       align: 'end',
       hideBelow: 'sm',
       cell: (location) => (
-        <span className="text-contrast/70">{formatNumber(location.movementCount)}</span>
+        <span className="text-contrast/70">{format.number(location.movementCount)}</span>
       ),
     },
     {
       key: 'actions',
-      header: 'Actions',
+      header: t('columns.actions'),
       align: 'end',
       cell: (location) => (
         <div className="flex justify-end gap-2">
@@ -192,11 +209,11 @@ export function LocationsView() {
               disabled={isSaving}
               onClick={() => void promote(location)}
             >
-              Make default
+              {t('makeDefault')}
             </Button>
           )}
           <Button variant="secondary" size="sm" onClick={() => openForm(location)}>
-            Rename
+            {t('rename')}
           </Button>
           <Button
             variant="danger-outline"
@@ -204,14 +221,14 @@ export function LocationsView() {
             disabled={location.isDefault || location.movementCount > 0}
             title={
               location.isDefault
-                ? 'The default cannot be deleted: promote another one first'
+                ? t('delete.blockedDefault')
                 : location.movementCount > 0
-                  ? `${formatNumber(location.movementCount)} ledger ${pluralize(location.movementCount, 'line')} reference it`
+                  ? t('delete.blockedInUse', { count: location.movementCount })
                   : undefined
             }
             onClick={() => setDeleting(location)}
           >
-            Delete
+            {tActions('delete')}
           </Button>
         </div>
       ),
@@ -222,33 +239,27 @@ export function LocationsView() {
     <div className="space-y-6">
       <header className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
         <div className="space-y-1">
-          <h1 className="text-2xl font-light text-foreground sm:text-3xl">Locations</h1>
-          <p className="text-sm text-contrast/60">
-            Where stock lives. Every level and every ledger line belongs to one, and a transfer
-            moves units between two without changing the total.
-          </p>
+          <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
+          <p className="text-sm text-contrast/60">{t('subtitle')}</p>
         </div>
         <Button size="lg" onClick={() => openForm(null)}>
-          New location
+          {t('new')}
         </Button>
       </header>
 
       {isError ? (
-        <EmptyState
-          title="The locations could not be loaded."
-          description="Check that the API is reachable and try again."
-        />
+        <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />
       ) : (
         <Card className="p-0 sm:p-0">
           <DataTable
-            caption="Locations"
+            caption={t('caption')}
             columns={columns}
             rows={locations}
             rowKey={(location) => location.id}
             isLoading={isPending}
-            loadingLabel="Loading locations"
+            loadingLabel={t('loading')}
             className="px-2 py-1 sm:px-4 sm:py-2"
-            empty={<EmptyState title="No locations yet." />}
+            empty={<EmptyState title={t('empty')} />}
           />
         </Card>
       )}
@@ -267,10 +278,10 @@ export function LocationsView() {
         open={deleting !== null}
         onOpenChange={(open) => !open && setDeleting(null)}
         tone="danger"
-        title={`Delete ${deleting?.name}?`}
-        description="No ledger line references it, so it can go without leaving a gap in the history."
-        cancelLabel="Keep it"
-        confirmLabel="Delete"
+        title={t('delete.title', { name: deleting?.name ?? '' })}
+        description={t('delete.description')}
+        cancelLabel={tActions('cancel')}
+        confirmLabel={tActions('delete')}
         isConfirming={remove.isPending}
         onConfirm={() => {
           const location = deleting;

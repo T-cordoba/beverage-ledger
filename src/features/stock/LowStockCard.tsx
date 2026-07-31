@@ -1,9 +1,9 @@
 'use client';
 
+import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Badge, Button, Card, EmptyState, Spinner } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
-import { formatNumber, pluralize } from '@/lib/utils';
 import { useLowStock } from './api';
 
 const SHORTLIST_SIZE = 8;
@@ -13,25 +13,28 @@ const SHORTLIST_SIZE = 8;
  * product sits, so the first row is the one to buy first.
  */
 export function LowStockCard({ enabled = true }: { enabled?: boolean }) {
+  const t = useTranslations('stock.low');
+  const tUnits = useTranslations('common.units');
+  const format = useFormatter();
   const { data: rows, error, isPending } = useLowStock(SHORTLIST_SIZE, enabled);
 
   return (
     <Card className="min-w-0 space-y-4 bg-contrast/5">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="text-lg font-medium text-accent">Below minimum</h2>
+        <h2 className="text-lg font-medium text-accent">{t('title')}</h2>
         <Button variant="ghost" size="sm" asChild>
-          <Link href={ROUTES.stock}>All stock</Link>
+          <Link href={ROUTES.stock}>{t('all')}</Link>
         </Button>
       </div>
 
       {isPending ? (
         <div className="flex justify-center py-8">
-          <Spinner label="Loading the reorder list" />
+          <Spinner label={t('loading')} />
         </div>
       ) : error ? (
-        <EmptyState title="The reorder list could not be loaded." />
+        <EmptyState title={t('loadFailed')} />
       ) : rows.length === 0 ? (
-        <EmptyState title="Nothing is under its reorder threshold." />
+        <EmptyState title={t('empty')} />
       ) : (
         <ul className="space-y-2">
           {rows.map((row) => (
@@ -51,12 +54,12 @@ export function LowStockCard({ enabled = true }: { enabled?: boolean }) {
 
               <div className="flex shrink-0 items-center gap-3">
                 <span className="text-sm text-contrast/70">
-                  {formatNumber(row.quantityBase)} / {formatNumber(row.minimumStock ?? 0)}{' '}
+                  {format.number(row.quantityBase)} / {format.number(row.minimumStock ?? 0)}{' '}
                   <span className="text-xs text-contrast/50">
-                    {pluralize(row.quantityBase, 'unit')}
+                    {tUnits('unit', { count: row.quantityBase })}
                   </span>
                 </span>
-                {row.quantityBase === 0 && <Badge tone="danger">Out</Badge>}
+                {row.quantityBase === 0 && <Badge tone="danger">{t('out')}</Badge>}
               </div>
             </li>
           ))}

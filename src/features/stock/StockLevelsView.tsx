@@ -1,5 +1,6 @@
 'use client';
 
+import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import {
@@ -17,77 +18,17 @@ import { useCategories } from '@/features/catalog';
 import { LocationSelect } from '@/features/locations';
 import type { StockLevel } from '@/lib/api';
 import { useDebouncedValue } from '@/lib/hooks';
-import { formatNumber, pluralize } from '@/lib/utils';
 import { useStockLevels, type StockQuery } from './api';
-import { describeCases } from './quantity';
-
-const columns: DataTableColumn<StockLevel>[] = [
-  {
-    key: 'product',
-    header: 'Product',
-    cell: (row) => (
-      <div className="min-w-0 space-y-0.5">
-        <Link
-          href={ROUTES.productStock(row.productId)}
-          className="font-medium text-foreground hover:text-accent"
-        >
-          {row.productName}
-        </Link>
-        {row.brandName && <p className="text-xs text-accent/70">{row.brandName}</p>}
-      </div>
-    ),
-  },
-  {
-    key: 'category',
-    header: 'Category',
-    hideBelow: 'md',
-    cell: (row) => <span className="text-contrast/70">{row.categoryName}</span>,
-  },
-  {
-    key: 'onHand',
-    header: 'On hand',
-    align: 'end',
-    cell: (row) => {
-      const cases = describeCases(row.quantityBase, row.caseSize);
-
-      return (
-        <div className="space-y-0.5">
-          <p className="font-medium text-foreground">
-            {formatNumber(row.quantityBase)}{' '}
-            <span className="text-xs font-normal text-contrast/50">
-              {pluralize(row.quantityBase, 'unit')}
-            </span>
-          </p>
-          {cases && <p className="text-xs text-contrast/50">{cases}</p>}
-        </div>
-      );
-    },
-  },
-  {
-    key: 'minimum',
-    header: 'Minimum',
-    align: 'end',
-    hideBelow: 'sm',
-    cell: (row) => (
-      <span className="text-contrast/70">
-        {row.minimumStock === null ? '—' : formatNumber(row.minimumStock)}
-      </span>
-    ),
-  },
-  {
-    key: 'status',
-    header: 'Status',
-    align: 'end',
-    cell: (row) =>
-      row.isBelowMinimum ? (
-        <Badge tone="warning">Below minimum</Badge>
-      ) : (
-        <span className="text-xs text-contrast/40">OK</span>
-      ),
-  },
-];
+import { useDescribeCases } from './quantity';
 
 export function StockLevelsView() {
+  const t = useTranslations('stock.levels');
+  const tUnits = useTranslations('common.units');
+  const tStates = useTranslations('common.states');
+  const tActions = useTranslations('common.actions');
+  const format = useFormatter();
+  const describeCases = useDescribeCases();
+
   const [search, setSearch] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [locationId, setLocationId] = useState('');
@@ -116,30 +57,93 @@ export function StockLevelsView() {
     setLocationId('');
   };
 
+  const columns: DataTableColumn<StockLevel>[] = [
+    {
+      key: 'product',
+      header: t('columns.product'),
+      cell: (row) => (
+        <div className="min-w-0 space-y-0.5">
+          <Link
+            href={ROUTES.productStock(row.productId)}
+            className="font-medium text-foreground hover:text-accent"
+          >
+            {row.productName}
+          </Link>
+          {row.brandName && <p className="text-xs text-accent/70">{row.brandName}</p>}
+        </div>
+      ),
+    },
+    {
+      key: 'category',
+      header: t('columns.category'),
+      hideBelow: 'md',
+      cell: (row) => <span className="text-contrast/70">{row.categoryName}</span>,
+    },
+    {
+      key: 'onHand',
+      header: t('columns.onHand'),
+      align: 'end',
+      cell: (row) => {
+        const cases = describeCases(row.quantityBase, row.caseSize);
+
+        return (
+          <div className="space-y-0.5">
+            <p className="font-medium text-foreground">
+              {format.number(row.quantityBase)}{' '}
+              <span className="text-xs font-normal text-contrast/50">
+                {tUnits('unit', { count: row.quantityBase })}
+              </span>
+            </p>
+            {cases && <p className="text-xs text-contrast/50">{cases}</p>}
+          </div>
+        );
+      },
+    },
+    {
+      key: 'minimum',
+      header: t('columns.minimum'),
+      align: 'end',
+      hideBelow: 'sm',
+      cell: (row) => (
+        <span className="text-contrast/70">
+          {row.minimumStock === null ? tStates('none') : format.number(row.minimumStock)}
+        </span>
+      ),
+    },
+    {
+      key: 'status',
+      header: t('columns.status'),
+      align: 'end',
+      cell: (row) =>
+        row.isBelowMinimum ? (
+          <Badge tone="warning">{t('belowMinimum')}</Badge>
+        ) : (
+          <span className="text-xs text-contrast/40">{t('ok')}</span>
+        ),
+    },
+  ];
+
   return (
     <div className="space-y-6">
       <header className="space-y-1">
-        <h1 className="text-2xl font-light text-foreground sm:text-3xl">Stock on hand</h1>
-        <p className="text-sm text-contrast/60">
-          What the ledger says is in the cellar right now. A product that has never moved sits at
-          zero.
-        </p>
+        <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
+        <p className="text-sm text-contrast/60">{t('subtitle')}</p>
       </header>
 
       <div className="grid gap-3 sm:grid-cols-3">
         <Input
           type="search"
-          placeholder="Search by product..."
+          placeholder={t('searchPlaceholder')}
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          aria-label="Search stock by product"
+          aria-label={t('searchLabel')}
         />
         <Select
           value={categoryId}
           onValueChange={setCategoryId}
-          aria-label="Filter by category"
+          aria-label={t('filterCategory')}
           options={[
-            { value: '', label: 'All categories' },
+            { value: '', label: t('allCategories') },
             ...categories.map((category) => ({ value: category.id, label: category.name })),
           ]}
         />
@@ -148,32 +152,29 @@ export function StockLevelsView() {
         <LocationSelect
           value={locationId}
           onValueChange={setLocationId}
-          aria-label="Filter by location"
+          aria-label={t('filterLocation')}
         />
       </div>
 
       {error ? (
-        <EmptyState
-          title="Stock could not be loaded."
-          description="Check that the API is reachable and try again."
-        />
+        <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />
       ) : (
         <Card className="p-0 sm:p-0">
           <DataTable
-            caption="Stock on hand by product"
+            caption={t('caption')}
             columns={columns}
             rows={rows}
             rowKey={(row) => row.productId}
             isLoading={isPending}
-            loadingLabel="Loading stock"
+            loadingLabel={t('loading')}
             className="px-2 py-1 sm:px-4 sm:py-2"
             empty={
               <EmptyState
-                title={hasFilters ? 'No products match those filters.' : 'The catalogue is empty.'}
+                title={hasFilters ? t('emptyFiltered') : t('empty')}
                 action={
                   hasFilters ? (
                     <Button variant="secondary" size="sm" onClick={clearFilters}>
-                      Clear filters
+                      {tActions('clearFilters')}
                     </Button>
                   ) : undefined
                 }
@@ -191,7 +192,7 @@ export function StockLevelsView() {
             isLoading={isFetchingNextPage}
             onClick={() => void fetchNextPage()}
           >
-            Load more
+            {tActions('loadMore')}
           </Button>
         </div>
       )}

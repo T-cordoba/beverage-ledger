@@ -8,5 +8,5 @@ export {
 export { KardexView } from './KardexView';
 export { stockKeys } from './keys';
 export { LowStockCard } from './LowStockCard';
-export { describeCases } from './quantity';
+export { useDescribeCases } from './quantity';
 export { StockLevelsView } from './StockLevelsView';

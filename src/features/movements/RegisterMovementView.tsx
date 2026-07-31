@@ -1,8 +1,9 @@
 'use client';
 
+import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
   Button,
   Card,
@@ -18,30 +19,35 @@ import { useAuth } from '@/features/auth';
 import { useCatalogFilters } from '@/features/catalog';
 import { LocationSelect } from '@/features/locations';
 import { describeError, type MovementType } from '@/lib/api';
-import { formatSignedNumber, parseDateKey, pluralize } from '@/lib/utils';
+import { parseDateKey } from '@/lib/utils';
 import { useCancelMovement, useOpenDraft, useRegisterMovement, useResumeDraft } from './api';
 import { MIN_REASON_LENGTH, MOVEMENT_TYPES } from './movement-types';
 import { ProductPicker } from './ProductPicker';
 import { useMovementDraft, type MovementDraft } from './useMovementDraft';
 
-/** Signed quantities read as `-2 bottles`, so the noun follows the magnitude. */
-function describeUnit(quantity: number, unit: string): string {
-  return `${formatSignedNumber(quantity)} ${pluralize(Math.abs(quantity), unit)}`;
-}
+/** Reads the accent span out of a rich message, so it is written once. */
+const strong = (chunks: ReactNode) => <span className="font-medium text-accent">{chunks}</span>;
 
 function DraftSummary({ draft, isSigned }: { draft: MovementDraft; isSigned: boolean }) {
-  const format = (quantity: number, unit: string) =>
-    isSigned ? describeUnit(quantity, unit) : `${quantity} ${pluralize(quantity, unit)}`;
+  const t = useTranslations('movements.register.summary');
+  const tUnits = useTranslations('common.units');
+  const format = useFormatter();
+
+  /** Signed quantities read as `-2 bottles`, so the noun follows the magnitude. */
+  const describe = (quantity: number, unit: 'bottle' | 'case') => {
+    const amount = isSigned ? format.number(quantity, 'signed') : quantity;
+    return `${amount} ${tUnits(unit, { count: Math.abs(quantity) })}`;
+  };
 
   return (
     <Card className="bg-contrast/5">
-      <h3 className="mb-4 text-lg font-light text-foreground sm:text-xl">Lines</h3>
+      <h3 className="mb-4 text-lg font-light text-foreground sm:text-xl">{t('lines')}</h3>
 
       <ul className="mb-4 space-y-2">
         {draft.lines.map((line) => {
           const parts: string[] = [];
-          if (line.BOTTLE !== 0) parts.push(format(line.BOTTLE, 'bottle'));
-          if (line.CASE !== 0) parts.push(format(line.CASE, 'case'));
+          if (line.BOTTLE !== 0) parts.push(describe(line.BOTTLE, 'bottle'));
+          if (line.CASE !== 0) parts.push(describe(line.CASE, 'case'));
 
           return (
             <li key={line.product.id} className="flex justify-between gap-4 text-sm sm:text-base">
@@ -53,11 +59,13 @@ function DraftSummary({ draft, isSigned }: { draft: MovementDraft; isSigned: boo
       </ul>
 
       <div className="flex items-center justify-between border-t border-contrast/10 pt-3 text-sm">
-        <span className="font-medium text-contrast/80">Total</span>
+        <span className="font-medium text-contrast/80">{t('total')}</span>
         <div className="flex items-center gap-4">
-          <span className="font-semibold text-accent">{format(draft.totalBottles, 'bottle')}</span>
+          <span className="font-semibold text-accent">
+            {describe(draft.totalBottles, 'bottle')}
+          </span>
           <span className="text-contrast/60">•</span>
-          <span className="font-semibold text-accent">{format(draft.totalCases, 'case')}</span>
+          <span className="font-semibold text-accent">{describe(draft.totalCases, 'case')}</span>
         </div>
       </div>
     </Card>
@@ -65,6 +73,11 @@ function DraftSummary({ draft, isSigned }: { draft: MovementDraft; isSigned: boo
 }
 
 export function RegisterMovementView({ type }: { type: MovementType }) {
+  const t = useTranslations('movements.register');
+  const tTypes = useTranslations('movements.types');
+  const tStates = useTranslations('common.states');
+  const format = useFormatter();
+
   const meta = MOVEMENT_TYPES[type];
   const { can, user } = useAuth();
   const filters = useCatalogFilters();
@@ -86,9 +99,9 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
   const pickUp = async (movementId: string) => {
     try {
       draft.restore(await resume.mutateAsync(movementId));
-      notify('info', 'Draft picked up', 'What was captured is back. Confirming reuses it.');
+      notify('info', t('pickedUpTitle'), t('pickedUpDescription'));
     } catch (error) {
-      notify('error', 'Could not pick up the draft', describeError(error, 'Please try again.'));
+      notify('error', t('pickUpFailed'), describeError(error, tStates('tryAgain')));
     }
   };
 
@@ -104,6 +117,10 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
   const isDestinationMissing = meta.needsDestination && draft.destinationLocationId === '';
   const isOriginMissing = meta.needsDestination && draft.locationId === '';
   const isIncomplete = isReasonMissing || isDestinationMissing || isOriginMissing;
+
+  const totalUnits = meta.isSigned
+    ? format.number(draft.totalBaseUnits, 'signed')
+    : String(draft.totalBaseUnits);
 
   const submit = async () => {
     try {
@@ -125,15 +142,11 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
 
       draft.clear();
       setIsConfirmOpen(false);
-      notify(
-        'success',
-        'Movement registered',
-        `${movement.code} was confirmed and applied to stock.`,
-      );
+      notify('success', t('registeredTitle'), t('registeredDescription', { code: movement.code }));
       router.push(ROUTES.movement(movement.id));
     } catch (error) {
       setIsConfirmOpen(false);
-      notify('error', 'Could not register the movement', describeError(error, 'Please try again.'));
+      notify('error', t('registerFailed'), describeError(error, tStates('tryAgain')));
     }
   };
 
@@ -159,30 +172,29 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
 
     notify(
       'info',
-      'Draft discarded',
-      pending && !canVoid
-        ? 'What you captured is cleared. The open draft stays in the history for a manager to void.'
-        : 'Nothing was sent to the ledger.',
+      t('discardedTitle'),
+      pending && !canVoid ? t('discardedDraftKept') : t('discardedNothingSent'),
     );
   };
 
   return (
     <div className="space-y-6">
       <header className="space-y-1">
-        <h1 className="text-2xl font-light text-foreground sm:text-3xl">{meta.action}</h1>
-        <p className="text-sm text-contrast/60">{meta.effect}</p>
+        <h1 className="text-2xl font-light text-foreground sm:text-3xl">
+          {tTypes(`${type}.action`)}
+        </h1>
+        <p className="text-sm text-contrast/60">{tTypes(`${type}.effect`)}</p>
       </header>
 
       {draft.pendingMovementId && (
         <Card className="border-warning/30 bg-warning/10">
           <p className="text-sm text-contrast/80">
-            A draft is already open from an attempt that could not be confirmed. Fixing the
-            quantities and confirming again reuses it, so no second movement is created.{' '}
+            {t('pendingDraft')}{' '}
             <Link
               href={ROUTES.movement(draft.pendingMovementId)}
               className="text-accent hover:underline"
             >
-              Open the draft
+              {t('openDraft')}
             </Link>
             .
           </p>
@@ -192,9 +204,11 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
       {resumable && (
         <Card className="flex flex-col gap-3 border-info/30 bg-info/10 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-contrast/80">
-            <span className="font-medium text-foreground">{resumable.code}</span> is still a draft
-            here, with {resumable.itemCount} {pluralize(resumable.itemCount, 'line')}. It was left
-            open somewhere else — picking it up loads what was captured instead of starting again.
+            {t.rich('resumable', {
+              code: resumable.code,
+              count: resumable.itemCount,
+              strong: (chunks) => <span className="font-medium text-foreground">{chunks}</span>,
+            })}
           </p>
           <Button
             variant="secondary"
@@ -203,36 +217,36 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
             isLoading={resume.isPending}
             onClick={() => void pickUp(resumable.id)}
           >
-            Pick it up
+            {t('pickUp')}
           </Button>
         </Card>
       )}
 
       <Card className="grid gap-4 bg-contrast/5 sm:grid-cols-2">
         <Field
-          label="Occurred at"
-          hint="Leave it empty to record it as happening now."
+          label={t('fields.occurredAt.label')}
+          hint={t('fields.occurredAt.hint')}
           className="sm:col-span-1"
         >
           {() => (
-            <DatePicker value={draft.occurredAt} onChange={draft.setOccurredAt} placeholder="Now" />
+            <DatePicker
+              value={draft.occurredAt}
+              onChange={draft.setOccurredAt}
+              placeholder={t('fields.occurredAt.placeholder')}
+            />
           )}
         </Field>
 
         <Field
-          label={meta.needsDestination ? 'From' : 'Location'}
-          hint={
-            meta.needsDestination
-              ? 'Where the stock is leaving from.'
-              : 'Which warehouse this movement lands on.'
-          }
-          error={isOriginMissing ? 'A transfer needs an origin.' : undefined}
+          label={meta.needsDestination ? t('fields.origin.label') : t('fields.location.label')}
+          hint={meta.needsDestination ? t('fields.origin.hint') : t('fields.location.hint')}
+          error={isOriginMissing ? t('fields.origin.missing') : undefined}
         >
           {({ id, describedBy }) => (
             <LocationSelect
               id={id}
               aria-describedby={describedBy}
-              anyLabel={meta.needsDestination ? 'Pick an origin' : undefined}
+              anyLabel={meta.needsDestination ? t('fields.origin.any') : undefined}
               value={draft.locationId}
               onValueChange={draft.setLocationId}
               excludeId={meta.needsDestination ? draft.destinationLocationId : undefined}
@@ -242,15 +256,15 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
 
         {meta.needsDestination && (
           <Field
-            label="To"
-            hint="Where it arrives. The total on hand does not change."
-            error={isDestinationMissing ? 'A transfer needs a destination.' : undefined}
+            label={t('fields.destination.label')}
+            hint={t('fields.destination.hint')}
+            error={isDestinationMissing ? t('fields.destination.missing') : undefined}
           >
             {({ id, describedBy }) => (
               <LocationSelect
                 id={id}
                 aria-describedby={describedBy}
-                anyLabel="Pick a destination"
+                anyLabel={t('fields.destination.any')}
                 value={draft.destinationLocationId}
                 onValueChange={draft.setDestinationLocationId}
                 excludeId={draft.locationId}
@@ -261,11 +275,11 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
 
         {meta.requiresReason && (
           <Field
-            label="Reason"
-            hint="Required, and kept on the audit trail."
+            label={t('fields.reason.label')}
+            hint={t('fields.reason.hint')}
             error={
               draft.reason.length > 0 && isReasonMissing
-                ? `At least ${MIN_REASON_LENGTH} characters.`
+                ? t('fields.reason.tooShort', { count: MIN_REASON_LENGTH })
                 : undefined
             }
           >
@@ -275,15 +289,15 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
                 aria-describedby={describedBy}
                 value={draft.reason}
                 onChange={(event) => draft.setReason(event.target.value)}
-                placeholder="Breakage, count variance, ..."
+                placeholder={t('fields.reason.placeholder')}
               />
             )}
           </Field>
         )}
 
         <Field
-          label="Note"
-          hint="Optional context for whoever reads this later."
+          label={t('fields.note.label')}
+          hint={t('fields.note.hint')}
           className="sm:col-span-2"
         >
           {({ id, describedBy }) => (
@@ -292,7 +306,7 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
               aria-describedby={describedBy}
               value={draft.note}
               onChange={(event) => draft.setNote(event.target.value)}
-              placeholder="Delivery number, shift, requesting bar..."
+              placeholder={t('fields.note.placeholder')}
             />
           )}
         </Field>
@@ -307,12 +321,12 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
           <div className="sticky bottom-4 z-floating">
             <Card className="flex flex-col items-center gap-3 border-accent/30 bg-surface/95 sm:flex-row sm:justify-between">
               <p className="text-sm text-contrast/80">
-                <span className="font-medium text-accent">{draft.productCount}</span>{' '}
-                {pluralize(draft.productCount, 'product')} ·{' '}
-                <span className="font-medium text-accent">
-                  {meta.isSigned ? formatSignedNumber(draft.totalBaseUnits) : draft.totalBaseUnits}
-                </span>{' '}
-                {pluralize(Math.abs(draft.totalBaseUnits), 'unit')}
+                {t.rich('summary.counts', {
+                  products: draft.productCount,
+                  units: totalUnits,
+                  unitsAbs: Math.abs(draft.totalBaseUnits),
+                  strong,
+                })}
               </p>
 
               <div className="flex w-full gap-3 sm:w-auto">
@@ -323,7 +337,7 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
                   onClick={() => setIsDiscardOpen(true)}
                   disabled={register.isPending}
                 >
-                  Discard
+                  {t('discard')}
                 </Button>
                 <Button
                   size="lg"
@@ -332,22 +346,18 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
                   disabled={isIncomplete}
                   isLoading={register.isPending}
                 >
-                  Confirm
+                  {t('confirm')}
                 </Button>
               </div>
             </Card>
           </div>
 
           {isReasonMissing && (
-            <p className="text-center text-sm text-warning">
-              An adjustment needs a reason before it can be confirmed.
-            </p>
+            <p className="text-center text-sm text-warning">{t('reasonRequired')}</p>
           )}
 
           {(isOriginMissing || isDestinationMissing) && (
-            <p className="text-center text-sm text-warning">
-              A transfer needs both ends named before it can be confirmed.
-            </p>
+            <p className="text-center text-sm text-warning">{t('bothEndsRequired')}</p>
           )}
         </>
       )}
@@ -365,23 +375,15 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
             />
           </svg>
         }
-        title={`Confirm this ${meta.label.toLowerCase()}?`}
-        description={
-          <>
-            This writes{' '}
-            <span className="font-medium text-accent">
-              {draft.productCount} {pluralize(draft.productCount, 'product')}
-            </span>{' '}
-            to the ledger and moves{' '}
-            <span className="font-medium text-accent">
-              {meta.isSigned ? formatSignedNumber(draft.totalBaseUnits) : draft.totalBaseUnits}{' '}
-              {pluralize(Math.abs(draft.totalBaseUnits), 'unit')}
-            </span>{' '}
-            — cases counted by their case size.
-          </>
-        }
-        cancelLabel="Go back"
-        confirmLabel="Confirm"
+        title={tTypes(`${type}.confirmQuestion`)}
+        description={t.rich('confirmDescription', {
+          products: draft.productCount,
+          units: totalUnits,
+          unitsAbs: Math.abs(draft.totalBaseUnits),
+          strong,
+        })}
+        cancelLabel={t('goBack')}
+        confirmLabel={t('confirm')}
         onConfirm={() => void submit()}
         isConfirming={register.isPending}
       />
@@ -390,10 +392,10 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
         open={isDiscardOpen}
         onOpenChange={setIsDiscardOpen}
         tone="danger"
-        title="Discard what you captured?"
-        description="Every line, the date and the note are cleared. No movement is created."
-        cancelLabel="Keep it"
-        confirmLabel="Discard"
+        title={t('discardTitle')}
+        description={t('discardDescription')}
+        cancelLabel={t('keep')}
+        confirmLabel={t('discard')}
         onConfirm={() => void discard()}
       />
     </div>

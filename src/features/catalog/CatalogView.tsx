@@ -1,5 +1,6 @@
 'use client';
 
+import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useState } from 'react';
 import {
@@ -15,7 +16,6 @@ import {
 import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
 import { describeError, type Product } from '@/lib/api';
-import { formatNumber } from '@/lib/utils';
 import { useProducts, useUpdateProduct } from './api';
 import { CatalogFilters } from './CatalogFilters';
 import { ProductFormDialog } from './ProductFormDialog';
@@ -32,97 +32,12 @@ function detailsOf(product: Product): string {
     .join(' · ');
 }
 
-function columnsOf(
-  canManage: boolean,
-  onEdit: (product: Product) => void,
-  onToggle: (product: Product) => void,
-) {
-  const columns: DataTableColumn<Product>[] = [
-    {
-      key: 'product',
-      header: 'Product',
-      cell: (product) => (
-        <div className="min-w-0 space-y-0.5">
-          <Link
-            href={ROUTES.productStock(product.id)}
-            className="font-medium text-foreground hover:text-accent"
-          >
-            {product.name}
-          </Link>
-          <p className="text-xs text-accent/70">{product.brand?.name ?? 'No brand'}</p>
-        </div>
-      ),
-    },
-    {
-      key: 'category',
-      header: 'Category',
-      hideBelow: 'sm',
-      cell: (product) => <span className="text-contrast/70">{product.category.name}</span>,
-    },
-    {
-      key: 'details',
-      header: 'Details',
-      hideBelow: 'lg',
-      cell: (product) => <span className="text-xs text-contrast/60">{detailsOf(product)}</span>,
-    },
-    {
-      key: 'caseSize',
-      header: 'Per case',
-      align: 'end',
-      hideBelow: 'md',
-      cell: (product) => <span className="text-contrast/70">{formatNumber(product.caseSize)}</span>,
-    },
-    {
-      key: 'minimumStock',
-      header: 'Minimum',
-      align: 'end',
-      hideBelow: 'md',
-      cell: (product) => (
-        <span className="text-contrast/70">
-          {product.minimumStock === null ? '—' : formatNumber(product.minimumStock)}
-        </span>
-      ),
-    },
-    {
-      key: 'status',
-      header: 'Status',
-      align: 'end',
-      cell: (product) =>
-        product.isActive ? (
-          <span className="text-xs text-contrast/40">Active</span>
-        ) : (
-          <Badge tone="danger">Deactivated</Badge>
-        ),
-    },
-  ];
-
-  if (!canManage) return columns;
-
-  return [
-    ...columns,
-    {
-      key: 'actions',
-      header: 'Actions',
-      align: 'end',
-      cell: (product) => (
-        <div className="flex justify-end gap-2">
-          <Button variant="secondary" size="sm" onClick={() => onEdit(product)}>
-            Edit
-          </Button>
-          <Button
-            variant={product.isActive ? 'danger-outline' : 'secondary'}
-            size="sm"
-            onClick={() => onToggle(product)}
-          >
-            {product.isActive ? 'Deactivate' : 'Activate'}
-          </Button>
-        </div>
-      ),
-    } satisfies DataTableColumn<Product>,
-  ];
-}
-
 export function CatalogView() {
+  const t = useTranslations('catalog');
+  const tStates = useTranslations('common.states');
+  const tActions = useTranslations('common.actions');
+  const format = useFormatter();
+
   const { can } = useAuth();
   const filters = useCatalogFilters();
   const notify = useNotify();
@@ -154,31 +69,112 @@ export function CatalogView() {
       await update.mutateAsync({ id: product.id, input: { isActive: !product.isActive } });
       notify(
         'success',
-        product.isActive ? 'Product deactivated' : 'Product activated',
+        product.isActive ? t('toggle.deactivatedTitle') : t('toggle.activatedTitle'),
         product.isActive
-          ? `${product.name} stops showing up when registering movements.`
-          : `${product.name} is available again.`,
+          ? t('toggle.deactivatedDescription', { name: product.name })
+          : t('toggle.activatedDescription', { name: product.name }),
       );
     } catch (cause) {
-      notify('error', 'Could not change the product', describeError(cause, 'Please try again.'));
+      notify('error', t('toggle.failed'), describeError(cause, tStates('tryAgain')));
     }
   };
+
+  const columns: DataTableColumn<Product>[] = [
+    {
+      key: 'product',
+      header: t('columns.product'),
+      cell: (product) => (
+        <div className="min-w-0 space-y-0.5">
+          <Link
+            href={ROUTES.productStock(product.id)}
+            className="font-medium text-foreground hover:text-accent"
+          >
+            {product.name}
+          </Link>
+          <p className="text-xs text-accent/70">{product.brand?.name ?? t('noBrand')}</p>
+        </div>
+      ),
+    },
+    {
+      key: 'category',
+      header: t('columns.category'),
+      hideBelow: 'sm',
+      cell: (product) => <span className="text-contrast/70">{product.category.name}</span>,
+    },
+    {
+      key: 'details',
+      header: t('columns.details'),
+      hideBelow: 'lg',
+      cell: (product) => <span className="text-xs text-contrast/60">{detailsOf(product)}</span>,
+    },
+    {
+      key: 'caseSize',
+      header: t('columns.caseSize'),
+      align: 'end',
+      hideBelow: 'md',
+      cell: (product) => (
+        <span className="text-contrast/70">{format.number(product.caseSize)}</span>
+      ),
+    },
+    {
+      key: 'minimumStock',
+      header: t('columns.minimum'),
+      align: 'end',
+      hideBelow: 'md',
+      cell: (product) => (
+        <span className="text-contrast/70">
+          {product.minimumStock === null ? tStates('none') : format.number(product.minimumStock)}
+        </span>
+      ),
+    },
+    {
+      key: 'status',
+      header: t('columns.status'),
+      align: 'end',
+      cell: (product) =>
+        product.isActive ? (
+          <span className="text-xs text-contrast/40">{t('active')}</span>
+        ) : (
+          <Badge tone="danger">{t('deactivated')}</Badge>
+        ),
+    },
+  ];
+
+  if (canManage) {
+    columns.push({
+      key: 'actions',
+      header: t('columns.actions'),
+      align: 'end',
+      cell: (product) => (
+        <div className="flex justify-end gap-2">
+          <Button variant="secondary" size="sm" onClick={() => openForm(product)}>
+            {tActions('edit')}
+          </Button>
+          <Button
+            variant={product.isActive ? 'danger-outline' : 'secondary'}
+            size="sm"
+            onClick={() => setToggling(product)}
+          >
+            {product.isActive ? t('deactivate') : t('activate')}
+          </Button>
+        </div>
+      ),
+    });
+  }
 
   return (
     <div className="space-y-6">
       <header className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
         <div className="space-y-1">
-          <h1 className="text-2xl font-light text-foreground sm:text-3xl">Catalogue</h1>
+          <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
           <p className="text-sm text-contrast/60">
-            {canManage
-              ? 'What can be moved, and the case size every quantity is normalized with.'
-              : 'What can be moved. Editing it needs the catalogue permission.'}
+            {canManage ? t('subtitleManage') : t('subtitleRead')}
           </p>
         </div>
 
         {canManage && (
           <Button size="lg" onClick={() => openForm(null)}>
-            New product
+            {t('new')}
           </Button>
         )}
       </header>
@@ -186,27 +182,24 @@ export function CatalogView() {
       <CatalogFilters state={filters} showStatus={canManage} />
 
       {error ? (
-        <EmptyState
-          title="The catalogue could not be loaded."
-          description="Check that the API is reachable and try again."
-        />
+        <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />
       ) : (
         <Card className="p-0 sm:p-0">
           <DataTable
-            caption="Products in the catalogue"
-            columns={columnsOf(canManage, openForm, setToggling)}
+            caption={t('caption')}
+            columns={columns}
             rows={products}
             rowKey={(product) => product.id}
             isLoading={isPending}
-            loadingLabel="Loading the catalogue"
+            loadingLabel={t('loading')}
             className="px-2 py-1 sm:px-4 sm:py-2"
             empty={
               <EmptyState
-                title="No products match those filters."
+                title={t('empty')}
                 action={
                   filters.hasAny ? (
                     <Button variant="secondary" size="sm" onClick={filters.clearAll}>
-                      Clear filters
+                      {tActions('clearFilters')}
                     </Button>
                   ) : undefined
                 }
@@ -224,7 +217,7 @@ export function CatalogView() {
             isLoading={isFetchingNextPage}
             onClick={() => void fetchNextPage()}
           >
-            Load more
+            {tActions('loadMore')}
           </Button>
         </div>
       )}
@@ -243,14 +236,16 @@ export function CatalogView() {
         open={toggling !== null}
         onOpenChange={(open) => !open && setToggling(null)}
         tone={toggling?.isActive ? 'danger' : 'accent'}
-        title={toggling?.isActive ? `Deactivate ${toggling.name}?` : `Activate ${toggling?.name}?`}
-        description={
+        title={
           toggling?.isActive
-            ? 'It stays in the ledger and in every past movement, but stops being offered for new ones.'
-            : 'It becomes available for new movements again.'
+            ? t('toggle.deactivateTitle', { name: toggling.name })
+            : t('toggle.activateTitle', { name: toggling?.name ?? '' })
         }
-        cancelLabel="Keep it"
-        confirmLabel={toggling?.isActive ? 'Deactivate' : 'Activate'}
+        description={
+          toggling?.isActive ? t('toggle.deactivateDescription') : t('toggle.activateDescription')
+        }
+        cancelLabel={tActions('cancel')}
+        confirmLabel={toggling?.isActive ? t('deactivate') : t('activate')}
         onConfirm={() => void toggleActive()}
         isConfirming={update.isPending}
       />

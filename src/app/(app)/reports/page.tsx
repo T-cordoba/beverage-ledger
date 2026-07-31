@@ -1,11 +1,18 @@
+import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { PermissionGate } from '@/features/auth';
 import { ConsumptionReportView } from '@/features/reports';
 
-export const metadata = { title: 'Reports · Beverage Ledger' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('reports');
+  return { title: t('title') };
+}
 
-export default function ReportsPage() {
+export default async function ReportsPage() {
+  const t = await getTranslations('reports');
+
   return (
-    <PermissionGate permission="report:read" title="You cannot see reports.">
+    <PermissionGate permission="report:read" title={t('denied')}>
       <ConsumptionReportView />
     </PermissionGate>
   );

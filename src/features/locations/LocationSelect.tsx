@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Select } from '@/components/ui';
 import { useLocations } from './api';
 
@@ -29,10 +30,12 @@ export function LocationSelect({
   excludeId,
   ...aria
 }: LocationSelectProps) {
+  const t = useTranslations('locations.select');
+  const tStates = useTranslations('common.states');
   const { data, isPending } = useLocations();
 
   const locations = (data?.data ?? []).filter((location) => location.id !== excludeId);
-  const fallback = anyLabel ?? 'Default location';
+  const fallback = anyLabel ?? t('default');
 
   return (
     <Select
@@ -42,10 +45,10 @@ export function LocationSelect({
       disabled={isPending}
       {...aria}
       options={[
-        { value: '', label: isPending ? 'Loading…' : fallback },
+        { value: '', label: isPending ? tStates('loading') : fallback },
         ...locations.map((location) => ({
           value: location.id,
-          label: location.isDefault ? `${location.name} (default)` : location.name,
+          label: location.isDefault ? t('isDefault', { name: location.name }) : location.name,
         })),
       ]}
     />

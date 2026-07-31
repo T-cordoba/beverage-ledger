@@ -32,8 +32,8 @@ El nombre no es casual: la fuente de verdad del inventario es un **ledger inmuta
 | 4 | Front: design system (tokens CSS, primitivos Radix, `cn()`) | ✅ Hecha |
 | 5 | Front: reestructura a rutas reales + corte a la API nueva | ✅ Hecha |
 | 6 | Front: dashboard de existencias + panel de administración | ✅ Hecha |
-| 7 | Front: landing page + i18n + parametrización de branding | 🔄 Siguiente |
-| 8 | READMEs y documentación final | ⬜ Pendiente |
+| 7 | Front: landing page + i18n + parametrización de branding | ✅ Hecha |
+| 8 | READMEs y documentación final | 🔄 Siguiente |
 
 Plan completo: `C:\Users\Tomas\.claude\plans\ok-voy-a-hacerle-tender-sprout.md`
 
@@ -41,7 +41,9 @@ Plan completo: `C:\Users\Tomas\.claude\plans\ok-voy-a-hacerle-tender-sprout.md`
 
 **El corte ya ocurrió.** Este repo no habla con ninguna base de datos: `actions.ts`, `actions-licores.ts` y `src/app/api/` están borrados, igual que `@neondatabase/serverless` y `pdf-lib`. Todo pasa por `beverage-ledger-api`, que tiene que estar levantada en `:3001` para que la app funcione. Neon ya se puede apagar; la connection string que quede en tu `.env` local no la lee nadie.
 
-**El dominio ya está cubierto.** Con la Fase 6 no queda ninguna ruta de la API sin consumidor: existencias, kardex, entradas, ajustes, usuarios, taxonomía, organización y log de auditoría tienen vista. Lo que falta es de presentación —landing, i18n, branding— y es la Fase 7.
+**El dominio ya está cubierto.** Con la Fase 6 no queda ninguna ruta de la API sin consumidor: existencias, kardex, entradas, ajustes, usuarios, taxonomía, organización y log de auditoría tienen vista.
+
+**Y la presentación también.** La Fase 7 sacó el copy del JSX a `src/i18n/messages/{es,en}.json` —**el español es el idioma por defecto**—, puso una landing pública en `/` y dejó el nombre del producto en `config/branding` en vez de quemado. Lo único que queda es documentación: la Fase 8, y el `README.md` de la raíz sigue describiendo la app *anterior* a la reescritura.
 
 **Ambos repos están desplegados**: el front en Vercel y la API en Render (`https://beverage-ledger-api.onrender.com`). Ver §9, que es donde el despliegue cambia cómo se trabaja en local.
 
@@ -62,6 +64,7 @@ pnpm dev                        # servidor de desarrollo (Turbopack) en :3000
 pnpm build                      # build de producción
 pnpm start                      # servir el build
 pnpm api:types                  # regenera src/lib/api/schema.d.ts desde la API viva
+pnpm i18n:check                 # es.json y en.json tienen las mismas claves
 pnpm lint                       # ESLint
 pnpm typecheck                  # tsc --noEmit
 pnpm format                     # Prettier --write
@@ -121,7 +124,7 @@ Lo que se aplaza: signup de organizaciones, billing, invitaciones, subdominios, 
 ### Idioma
 - **Todo lo que vive dentro del código va en inglés**: identificadores, nombres de archivo, columnas de BD, comentarios, mensajes de log y mensajes de commit. El código original mezclaba (`cantidades`, `botellas`, `cajas`, `licores`, `nombre`, `tipo`, `fecha`); eso se elimina.
 - El español queda para la documentación del repositorio (`CLAUDE.md`, `README.md`) y para el copy de la interfaz.
-- **Copy de la interfaz: nunca literal en el JSX.** Va a `src/i18n/messages/{es,en}.json` (Fase 7). `es` es el idioma por defecto.
+- **Copy de la interfaz: nunca literal en el JSX.** Va a `src/i18n/messages/{es,en}.json`. `es` es el idioma por defecto y **la lengua fuente**: los mensajes están tipados contra `es.json`, así que una clave que no existe rompe el build. Al revés no lo ve TypeScript —una clave que falte en `en.json` solo se nota como la ruta cruda en pantalla—, y de eso se encarga `pnpm i18n:check`.
 
 ### Comentarios
 
@@ -159,7 +162,8 @@ Ni colores, ni z-index, ni endpoints, ni textos, ni valores de negocio, ni nombr
 - Colores, tipografía, radios, z-index, motion → `src/styles/tokens.css` (CSS custom properties), consumidas por `tailwind.config.ts`. El espaciado es la escala de Tailwind, no se redefine.
 - Constantes de negocio y navegación → `src/config/`.
 - Textos → `src/i18n/messages/`.
-- Branding (nombre, logo, datos legales) → viene de la API, de la organización.
+- Branding **con sesión** (nombre, logo, datos legales) → viene de la API, de la organización.
+- Branding **sin sesión** (landing, pantallas de auth, `<title>`) → `src/config/branding.ts`, que sale de `NEXT_PUBLIC_BRAND_NAME` con un valor por defecto. Ahí no hay organización que preguntar todavía, y son dos cosas distintas: una es el producto y la otra el inquilino.
 
 ### Tres niveles de componente
 ```
@@ -167,7 +171,7 @@ components/ui/       Primitivos globales. Sin lógica de negocio, sin llamadas a
                      Hoy existen: Button, Input, Textarea, Select, Field, Dialog,
                      ConfirmDialog, Popover, DatePicker, Card, Badge, DataTable,
                      StatTile, SegmentedControl, Spinner, EmptyState, Notifications.
-components/layout/   Estructura: AppShell, Sidebar, Topbar, MarketingNav, Footer.
+components/layout/   Estructura: AppShell, Topbar (producto) · MarketingNav, Footer (landing).
 features/<dominio>/  Funcionalidad: componentes, hooks y lógica de un dominio concreto
                      (auth, catalog, movements, stock, reports, dashboard, admin).
 app/**/page.tsx      Vistas. Componen features y layout. Delgadas.
@@ -193,7 +197,9 @@ Antipatrón a evitar (era literalmente el `src/app/page.tsx` de antes): un compo
 
 **Escala de z-index** (en vez de los `z-[9999]` de antes): `z-sticky` < `z-floating` < `z-overlay` < `z-modal` < `z-dropdown` = `z-popover` < `z-toast`. Los dropdowns van por encima del modal a propósito: un `Select` abierto dentro de un `Dialog` tiene que pintarse sobre él.
 
-**Formatters**: `@/lib/utils` (`toDateKey`, `parseDateKey`, `formatLongDate`, `formatShortDate`, `formatDateTime`, `formatMonthYear`, `getMonthNames`, `getWeekdayNames`, `pluralize`, `formatNumber`, `formatSignedNumber`). El locale sale de `@/config/locale`, no de literales `'en-US'`.
+**Formatters**: fechas y números van por `useFormatter()` de next-intl con formatos con nombre, definidos una vez en `src/i18n/formats.ts` — `format.dateTime(date, 'full' | 'long' | 'short' | 'monthYear')` y `format.number(value)` o `format.number(value, 'signed')`. En `@/lib/utils` solo queda lo que no depende del idioma (`toDateKey`, `parseDateKey`) y lo que next-intl no cubre (`getMonthNames`, `getWeekdayNames`, que el calendario necesita como lista y no como fecha formateada).
+
+**Plurales**: ICU en el mensaje, `t('common.units.bottle', { count })`. El `pluralize()` de antes concatenaba una `s` y no sobrevive a un idioma con otras reglas. Ojo con los años: `{year}` como número lo agrupa a "2.026", así que van como string.
 
 No hay `Pagination` numerada y no la va a haber: la API pagina por cursor, así que las listas crecen con un botón de "cargar más". Un componente de páginas numeradas necesitaría un total que el contrato no da. `DataTable` sí existe desde la Fase 6, cuando aparecieron cinco consumidores reales (existencias, kardex, catálogo, usuarios, taxonomía, auditoría); recibe columnas declarativas y se encarga del estado vacío y del de carga.
 
@@ -330,13 +336,14 @@ Lo esencial del dominio:
 
 ## 8. Estructura del front
 
-Lo que existe hoy, con lo pendiente marcado:
+Lo que existe hoy:
 
 ```
 src/
   app/
-    page.tsx          redirige a /dashboard (⬜ landing en la Fase 7)
+    layout.tsx        <html lang> + NextIntlClientProvider + Providers
     providers.tsx     QueryClient + notificaciones + AuthProvider
+    (marketing)/      landing pública en / — hero, features, cómo funciona, FAQ, CTA
     (auth)/           login · register · auth/callback
     (app)/            layout = AuthGuard + AppShell
       dashboard/      tarjetas, gráfico de actividad, bajo mínimo, últimos movimientos
@@ -349,20 +356,24 @@ src/
                       locations · organization · audit
   components/
     ui/               primitivos (ver §5)
-    layout/           AppShell, Topbar   (⬜ Sidebar y MarketingNav cuando hagan falta)
+    layout/           AppShell, Topbar · MarketingNav, Footer
   features/           auth · catalog · movements · stock · reports · dashboard ·
                       admin · profile · locations
   lib/
     api/              schema.d.ts generado, cliente, sesión, errores
     query/            configuración del QueryClient
-    utils/            cn(), formatters de fecha/número/plural
+    utils/            cn(), toDateKey/parseDateKey, nombres de mes y día
     hooks/
-  config/             api, locale, navigation
+  config/             api, branding, navigation
   styles/             tokens.css + globals.css
-  ⬜ i18n/            messages/es.json · messages/en.json   (Fase 7)
+  i18n/               config, request, formats, LanguageSwitcher, messages/{es,en}.json
 ```
 
 Imports siempre por alias `@/`, nunca relativos que suban de directorio (`../../`).
+
+**El i18n.** `src/i18n/` es la única puerta al idioma. `config.ts` tiene los locales, el nombre de la cookie y las etiquetas; `request.ts` es lo que next-intl llama en cada petición y resuelve el locale leyendo la cookie; `formats.ts` nombra los cuatro formatos de fecha y el número con signo; `messages.d.ts` aumenta `AppConfig` para que `t()` y `format.dateTime()` estén tipados contra `es.json`. El `LanguageSwitcher` escribe la cookie con una server action y llama a `router.refresh()`: los mensajes bajan desde el layout raíz, así que solo un render nuevo del servidor los trae.
+
+**Sin prefijo de idioma en la URL.** `/dashboard` es `/dashboard` en los dos idiomas. Se decidió así porque todo el producto vive detrás del guard y se renderiza en el navegador, de modo que un `/en` solo habría movido las 25 rutas bajo `[locale]/` y obligado a cambiar cada `Link`. Lo que cuesta: la landing no la indexa un crawler en inglés, y leer la cookie vuelve **dinámica** toda la app, la landing incluida. Si algún día el SEO importa, el camino es `localePrefix: 'as-needed'` con middleware, y `src/i18n/` ya está aislado para eso.
 
 **El cliente de la API.** `src/lib/api/` es la única puerta al backend: `schema.d.ts` lo genera `pnpm api:types` y **no se edita a mano**; `client.ts` monta `openapi-fetch` con el middleware de auth y expone `unwrap()`/`assertOk()`, que convierten el par `{ data, error }` en un valor o en un `ApiError` —que es lo que TanStack Query sabe manejar—; `types.ts` pone nombres cortos a los esquemas para no escribir `components['schemas']['…']` por todo el código. Ningún componente llama a `fetch` directamente.
 
@@ -380,6 +391,7 @@ Imports siempre por alias `@/`, nunca relativos que suban de directorio (`../../
 
   Si algún día molesta el parpadeo del spinner, el patrón es que **el front** escriba una cookie *pista* first-party y sin secreto (`bl_session=1`) al iniciar sesión, y que el middleware redirija con eso. Es una segunda fuente de verdad que se desincroniza cuando la sesión se revoca, así que es pulido de UX, nunca un control.
 - **El tope del picker es una cortesía, no un control.** Los steppers se frenan en lo que hay en la bodega de origen para que capturar de más no se descubra recién al confirmar, pero el stock se mueve entre una cosa y la otra: la API sigue siendo la autoridad y sigue rechazando bajar de cero. El techo va sobre **unidades base**, no sobre cada contador, porque botellas y cajas gastan el mismo stock. No aplica a ajustes: un ajuste existe porque el número registrado está mal, así que toparlo por ese número sería circular.
+- **Un array exportado desde un módulo `'use client'` no cruza a un server component.** Solo las funciones sobreviven a esa frontera; una constante llega como `undefined` y revienta en la primera llamada. Pasó con `MARKETING_SECTIONS`, que el `Footer` —server component— importaba del `MarketingNav`. Vive en `config/navigation.ts`, y ahí es donde va cualquier constante compartida entre los dos lados. **El build no lo detecta**: solo aparece al renderizar la página.
 - **Casing de los directorios.** Windows no distingue mayúsculas y Linux sí: `src/components/UI` estuvo versionado así mientras los imports decían `ui`, lo que compilaba en local y habría roto el build en Vercel. Si renombras solo el caso, `git rm -r --cached` y volver a añadir.
 
 ---
@@ -418,9 +430,15 @@ Cerrado en la Fase 6:
 - ~~No hay panel de administración~~ → usuarios y roles, categorías, marcas, branding de la organización y log de auditoría.
 - ~~Cuatro vistas repetían el mismo chequeo de permiso~~ → `PermissionGate` en la página, antes de montar la vista y de disparar sus queries.
 
-Sigue pendiente (Fase 7 en adelante):
+Cerrado en la Fase 7:
 
-- **Copy en inglés incrustado en el JSX.** Es lo más grande que queda: sale a `i18n/` en la Fase 7, y ahí hay bastante más texto que antes.
+- ~~Copy en inglés incrustado en el JSX~~ → ~630 claves en `es.json` y `en.json`, con el español como lengua fuente y tipada. De paso cayeron las etiquetas que vivían en constantes de módulo (`MOVEMENT_TYPES`, `ROLE_LABELS`, `REPORT_PERIODS`, `PRODUCT_STATUS_OPTIONS`): esos módulos guardan ahora comportamiento y valores, no texto.
+- ~~`'en-US'` fijo y pluralización a mano~~ → `useFormatter` con formatos con nombre y plurales ICU.
+- ~~`/` redirige al dashboard y no hay nada público~~ → landing en `(marketing)`, con el producto detrás.
+- `TaxonomyView` recibía un sustantivo singular y armaba el inglés alrededor ("No {noun}s yet"). Eso no sobrevive a un idioma donde el artículo concuerda con el género, así que ahora recibe las frases ya traducidas por la vista que lo usa.
+
+Sigue pendiente (Fase 8 en adelante):
+
 - **Un `INVITED` no tiene forma de entrar.** La pantalla de perfil (`features/profile`) cubrió el autoservicio —`PATCH /users/me` y `PUT /users/me/password`— pero un admin sigue sin poder asignarle contraseña a otro: no existe endpoint. Se crea con contraseña o se queda fuera. Arreglarlo es backend.
 
   Dos detalles del contrato que la pantalla tuvo que asumir: `PUT /users/me/password` responde 204 y **revoca todas las sesiones**, así que al terminar hay que cerrar la local —de ahí el campo de confirmación, porque un typo te saca de todas partes a la vez— y `/auth/me` no dice si la cuenta tiene contraseña, así que el formulario exige la actual siempre. Un usuario solo-Google, para el que la API no la exige, no podría ponerse la primera.

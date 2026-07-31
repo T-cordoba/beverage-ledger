@@ -1,11 +1,11 @@
 import type { MovementType, Permission } from '@/lib/api';
 
+/**
+ * What each type *does*. What each type is *called* — its label, the heading of
+ * its capture view, what confirming one means — lives in `movements.types` in
+ * the message catalogue, keyed by the same `MovementType`.
+ */
 interface MovementTypeMeta {
-  label: string;
-  /** Heads the register view and labels the button that opens it. */
-  action: string;
-  /** What confirming one does, said once here instead of in every view. */
-  effect: string;
   permission: Permission;
   /**
    * Adjustments correct in both directions, so their quantities carry a sign and
@@ -32,9 +32,6 @@ interface MovementTypeMeta {
 
 export const MOVEMENT_TYPES: Record<MovementType, MovementTypeMeta> = {
   OUTBOUND: {
-    label: 'Dispatch',
-    action: 'Register a dispatch',
-    effect: 'Stock leaves the cellar when you confirm. Nothing moves before that.',
     permission: 'movement:create-outbound',
     isSigned: false,
     requiresReason: false,
@@ -42,9 +39,6 @@ export const MOVEMENT_TYPES: Record<MovementType, MovementTypeMeta> = {
     takesFromOrigin: true,
   },
   INBOUND: {
-    label: 'Inbound',
-    action: 'Register an inbound',
-    effect: 'What the supplier delivered. Confirming adds it to stock.',
     permission: 'movement:create-inbound',
     isSigned: false,
     requiresReason: false,
@@ -52,10 +46,6 @@ export const MOVEMENT_TYPES: Record<MovementType, MovementTypeMeta> = {
     takesFromOrigin: false,
   },
   ADJUSTMENT: {
-    label: 'Adjustment',
-    action: 'Register an adjustment',
-    effect:
-      'Breakage, spillage or a count that did not match. Quantities go negative to take units out, positive to put them back, and the reason is part of the record.',
     permission: 'movement:create-adjustment',
     isSigned: true,
     requiresReason: true,
@@ -63,10 +53,6 @@ export const MOVEMENT_TYPES: Record<MovementType, MovementTypeMeta> = {
     takesFromOrigin: false,
   },
   TRANSFER: {
-    label: 'Transfer',
-    action: 'Register a transfer',
-    effect:
-      'Moves stock from one location to another. The total on hand does not change: confirming writes both sides at once.',
     permission: 'movement:create-transfer',
     isSigned: false,
     requiresReason: false,

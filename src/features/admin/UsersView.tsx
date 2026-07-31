@@ -1,15 +1,22 @@
 'use client';
 
+import { useFormatter, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Badge, Button, Card, DataTable, EmptyState, type DataTableColumn } from '@/components/ui';
 import { useAuth } from '@/features/auth';
 import type { User } from '@/lib/api';
-import { formatDateTime } from '@/lib/utils';
 import { useUsers } from './api';
-import { ROLE_LABELS, STATUS_LABELS, STATUS_TONES } from './roles';
+import { STATUS_TONES } from './roles';
 import { UserFormDialog } from './UserFormDialog';
 
 export function UsersView() {
+  const t = useTranslations('admin.users');
+  const tRoles = useTranslations('admin.roles');
+  const tStatuses = useTranslations('admin.statuses');
+  const tStates = useTranslations('common.states');
+  const tActions = useTranslations('common.actions');
+  const format = useFormatter();
+
   const { user: currentUser } = useAuth();
   const [editing, setEditing] = useState<User | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -25,13 +32,13 @@ export function UsersView() {
   const columns: DataTableColumn<User>[] = [
     {
       key: 'member',
-      header: 'Member',
+      header: t('columns.member'),
       cell: (user) => (
         <div className="min-w-0 space-y-0.5">
           <p className="font-medium text-foreground">
             {user.name}
             {user.id === currentUser?.id && (
-              <span className="ml-2 text-xs font-normal text-contrast/50">you</span>
+              <span className="ml-2 text-xs font-normal text-contrast/50">{t('you')}</span>
             )}
           </p>
           <p className="truncate text-xs text-contrast/60">{user.email}</p>
@@ -40,31 +47,31 @@ export function UsersView() {
     },
     {
       key: 'role',
-      header: 'Role',
-      cell: (user) => <span className="text-contrast/70">{ROLE_LABELS[user.role]}</span>,
+      header: t('columns.role'),
+      cell: (user) => <span className="text-contrast/70">{tRoles(user.role)}</span>,
     },
     {
       key: 'status',
-      header: 'Status',
-      cell: (user) => <Badge tone={STATUS_TONES[user.status]}>{STATUS_LABELS[user.status]}</Badge>,
+      header: t('columns.status'),
+      cell: (user) => <Badge tone={STATUS_TONES[user.status]}>{tStatuses(user.status)}</Badge>,
     },
     {
       key: 'lastLoginAt',
-      header: 'Last sign-in',
+      header: t('columns.lastLogin'),
       hideBelow: 'lg',
       cell: (user) => (
         <span className="text-xs text-contrast/60">
-          {user.lastLoginAt ? formatDateTime(user.lastLoginAt) : 'never'}
+          {user.lastLoginAt ? format.dateTime(new Date(user.lastLoginAt), 'full') : t('never')}
         </span>
       ),
     },
     {
       key: 'actions',
-      header: 'Actions',
+      header: t('columns.actions'),
       align: 'end',
       cell: (user) => (
         <Button variant="secondary" size="sm" onClick={() => openForm(user)}>
-          Edit
+          {tActions('edit')}
         </Button>
       ),
     },
@@ -74,33 +81,27 @@ export function UsersView() {
     <div className="space-y-6">
       <header className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
         <div className="space-y-1">
-          <h1 className="text-2xl font-light text-foreground sm:text-3xl">Users</h1>
-          <p className="text-sm text-contrast/60">
-            Who may do what. Segregation of duties is the point: whoever moves the stock is not who
-            adjusts the numbers behind it.
-          </p>
+          <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
+          <p className="text-sm text-contrast/60">{t('subtitle')}</p>
         </div>
         <Button size="lg" onClick={() => openForm(null)}>
-          New member
+          {t('new')}
         </Button>
       </header>
 
       {error ? (
-        <EmptyState
-          title="The members could not be loaded."
-          description="Check that the API is reachable and try again."
-        />
+        <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />
       ) : (
         <Card className="p-0 sm:p-0">
           <DataTable
-            caption="Members of the organization"
+            caption={t('caption')}
             columns={columns}
             rows={users}
             rowKey={(user) => user.id}
             isLoading={isPending}
-            loadingLabel="Loading members"
+            loadingLabel={t('loading')}
             className="px-2 py-1 sm:px-4 sm:py-2"
-            empty={<EmptyState title="No members yet." />}
+            empty={<EmptyState title={t('empty')} />}
           />
         </Card>
       )}
@@ -113,7 +114,7 @@ export function UsersView() {
             isLoading={isFetchingNextPage}
             onClick={() => void fetchNextPage()}
           >
-            Load more
+            {tActions('loadMore')}
           </Button>
         </div>
       )}
