@@ -1,6 +1,7 @@
 export { useDebouncedValue } from './useDebouncedValue';
 export {
   usePagination,
+  rowsOnPage,
   DEFAULT_PAGE_SIZE,
   MAX_PAGE_SIZE,
   PAGE_SIZES,

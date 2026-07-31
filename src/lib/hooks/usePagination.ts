@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 
 /**
  * The largest page the API will serve. Mirrors the `@Max(100)` on its pagination
@@ -19,6 +19,20 @@ const STORAGE_KEY = 'beverage-ledger:page-size';
 export interface PageParams {
   page: number;
   pageSize: number;
+}
+
+/**
+ * How many rows the page being loaded will hold, so its skeleton is exactly as
+ * tall as what replaces it.
+ *
+ * `total` is the count from the page before, which is the right number while the
+ * filters have not changed — and when they have, the reader is back on page one
+ * and a full page is the honest guess. Never zero: an empty result shows its own
+ * empty state, and a table of no rows at all reads as broken mid-load.
+ */
+export function rowsOnPage(page: number, pageSize: number, total?: number): number {
+  if (total === undefined) return pageSize;
+  return Math.min(pageSize, Math.max(total - (page - 1) * pageSize, 1));
 }
 
 /**
@@ -124,14 +138,47 @@ export function usePagination(filterKey: string): PaginationState {
     setPage(1);
   }
 
+  // Asked for by a page turn, carried out by the effect below. A ref because it
+  // is not something to render, only something the next commit has to remember.
+  const shouldScroll = useRef(false);
+
   const goToPage = useCallback((next: number) => {
     setPage(next);
+    shouldScroll.current = true;
+  }, []);
+
+  /**
+   * Scrolls after the render that shows the new page, never during the click
+   * that asked for it.
+   *
+   * Doing it in the handler aimed at the layout on its way out: the browser
+   * started a smooth scroll, React then replaced the rows with skeletons, and
+   * the correction Chrome applies to keep changed content visually still — its
+   * scroll anchoring — undid the scroll while it was in flight. It only ever
+   * worked for a page already in cache, where nothing is swapped for a skeleton
+   * and the geometry never moves.
+   */
+  useEffect(() => {
+    if (!shouldScroll.current) return;
+    shouldScroll.current = false;
+
+    const anchor = anchorRef.current;
+
+    // Nothing anchored: the window goes to the top, which is right for a list
+    // that owns its whole screen.
+    if (!anchor) {
+      window.scrollTo({ top: 0 });
+      return;
+    }
+
+    // The skeletons give way to the real rows while this is still animating, and
+    // anchoring would take the scroll back a second time.
+    anchor.style.setProperty('overflow-anchor', 'none');
 
     // Smoothness is the stylesheet's call: `scroll-behavior` is set globally and
     // already turned off under prefers-reduced-motion.
-    if (anchorRef.current) anchorRef.current.scrollIntoView({ block: 'start' });
-    else window.scrollTo({ top: 0 });
-  }, []);
+    anchor.scrollIntoView({ block: 'start' });
+  }, [page]);
 
   return {
     page,

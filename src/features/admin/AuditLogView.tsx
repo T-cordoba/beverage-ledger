@@ -11,11 +11,12 @@ import {
   Input,
   Pagination,
   Select,
+  Skeleton,
   type DataTableColumn,
 } from '@/components/ui';
 import { useAuth } from '@/features/auth';
 import type { AuditLog } from '@/lib/api';
-import { MAX_PAGE_SIZE, useDebouncedValue, usePagination } from '@/lib/hooks';
+import { MAX_PAGE_SIZE, rowsOnPage, useDebouncedValue, usePagination } from '@/lib/hooks';
 import { parseDateKey } from '@/lib/utils';
 import { useAuditLogs, useUsers, type AuditQuery } from './api';
 
@@ -74,7 +75,9 @@ export function AuditLogView() {
   );
 
   const pagination = usePagination(JSON.stringify(query));
-  const { data, error, isPending } = useAuditLogs(query, pagination.params);
+  const { data, error, isPending, isPlaceholderData } = useAuditLogs(query, pagination.params);
+  // Turning a page keeps the previous one on screen, so this and not `isPending`.
+  const isLoading = isPending || isPlaceholderData;
 
   const logs = data?.data ?? [];
   const hasFilters = Boolean(entity || action || userId || day);
@@ -99,6 +102,13 @@ export function AuditLogView() {
     {
       key: 'user',
       header: t('columns.who'),
+      // Two lines, like the cell it stands in for: name over address.
+      skeleton: (
+        <div className="space-y-0.5">
+          <Skeleton className="h-5 w-28" />
+          <Skeleton className="h-4 w-40" />
+        </div>
+      ),
       cell: (log) =>
         log.user ? (
           <div className="min-w-0 space-y-0.5">
@@ -118,6 +128,12 @@ export function AuditLogView() {
       key: 'entity',
       header: t('columns.entity'),
       hideBelow: 'sm',
+      skeleton: (
+        <div className="space-y-0.5">
+          <Skeleton className="h-5 w-20" />
+          <Skeleton className="h-4 w-32" />
+        </div>
+      ),
       cell: (log) => (
         <div className="min-w-0 space-y-0.5">
           <p className="text-contrast/70">{log.entity}</p>
@@ -140,6 +156,7 @@ export function AuditLogView() {
       header: t('columns.from'),
       align: 'end',
       hideBelow: 'lg',
+      skeleton: <Skeleton className="ml-auto h-5 w-24" />,
       cell: (log) => (
         <span className="font-mono text-xs text-contrast/50">
           {log.ipAddress ?? tStates('none')}
@@ -201,7 +218,8 @@ export function AuditLogView() {
             columns={columns}
             rows={logs}
             rowKey={(log) => log.id}
-            isLoading={isPending}
+            isLoading={isLoading}
+            skeletonRows={rowsOnPage(pagination.page, pagination.pageSize, data?.meta.total)}
             loadingLabel={t('loading')}
             className="px-2 py-1 sm:px-4 sm:py-2"
             empty={
@@ -226,6 +244,7 @@ export function AuditLogView() {
           pageSize={pagination.pageSize}
           total={data.meta.total}
           pageCount={data.meta.pageCount}
+          isLoading={isLoading}
           onPageChange={pagination.setPage}
           onPageSizeChange={pagination.setPageSize}
         />

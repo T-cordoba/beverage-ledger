@@ -5,10 +5,10 @@ import { EmptyState } from './EmptyState';
 import { Skeleton } from './Skeleton';
 
 /**
- * Ghost rows shown while a page loads.
+ * Ghost rows when the caller does not say how many are coming.
  *
- * Enough to fill the space a short page occupies, so the table does not grow
- * from one line to twenty and shove everything below it down the screen.
+ * A paginated list always knows — it is the page size — and passes it, so this
+ * only covers a table that holds everything it has.
  */
 const SKELETON_ROWS = 5;
 
@@ -21,6 +21,13 @@ export interface DataTableColumn<T> {
   /** Secondary detail a phone has no room for. */
   hideBelow?: 'sm' | 'md' | 'lg';
   className?: string;
+  /**
+   * Stands in for this cell while a page loads. Default is one line the height
+   * of plain cell text; anything taller — a second line under the name, a row of
+   * buttons — has to be declared here, or the table resizes when the rows land
+   * and that jolt is the whole thing a skeleton exists to avoid.
+   */
+  skeleton?: ReactNode;
 }
 
 interface DataTableProps<T> {
@@ -31,6 +38,11 @@ interface DataTableProps<T> {
   caption: string;
   isLoading?: boolean;
   loadingLabel?: string;
+  /**
+   * How many ghost rows to lay out. Pass what the page is about to hold, so the
+   * table is already its final height before the rows arrive.
+   */
+  skeletonRows?: number;
   empty?: ReactNode;
   className?: string;
 }
@@ -55,6 +67,7 @@ export function DataTable<T>({
   caption,
   isLoading = false,
   loadingLabel,
+  skeletonRows = SKELETON_ROWS,
   empty,
   className,
 }: DataTableProps<T>) {
@@ -90,40 +103,42 @@ export function DataTable<T>({
           </tr>
         </thead>
         <tbody>
-          {isLoading &&
-            Array.from({ length: SKELETON_ROWS }, (_, index) => (
-              <tr key={`skeleton-${index}`} className="border-b border-border/20 last:border-b-0">
-                {columns.map((column) => (
-                  <td
-                    key={column.key}
-                    className={cn('px-3 py-3', column.hideBelow && hideClasses[column.hideBelow])}
-                  >
-                    <Skeleton className="h-4" />
-                  </td>
-                ))}
-              </tr>
-            ))}
-
-          {rows.map((row) => (
-            <tr
-              key={rowKey(row)}
-              className="border-b border-border/20 transition-colors last:border-b-0 hover:bg-contrast/5"
-            >
-              {columns.map((column) => (
-                <td
-                  key={column.key}
-                  className={cn(
-                    'px-3 py-3 text-foreground',
-                    column.align === 'end' ? 'text-right' : 'text-left',
-                    column.hideBelow && hideClasses[column.hideBelow],
-                    column.className,
-                  )}
+          {/* Instead of the rows, never alongside them: with a previous page kept
+              on screen while the next one loads, showing both would draw two
+              tables' worth of height. */}
+          {isLoading
+            ? Array.from({ length: skeletonRows }, (_, index) => (
+                <tr key={`skeleton-${index}`} className="border-b border-border/20 last:border-b-0">
+                  {columns.map((column) => (
+                    <td
+                      key={column.key}
+                      className={cn('px-3 py-3', column.hideBelow && hideClasses[column.hideBelow])}
+                    >
+                      {column.skeleton ?? <Skeleton className="h-5" />}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            : rows.map((row) => (
+                <tr
+                  key={rowKey(row)}
+                  className="border-b border-border/20 transition-colors last:border-b-0 hover:bg-contrast/5"
                 >
-                  {column.cell(row)}
-                </td>
+                  {columns.map((column) => (
+                    <td
+                      key={column.key}
+                      className={cn(
+                        'px-3 py-3 text-foreground',
+                        column.align === 'end' ? 'text-right' : 'text-left',
+                        column.hideBelow && hideClasses[column.hideBelow],
+                        column.className,
+                      )}
+                    >
+                      {column.cell(row)}
+                    </td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
         </tbody>
       </table>
     </div>

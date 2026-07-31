@@ -42,6 +42,12 @@ interface PaginationProps {
   pageCount: number;
   onPageChange: (page: number) => void;
   onPageSizeChange: (pageSize: number) => void;
+  /**
+   * The page being asked for has not arrived yet. Everything that would ask for
+   * another one goes dead: a second click queues a request whose answer lands
+   * after the first and leaves the list showing a page nobody is on.
+   */
+  isLoading?: boolean;
   className?: string;
 }
 
@@ -52,6 +58,7 @@ export function Pagination({
   pageCount,
   onPageChange,
   onPageSizeChange,
+  isLoading = false,
   className,
 }: PaginationProps) {
   const t = useTranslations('common.pagination');
@@ -79,6 +86,7 @@ export function Pagination({
             size="sm"
             className="w-20"
             value={String(pageSize)}
+            disabled={isLoading}
             onValueChange={(next) => onPageSizeChange(Number(next))}
             options={PAGE_SIZES.map((size) => ({
               value: String(size),
@@ -92,7 +100,7 @@ export function Pagination({
             variant="ghost"
             size="icon-sm"
             aria-label={t('previous')}
-            disabled={page <= 1}
+            disabled={isLoading || page <= 1}
             onClick={() => onPageChange(page - 1)}
           >
             <ChevronIcon direction="left" />
@@ -117,6 +125,7 @@ export function Pagination({
                     size="icon-sm"
                     aria-label={t('goToPage', { page: candidate })}
                     aria-current={candidate === page ? 'page' : undefined}
+                    disabled={isLoading}
                     className={
                       candidate === page
                         ? 'bg-accent font-medium text-background hover:bg-accent-hover'
@@ -135,7 +144,7 @@ export function Pagination({
             variant="ghost"
             size="icon-sm"
             aria-label={t('next')}
-            disabled={page >= pageCount}
+            disabled={isLoading || page >= pageCount}
             onClick={() => onPageChange(page + 1)}
           >
             <ChevronIcon direction="right" />

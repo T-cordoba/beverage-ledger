@@ -10,12 +10,13 @@ import {
   DataTable,
   EmptyState,
   Pagination,
+  Skeleton,
   useNotify,
   type BadgeProps,
   type DataTableColumn,
 } from '@/components/ui';
 import { describeError, type Invitation } from '@/lib/api';
-import { usePagination } from '@/lib/hooks';
+import { rowsOnPage, usePagination } from '@/lib/hooks';
 import { useInvitations, useRevokeInvitation } from './api';
 
 type InvitationState = 'pending' | 'accepted' | 'revoked' | 'expired';
@@ -47,7 +48,9 @@ export function InvitationsCard() {
   const format = useFormatter();
 
   const pagination = usePagination('invitations');
-  const { data, error, isPending } = useInvitations(pagination.params);
+  const { data, error, isPending, isPlaceholderData } = useInvitations(pagination.params);
+  // Turning a page keeps the previous one on screen, so this and not `isPending`.
+  const isLoading = isPending || isPlaceholderData;
   const revoke = useRevokeInvitation();
   const notify = useNotify();
 
@@ -85,6 +88,7 @@ export function InvitationsCard() {
     {
       key: 'state',
       header: t('columns.state'),
+      skeleton: <Skeleton className="h-6 w-20" />,
       cell: (invitation) => {
         const state = stateOf(invitation, now);
         return <Badge tone={STATE_TONES[state]}>{t(`states.${state}`)}</Badge>;
@@ -110,6 +114,8 @@ export function InvitationsCard() {
       key: 'actions',
       header: t('columns.actions'),
       align: 'end',
+      // The revoke button is what sets this row's height.
+      skeleton: <Skeleton className="ml-auto h-9 w-20" />,
       cell: (invitation) =>
         stateOf(invitation, now) === 'pending' ? (
           <Button variant="danger-outline" size="sm" onClick={() => setRevoking(invitation)}>
@@ -135,7 +141,8 @@ export function InvitationsCard() {
             columns={columns}
             rows={invitations}
             rowKey={(invitation) => invitation.id}
-            isLoading={isPending}
+            isLoading={isLoading}
+            skeletonRows={rowsOnPage(pagination.page, pagination.pageSize, data?.meta.total)}
             loadingLabel={t('loading')}
             className="px-2 py-1 sm:px-4 sm:py-2"
             empty={<EmptyState title={t('empty')} description={t('emptyDescription')} />}
@@ -149,6 +156,7 @@ export function InvitationsCard() {
           pageSize={pagination.pageSize}
           total={data.meta.total}
           pageCount={data.meta.pageCount}
+          isLoading={isLoading}
           onPageChange={pagination.setPage}
           onPageSizeChange={pagination.setPageSize}
         />

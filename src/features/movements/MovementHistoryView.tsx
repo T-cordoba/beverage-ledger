@@ -2,20 +2,12 @@
 
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
-import {
-  Button,
-  DatePicker,
-  EmptyState,
-  Input,
-  Pagination,
-  Select,
-  Spinner,
-} from '@/components/ui';
+import { Button, DatePicker, EmptyState, Input, Pagination, Select } from '@/components/ui';
 import type { MovementStatus, MovementType } from '@/lib/api';
-import { useDebouncedValue, usePagination } from '@/lib/hooks';
+import { rowsOnPage, useDebouncedValue, usePagination } from '@/lib/hooks';
 import { parseDateKey } from '@/lib/utils';
 import { useMovements, type MovementQuery } from './api';
-import { MovementCard } from './MovementCard';
+import { MovementCard, MovementCardSkeleton } from './MovementCard';
 import { MOVEMENT_TYPE_ORDER } from './movement-types';
 import { NewMovementActions, NewMovementFab } from './NewMovementActions';
 
@@ -65,8 +57,12 @@ export function MovementHistoryView() {
   );
 
   const pagination = usePagination(JSON.stringify(query));
-  const { data, error, isPending } = useMovements(query, pagination.params);
+  const { data, error, isPending, isPlaceholderData } = useMovements(query, pagination.params);
 
+  // The query keeps the previous page on screen while the next one loads, which
+  // is why `isPending` alone is not the answer: turning a page has data the
+  // whole time, only from the page before it.
+  const isLoading = isPending || isPlaceholderData;
   const movements = data?.data ?? [];
   const hasFilters = Boolean(search || type || status || day);
 
@@ -124,13 +120,47 @@ export function MovementHistoryView() {
         </div>
       )}
 
-      {isPending ? (
-        <div className="flex items-center justify-center py-12">
-          <Spinner size="lg" label={t('loading')} />
-        </div>
-      ) : error ? (
+      {error ? (
         <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />
-      ) : movements.length === 0 ? (
+      ) : isLoading || movements.length > 0 ? (
+        <>
+          {/* Ghost cards rather than a centred spinner: a spinner takes one line
+              and then the page it was standing in for shoves everything below it
+              down the screen. */}
+          <div
+            ref={pagination.anchorRef}
+            className="grid scroll-mt-20 gap-4"
+            role={isLoading ? 'status' : undefined}
+            aria-busy={isLoading || undefined}
+          >
+            {isLoading ? (
+              <>
+                <span className="sr-only">{t('loading')}</span>
+                {Array.from(
+                  { length: rowsOnPage(pagination.page, pagination.pageSize, data?.meta.total) },
+                  (_, index) => (
+                    <MovementCardSkeleton key={index} />
+                  ),
+                )}
+              </>
+            ) : (
+              movements.map((movement) => <MovementCard key={movement.id} movement={movement} />)
+            )}
+          </div>
+
+          {data && (
+            <Pagination
+              page={pagination.page}
+              pageSize={pagination.pageSize}
+              total={data.meta.total}
+              pageCount={data.meta.pageCount}
+              isLoading={isLoading}
+              onPageChange={pagination.setPage}
+              onPageSizeChange={pagination.setPageSize}
+            />
+          )}
+        </>
+      ) : (
         <EmptyState
           title={hasFilters ? t('emptyFiltered') : t('empty')}
           action={
@@ -141,23 +171,6 @@ export function MovementHistoryView() {
             ) : undefined
           }
         />
-      ) : (
-        <>
-          <div ref={pagination.anchorRef} className="grid scroll-mt-20 gap-4">
-            {movements.map((movement) => (
-              <MovementCard key={movement.id} movement={movement} />
-            ))}
-          </div>
-
-          <Pagination
-            page={pagination.page}
-            pageSize={pagination.pageSize}
-            total={data?.meta.total ?? 0}
-            pageCount={data?.meta.pageCount ?? 1}
-            onPageChange={pagination.setPage}
-            onPageSizeChange={pagination.setPageSize}
-          />
-        </>
       )}
     </div>
   );

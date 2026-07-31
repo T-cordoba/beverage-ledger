@@ -12,12 +12,13 @@ import {
   EmptyState,
   FloatingAction,
   Pagination,
+  Skeleton,
   useNotify,
   type DataTableColumn,
 } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
-import { usePagination } from '@/lib/hooks';
+import { rowsOnPage, usePagination } from '@/lib/hooks';
 import { describeError, type Product } from '@/lib/api';
 import { useProducts, useUpdateProduct } from './api';
 import { CatalogFilters } from './CatalogFilters';
@@ -52,8 +53,15 @@ export function CatalogView() {
 
   const canManage = can('catalog:manage');
   const pagination = usePagination(JSON.stringify(filters.query));
-  const { data, error, isPending } = useProducts(filters.query, pagination.params);
+  const { data, error, isPending, isPlaceholderData } = useProducts(
+    filters.query,
+    pagination.params,
+  );
 
+  // The query keeps the previous page on screen while the next one loads, which
+  // is why `isPending` alone is not the answer: turning a page has data the
+  // whole time, only from the page before it.
+  const isLoading = isPending || isPlaceholderData;
   const products = data?.data ?? [];
 
   const openForm = (product: Product | null) => {
@@ -85,6 +93,13 @@ export function CatalogView() {
     {
       key: 'product',
       header: t('columns.product'),
+      // Two lines, like the cell it stands in for: name over brand.
+      skeleton: (
+        <div className="space-y-0.5">
+          <Skeleton className="h-5 w-44" />
+          <Skeleton className="h-4 w-24" />
+        </div>
+      ),
       cell: (product) => (
         <div className="min-w-0 space-y-0.5">
           <Link
@@ -114,6 +129,7 @@ export function CatalogView() {
       header: t('columns.caseSize'),
       align: 'end',
       hideBelow: 'md',
+      skeleton: <Skeleton className="ml-auto h-5 w-8" />,
       cell: (product) => (
         <span className="text-contrast/70">{format.number(product.caseSize)}</span>
       ),
@@ -123,6 +139,7 @@ export function CatalogView() {
       header: t('columns.minimum'),
       align: 'end',
       hideBelow: 'md',
+      skeleton: <Skeleton className="ml-auto h-5 w-8" />,
       cell: (product) => (
         <span className="text-contrast/70">
           {product.minimumStock === null ? tStates('none') : format.number(product.minimumStock)}
@@ -133,6 +150,7 @@ export function CatalogView() {
       key: 'status',
       header: t('columns.status'),
       align: 'end',
+      skeleton: <Skeleton className="ml-auto h-6 w-16" />,
       cell: (product) =>
         product.isActive ? (
           <span className="text-xs text-contrast/40">{t('active')}</span>
@@ -147,6 +165,13 @@ export function CatalogView() {
       key: 'actions',
       header: t('columns.actions'),
       align: 'end',
+      // Two buttons, and they are what sets this row's height.
+      skeleton: (
+        <div className="flex justify-end gap-2">
+          <Skeleton className="h-9 w-16" />
+          <Skeleton className="h-9 w-24" />
+        </div>
+      ),
       cell: (product) => (
         <div className="flex justify-end gap-2">
           <Button variant="secondary" size="sm" onClick={() => openForm(product)}>
@@ -199,7 +224,8 @@ export function CatalogView() {
             columns={columns}
             rows={products}
             rowKey={(product) => product.id}
-            isLoading={isPending}
+            isLoading={isLoading}
+            skeletonRows={rowsOnPage(pagination.page, pagination.pageSize, data?.meta.total)}
             loadingLabel={t('loading')}
             className="px-2 py-1 sm:px-4 sm:py-2"
             empty={
@@ -224,6 +250,7 @@ export function CatalogView() {
           pageSize={pagination.pageSize}
           total={data.meta.total}
           pageCount={data.meta.pageCount}
+          isLoading={isLoading}
           onPageChange={pagination.setPage}
           onPageSizeChange={pagination.setPageSize}
         />

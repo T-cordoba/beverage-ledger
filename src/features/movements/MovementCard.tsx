@@ -2,7 +2,7 @@
 
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { Badge, Button } from '@/components/ui';
+import { Badge, Button, Skeleton } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import type { MovementStatus, MovementSummary, MovementType } from '@/lib/api';
 import { MovementPdfButton } from './MovementPdfButton';
@@ -23,6 +23,36 @@ export function MovementStatusBadge({ status }: { status: MovementStatus }) {
   const t = useTranslations('movements.status');
 
   return <Badge tone={statusTones[status]}>{t(status)}</Badge>;
+}
+
+/**
+ * The card's own outline, line for line.
+ *
+ * Lives next to the card rather than in the view that lists it: the two have to
+ * be the same height, and that only holds if changing one puts the other in
+ * front of you.
+ */
+export function MovementCardSkeleton() {
+  return (
+    <article className="rounded-xl border border-contrast/10 bg-contrast/5 p-4 sm:rounded-2xl sm:p-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0 flex-1 space-y-2">
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-6 w-20" />
+            <Skeleton className="h-6 w-24" />
+          </div>
+          <Skeleton className="h-7 w-40 sm:h-8" />
+          <Skeleton className="h-5 w-56" />
+          <Skeleton className="h-4 w-44" />
+        </div>
+
+        <div className="flex shrink-0 gap-2">
+          <Skeleton className="h-9 w-24" />
+          <Skeleton className="h-9 w-20" />
+        </div>
+      </div>
+    </article>
+  );
 }
 
 export function MovementCard({ movement }: { movement: MovementSummary }) {

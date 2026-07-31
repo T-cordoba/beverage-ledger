@@ -9,6 +9,7 @@ import {
   DataTable,
   EmptyState,
   Pagination,
+  Skeleton,
   Spinner,
   StatTile,
   type DataTableColumn,
@@ -17,7 +18,7 @@ import { ROUTES } from '@/config/navigation';
 import { useProduct } from '@/features/catalog';
 import { MovementTypeBadge } from '@/features/movements';
 import type { KardexEntry } from '@/lib/api';
-import { usePagination } from '@/lib/hooks';
+import { rowsOnPage, usePagination } from '@/lib/hooks';
 import { useKardex, useStockAvailability } from './api';
 import { useDescribeCases } from './quantity';
 
@@ -31,6 +32,8 @@ export function KardexView({ productId }: { productId: string }) {
   const product = useProduct(productId);
   const pagination = usePagination(productId);
   const kardex = useKardex(productId, undefined, pagination.params);
+  // Turning a page keeps the previous one on screen, so this and not `isPending`.
+  const isLoadingPage = kardex.isPending || kardex.isPlaceholderData;
   const availability = useStockAvailability([productId]);
 
   const columns: DataTableColumn<KardexEntry>[] = [
@@ -47,6 +50,8 @@ export function KardexView({ productId }: { productId: string }) {
     {
       key: 'movement',
       header: t('columns.movement'),
+      // A badge sits in this cell, and it is what sets the row's height.
+      skeleton: <Skeleton className="h-6 w-32" />,
       cell: (entry) => (
         <div className="flex flex-wrap items-center gap-2">
           <Link
@@ -64,6 +69,7 @@ export function KardexView({ productId }: { productId: string }) {
       header: t('columns.captured'),
       align: 'end',
       hideBelow: 'sm',
+      skeleton: <Skeleton className="ml-auto h-5 w-20" />,
       cell: (entry) => (
         <span className="text-contrast/70">
           {format.number(entry.quantity)}{' '}
@@ -75,6 +81,7 @@ export function KardexView({ productId }: { productId: string }) {
       key: 'change',
       header: t('columns.change'),
       align: 'end',
+      skeleton: <Skeleton className="ml-auto h-5 w-12" />,
       cell: (entry) => (
         <span className="font-medium text-foreground">
           {format.number(entry.quantityBase, 'signed')}
@@ -85,6 +92,7 @@ export function KardexView({ productId }: { productId: string }) {
       key: 'balance',
       header: t('columns.balance'),
       align: 'end',
+      skeleton: <Skeleton className="ml-auto h-5 w-12" />,
       cell: (entry) => (
         <span className="font-medium text-accent">{format.number(entry.balanceAfter)}</span>
       ),
@@ -170,7 +178,8 @@ export function KardexView({ productId }: { productId: string }) {
             columns={columns}
             rows={entries}
             rowKey={(entry) => entry.id}
-            isLoading={kardex.isPending}
+            isLoading={isLoadingPage}
+            skeletonRows={rowsOnPage(pagination.page, pagination.pageSize, kardex.data?.meta.total)}
             loadingLabel={t('loading')}
             className="px-2 py-1 sm:px-4 sm:py-2"
             empty={<EmptyState title={t('empty')} description={t('emptyDescription')} />}
@@ -184,6 +193,7 @@ export function KardexView({ productId }: { productId: string }) {
           pageSize={pagination.pageSize}
           total={kardex.data.meta.total}
           pageCount={kardex.data.meta.pageCount}
+          isLoading={isLoadingPage}
           onPageChange={pagination.setPage}
           onPageSizeChange={pagination.setPageSize}
         />

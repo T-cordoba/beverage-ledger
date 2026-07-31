@@ -11,13 +11,14 @@ import {
   EmptyState,
   FloatingAction,
   Pagination,
+  Skeleton,
   useNotify,
   type DataTableColumn,
 } from '@/components/ui';
 import { useAuth } from '@/features/auth';
 import { InvitationsCard, InviteDialog } from '@/features/invitations';
 import { describeError, type User } from '@/lib/api';
-import { usePagination } from '@/lib/hooks';
+import { rowsOnPage, usePagination } from '@/lib/hooks';
 import { useUpdateUser, useUsers } from './api';
 import { STATUS_TONES } from './roles';
 import { UserFormDialog } from './UserFormDialog';
@@ -40,7 +41,9 @@ export function UsersView() {
 
   // No filters on this list, so the key never changes and the page never resets.
   const pagination = usePagination('users');
-  const { data, error, isPending } = useUsers(pagination.params);
+  const { data, error, isPending, isPlaceholderData } = useUsers(pagination.params);
+  // Turning a page keeps the previous one on screen, so this and not `isPending`.
+  const isLoading = isPending || isPlaceholderData;
   const users = data?.data ?? [];
 
   const isReactivating = suspending?.status === 'SUSPENDED';
@@ -67,6 +70,13 @@ export function UsersView() {
     {
       key: 'member',
       header: t('columns.member'),
+      // Two lines, like the cell it stands in for: name over address.
+      skeleton: (
+        <div className="space-y-0.5">
+          <Skeleton className="h-5 w-32" />
+          <Skeleton className="h-4 w-44" />
+        </div>
+      ),
       cell: (user) => (
         <div className="min-w-0 space-y-0.5">
           <p className="font-medium text-foreground">
@@ -87,6 +97,7 @@ export function UsersView() {
     {
       key: 'status',
       header: t('columns.status'),
+      skeleton: <Skeleton className="h-6 w-20" />,
       cell: (user) => <Badge tone={STATUS_TONES[user.status]}>{tStatuses(user.status)}</Badge>,
     },
     {
@@ -103,6 +114,13 @@ export function UsersView() {
       key: 'actions',
       header: t('columns.actions'),
       align: 'end',
+      // Two buttons, and they are what sets this row's height.
+      skeleton: (
+        <div className="flex justify-end gap-2">
+          <Skeleton className="h-9 w-16" />
+          <Skeleton className="h-9 w-24" />
+        </div>
+      ),
       cell: (user) => (
         <div className="flex justify-end gap-2">
           <Button variant="secondary" size="sm" onClick={() => setEditing(user)}>
@@ -147,7 +165,8 @@ export function UsersView() {
             columns={columns}
             rows={users}
             rowKey={(user) => user.id}
-            isLoading={isPending}
+            isLoading={isLoading}
+            skeletonRows={rowsOnPage(pagination.page, pagination.pageSize, data?.meta.total)}
             loadingLabel={t('loading')}
             className="px-2 py-1 sm:px-4 sm:py-2"
             empty={<EmptyState title={t('empty')} />}
@@ -161,6 +180,7 @@ export function UsersView() {
           pageSize={pagination.pageSize}
           total={data.meta.total}
           pageCount={data.meta.pageCount}
+          isLoading={isLoading}
           onPageChange={pagination.setPage}
           onPageSizeChange={pagination.setPageSize}
         />

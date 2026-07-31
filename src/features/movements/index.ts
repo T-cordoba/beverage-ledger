@@ -10,7 +10,12 @@ export {
   type MovementQuery,
   type RegisterMovementInput,
 } from './api';
-export { MovementCard, MovementStatusBadge, MovementTypeBadge } from './MovementCard';
+export {
+  MovementCard,
+  MovementCardSkeleton,
+  MovementStatusBadge,
+  MovementTypeBadge,
+} from './MovementCard';
 export { MovementDetailView } from './MovementDetailView';
 export { MovementHistoryView } from './MovementHistoryView';
 export { MovementPdfButton } from './MovementPdfButton';

@@ -226,8 +226,17 @@ export function ProductPicker({
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
   const pagination = usePagination(JSON.stringify(filters.query));
-  const { data, error, isPending } = useProducts(filters.query, pagination.params);
+  const { data, error, isPending, isPlaceholderData } = useProducts(
+    filters.query,
+    pagination.params,
+  );
 
+  // The cards carry steppers holding what has already been captured, and their
+  // height depends on how many badges each product happens to have. So the page
+  // being turned keeps the previous one on screen instead of being replaced by
+  // ghosts that would guess wrong; the pagination going dead is what says a page
+  // is on its way.
+  const isTurningPage = isPlaceholderData;
   const products = data?.data ?? [];
 
   // Only for the products on screen, and only when the movement takes stock out:
@@ -300,6 +309,7 @@ export function ProductPicker({
                 pageSize={pagination.pageSize}
                 total={data.meta.total}
                 pageCount={data.meta.pageCount}
+                isLoading={isTurningPage}
                 onPageChange={pagination.setPage}
                 onPageSizeChange={pagination.setPageSize}
               />
