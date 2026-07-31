@@ -727,8 +727,7 @@
       "peak": "pico de {count} unidades",
       "chartLabel": "Unidades recibidas y despachadas por {granularity} entre {from} y {to}",
       "caption": "Unidades recibidas y despachadas por periodo",
-      "period": "Periodo",
-      "tooltip": "{period} — {in} recibidas, {out} despachadas"
+      "period": "Periodo"
     }
   },
   "reports": {

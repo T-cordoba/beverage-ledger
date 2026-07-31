@@ -29,8 +29,12 @@ function ConsumptionBars({ rows }: { rows: ConsumptionRow[] }) {
             </span>
           </div>
           <div className="h-2 w-full rounded-full bg-contrast/10">
+            {/* chart-1, not accent: the interface gold is stepped for text on a
+                near-black surface and glares as a large filled area, which is
+                what tokens.css says and what this bar is. Flat, not a gradient —
+                a gradient across one bar encodes nothing. */}
             <div
-              className="h-2 rounded-full bg-gradient-to-r from-accent to-accent-hover transition-all duration-1000 ease-out"
+              className="h-2 rounded-full bg-chart-1 transition-[width] duration-slow ease-out"
               style={{ width: `${(row.quantityBase / top) * 100}%` }}
             />
           </div>

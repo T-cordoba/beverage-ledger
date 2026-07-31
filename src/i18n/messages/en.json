@@ -727,8 +727,7 @@
       "peak": "peak {count} units",
       "chartLabel": "Units received and dispatched per {granularity} between {from} and {to}",
       "caption": "Units received and dispatched per period",
-      "period": "Period",
-      "tooltip": "{period} — {in} in, {out} out"
+      "period": "Period"
     }
   },
   "reports": {
