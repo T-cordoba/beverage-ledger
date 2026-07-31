@@ -256,7 +256,7 @@ export function TaxonomyView({
       {isError ? (
         <EmptyState title={copy.loadFailed} description={tStates('apiUnreachable')} />
       ) : (
-        <Card className="p-0 sm:p-0">
+        <Card ref={pagination.anchorRef} className="scroll-mt-20 p-0 sm:p-0">
           <DataTable
             caption={copy.title}
             columns={columns}

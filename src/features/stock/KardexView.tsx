@@ -161,7 +161,7 @@ export function KardexView({ productId }: { productId: string }) {
       {kardex.error ? (
         <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />
       ) : (
-        <Card className="p-0 sm:p-0">
+        <Card ref={pagination.anchorRef} className="scroll-mt-20 p-0 sm:p-0">
           <h2 className="border-b border-border/40 p-4 text-lg font-light text-foreground sm:p-6">
             {t('title')}
           </h2>

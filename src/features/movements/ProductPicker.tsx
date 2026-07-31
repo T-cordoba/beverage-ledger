@@ -249,7 +249,13 @@ export function ProductPicker({
     <div className="space-y-4 sm:space-y-6">
       <CatalogFilters state={filters} />
 
-      <Card className="bg-surface/60 p-3 shadow-overlay sm:rounded-3xl sm:p-4 lg:p-8">
+      {/* Anchored on the picker and not the window: this shares the screen with
+          the capture form above it, which the reader does not want to be sent
+          back to for turning a page of products. */}
+      <Card
+        ref={pagination.anchorRef}
+        className="scroll-mt-20 bg-surface/60 p-3 shadow-overlay sm:rounded-3xl sm:p-4 lg:p-8"
+      >
         <div className="mb-4 flex flex-col justify-between gap-2 sm:mb-6 sm:flex-row sm:items-center lg:mb-8">
           <h2 className="text-xl font-light text-foreground sm:text-2xl">{t('title')}</h2>
         </div>
