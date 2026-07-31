@@ -10,11 +10,13 @@ import {
   ConfirmDialog,
   DataTable,
   EmptyState,
+  Pagination,
   useNotify,
   type DataTableColumn,
 } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
+import { usePagination } from '@/lib/hooks';
 import { describeError, type Product } from '@/lib/api';
 import { useProducts, useUpdateProduct } from './api';
 import { CatalogFilters } from './CatalogFilters';
@@ -48,11 +50,10 @@ export function CatalogView() {
   const [toggling, setToggling] = useState<Product | null>(null);
 
   const canManage = can('catalog:manage');
-  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } = useProducts(
-    filters.query,
-  );
+  const pagination = usePagination(JSON.stringify(filters.query));
+  const { data, error, isPending } = useProducts(filters.query, pagination);
 
-  const products = data?.pages.flatMap((page) => page.data) ?? [];
+  const products = data?.data ?? [];
 
   const openForm = (product: Product | null) => {
     setEditing(product);
@@ -209,17 +210,15 @@ export function CatalogView() {
         </Card>
       )}
 
-      {hasNextPage && (
-        <div className="flex justify-center">
-          <Button
-            variant="secondary"
-            size="lg"
-            isLoading={isFetchingNextPage}
-            onClick={() => void fetchNextPage()}
-          >
-            {tActions('loadMore')}
-          </Button>
-        </div>
+      {data && (
+        <Pagination
+          page={pagination.page}
+          pageSize={pagination.pageSize}
+          total={data.meta.total}
+          pageCount={data.meta.pageCount}
+          onPageChange={pagination.setPage}
+          onPageSizeChange={pagination.setPageSize}
+        />
       )}
 
       {canManage && (

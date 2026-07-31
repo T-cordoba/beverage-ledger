@@ -20,8 +20,6 @@
     },
     "states": {
       "loading": "Loading…",
-      "loadedCount": "{count} loaded",
-      "moreAvailable": "— more available",
       "nothingToShow": "Nothing to show.",
       "none": "—",
       "tryAgain": "Please try again.",
@@ -268,7 +266,8 @@
       "loading": "Loading movements",
       "loadFailed": "The history could not be loaded.",
       "emptyFiltered": "No movements match those filters.",
-      "empty": "No movements recorded yet."
+      "empty": "No movements recorded yet.",
+      "subtitle": "Everything registered so far, with its status."
     },
     "card": {
       "details": "Details",
@@ -448,8 +447,6 @@
       "perCase": "{count} per case",
       "minimum": "Minimum",
       "caseSize": "Case size",
-      "linesLoaded": "Lines loaded",
-      "moreAvailable": "more available",
       "loadFailed": "The kardex could not be loaded.",
       "title": "Ledger lines",
       "caption": "Confirmed ledger lines for {product}",
@@ -462,7 +459,8 @@
         "captured": "Captured",
         "change": "Change",
         "balance": "Balance"
-      }
+      },
+      "lines": "Ledger lines"
     }
   },
   "admin": {

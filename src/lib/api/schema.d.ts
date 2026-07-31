@@ -609,10 +609,14 @@ export interface components {
       user: components['schemas']['AuditLogActorDto'] | null;
     };
     PageMetaDto: {
-      /** @description Cursor for the next page */
-      nextCursor: string | null;
-      /** @description Whether more items exist after this page */
-      hasMore: boolean;
+      /** @description Which page this is, 1-based */
+      page: number;
+      /** @description How many items a full page holds */
+      pageSize: number;
+      /** @description Items matching the filters across every page */
+      total: number;
+      /** @description How many pages the total splits into. Never below 1 */
+      pageCount: number;
       /** @description Number of items on this page */
       count: number;
     };
@@ -1174,10 +1178,10 @@ export interface operations {
   AuditController_list: {
     parameters: {
       query?: {
-        /** @description Id of the last item on the previous page */
-        cursor?: string;
-        /** @description How many items to return */
-        limit?: number;
+        /** @description 1-based page number */
+        page?: number;
+        /** @description How many items a page holds */
+        pageSize?: number;
         entity?: string;
         /** @description Id of the audited record, to follow one thing over time */
         entityId?: string;
@@ -1460,10 +1464,10 @@ export interface operations {
   UsersController_list: {
     parameters: {
       query?: {
-        /** @description Id of the last item on the previous page */
-        cursor?: string;
-        /** @description How many items to return */
-        limit?: number;
+        /** @description 1-based page number */
+        page?: number;
+        /** @description How many items a page holds */
+        pageSize?: number;
       };
       header?: never;
       path?: never;
@@ -1658,10 +1662,10 @@ export interface operations {
   CategoriesController_list: {
     parameters: {
       query?: {
-        /** @description Id of the last item on the previous page */
-        cursor?: string;
-        /** @description How many items to return */
-        limit?: number;
+        /** @description 1-based page number */
+        page?: number;
+        /** @description How many items a page holds */
+        pageSize?: number;
         /** @description Matches part of the name, case-insensitively */
         search?: string;
       };
@@ -1815,10 +1819,10 @@ export interface operations {
   BrandsController_list: {
     parameters: {
       query?: {
-        /** @description Id of the last item on the previous page */
-        cursor?: string;
-        /** @description How many items to return */
-        limit?: number;
+        /** @description 1-based page number */
+        page?: number;
+        /** @description How many items a page holds */
+        pageSize?: number;
         /** @description Matches part of the name, case-insensitively */
         search?: string;
       };
@@ -1972,10 +1976,10 @@ export interface operations {
   ProductsController_list: {
     parameters: {
       query?: {
-        /** @description Id of the last item on the previous page */
-        cursor?: string;
-        /** @description How many items to return */
-        limit?: number;
+        /** @description 1-based page number */
+        page?: number;
+        /** @description How many items a page holds */
+        pageSize?: number;
         /** @description Matches part of the name, case-insensitively */
         search?: string;
         categoryId?: string;
@@ -2127,10 +2131,10 @@ export interface operations {
   MovementsController_list: {
     parameters: {
       query?: {
-        /** @description Id of the last item on the previous page */
-        cursor?: string;
-        /** @description How many items to return */
-        limit?: number;
+        /** @description 1-based page number */
+        page?: number;
+        /** @description How many items a page holds */
+        pageSize?: number;
         /** @description Matches part of the movement code, case-insensitively */
         search?: string;
         type?: components['schemas']['MovementType'];
@@ -2354,10 +2358,10 @@ export interface operations {
   StockController_list: {
     parameters: {
       query?: {
-        /** @description Id of the last item on the previous page */
-        cursor?: string;
-        /** @description How many items to return */
-        limit?: number;
+        /** @description 1-based page number */
+        page?: number;
+        /** @description How many items a page holds */
+        pageSize?: number;
         /** @description Matches part of the product name */
         search?: string;
         categoryId?: string;
@@ -2422,10 +2426,10 @@ export interface operations {
   StockController_kardex: {
     parameters: {
       query?: {
-        /** @description Id of the last item on the previous page */
-        cursor?: string;
-        /** @description How many items to return */
-        limit?: number;
+        /** @description 1-based page number */
+        page?: number;
+        /** @description How many items a page holds */
+        pageSize?: number;
         /** @description Defaults to the default location */
         locationId?: string;
       };
@@ -2464,10 +2468,10 @@ export interface operations {
   LocationsController_list: {
     parameters: {
       query?: {
-        /** @description Id of the last item on the previous page */
-        cursor?: string;
-        /** @description How many items to return */
-        limit?: number;
+        /** @description 1-based page number */
+        page?: number;
+        /** @description How many items a page holds */
+        pageSize?: number;
         /** @description Matches part of the name, case-insensitively */
         search?: string;
       };

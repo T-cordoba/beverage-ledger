@@ -10,6 +10,7 @@ import {
   DataTable,
   EmptyState,
   Input,
+  Pagination,
   Select,
   type DataTableColumn,
 } from '@/components/ui';
@@ -17,7 +18,7 @@ import { ROUTES } from '@/config/navigation';
 import { useCategories } from '@/features/catalog';
 import { LocationSelect } from '@/features/locations';
 import type { StockLevel } from '@/lib/api';
-import { useDebouncedValue } from '@/lib/hooks';
+import { useDebouncedValue, usePagination } from '@/lib/hooks';
 import { useStockLevels, type StockQuery } from './api';
 import { useDescribeCases } from './quantity';
 
@@ -45,10 +46,10 @@ export function StockLevelsView() {
     [categoryId, debouncedSearch, locationId],
   );
 
-  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
-    useStockLevels(query);
+  const pagination = usePagination(JSON.stringify(query));
+  const { data, error, isPending } = useStockLevels(query, pagination);
 
-  const rows = data?.pages.flatMap((page) => page.data) ?? [];
+  const rows = data?.data ?? [];
   const hasFilters = Boolean(search || categoryId || locationId);
 
   const clearFilters = () => {
@@ -184,17 +185,15 @@ export function StockLevelsView() {
         </Card>
       )}
 
-      {hasNextPage && (
-        <div className="flex justify-center">
-          <Button
-            variant="secondary"
-            size="lg"
-            isLoading={isFetchingNextPage}
-            onClick={() => void fetchNextPage()}
-          >
-            {tActions('loadMore')}
-          </Button>
-        </div>
+      {data && (
+        <Pagination
+          page={pagination.page}
+          pageSize={pagination.pageSize}
+          total={data.meta.total}
+          pageCount={data.meta.pageCount}
+          onPageChange={pagination.setPage}
+          onPageSizeChange={pagination.setPageSize}
+        />
       )}
     </div>
   );

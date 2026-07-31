@@ -2,13 +2,13 @@
 
 import {
   keepPreviousData,
-  useInfiniteQuery,
   useMutation,
   useQuery,
   useQueryClient,
   type QueryClient,
 } from '@tanstack/react-query';
 import { stockKeys } from '@/features/stock/keys';
+import { MAX_PAGE_SIZE, type PageParams } from '@/lib/hooks';
 import {
   api,
   assertOk,
@@ -23,11 +23,11 @@ import {
 } from '@/lib/api';
 
 /** Filters that reach the server. Everything the picker shows is one of these. */
-export type ProductQuery = Omit<ProductListQuery, 'cursor'>;
+export type ProductQuery = Omit<ProductListQuery, 'page' | 'pageSize'>;
 
 export const catalogKeys = {
   all: ['products'] as const,
-  products: (query: ProductQuery) => ['products', query] as const,
+  products: (query: ProductQuery, page: PageParams) => ['products', query, page] as const,
   product: (id: string) => ['products', 'detail', id] as const,
   byIds: (ids: string[]) => ['products', 'by-ids', ids] as const,
   facets: ['product-facets'] as const,
@@ -35,22 +35,14 @@ export const catalogKeys = {
   brands: ['brands'] as const,
 };
 
-const PAGE_SIZE = 25;
-
-/** Cursor pages, so the list grows instead of jumping to a numbered page the API cannot address. */
-export function useProducts(query: ProductQuery) {
-  return useInfiniteQuery({
-    queryKey: catalogKeys.products(query),
-    initialPageParam: undefined as string | undefined,
-    queryFn: async ({ pageParam }) =>
-      unwrap(
-        await api.GET('/api/v1/products', {
-          params: { query: { ...query, limit: PAGE_SIZE, cursor: pageParam } },
-        }),
-      ),
-    getNextPageParam: (lastPage) => lastPage.meta.nextCursor ?? undefined,
-    // Every filter change is a new query key. Without this the list is replaced
-    // by a spinner on each keystroke that settles, which reads as flicker.
+export function useProducts(query: ProductQuery, page: PageParams) {
+  return useQuery({
+    queryKey: catalogKeys.products(query, page),
+    queryFn: async () =>
+      unwrap(await api.GET('/api/v1/products', { params: { query: { ...query, ...page } } })),
+    // Every filter change and every page is a new query key. Without this the
+    // list is replaced by a spinner on each keystroke that settles, which reads
+    // as flicker, and paging blanks the table instead of swapping its rows.
     placeholderData: keepPreviousData,
   });
 }
@@ -71,7 +63,13 @@ export function useProductsByIds(ids: string[], enabled = true) {
       unwrap(
         await api.GET('/api/v1/products', {
           params: {
-            query: { productIds: sorted.join(','), status: 'all', limit: sorted.length },
+            query: {
+              productIds: sorted.join(','),
+              status: 'all',
+              // A draft with more distinct products than one page holds is not
+              // something the capture screen can produce.
+              pageSize: Math.min(sorted.length, MAX_PAGE_SIZE),
+            },
           },
         }),
       ),
@@ -97,7 +95,6 @@ export function useProductFacets() {
 
 /** The API caps a page at 100 and there are more brands than that. */
 const MAX_REFERENCE_PAGES = 10;
-const REFERENCE_PAGE_SIZE = 100;
 
 /**
  * Walks every page of a reference list.
@@ -106,19 +103,15 @@ const REFERENCE_PAGE_SIZE = 100;
  * they are also small and near-static, so one cached walk beats a typeahead.
  */
 async function fetchAllPages<T>(
-  fetchPage: (
-    cursor: string | undefined,
-  ) => Promise<{ data: T[]; meta: { nextCursor: string | null } }>,
+  fetchPage: (page: number) => Promise<{ data: T[]; meta: { pageCount: number } }>,
 ): Promise<T[]> {
   const all: T[] = [];
-  let cursor: string | undefined;
 
-  for (let page = 0; page < MAX_REFERENCE_PAGES; page++) {
-    const { data, meta } = await fetchPage(cursor);
+  for (let page = 1; page <= MAX_REFERENCE_PAGES; page++) {
+    const { data, meta } = await fetchPage(page);
     all.push(...data);
 
-    if (!meta.nextCursor) break;
-    cursor = meta.nextCursor;
+    if (page >= meta.pageCount) break;
   }
 
   return all;
@@ -128,10 +121,10 @@ export function useCategories() {
   return useQuery({
     queryKey: catalogKeys.categories,
     queryFn: () =>
-      fetchAllPages(async (cursor) =>
+      fetchAllPages(async (page) =>
         unwrap(
           await api.GET('/api/v1/categories', {
-            params: { query: { limit: REFERENCE_PAGE_SIZE, cursor } },
+            params: { query: { page, pageSize: MAX_PAGE_SIZE } },
           }),
         ),
       ),
@@ -143,10 +136,10 @@ export function useBrands() {
   return useQuery({
     queryKey: catalogKeys.brands,
     queryFn: () =>
-      fetchAllPages(async (cursor) =>
+      fetchAllPages(async (page) =>
         unwrap(
           await api.GET('/api/v1/brands', {
-            params: { query: { limit: REFERENCE_PAGE_SIZE, cursor } },
+            params: { query: { page, pageSize: MAX_PAGE_SIZE } },
           }),
         ),
       ),

@@ -8,6 +8,7 @@ import {
   Card,
   DataTable,
   EmptyState,
+  Pagination,
   Spinner,
   StatTile,
   type DataTableColumn,
@@ -16,19 +17,21 @@ import { ROUTES } from '@/config/navigation';
 import { useProduct } from '@/features/catalog';
 import { MovementTypeBadge } from '@/features/movements';
 import type { KardexEntry } from '@/lib/api';
-import { useKardex } from './api';
+import { usePagination } from '@/lib/hooks';
+import { useKardex, useStockAvailability } from './api';
 import { useDescribeCases } from './quantity';
 
 export function KardexView({ productId }: { productId: string }) {
   const t = useTranslations('stock.kardex');
   const tUnits = useTranslations('common.units');
   const tStates = useTranslations('common.states');
-  const tActions = useTranslations('common.actions');
   const format = useFormatter();
   const describeCases = useDescribeCases();
 
   const product = useProduct(productId);
-  const kardex = useKardex(productId);
+  const pagination = usePagination(productId);
+  const kardex = useKardex(productId, undefined, pagination);
+  const availability = useStockAvailability([productId]);
 
   const columns: DataTableColumn<KardexEntry>[] = [
     {
@@ -110,11 +113,12 @@ export function KardexView({ productId }: { productId: string }) {
     );
   }
 
-  const entries = kardex.data?.pages.flatMap((page) => page.data) ?? [];
+  const entries = kardex.data?.data ?? [];
 
-  // The kardex comes newest first with the balance each line left behind, so the
-  // first entry carries what is on hand right now. No second request for it.
-  const onHand = entries[0]?.balanceAfter ?? 0;
+  // Read from the stock endpoint rather than off the first line's running
+  // balance: that shortcut only held while the list could not be paged, and on
+  // page two it would report the balance as of some day last month.
+  const onHand = availability.levels.get(productId) ?? 0;
   const cases = describeCases(onHand, product.data.caseSize);
 
   return (
@@ -151,11 +155,7 @@ export function KardexView({ productId }: { productId: string }) {
           }
         />
         <StatTile label={t('caseSize')} value={format.number(product.data.caseSize)} />
-        <StatTile
-          label={t('linesLoaded')}
-          value={format.number(entries.length)}
-          hint={kardex.hasNextPage ? t('moreAvailable') : undefined}
-        />
+        <StatTile label={t('lines')} value={format.number(kardex.data?.meta.total ?? 0)} />
       </div>
 
       {kardex.error ? (
@@ -178,17 +178,15 @@ export function KardexView({ productId }: { productId: string }) {
         </Card>
       )}
 
-      {kardex.hasNextPage && (
-        <div className="flex justify-center">
-          <Button
-            variant="secondary"
-            size="lg"
-            isLoading={kardex.isFetchingNextPage}
-            onClick={() => void kardex.fetchNextPage()}
-          >
-            {tActions('loadMore')}
-          </Button>
-        </div>
+      {kardex.data && (
+        <Pagination
+          page={pagination.page}
+          pageSize={pagination.pageSize}
+          total={kardex.data.meta.total}
+          pageCount={kardex.data.meta.pageCount}
+          onPageChange={pagination.setPage}
+          onPageSizeChange={pagination.setPageSize}
+        />
       )}
     </div>
   );

@@ -1,13 +1,8 @@
 'use client';
 
-import {
-  keepPreviousData,
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { sessionQueryKey } from '@/features/auth';
+import type { PageParams } from '@/lib/hooks';
 import {
   api,
   unwrap,
@@ -17,27 +12,20 @@ import {
   type UpdateUserInput,
 } from '@/lib/api';
 
-export type AuditQuery = Omit<AuditLogListQuery, 'cursor'>;
+export type AuditQuery = Omit<AuditLogListQuery, 'page' | 'pageSize'>;
 
 export const adminKeys = {
   users: ['users'] as const,
+  usersPage: (page: PageParams) => ['users', page] as const,
   organization: ['organization'] as const,
-  auditLogs: (query: AuditQuery) => ['audit-logs', query] as const,
+  auditLogs: (query: AuditQuery, page: PageParams) => ['audit-logs', query, page] as const,
 };
 
-const PAGE_SIZE = 25;
-
-export function useUsers(enabled = true) {
-  return useInfiniteQuery({
-    queryKey: adminKeys.users,
-    initialPageParam: undefined as string | undefined,
-    queryFn: async ({ pageParam }) =>
-      unwrap(
-        await api.GET('/api/v1/users', {
-          params: { query: { limit: PAGE_SIZE, cursor: pageParam } },
-        }),
-      ),
-    getNextPageParam: (lastPage) => lastPage.meta.nextCursor ?? undefined,
+export function useUsers(page: PageParams, enabled = true) {
+  return useQuery({
+    queryKey: adminKeys.usersPage(page),
+    queryFn: async () => unwrap(await api.GET('/api/v1/users', { params: { query: page } })),
+    placeholderData: keepPreviousData,
     enabled,
   });
 }
@@ -84,17 +72,11 @@ export function useUpdateOrganization() {
   });
 }
 
-export function useAuditLogs(query: AuditQuery) {
-  return useInfiniteQuery({
-    queryKey: adminKeys.auditLogs(query),
-    initialPageParam: undefined as string | undefined,
-    queryFn: async ({ pageParam }) =>
-      unwrap(
-        await api.GET('/api/v1/audit-logs', {
-          params: { query: { ...query, limit: PAGE_SIZE, cursor: pageParam } },
-        }),
-      ),
-    getNextPageParam: (lastPage) => lastPage.meta.nextCursor ?? undefined,
+export function useAuditLogs(query: AuditQuery, page: PageParams) {
+  return useQuery({
+    queryKey: adminKeys.auditLogs(query, page),
+    queryFn: async () =>
+      unwrap(await api.GET('/api/v1/audit-logs', { params: { query: { ...query, ...page } } })),
     placeholderData: keepPreviousData,
   });
 }

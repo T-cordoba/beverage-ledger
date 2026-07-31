@@ -2,7 +2,6 @@
 
 import {
   keepPreviousData,
-  useInfiniteQuery,
   useMutation,
   useQuery,
   useQueryClient,
@@ -20,34 +19,27 @@ import {
   type MovementListQuery,
   type MovementType,
 } from '@/lib/api';
+import type { PageParams } from '@/lib/hooks';
 import { toDateKey } from '@/lib/utils';
 import { EMPTY_LINE, type DraftLine, type RestoredDraft } from './useMovementDraft';
 
-export type MovementQuery = Omit<MovementListQuery, 'cursor'>;
+export type MovementQuery = Omit<MovementListQuery, 'page' | 'pageSize'>;
 
 export const movementKeys = {
   all: ['movements'] as const,
-  list: (query: MovementQuery) => ['movements', 'list', query] as const,
+  list: (query: MovementQuery, page: PageParams) => ['movements', 'list', query, page] as const,
   recent: (limit: number) => ['movements', 'recent', limit] as const,
   detail: (id: string) => ['movements', 'detail', id] as const,
   openDraft: (type: MovementType, userId: string | undefined) =>
     ['movements', 'open-draft', type, userId ?? 'anonymous'] as const,
 };
 
-const PAGE_SIZE = 20;
-
-export function useMovements(query: MovementQuery) {
-  return useInfiniteQuery({
-    queryKey: movementKeys.list(query),
-    initialPageParam: undefined as string | undefined,
-    queryFn: async ({ pageParam }) =>
-      unwrap(
-        await api.GET('/api/v1/movements', {
-          params: { query: { ...query, limit: PAGE_SIZE, cursor: pageParam } },
-        }),
-      ),
-    getNextPageParam: (lastPage) => lastPage.meta.nextCursor ?? undefined,
-    // Keeps the list on screen while a changed filter is in flight.
+export function useMovements(query: MovementQuery, page: PageParams) {
+  return useQuery({
+    queryKey: movementKeys.list(query, page),
+    queryFn: async () =>
+      unwrap(await api.GET('/api/v1/movements', { params: { query: { ...query, ...page } } })),
+    // Keeps the list on screen while a changed filter or page is in flight.
     placeholderData: keepPreviousData,
   });
 }
@@ -57,7 +49,7 @@ export function useRecentMovements(limit: number, enabled = true) {
   return useQuery({
     queryKey: movementKeys.recent(limit),
     queryFn: async () =>
-      unwrap(await api.GET('/api/v1/movements', { params: { query: { limit } } })),
+      unwrap(await api.GET('/api/v1/movements', { params: { query: { pageSize: limit } } })),
     enabled,
   });
 }

@@ -2,9 +2,18 @@
 
 import { useFormatter, useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { Badge, Button, Card, DataTable, EmptyState, type DataTableColumn } from '@/components/ui';
+import {
+  Badge,
+  Button,
+  Card,
+  DataTable,
+  EmptyState,
+  Pagination,
+  type DataTableColumn,
+} from '@/components/ui';
 import { useAuth } from '@/features/auth';
 import type { User } from '@/lib/api';
+import { usePagination } from '@/lib/hooks';
 import { useUsers } from './api';
 import { STATUS_TONES } from './roles';
 import { UserFormDialog } from './UserFormDialog';
@@ -21,8 +30,10 @@ export function UsersView() {
   const [editing, setEditing] = useState<User | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
 
-  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } = useUsers();
-  const users = data?.pages.flatMap((page) => page.data) ?? [];
+  // No filters on this list, so the key never changes and the page never resets.
+  const pagination = usePagination('users');
+  const { data, error, isPending } = useUsers(pagination);
+  const users = data?.data ?? [];
 
   const openForm = (user: User | null) => {
     setEditing(user);
@@ -106,17 +117,15 @@ export function UsersView() {
         </Card>
       )}
 
-      {hasNextPage && (
-        <div className="flex justify-center">
-          <Button
-            variant="secondary"
-            size="lg"
-            isLoading={isFetchingNextPage}
-            onClick={() => void fetchNextPage()}
-          >
-            {tActions('loadMore')}
-          </Button>
-        </div>
+      {data && (
+        <Pagination
+          page={pagination.page}
+          pageSize={pagination.pageSize}
+          total={data.meta.total}
+          pageCount={data.meta.pageCount}
+          onPageChange={pagination.setPage}
+          onPageSizeChange={pagination.setPageSize}
+        />
       )}
 
       {/* Keyed so the form seeds itself from whichever member is being edited. */}

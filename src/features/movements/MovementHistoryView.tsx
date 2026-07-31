@@ -2,9 +2,17 @@
 
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
-import { Button, DatePicker, EmptyState, Input, Select, Spinner } from '@/components/ui';
+import {
+  Button,
+  DatePicker,
+  EmptyState,
+  Input,
+  Pagination,
+  Select,
+  Spinner,
+} from '@/components/ui';
 import type { MovementStatus, MovementType } from '@/lib/api';
-import { useDebouncedValue } from '@/lib/hooks';
+import { useDebouncedValue, usePagination } from '@/lib/hooks';
 import { parseDateKey } from '@/lib/utils';
 import { useMovements, type MovementQuery } from './api';
 import { MovementCard } from './MovementCard';
@@ -56,10 +64,10 @@ export function MovementHistoryView() {
     [day, debouncedSearch, status, type],
   );
 
-  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
-    useMovements(query);
+  const pagination = usePagination(JSON.stringify(query));
+  const { data, error, isPending } = useMovements(query, pagination);
 
-  const movements = data?.pages.flatMap((page) => page.data) ?? [];
+  const movements = data?.data ?? [];
   const hasFilters = Boolean(search || type || status || day);
 
   const clearFilters = () => {
@@ -74,10 +82,7 @@ export function MovementHistoryView() {
       <header className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
         <div className="space-y-1">
           <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
-          <p className="text-sm text-contrast/60">
-            {isPending ? tStates('loading') : tStates('loadedCount', { count: movements.length })}
-            {hasNextPage && ` ${tStates('moreAvailable')}`}
-          </p>
+          <p className="text-sm text-contrast/60">{t('subtitle')}</p>
         </div>
 
         <NewMovementActions />
@@ -143,18 +148,14 @@ export function MovementHistoryView() {
             ))}
           </div>
 
-          {hasNextPage && (
-            <div className="flex justify-center">
-              <Button
-                variant="secondary"
-                size="lg"
-                isLoading={isFetchingNextPage}
-                onClick={() => void fetchNextPage()}
-              >
-                {tActions('loadMore')}
-              </Button>
-            </div>
-          )}
+          <Pagination
+            page={pagination.page}
+            pageSize={pagination.pageSize}
+            total={data?.meta.total ?? 0}
+            pageCount={data?.meta.pageCount ?? 1}
+            onPageChange={pagination.setPage}
+            onPageSizeChange={pagination.setPageSize}
+          />
         </>
       )}
     </div>

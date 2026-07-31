@@ -26,7 +26,7 @@ export function useLocations() {
   return useQuery({
     queryKey: locationKeys.all,
     queryFn: async () =>
-      unwrap(await api.GET('/api/v1/locations', { params: { query: { limit: PAGE_SIZE } } })),
+      unwrap(await api.GET('/api/v1/locations', { params: { query: { pageSize: PAGE_SIZE } } })),
     // They change about never, and a stale picker is worse than one extra fetch.
     staleTime: 5 * 60 * 1000,
   });

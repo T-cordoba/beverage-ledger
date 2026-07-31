@@ -15,8 +15,10 @@ import {
   EmptyState,
   Field,
   Input,
+  Pagination,
   type DataTableColumn,
 } from '@/components/ui';
+import { usePagination } from '@/lib/hooks';
 
 export interface TaxonomyItem {
   id: string;
@@ -173,6 +175,13 @@ export function TaxonomyView({
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [deleting, setDeleting] = useState<TaxonomyItem | null>(null);
 
+  // Paged in the browser, unlike every other list. These same rows also fill the
+  // catalogue's dropdowns, which are only honest holding every option, so they
+  // are fetched whole either way; this only decides how many are painted.
+  const pagination = usePagination('taxonomy');
+  const pageStart = (pagination.page - 1) * pagination.pageSize;
+  const visible = items.slice(pageStart, pageStart + pagination.pageSize);
+
   const openForm = (item: TaxonomyItem | null) => {
     setEditing(item);
     setIsFormOpen(true);
@@ -245,7 +254,7 @@ export function TaxonomyView({
           <DataTable
             caption={copy.title}
             columns={columns}
-            rows={items}
+            rows={visible}
             rowKey={(item) => item.id}
             isLoading={isPending}
             loadingLabel={copy.loading}
@@ -253,6 +262,17 @@ export function TaxonomyView({
             empty={<EmptyState title={copy.empty} />}
           />
         </Card>
+      )}
+
+      {!isPending && !isError && (
+        <Pagination
+          page={pagination.page}
+          pageSize={pagination.pageSize}
+          total={items.length}
+          pageCount={Math.max(1, Math.ceil(items.length / pagination.pageSize))}
+          onPageChange={pagination.setPage}
+          onPageSizeChange={pagination.setPageSize}
+        />
       )}
 
       {/* Keyed so the dialog seeds itself from whichever row is being renamed. */}

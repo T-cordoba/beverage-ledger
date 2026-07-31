@@ -9,14 +9,23 @@ import {
   DatePicker,
   EmptyState,
   Input,
+  Pagination,
   Select,
   type DataTableColumn,
 } from '@/components/ui';
 import { useAuth } from '@/features/auth';
 import type { AuditLog } from '@/lib/api';
-import { useDebouncedValue } from '@/lib/hooks';
+import { MAX_PAGE_SIZE, useDebouncedValue, usePagination } from '@/lib/hooks';
 import { parseDateKey } from '@/lib/utils';
 import { useAuditLogs, useUsers, type AuditQuery } from './api';
+
+/**
+ * The whole membership in one request, to fill the "who" filter.
+ *
+ * A picker is only honest when it holds every option, and an organization with
+ * more members than one page holds is not what this product is for yet.
+ */
+const EVERY_USER = { page: 1, pageSize: MAX_PAGE_SIZE } as const;
 
 /** The metadata is flat scalars by contract, so one line reads it all. */
 function describeMetadata(metadata: AuditLog['metadata']): string {
@@ -51,8 +60,8 @@ export function AuditLogView() {
 
   // The trail names its actors, but only a user manager can list them to filter by.
   const canListUsers = can('user:manage');
-  const { data: userPages } = useUsers(canListUsers);
-  const users = canListUsers ? (userPages?.pages.flatMap((page) => page.data) ?? []) : [];
+  const { data: userPage } = useUsers(EVERY_USER, canListUsers);
+  const users = canListUsers ? (userPage?.data ?? []) : [];
 
   const query = useMemo<AuditQuery>(
     () => ({
@@ -64,10 +73,10 @@ export function AuditLogView() {
     [day, debouncedAction, debouncedEntity, userId],
   );
 
-  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } =
-    useAuditLogs(query);
+  const pagination = usePagination(JSON.stringify(query));
+  const { data, error, isPending } = useAuditLogs(query, pagination);
 
-  const logs = data?.pages.flatMap((page) => page.data) ?? [];
+  const logs = data?.data ?? [];
   const hasFilters = Boolean(entity || action || userId || day);
 
   const clearFilters = () => {
@@ -211,17 +220,15 @@ export function AuditLogView() {
         </Card>
       )}
 
-      {hasNextPage && (
-        <div className="flex justify-center">
-          <Button
-            variant="secondary"
-            size="lg"
-            isLoading={isFetchingNextPage}
-            onClick={() => void fetchNextPage()}
-          >
-            {tActions('loadMore')}
-          </Button>
-        </div>
+      {data && (
+        <Pagination
+          page={pagination.page}
+          pageSize={pagination.pageSize}
+          total={data.meta.total}
+          pageCount={data.meta.pageCount}
+          onPageChange={pagination.setPage}
+          onPageSizeChange={pagination.setPageSize}
+        />
       )}
     </div>
   );

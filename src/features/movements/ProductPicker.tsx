@@ -2,12 +2,13 @@
 
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
-import { Badge, Button, Card, EmptyState, Spinner } from '@/components/ui';
+import { Badge, Button, Card, EmptyState, Pagination, Spinner } from '@/components/ui';
 import { CatalogFilters, useProducts, type CatalogFiltersState } from '@/features/catalog';
 // The module, not the barrel: stock imports a movements component, so a barrel
 // import here would close the cycle.
 import { useStockAvailability } from '@/features/stock/api';
 import type { MovementUnit, Product } from '@/lib/api';
+import { usePagination } from '@/lib/hooks';
 import { cn } from '@/lib/utils';
 import { MOVEMENT_TYPES } from './movement-types';
 import type { MovementDraft } from './useMovementDraft';
@@ -236,11 +237,10 @@ export function ProductPicker({
   const t = useTranslations('movements.picker');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
-  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } = useProducts(
-    filters.query,
-  );
+  const pagination = usePagination(JSON.stringify(filters.query));
+  const { data, error, isPending } = useProducts(filters.query, pagination);
 
-  const products = data?.pages.flatMap((page) => page.data) ?? [];
+  const products = data?.data ?? [];
 
   // Only for the products on screen, and only when the movement takes stock out:
   // an inbound has no ceiling, and an adjustment is what corrects the number this
@@ -264,12 +264,6 @@ export function ProductPicker({
       <Card className="bg-surface/60 p-3 shadow-overlay sm:rounded-3xl sm:p-4 lg:p-8">
         <div className="mb-4 flex flex-col justify-between gap-2 sm:mb-6 sm:flex-row sm:items-center lg:mb-8">
           <h2 className="text-xl font-light text-foreground sm:text-2xl">{t('title')}</h2>
-          {!isPending && (
-            <p className="text-xs font-light text-contrast/60 sm:text-sm">
-              {tStates('loadedCount', { count: products.length })}
-              {hasNextPage && ` ${tStates('moreAvailable')}`}
-            </p>
-          )}
         </div>
 
         {isPending ? (
@@ -303,17 +297,16 @@ export function ProductPicker({
               ))}
             </ul>
 
-            {hasNextPage && (
-              <div className="mt-6 flex justify-center">
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  isLoading={isFetchingNextPage}
-                  onClick={() => void fetchNextPage()}
-                >
-                  {t('loadMore')}
-                </Button>
-              </div>
+            {data && (
+              <Pagination
+                className="mt-6"
+                page={pagination.page}
+                pageSize={pagination.pageSize}
+                total={data.meta.total}
+                pageCount={data.meta.pageCount}
+                onPageChange={pagination.setPage}
+                onPageSizeChange={pagination.setPageSize}
+              />
             )}
           </>
         )}

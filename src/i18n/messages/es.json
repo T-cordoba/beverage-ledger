@@ -20,8 +20,6 @@
     },
     "states": {
       "loading": "Cargando…",
-      "loadedCount": "{count} cargados",
-      "moreAvailable": "— hay más",
       "nothingToShow": "No hay nada que mostrar.",
       "none": "—",
       "tryAgain": "Inténtalo de nuevo.",
@@ -268,7 +266,8 @@
       "loading": "Cargando movimientos",
       "loadFailed": "No se pudo cargar el historial.",
       "emptyFiltered": "Ningún movimiento coincide con esos filtros.",
-      "empty": "Todavía no se ha registrado ningún movimiento."
+      "empty": "Todavía no se ha registrado ningún movimiento.",
+      "subtitle": "Todo lo que se ha registrado, con su estado."
     },
     "card": {
       "details": "Detalle",
@@ -448,8 +447,6 @@
       "perCase": "{count} por caja",
       "minimum": "Mínimo",
       "caseSize": "Tamaño de caja",
-      "linesLoaded": "Líneas cargadas",
-      "moreAvailable": "hay más",
       "loadFailed": "No se pudo cargar el kardex.",
       "title": "Líneas del ledger",
       "caption": "Líneas confirmadas del ledger de {product}",
@@ -462,7 +459,8 @@
         "captured": "Capturado",
         "change": "Cambio",
         "balance": "Saldo"
-      }
+      },
+      "lines": "Líneas del ledger"
     }
   },
   "admin": {

@@ -1,3 +1,4 @@
+import type { PageParams } from '@/lib/hooks';
 import type { StockQuery } from './api';
 
 /**
@@ -7,10 +8,10 @@ import type { StockQuery } from './api';
  */
 export const stockKeys = {
   all: ['stock'] as const,
-  levels: (query: StockQuery) => ['stock', 'levels', query] as const,
+  levels: (query: StockQuery, page: PageParams) => ['stock', 'levels', query, page] as const,
   low: (limit: number) => ['stock', 'low', limit] as const,
   availability: (productIds: string[], locationId?: string) =>
     ['stock', 'availability', locationId ?? 'default', productIds] as const,
-  kardex: (productId: string, locationId?: string) =>
-    ['stock', 'kardex', productId, locationId ?? 'default'] as const,
+  kardex: (productId: string, locationId: string | undefined, page: PageParams) =>
+    ['stock', 'kardex', productId, locationId ?? 'default', page] as const,
 };

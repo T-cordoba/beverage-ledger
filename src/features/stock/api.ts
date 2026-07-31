@@ -1,7 +1,8 @@
 'use client';
 
-import { keepPreviousData, useInfiniteQuery, useQueries, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQueries, useQuery } from '@tanstack/react-query';
 import { api, unwrap } from '@/lib/api';
+import type { PageParams } from '@/lib/hooks';
 import { stockKeys } from './keys';
 
 /** Well under the 200 the endpoint accepts, and it matches how the picker pages. */
@@ -15,20 +16,11 @@ export interface StockQuery {
   locationId?: string;
 }
 
-const PAGE_SIZE = 25;
-const KARDEX_PAGE_SIZE = 20;
-
-export function useStockLevels(query: StockQuery) {
-  return useInfiniteQuery({
-    queryKey: stockKeys.levels(query),
-    initialPageParam: undefined as string | undefined,
-    queryFn: async ({ pageParam }) =>
-      unwrap(
-        await api.GET('/api/v1/stock', {
-          params: { query: { ...query, limit: PAGE_SIZE, cursor: pageParam } },
-        }),
-      ),
-    getNextPageParam: (lastPage) => lastPage.meta.nextCursor ?? undefined,
+export function useStockLevels(query: StockQuery, page: PageParams) {
+  return useQuery({
+    queryKey: stockKeys.levels(query, page),
+    queryFn: async () =>
+      unwrap(await api.GET('/api/v1/stock', { params: { query: { ...query, ...page } } })),
     placeholderData: keepPreviousData,
   });
 }
@@ -64,7 +56,7 @@ export function useStockAvailability(
             params: {
               query: {
                 productIds: chunk.join(','),
-                limit: chunk.length,
+                pageSize: chunk.length,
                 ...(locationId ? { locationId } : {}),
               },
             },
@@ -98,23 +90,18 @@ export function useLowStock(limit: number, enabled = true) {
   });
 }
 
-export function useKardex(productId: string, locationId?: string) {
-  return useInfiniteQuery({
-    queryKey: stockKeys.kardex(productId, locationId),
-    initialPageParam: undefined as string | undefined,
-    queryFn: async ({ pageParam }) =>
+export function useKardex(productId: string, locationId: string | undefined, page: PageParams) {
+  return useQuery({
+    queryKey: stockKeys.kardex(productId, locationId, page),
+    queryFn: async () =>
       unwrap(
         await api.GET('/api/v1/stock/{productId}/kardex', {
           params: {
             path: { productId },
-            query: {
-              limit: KARDEX_PAGE_SIZE,
-              cursor: pageParam,
-              ...(locationId ? { locationId } : {}),
-            },
+            query: { ...page, ...(locationId ? { locationId } : {}) },
           },
         }),
       ),
-    getNextPageParam: (lastPage) => lastPage.meta.nextCursor ?? undefined,
+    placeholderData: keepPreviousData,
   });
 }
