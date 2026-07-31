@@ -6,17 +6,19 @@ import {
   Badge,
   Button,
   Card,
+  ConfirmDialog,
   DataTable,
   EmptyState,
   FloatingAction,
   Pagination,
+  useNotify,
   type DataTableColumn,
 } from '@/components/ui';
 import { useAuth } from '@/features/auth';
 import { InvitationsCard, InviteDialog } from '@/features/invitations';
-import type { User } from '@/lib/api';
+import { describeError, type User } from '@/lib/api';
 import { usePagination } from '@/lib/hooks';
-import { useUsers } from './api';
+import { useUpdateUser, useUsers } from './api';
 import { STATUS_TONES } from './roles';
 import { UserFormDialog } from './UserFormDialog';
 
@@ -30,12 +32,36 @@ export function UsersView() {
 
   const { user: currentUser } = useAuth();
   const [editing, setEditing] = useState<User | null>(null);
+  const [suspending, setSuspending] = useState<User | null>(null);
   const [isInviteOpen, setIsInviteOpen] = useState(false);
+
+  const notify = useNotify();
+  const update = useUpdateUser();
 
   // No filters on this list, so the key never changes and the page never resets.
   const pagination = usePagination('users');
   const { data, error, isPending } = useUsers(pagination.params);
   const users = data?.data ?? [];
+
+  const isReactivating = suspending?.status === 'SUSPENDED';
+
+  const changeStatus = async (user: User) => {
+    const status = user.status === 'SUSPENDED' ? 'ACTIVE' : 'SUSPENDED';
+
+    try {
+      await update.mutateAsync({ id: user.id, input: { status } });
+      setSuspending(null);
+      notify(
+        'success',
+        status === 'ACTIVE' ? t('reactivatedTitle') : t('suspendedTitle'),
+        status === 'ACTIVE'
+          ? t('reactivatedDescription', { name: user.name })
+          : t('suspendedDescription', { name: user.name }),
+      );
+    } catch (cause) {
+      notify('error', t('statusFailed'), describeError(cause, tStates('tryAgain')));
+    }
+  };
 
   const columns: DataTableColumn<User>[] = [
     {
@@ -78,9 +104,24 @@ export function UsersView() {
       header: t('columns.actions'),
       align: 'end',
       cell: (user) => (
-        <Button variant="secondary" size="sm" onClick={() => setEditing(user)}>
-          {tActions('edit')}
-        </Button>
+        <div className="flex justify-end gap-2">
+          <Button variant="secondary" size="sm" onClick={() => setEditing(user)}>
+            {tActions('edit')}
+          </Button>
+          {/* Closing someone's door is the reason this screen gets opened in a
+              hurry, and it was two dialogs deep inside an edit form. Never on
+              your own account: the API refuses it so nobody locks themselves out. */}
+          {user.id !== currentUser?.id &&
+            (user.status === 'SUSPENDED' ? (
+              <Button variant="secondary" size="sm" onClick={() => setSuspending(user)}>
+                {t('reactivate')}
+              </Button>
+            ) : (
+              <Button variant="danger-outline" size="sm" onClick={() => setSuspending(user)}>
+                {t('suspend')}
+              </Button>
+            ))}
+        </div>
       ),
     },
   ];
@@ -100,7 +141,7 @@ export function UsersView() {
       {error ? (
         <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />
       ) : (
-        <Card className="p-0 sm:p-0">
+        <Card ref={pagination.anchorRef} className="scroll-mt-20 p-0 sm:p-0">
           <DataTable
             caption={t('caption')}
             columns={columns}
@@ -145,6 +186,22 @@ export function UsersView() {
       )}
 
       <InviteDialog open={isInviteOpen} onOpenChange={setIsInviteOpen} />
+
+      <ConfirmDialog
+        open={suspending !== null}
+        onOpenChange={(open) => !open && setSuspending(null)}
+        tone={isReactivating ? 'accent' : 'danger'}
+        title={
+          isReactivating
+            ? t('reactivateTitle', { name: suspending?.name ?? '' })
+            : t('suspendTitle', { name: suspending?.name ?? '' })
+        }
+        description={isReactivating ? t('reactivateDescription') : t('suspendDescription')}
+        cancelLabel={tActions('cancel')}
+        confirmLabel={isReactivating ? t('reactivate') : t('suspend')}
+        isConfirming={update.isPending}
+        onConfirm={() => suspending && void changeStatus(suspending)}
+      />
     </div>
   );
 }
