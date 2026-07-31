@@ -90,7 +90,16 @@ export function FloatingAction({
             <PlusIcon isOpen={isOpen} />
           </Fab>
         </PopoverTrigger>
-        <PopoverContent align="end" side="top" className="w-56 space-y-1 p-2">
+        {/* In place rather than portalled, and with no collision flipping: both
+            would have the panel positioned against the document while the button
+            it hangs off rides the visual viewport. See `PopoverContent`. */}
+        <PopoverContent
+          portal={false}
+          avoidCollisions={false}
+          align="end"
+          side="top"
+          className="w-56 space-y-1 p-2"
+        >
           {items.map((item) => (
             // A client navigation leaves the popover mounted, so it has to be
             // told to close.
