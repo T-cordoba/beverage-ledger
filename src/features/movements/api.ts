@@ -76,7 +76,7 @@ export function useOpenDraft(type: MovementType, createdByUserId: string | undef
     queryFn: async () =>
       unwrap(
         await api.GET('/api/v1/movements', {
-          params: { query: { type, status: 'DRAFT', createdByUserId, limit: 1 } },
+          params: { query: { type, status: 'DRAFT', createdByUserId, pageSize: 1 } },
         }),
       ).data[0],
     enabled: createdByUserId !== undefined,
@@ -188,7 +188,7 @@ export function useResumeDraft() {
             query: {
               productIds: productIds.join(','),
               status: 'all',
-              limit: Math.max(productIds.length, 1),
+              pageSize: Math.max(productIds.length, 1),
             },
           },
         }),

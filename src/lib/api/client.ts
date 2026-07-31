@@ -11,6 +11,17 @@ import { ensureAccessToken, forgetSession } from './session';
 const SESSION_ROUTES = new Set(['/api/v1/auth/login', '/api/v1/auth/register']);
 
 /**
+ * A query param this route does not declare will not fail to compile.
+ *
+ * `params.query` resolves to a union across the operations, and TypeScript
+ * allows an excess property that exists on *any* member of a union — so `limit`
+ * survives on a route that only takes `page`, because some other route takes
+ * `limit`. The API whitelists what its DTO declares and answers 400, which is
+ * where such a mistake actually surfaces. Read the generated schema when adding
+ * a param; do not trust the compiler for this one thing.
+ */
+
+/**
  * The token is renewed before it lapses rather than retried after a 401.
  *
  * Replaying a request after a refresh means re-sending a body that the first
