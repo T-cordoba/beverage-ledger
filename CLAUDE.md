@@ -37,6 +37,17 @@ El nombre no es casual: la fuente de verdad del inventario es un **ledger inmuta
 
 Plan completo: `C:\Users\Tomas\.claude\plans\ok-voy-a-hacerle-tender-sprout.md`
 
+### Por dónde sigue: la Fase 8
+
+Es la última y es solo documentación, en **los dos repos**. Lo que hay que dejar hecho:
+
+- **`README.md` de la raíz — reescribirlo entero, no parchearlo.** Hoy describe la aplicación *anterior* a la reescritura: habla de Neon, de generar el PDF en el front, de un tema "casino" y de una estructura de carpetas que ya no existe. Está mal de cabo a rabo, y es lo primero que ve cualquiera que abra el repo.
+- Qué debe llevar: qué es el producto, la arquitectura de dos repos con un diagrama, el stack y sus versiones, el setup local paso a paso (incluida la API en `:3001` y el detalle de §9 sobre apuntar a Render cuando el puerto de Supabase esté bloqueado), las variables de entorno, los comandos, el modelo de datos y las decisiones de arquitectura con su porqué.
+- Lo mismo en `beverage-ledger-api`, adaptado al backend.
+- Repasar que `.env.example` esté completo en ambos y que el `docker-compose` de la API quede documentado.
+
+Ojo con una cosa: el README es lo único que se mantiene **en inglés o en español a conciencia** —decídelo con el usuario antes de escribir—, mientras que el código sigue siendo inglés y esta documentación española. Y no inventes lo que el repo no hace: si algo no está construido, se dice.
+
 **El backend está terminado.** Las fases 1 a 3 ocurrieron enteras en `beverage-ledger-api`; a partir de aquí todo el trabajo es de este repositorio.
 
 **El corte ya ocurrió.** Este repo no habla con ninguna base de datos: `actions.ts`, `actions-licores.ts` y `src/app/api/` están borrados, igual que `@neondatabase/serverless` y `pdf-lib`. Todo pasa por `beverage-ledger-api`, que tiene que estar levantada en `:3001` para que la app funcione. Neon ya se puede apagar; la connection string que quede en tu `.env` local no la lee nadie.
@@ -47,7 +58,7 @@ Plan completo: `C:\Users\Tomas\.claude\plans\ok-voy-a-hacerle-tender-sprout.md`
 
 **Ambos repos están desplegados**: el front en Vercel y la API en Render (`https://beverage-ledger-api.onrender.com`). Ver §9, que es donde el despliegue cambia cómo se trabaja en local.
 
-**La pantalla de perfil se hizo fuera del orden de fases**, en la rama `feat/profile-screen`, porque el hueco que tapaba era funcional y no de presentación: nadie podía cambiar su propia contraseña.
+**La pantalla de perfil se hizo fuera del orden de fases** —entonces todavía en una rama, `feat/profile-screen`— porque el hueco que tapaba era funcional y no de presentación: nadie podía cambiar su propia contraseña.
 
 **Las bodegas y los traspasos también.** Estaban modeladas desde la primera migración y nunca se habían expuesto; ahora tienen CRUD, selector y filtro, y existe un cuarto tipo de movimiento, `TRANSFER`. Eso cerró de paso tres límites del contrato que la UI tenía que enseñar en vez de esconder. Ver §10.
 
@@ -213,6 +224,10 @@ Los overlays (dropdown, select, modal, popover) se construyen sobre **Radix UI**
 - Toda agregación (estadísticas, totales) se hace en SQL, no en el navegador.
 
 ### Git
+
+**Se trabaja directo sobre `master`. No se abren ramas.** No existe `main`: `master` es la rama por defecto de `origin` y la única que hay. Las fases anteriores usaron ramas de feature y ya están mergeadas; a partir de aquí se commitea y se pushea a `master` sin intermediarios, salvo que el usuario pida otra cosa.
+
+Eso mueve el listón, no lo baja: **Vercel despliega `master`**, así que un commit roto ahí es producción rota. Antes de commitear, `pnpm typecheck`, `pnpm lint` y `pnpm i18n:check` en verde; si el cambio toca rutas, layouts o configuración, también `pnpm build`. Y el trabajo se parte en commits que funcionen por separado, porque ya no hay una rama donde dejar un estado a medias.
 
 **Nunca añadir a Claude como coautor.** Sin `Co-Authored-By`, sin firmas, sin "Generated with". Los commits son del autor del repositorio.
 
