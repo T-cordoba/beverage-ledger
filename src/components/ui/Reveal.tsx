@@ -43,9 +43,13 @@ export function Reveal({
           observer.disconnect();
         }
       },
-      // Fires a little before the block reaches the bottom edge, so it has
-      // finished arriving by the time it is actually being read.
-      { rootMargin: '0px 0px -10% 0px' },
+      // Grows the viewport downwards, so a block fires just before it is
+      // scrolled to and has finished arriving by the time it is being read.
+      // Shrinking it instead — a negative bottom margin — leaves a dead band at
+      // the foot of the screen: the section under the hero is half on screen at
+      // load, never reaches the line, and reads as an empty section to anyone
+      // who has not scrolled yet.
+      { rootMargin: '0px 0px 10% 0px' },
     );
 
     observer.observe(element);

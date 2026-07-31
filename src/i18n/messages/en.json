@@ -178,6 +178,7 @@
   },
   "auth": {
     "tagline": "Liquor inventory management",
+    "backToSite": "Back to the site",
     "fields": {
       "name": "Name",
       "email": "Email",

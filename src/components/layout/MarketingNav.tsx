@@ -30,7 +30,10 @@ export function MarketingNav() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2 md:ml-0">
-          <LanguageSwitcher className="hidden w-32 sm:flex" />
+          {/* Narrow on a phone, where it shares the row with the sign-in button,
+              but never hidden: the landing is the one screen a visitor reads
+              before there is any account to carry a language preference. */}
+          <LanguageSwitcher className="w-24 sm:w-32" />
 
           {/* Until the session resolves this shows the signed-out pair, which is
               what a first visit is: no spinner for a decision nobody is waiting on. */}

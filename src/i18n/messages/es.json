@@ -178,6 +178,7 @@
   },
   "auth": {
     "tagline": "Gestión de inventario de licores",
+    "backToSite": "Volver al sitio",
     "fields": {
       "name": "Nombre",
       "email": "Correo electrónico",
