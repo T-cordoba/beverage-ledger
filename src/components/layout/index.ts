@@ -1,3 +1,4 @@
+export { AnimatedMain } from './AnimatedMain';
 export { AppShell } from './AppShell';
 export { Footer } from './Footer';
 export { MarketingNav } from './MarketingNav';

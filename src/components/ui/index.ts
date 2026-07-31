@@ -19,6 +19,7 @@ export { Input, PasswordInput, type InputProps } from './Input';
 export { NotificationsProvider, useNotify, type NotificationTone } from './Notifications';
 export { Pagination } from './Pagination';
 export { Popover, PopoverClose, PopoverContent, PopoverTrigger } from './Popover';
+export { Reveal } from './Reveal';
 export { SegmentedControl } from './SegmentedControl';
 export { Select, type SelectOption } from './Select';
 export { Skeleton, SkeletonText } from './Skeleton';

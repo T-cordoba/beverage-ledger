@@ -1,12 +1,15 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import { Badge, Button, Card } from '@/components/ui';
+import { Badge, Button, Card, Reveal } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 
 const FEATURES = ['ledger', 'stock', 'roles', 'reports'] as const;
 const STEPS = ['capture', 'confirm', 'read'] as const;
 const QUESTIONS = ['locations', 'mistakes', 'cases', 'roles'] as const;
+
+/** Between siblings in a row. Long enough to read as a sequence, short enough not to wait. */
+const STAGGER_MS = 60;
 
 function Section({
   id,
@@ -26,10 +29,12 @@ function Section({
       className="scroll-mt-20 border-t border-border/40 px-4 py-16 sm:px-6 lg:px-8 lg:py-24"
     >
       <div className="mx-auto max-w-6xl space-y-10">
-        <header className="max-w-2xl space-y-3">
-          <h2 className="text-2xl font-light text-foreground sm:text-3xl">{title}</h2>
-          {subtitle && <p className="text-base text-contrast/60">{subtitle}</p>}
-        </header>
+        <Reveal>
+          <header className="max-w-2xl space-y-3">
+            <h2 className="text-2xl font-light text-foreground sm:text-3xl">{title}</h2>
+            {subtitle && <p className="text-base text-contrast/60">{subtitle}</p>}
+          </header>
+        </Reveal>
         {children}
       </div>
     </section>
@@ -42,7 +47,7 @@ export default function LandingPage() {
   return (
     <>
       <section className="px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
-        <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
+        <div className="mx-auto flex max-w-3xl animate-fade-in-up flex-col items-center gap-6 text-center">
           <Badge tone="accent">{t('hero.eyebrow')}</Badge>
 
           <h1 className="text-4xl font-light leading-tight text-foreground sm:text-5xl lg:text-6xl">
@@ -66,14 +71,16 @@ export default function LandingPage() {
 
       <Section id="features" title={t('features.title')} subtitle={t('features.subtitle')}>
         <ul className="grid gap-4 sm:grid-cols-2">
-          {FEATURES.map((feature) => (
+          {FEATURES.map((feature, index) => (
             <li key={feature}>
-              <Card className="h-full space-y-2 bg-contrast/5">
-                <h3 className="text-lg font-medium text-accent">
-                  {t(`features.items.${feature}.title`)}
-                </h3>
-                <p className="text-sm text-contrast/70">{t(`features.items.${feature}.body`)}</p>
-              </Card>
+              <Reveal delayMs={index * STAGGER_MS} className="h-full">
+                <Card className="h-full space-y-2 bg-contrast/5">
+                  <h3 className="text-lg font-medium text-accent">
+                    {t(`features.items.${feature}.title`)}
+                  </h3>
+                  <p className="text-sm text-contrast/70">{t(`features.items.${feature}.body`)}</p>
+                </Card>
+              </Reveal>
             </li>
           ))}
         </ul>
@@ -82,17 +89,19 @@ export default function LandingPage() {
       <Section id="how" title={t('how.title')} subtitle={t('how.subtitle')}>
         <ol className="grid gap-6 sm:grid-cols-3">
           {STEPS.map((step, index) => (
-            <li key={step} className="space-y-3">
-              <span
-                aria-hidden="true"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-accent/15 text-sm font-medium text-accent"
-              >
-                {index + 1}
-              </span>
-              <h3 className="text-lg font-medium text-foreground">
-                {t(`how.steps.${step}.title`)}
-              </h3>
-              <p className="text-sm text-contrast/70">{t(`how.steps.${step}.body`)}</p>
+            <li key={step}>
+              <Reveal delayMs={index * STAGGER_MS} className="space-y-3">
+                <span
+                  aria-hidden="true"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-accent/15 text-sm font-medium text-accent"
+                >
+                  {index + 1}
+                </span>
+                <h3 className="text-lg font-medium text-foreground">
+                  {t(`how.steps.${step}.title`)}
+                </h3>
+                <p className="text-sm text-contrast/70">{t(`how.steps.${step}.body`)}</p>
+              </Reveal>
             </li>
           ))}
         </ol>
@@ -128,13 +137,15 @@ export default function LandingPage() {
       </Section>
 
       <section className="border-t border-border/40 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-        <Card className="mx-auto flex max-w-4xl flex-col items-center gap-4 border-accent/30 bg-accent/5 p-8 text-center sm:p-12">
-          <h2 className="text-2xl font-light text-foreground sm:text-3xl">{t('cta.title')}</h2>
-          <p className="max-w-2xl text-base text-contrast/70">{t('cta.body')}</p>
-          <Button size="lg" asChild>
-            <Link href={ROUTES.signIn}>{t('cta.primary')}</Link>
-          </Button>
-        </Card>
+        <Reveal>
+          <Card className="mx-auto flex max-w-4xl flex-col items-center gap-4 border-accent/30 bg-accent/5 p-8 text-center sm:p-12">
+            <h2 className="text-2xl font-light text-foreground sm:text-3xl">{t('cta.title')}</h2>
+            <p className="max-w-2xl text-base text-contrast/70">{t('cta.body')}</p>
+            <Button size="lg" asChild>
+              <Link href={ROUTES.signIn}>{t('cta.primary')}</Link>
+            </Button>
+          </Card>
+        </Reveal>
       </section>
     </>
   );
