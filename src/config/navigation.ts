@@ -26,6 +26,13 @@ export const ROUTES = {
   adminAudit: '/admin/audit',
 } as const;
 
+/**
+ * In-page anchors of the landing, so its nav, its footer and its sections agree
+ * on the ids. Here rather than next to the nav because a server component reads
+ * it too, and only functions cross a 'use client' boundary intact.
+ */
+export const MARKETING_SECTIONS = ['features', 'how', 'faq'] as const;
+
 /** Read back by the login page to return the user where they were headed. */
 export const RETURN_TO_PARAM = 'next';
 

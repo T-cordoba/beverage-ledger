@@ -43,6 +43,98 @@
       "clear": "Quitar la fecha"
     }
   },
+  "marketing": {
+    "nav": {
+      "label": "Principal",
+      "features": "Qué resuelve",
+      "how": "Cómo funciona",
+      "faq": "Preguntas",
+      "signIn": "Iniciar sesión",
+      "signUp": "Crear cuenta",
+      "dashboard": "Ir al panel"
+    },
+    "hero": {
+      "eyebrow": "Inventario de licores",
+      "title": "El inventario de la barra, cuadrado al cierre.",
+      "subtitle": "Cada salida de bodega, cada entrada de proveedor y cada merma quedan en un libro que no se edita. Las existencias son el resultado de ese libro, no un número que alguien escribe a mano.",
+      "primary": "Crear una cuenta",
+      "secondary": "Ver cómo funciona",
+      "note": "Pensado para bares, casinos y restaurantes que despachan botella a botella."
+    },
+    "features": {
+      "title": "Qué resuelve",
+      "subtitle": "Cuatro cosas que una hoja de cálculo compartida no puede sostener.",
+      "items": {
+        "ledger": {
+          "title": "Un libro que no se reescribe",
+          "body": "Cada movimiento queda con su autor, su fecha y su motivo. Anular no borra: escribe la reversa, y el historial sigue cuadrando."
+        },
+        "stock": {
+          "title": "Existencias que se derivan solas",
+          "body": "El stock de cada bodega se actualiza en la misma transacción que confirma el movimiento, y el kardex de cada producto muestra el saldo corrido línea por línea."
+        },
+        "roles": {
+          "title": "Quien despacha no ajusta",
+          "body": "El operador registra salidas. Las entradas, los traspasos, los ajustes y las anulaciones exigen un encargado, y todo ajuste lleva motivo obligatorio."
+        },
+        "reports": {
+          "title": "El consumo, en números",
+          "body": "Cuánto salió, de qué y en qué periodo, agregado en la base de datos. Cada movimiento se descarga en PDF con los datos de tu operación."
+        }
+      }
+    },
+    "how": {
+      "title": "Cómo funciona",
+      "subtitle": "Tres pasos, y el tercero es el que responde preguntas.",
+      "steps": {
+        "capture": {
+          "title": "Captura",
+          "body": "Eliges la bodega, la fecha y los productos, en botellas o en cajas. El borrador se guarda solo: si cierras el navegador sigue ahí."
+        },
+        "confirm": {
+          "title": "Confirma",
+          "body": "Al confirmar, el movimiento aplica su delta a las existencias en una sola transacción. Una salida mayor a lo que hay en la bodega se rechaza."
+        },
+        "read": {
+          "title": "Consulta",
+          "body": "Existencias por bodega, kardex por producto, reportes de consumo y un log de auditoría que dice quién hizo qué, cuándo y desde dónde."
+        }
+      }
+    },
+    "faq": {
+      "title": "Preguntas",
+      "items": {
+        "locations": {
+          "question": "¿Sirve para varias bodegas?",
+          "answer": "Sí. Cada existencia y cada línea del libro pertenece a una bodega, y un traspaso mueve unidades entre dos sin cambiar el total en existencia."
+        },
+        "mistakes": {
+          "question": "¿Y si me equivoco al registrar?",
+          "answer": "Un movimiento confirmado se anula con motivo y las existencias vuelven; el movimiento se conserva marcado como anulado. Para una diferencia de conteo está el ajuste, que también exige motivo."
+        },
+        "cases": {
+          "question": "¿Cómo se cuentan las cajas?",
+          "answer": "Cada producto declara cuántas unidades trae una caja y el sistema normaliza toda cantidad a unidades base. Capturas en cajas y lees en unidades, sin hacer la cuenta a mano."
+        },
+        "roles": {
+          "question": "¿Quién puede ver qué?",
+          "answer": "Cuatro roles con una matriz de permisos declarativa que vive en el servidor. La interfaz oculta lo que no puedes hacer, pero quien lo impide de verdad es la API."
+        }
+      }
+    },
+    "cta": {
+      "title": "Empieza con el inventario en cero",
+      "body": "Un negocio nuevo arranca sin existencias: el stock aparece cuando alguien registra la primera entrada. Nada se inventa por ti.",
+      "primary": "Crear una cuenta",
+      "secondary": "Ya tengo cuenta"
+    },
+    "footer": {
+      "tagline": "Inventario de licores para operaciones de hostelería.",
+      "rights": "© {year} {brand}",
+      "sections": "Secciones",
+      "account": "Cuenta"
+    }
+  },
   "nav": {
     "main": "Principal",
     "items": {

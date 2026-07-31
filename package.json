@@ -1,7 +1,7 @@
 {
   "name": "beverage-ledger",
   "version": "0.1.0",
-  "description": "Generic casino-style beverage inventory management system - Educational project",
+  "description": "Liquor inventory management for hospitality operations - Educational project",
   "author": "Tomás Córdoba Urquijo",
   "license": "PROPRIETARY",
   "private": true,

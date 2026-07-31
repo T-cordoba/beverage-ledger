@@ -43,6 +43,98 @@
       "clear": "Clear the date"
     }
   },
+  "marketing": {
+    "nav": {
+      "label": "Main",
+      "features": "What it solves",
+      "how": "How it works",
+      "faq": "Questions",
+      "signIn": "Sign in",
+      "signUp": "Create account",
+      "dashboard": "Go to the dashboard"
+    },
+    "hero": {
+      "eyebrow": "Liquor inventory",
+      "title": "The bar's inventory, reconciled at closing.",
+      "subtitle": "Every dispatch from the cellar, every supplier delivery and every breakage lands in a ledger that is never edited. Stock is what that ledger adds up to, not a number somebody types in.",
+      "primary": "Create an account",
+      "secondary": "See how it works",
+      "note": "Built for bars, casinos and restaurants that dispatch bottle by bottle."
+    },
+    "features": {
+      "title": "What it solves",
+      "subtitle": "Four things a shared spreadsheet cannot hold up.",
+      "items": {
+        "ledger": {
+          "title": "A ledger that is never rewritten",
+          "body": "Every movement keeps its author, its date and its reason. Voiding does not erase: it writes the reversal, and the history still adds up."
+        },
+        "stock": {
+          "title": "Stock that derives itself",
+          "body": "Each location's stock is updated in the same transaction that confirms the movement, and every product's kardex shows the running balance line by line."
+        },
+        "roles": {
+          "title": "Whoever dispatches does not adjust",
+          "body": "Operators register dispatches. Inbounds, transfers, adjustments and voids need a manager, and every adjustment carries a mandatory reason."
+        },
+        "reports": {
+          "title": "Consumption, in numbers",
+          "body": "How much left, of what and over which period, aggregated in the database. Every movement downloads as a PDF carrying your operation's details."
+        }
+      }
+    },
+    "how": {
+      "title": "How it works",
+      "subtitle": "Three steps, and the third one is where the answers are.",
+      "steps": {
+        "capture": {
+          "title": "Capture",
+          "body": "Pick the location, the date and the products, in bottles or in cases. The draft saves itself: close the browser and it is still there."
+        },
+        "confirm": {
+          "title": "Confirm",
+          "body": "Confirming applies the movement's delta to stock in a single transaction. A dispatch larger than what the location holds is refused."
+        },
+        "read": {
+          "title": "Read",
+          "body": "Stock per location, a kardex per product, consumption reports and an audit log that says who did what, when and from where."
+        }
+      }
+    },
+    "faq": {
+      "title": "Questions",
+      "items": {
+        "locations": {
+          "question": "Does it handle several locations?",
+          "answer": "Yes. Every stock level and every ledger line belongs to one location, and a transfer moves units between two without changing the total on hand."
+        },
+        "mistakes": {
+          "question": "What if I record something wrong?",
+          "answer": "A confirmed movement is voided with a reason and stock comes back; the movement is kept, marked as cancelled. For a count variance there is the adjustment, which also demands a reason."
+        },
+        "cases": {
+          "question": "How are cases counted?",
+          "answer": "Each product declares how many singles a case holds and the system normalizes every quantity to base units. You capture in cases and read in units, without doing the arithmetic."
+        },
+        "roles": {
+          "question": "Who gets to see what?",
+          "answer": "Four roles behind one declarative permission matrix that lives on the server. The interface hides what you cannot do, but what actually stops it is the API."
+        }
+      }
+    },
+    "cta": {
+      "title": "Start with stock at zero",
+      "body": "A new business starts with nothing on hand: stock appears when somebody records the first inbound. Nothing is invented for you.",
+      "primary": "Create an account",
+      "secondary": "I already have an account"
+    },
+    "footer": {
+      "tagline": "Liquor inventory for hospitality operations.",
+      "rights": "© {year} {brand}",
+      "sections": "Sections",
+      "account": "Account"
+    }
+  },
   "nav": {
     "main": "Main",
     "items": {
