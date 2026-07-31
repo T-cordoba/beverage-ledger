@@ -319,7 +319,6 @@
       "loadFailed": "The catalogue could not be loaded.",
       "empty": "No products match those filters.",
       "loadMore": "Load more products",
-      "perCase": "{count} per case",
       "onHand": "{count} on hand",
       "left": "{count} left",
       "atLimit": "Only {count} left at this location",

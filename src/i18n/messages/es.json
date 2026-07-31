@@ -319,7 +319,6 @@
       "loadFailed": "No se pudo cargar el catálogo.",
       "empty": "Ningún producto coincide con esos filtros.",
       "loadMore": "Cargar más productos",
-      "perCase": "{count} por caja",
       "onHand": "{count} en existencia",
       "left": "quedan {count}",
       "atLimit": "Solo quedan {count} en esta bodega",

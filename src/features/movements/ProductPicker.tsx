@@ -43,31 +43,29 @@ function QuantityStepper({
   const t = useTranslations('movements.picker');
 
   return (
-    <div className="flex items-center justify-between rounded-xl border border-border/30 bg-background/50 px-4 py-3 backdrop-blur-sm sm:justify-start sm:gap-4 sm:px-6 sm:py-4">
-      <span className="min-w-[60px] text-xs font-light uppercase tracking-wider text-contrast/80 sm:min-w-[80px] sm:text-sm">
+    <div className="flex items-center justify-between gap-3 rounded-xl border border-border/30 bg-background/50 px-3 py-2">
+      <span className="min-w-0 text-xs font-light uppercase tracking-wider text-contrast/80">
         {label}
         {note && <span className="block normal-case tracking-normal text-accent/80">{note}</span>}
       </span>
-      <div className="flex items-center gap-2 sm:gap-3">
+      <div className="flex shrink-0 items-center gap-2">
         <Button
           variant="secondary"
           size="icon-sm"
           onClick={() => onChange(-1)}
           aria-label={t('remove', { unit: unitLabel })}
-          className="rounded-lg text-base font-light hover:bg-accent/20 hover:text-foreground sm:h-10 sm:w-10 sm:text-lg"
+          className="rounded-lg text-base font-light hover:bg-accent/20 hover:text-foreground"
         >
           −
         </Button>
-        <span className="w-8 text-center text-lg font-light text-accent sm:w-12 sm:text-xl">
-          {value}
-        </span>
+        <span className="w-8 text-center text-lg font-light text-accent">{value}</span>
         <Button
           size="icon-sm"
           onClick={() => onChange(1)}
           aria-label={t('add', { unit: unitLabel })}
           disabled={!canIncrease}
           title={canIncrease ? undefined : atLimitLabel}
-          className="rounded-lg text-base font-light sm:h-10 sm:w-10 sm:text-lg"
+          className="rounded-lg text-base font-light"
         >
           +
         </Button>
@@ -76,7 +74,7 @@ function QuantityStepper({
   );
 }
 
-function ProductRow({
+function ProductCard({
   product,
   quantities,
   onAdjust,
@@ -101,29 +99,37 @@ function ProductRow({
   return (
     <li
       className={cn(
-        'group relative rounded-xl border bg-gradient-to-r from-background/80 to-surface/80 p-3 backdrop-blur-sm transition-colors sm:rounded-2xl sm:p-4 lg:p-8',
+        'group relative flex flex-col gap-3 rounded-2xl border bg-surface/40 p-4 transition-colors',
         isSelected
           ? 'border-accent/50 shadow-lg shadow-accent/10'
           : 'border-border/30 hover:border-accent/30',
       )}
     >
       {isSelected && (
-        <div className="absolute right-3 top-3 h-2 w-2 rounded-full bg-accent sm:right-4 sm:top-4 sm:h-3 sm:w-3" />
+        <span
+          aria-hidden="true"
+          className="absolute right-3 top-3 h-2 w-2 rounded-full bg-accent"
+        />
       )}
 
-      <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
-        <div className="flex-1">
-          <h3 className="mb-2 text-lg font-light text-foreground transition-colors group-hover:text-accent sm:text-xl lg:text-2xl">
-            {product.name}
-          </h3>
+      {/* Grows to fill whatever the tallest card in the row needs, so the
+          steppers below line up across the grid instead of floating mid-card. */}
+      <div className="flex-1 space-y-2 pr-4">
+        <h3 className="text-base font-light text-foreground transition-colors group-hover:text-accent">
+          {product.name}
+        </h3>
 
-          <div className="mb-3 flex flex-wrap items-center gap-2">
-            {product.brand && <Badge>{product.brand.name}</Badge>}
-            {product.subcategory && <Badge tone="accent">{product.subcategory}</Badge>}
-            {product.age && <Badge tone="info">{product.age}</Badge>}
-          </div>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <Badge tone="accent" emphasis>
+            {product.category.name}
+          </Badge>
+          {product.brand && <Badge>{product.brand.name}</Badge>}
+          {product.subcategory && <Badge tone="accent">{product.subcategory}</Badge>}
+          {product.age && <Badge tone="info">{product.age}</Badge>}
+        </div>
 
-          <div className="mb-3 flex flex-wrap items-center gap-3">
+        {(product.abv !== null || product.origin) && (
+          <div className="flex flex-wrap items-center gap-3">
             {product.abv !== null && (
               <MetaItem
                 icon={
@@ -162,67 +168,49 @@ function ProductRow({
                 {product.origin}
               </MetaItem>
             )}
-            <MetaItem
-              icon={
-                <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                  />
-                </svg>
-              }
-            >
-              {t('perCase', { count: product.caseSize })}
-            </MetaItem>
           </div>
-
-          <Badge tone="accent" emphasis className="backdrop-blur-sm">
-            {product.category.name}
-          </Badge>
-        </div>
-
-        <div className="flex flex-col gap-2 sm:gap-3 lg:min-w-[300px] lg:gap-4">
-          {available !== null && (
-            <p
-              className={cn(
-                'text-right text-xs',
-                remaining <= 0 ? 'text-warning' : 'text-contrast/60',
-              )}
-            >
-              {t('onHand', { count: available })}
-              {taken > 0 && ` · ${t('left', { count: Math.max(remaining, 0) })}`}
-            </p>
-          )}
-
-          <QuantityStepper
-            label={tUnits('bottle', { count: 2 })}
-            unitLabel={tUnits('bottle', { count: 1 })}
-            value={quantities.BOTTLE}
-            onChange={(delta) => onAdjust('BOTTLE', delta)}
-            canIncrease={remaining >= 1}
-            atLimitLabel={atLimitLabel}
-          />
-          <QuantityStepper
-            label={tUnits('case', { count: 2 })}
-            // On the control itself, not only in the product's meta row: what a
-            // case costs the shelf is the number this stepper is really moving.
-            note={t('unitsPerCase', { count: product.caseSize })}
-            unitLabel={tUnits('case', { count: 1 })}
-            value={quantities.CASE}
-            onChange={(delta) => onAdjust('CASE', delta)}
-            canIncrease={remaining >= product.caseSize}
-            atLimitLabel={atLimitLabel}
-          />
-
-          {taken > 0 && (
-            <p className="text-right text-sm font-medium text-accent">
-              {t('takenTotal', { count: taken })}
-            </p>
-          )}
-        </div>
+        )}
       </div>
+
+      {available !== null && (
+        <p className={cn('text-xs', remaining <= 0 ? 'text-warning' : 'text-contrast/60')}>
+          {t('onHand', { count: available })}
+          {taken > 0 && ` · ${t('left', { count: Math.max(remaining, 0) })}`}
+        </p>
+      )}
+
+      <div className="space-y-2">
+        <QuantityStepper
+          label={tUnits('bottle', { count: 2 })}
+          unitLabel={tUnits('bottle', { count: 1 })}
+          value={quantities.BOTTLE}
+          onChange={(delta) => onAdjust('BOTTLE', delta)}
+          canIncrease={remaining >= 1}
+          atLimitLabel={atLimitLabel}
+        />
+        <QuantityStepper
+          label={tUnits('case', { count: 2 })}
+          // On the control itself, and nowhere else now: what a case costs the
+          // shelf is the number this stepper is really moving.
+          note={t('unitsPerCase', { count: product.caseSize })}
+          unitLabel={tUnits('case', { count: 1 })}
+          value={quantities.CASE}
+          onChange={(delta) => onAdjust('CASE', delta)}
+          canIncrease={remaining >= product.caseSize}
+          atLimitLabel={atLimitLabel}
+        />
+      </div>
+
+      {/* Reserved whether or not anything is taken, so adding the first bottle
+          does not make every card in the row grow a line. */}
+      <p
+        className={cn(
+          'text-right text-sm font-medium',
+          taken > 0 ? 'text-accent' : 'text-transparent',
+        )}
+      >
+        {t('takenTotal', { count: taken })}
+      </p>
     </li>
   );
 }
@@ -285,9 +273,11 @@ export function ProductPicker({
           />
         ) : (
           <>
-            <ul className="grid gap-2 sm:gap-4 lg:gap-6">
+            {/* Three across at most: each card carries two steppers and the
+                on-hand figure, and a fourth column squeezes those into nothing. */}
+            <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {products.map((product) => (
-                <ProductRow
+                <ProductCard
                   key={product.id}
                   product={product}
                   quantities={draft.quantityOf(product.id)}
