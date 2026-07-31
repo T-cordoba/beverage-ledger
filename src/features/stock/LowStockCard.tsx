@@ -2,7 +2,7 @@
 
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { Badge, Button, Card, EmptyState, Spinner } from '@/components/ui';
+import { Badge, Button, Card, EmptyState, Skeleton } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { useLowStock } from './api';
 
@@ -28,9 +28,13 @@ export function LowStockCard({ enabled = true }: { enabled?: boolean }) {
       </div>
 
       {isPending ? (
-        <div className="flex justify-center py-8">
-          <Spinner label={t('loading')} />
-        </div>
+        <ul role="status" aria-label={t('loading')} className="space-y-2">
+          {Array.from({ length: 4 }, (_, index) => (
+            <li key={index} className="rounded-lg bg-contrast/5 p-3">
+              <Skeleton className="h-10" />
+            </li>
+          ))}
+        </ul>
       ) : error ? (
         <EmptyState title={t('loadFailed')} />
       ) : rows.length === 0 ? (

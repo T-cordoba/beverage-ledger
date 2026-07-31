@@ -21,6 +21,7 @@ export { Pagination } from './Pagination';
 export { Popover, PopoverClose, PopoverContent, PopoverTrigger } from './Popover';
 export { SegmentedControl } from './SegmentedControl';
 export { Select, type SelectOption } from './Select';
+export { Skeleton, SkeletonText } from './Skeleton';
 export { Spinner } from './Spinner';
 export { StatTile } from './StatTile';
 export { Textarea } from './Textarea';

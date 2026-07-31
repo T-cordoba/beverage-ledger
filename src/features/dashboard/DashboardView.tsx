@@ -3,7 +3,7 @@
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
-import { Button, Card, EmptyState, SegmentedControl, Spinner, StatTile } from '@/components/ui';
+import { Button, Card, EmptyState, SegmentedControl, Skeleton, StatTile } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
 import { NewMovementActions, RecentMovementsCard } from '@/features/movements';
@@ -17,6 +17,9 @@ import {
 } from '@/features/reports';
 import { LowStockCard } from '@/features/stock';
 import { ActivityChart } from './ActivityChart';
+
+/** How many tiles the summary paints, so its placeholder is the same shape. */
+const SUMMARY_TILES = 8;
 
 export function DashboardView() {
   const t = useTranslations('dashboard');
@@ -71,8 +74,20 @@ export function DashboardView() {
 
       {canSeeReports &&
         (summary.isPending ? (
-          <div className="flex justify-center py-8">
-            <Spinner size="lg" label={t('loadingSummary')} />
+          // Eight tiles in the same grid the real ones land in, so nothing below
+          // jumps when the numbers arrive.
+          <div
+            role="status"
+            aria-label={t('loadingSummary')}
+            className="grid grid-cols-2 gap-3 lg:grid-cols-4"
+          >
+            {Array.from({ length: SUMMARY_TILES }, (_, index) => (
+              <Card key={index} className="space-y-2 bg-contrast/5">
+                <Skeleton className="mx-auto h-8 w-20" />
+                <Skeleton className="mx-auto h-3 w-24" />
+                <Skeleton className="mx-auto h-3 w-16" />
+              </Card>
+            ))}
           </div>
         ) : summary.error ? (
           <EmptyState title={t('summaryFailed')} description={tStates('apiUnreachable')} />
@@ -134,8 +149,8 @@ export function DashboardView() {
             </div>
 
             {activity.isPending ? (
-              <div className="flex justify-center py-8">
-                <Spinner label={t('activity.loading')} />
+              <div role="status" aria-label={t('activity.loading')}>
+                <Skeleton className="h-40" />
               </div>
             ) : activity.error ? (
               <EmptyState title={t('activity.loadFailed')} />

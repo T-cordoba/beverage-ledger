@@ -2,7 +2,15 @@ import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { EmptyState } from './EmptyState';
-import { Spinner } from './Spinner';
+import { Skeleton } from './Skeleton';
+
+/**
+ * Ghost rows shown while a page loads.
+ *
+ * Enough to fill the space a short page occupies, so the table does not grow
+ * from one line to twenty and shove everything below it down the screen.
+ */
+const SKELETON_ROWS = 5;
 
 export interface DataTableColumn<T> {
   key: string;
@@ -52,22 +60,18 @@ export function DataTable<T>({
 }: DataTableProps<T>) {
   const t = useTranslations('common.states');
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <Spinner size="lg" label={loadingLabel ?? caption} />
-      </div>
-    );
-  }
-
-  if (rows.length === 0) {
+  if (rows.length === 0 && !isLoading) {
     return <>{empty ?? <EmptyState title={t('nothingToShow')} />}</>;
   }
 
   return (
-    <div className={cn('overflow-x-auto', className)}>
+    <div
+      className={cn('overflow-x-auto', className)}
+      role={isLoading ? 'status' : undefined}
+      aria-busy={isLoading || undefined}
+    >
       <table className="w-full border-collapse text-sm">
-        <caption className="sr-only">{caption}</caption>
+        <caption className="sr-only">{isLoading ? (loadingLabel ?? caption) : caption}</caption>
         <thead>
           <tr className="border-b border-border/60">
             {columns.map((column) => (
@@ -86,6 +90,20 @@ export function DataTable<T>({
           </tr>
         </thead>
         <tbody>
+          {isLoading &&
+            Array.from({ length: SKELETON_ROWS }, (_, index) => (
+              <tr key={`skeleton-${index}`} className="border-b border-border/20 last:border-b-0">
+                {columns.map((column) => (
+                  <td
+                    key={column.key}
+                    className={cn('px-3 py-3', column.hideBelow && hideClasses[column.hideBelow])}
+                  >
+                    <Skeleton className="h-4" />
+                  </td>
+                ))}
+              </tr>
+            ))}
+
           {rows.map((row) => (
             <tr
               key={rowKey(row)}

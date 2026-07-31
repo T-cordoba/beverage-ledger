@@ -2,7 +2,7 @@
 
 import { useFormatter, useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
-import { Card, EmptyState, SegmentedControl, Spinner, StatTile } from '@/components/ui';
+import { Card, EmptyState, SegmentedControl, Skeleton, StatTile } from '@/components/ui';
 import type { ConsumptionGroupBy, ConsumptionRow } from '@/lib/api';
 import { cn } from '@/lib/utils';
 import { useConsumptionReport, useSummaryReport } from './api';
@@ -139,8 +139,9 @@ export function ConsumptionReportView() {
       )}
 
       {consumption.isPending ? (
-        <div className="flex items-center justify-center py-12">
-          <Spinner size="lg" label={t('loading')} />
+        <div role="status" aria-label={t('loading')} className="grid gap-4 sm:gap-6 lg:grid-cols-2">
+          <Skeleton className="h-64" />
+          <Skeleton className="h-64" />
         </div>
       ) : consumption.error ? (
         <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />
