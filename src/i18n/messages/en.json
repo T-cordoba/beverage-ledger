@@ -860,5 +860,19 @@
       "blockedDefault": "The default cannot be deleted: promote another one first",
       "blockedInUse": "{count} ledger {count, plural, one {line references} other {lines reference}} it"
     }
+  },
+  "errors": {
+    "notFound": {
+      "title": "This page does not exist",
+      "description": "The link may be mistyped, or whatever you were after has moved.",
+      "backHome": "Back to the home page",
+      "backToDashboard": "Go to the dashboard"
+    },
+    "unexpected": {
+      "title": "Something went wrong",
+      "description": "We could not render this screen. Try again; if it keeps happening, tell whoever administers the system.",
+      "retry": "Try again",
+      "backHome": "Back to the home page"
+    }
   }
 }

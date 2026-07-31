@@ -860,5 +860,19 @@
       "blockedDefault": "La bodega por defecto no se puede eliminar: promueve otra primero",
       "blockedInUse": "{count} {count, plural, one {línea del ledger la referencia} other {líneas del ledger la referencian}}"
     }
+  },
+  "errors": {
+    "notFound": {
+      "title": "Esta página no existe",
+      "description": "El enlace puede estar mal escrito, o lo que buscabas se movió de sitio.",
+      "backHome": "Volver al inicio",
+      "backToDashboard": "Ir al panel"
+    },
+    "unexpected": {
+      "title": "Algo salió mal",
+      "description": "No pudimos mostrar esta pantalla. Vuelve a intentarlo; si sigue igual, avísale a quien administre el sistema.",
+      "retry": "Reintentar",
+      "backHome": "Volver al inicio"
+    }
   }
 }
