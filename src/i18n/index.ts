@@ -7,3 +7,4 @@ export {
   type Locale,
 } from './config';
 export { LanguageSwitcher } from './LanguageSwitcher';
+export { LocaleTransitionProvider, useLocaleTransition } from './LocaleTransition';
