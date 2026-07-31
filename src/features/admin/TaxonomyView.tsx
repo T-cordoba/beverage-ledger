@@ -14,6 +14,7 @@ import {
   DialogTitle,
   EmptyState,
   Field,
+  FloatingAction,
   Input,
   Pagination,
   type DataTableColumn,
@@ -242,10 +243,15 @@ export function TaxonomyView({
           <h1 className="text-2xl font-light text-foreground sm:text-3xl">{copy.title}</h1>
           <p className="text-sm text-contrast/60">{copy.subtitle}</p>
         </div>
-        <Button size="lg" onClick={() => openForm(null)}>
+        <Button size="lg" className="hidden sm:inline-flex" onClick={() => openForm(null)}>
           {copy.newItem}
         </Button>
       </header>
+
+      <FloatingAction
+        label={copy.newItem}
+        items={[{ label: copy.newItem, onClick: () => openForm(null) }]}
+      />
 
       {isError ? (
         <EmptyState title={copy.loadFailed} description={tStates('apiUnreachable')} />

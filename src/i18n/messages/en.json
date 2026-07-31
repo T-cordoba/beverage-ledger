@@ -16,7 +16,8 @@
       "loadMore": "Load more",
       "retry": "Retry",
       "save": "Save",
-      "search": "Search"
+      "search": "Search",
+      "newMovement": "Record a movement"
     },
     "states": {
       "loading": "Loading…",

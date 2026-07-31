@@ -15,6 +15,7 @@ import {
   DialogTitle,
   EmptyState,
   Field,
+  FloatingAction,
   Input,
   useNotify,
   type DataTableColumn,
@@ -242,10 +243,15 @@ export function LocationsView() {
           <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
           <p className="text-sm text-contrast/60">{t('subtitle')}</p>
         </div>
-        <Button size="lg" onClick={() => openForm(null)}>
+        <Button size="lg" className="hidden sm:inline-flex" onClick={() => openForm(null)}>
           {t('new')}
         </Button>
       </header>
+
+      <FloatingAction
+        label={t('new')}
+        items={[{ label: t('new'), onClick: () => openForm(null) }]}
+      />
 
       {isError ? (
         <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />

@@ -17,7 +17,7 @@ import { parseDateKey } from '@/lib/utils';
 import { useMovements, type MovementQuery } from './api';
 import { MovementCard } from './MovementCard';
 import { MOVEMENT_TYPE_ORDER } from './movement-types';
-import { NewMovementActions } from './NewMovementActions';
+import { NewMovementActions, NewMovementFab } from './NewMovementActions';
 
 const STATUSES: MovementStatus[] = ['CONFIRMED', 'DRAFT', 'CANCELLED'];
 
@@ -85,8 +85,10 @@ export function MovementHistoryView() {
           <p className="text-sm text-contrast/60">{t('subtitle')}</p>
         </div>
 
-        <NewMovementActions />
+        <NewMovementActions className="hidden sm:flex" />
       </header>
+
+      <NewMovementFab />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Input

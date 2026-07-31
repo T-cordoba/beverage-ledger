@@ -15,6 +15,7 @@ export {
 } from './Dialog';
 export { EmptyState } from './EmptyState';
 export { Field, type FieldControlProps } from './Field';
+export { FloatingAction, type FloatingActionItem } from './FloatingAction';
 export { Input, PasswordInput, type InputProps } from './Input';
 export { NotificationsProvider, useNotify, type NotificationTone } from './Notifications';
 export { Pagination } from './Pagination';

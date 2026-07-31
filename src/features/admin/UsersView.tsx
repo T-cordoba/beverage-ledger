@@ -8,6 +8,7 @@ import {
   Card,
   DataTable,
   EmptyState,
+  FloatingAction,
   Pagination,
   type DataTableColumn,
 } from '@/components/ui';
@@ -91,7 +92,7 @@ export function UsersView() {
           <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
           <p className="text-sm text-contrast/60">{t('subtitle')}</p>
         </div>
-        <Button size="lg" onClick={() => setIsInviteOpen(true)}>
+        <Button size="lg" className="hidden sm:inline-flex" onClick={() => setIsInviteOpen(true)}>
           {t('new')}
         </Button>
       </header>
@@ -123,6 +124,11 @@ export function UsersView() {
           onPageSizeChange={pagination.setPageSize}
         />
       )}
+
+      <FloatingAction
+        label={t('new')}
+        items={[{ label: t('new'), onClick: () => setIsInviteOpen(true) }]}
+      />
 
       <InvitationsCard />
 

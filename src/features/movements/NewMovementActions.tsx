@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { Button } from '@/components/ui';
+import { Button, FloatingAction } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
 import { cn } from '@/lib/utils';
@@ -27,5 +27,27 @@ export function NewMovementActions({ className }: { className?: string }) {
         </Button>
       ))}
     </div>
+  );
+}
+
+/**
+ * The same choice as a floating button, for the screens where the row above sits
+ * in a header that scrolls away. An operator gets a single button straight to
+ * the dispatch; a manager gets the four to choose from.
+ */
+export function NewMovementFab() {
+  const t = useTranslations('movements.types');
+  const tActions = useTranslations('common.actions');
+  const { can } = useAuth();
+  const types = MOVEMENT_TYPE_ORDER.filter((type) => can(MOVEMENT_TYPES[type].permission));
+
+  return (
+    <FloatingAction
+      label={tActions('newMovement')}
+      items={types.map((type) => ({
+        label: t(`${type}.action`),
+        href: ROUTES.newMovement(type),
+      }))}
+    />
   );
 }

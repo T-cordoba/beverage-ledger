@@ -10,6 +10,7 @@ import {
   ConfirmDialog,
   DataTable,
   EmptyState,
+  FloatingAction,
   Pagination,
   useNotify,
   type DataTableColumn,
@@ -174,11 +175,18 @@ export function CatalogView() {
         </div>
 
         {canManage && (
-          <Button size="lg" onClick={() => openForm(null)}>
+          <Button size="lg" className="hidden sm:inline-flex" onClick={() => openForm(null)}>
             {t('new')}
           </Button>
         )}
       </header>
+
+      {canManage && (
+        <FloatingAction
+          label={t('new')}
+          items={[{ label: t('new'), onClick: () => openForm(null) }]}
+        />
+      )}
 
       <CatalogFilters state={filters} showStatus={canManage} />
 
