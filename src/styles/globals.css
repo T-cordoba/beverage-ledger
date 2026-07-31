@@ -18,4 +18,29 @@
     font-family: var(--font-sans);
     min-height: 100vh;
   }
+
+  /* The landing navigates by anchor, and a jump gives no sense of where the
+     page went. Opt-in only: for a vestibular disorder the glide is the symptom. */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /**
+   * Everything this design system animates is decoration — no state is conveyed
+   * by motion alone — so the preference is honoured once here instead of in
+   * every keyframe. The !important is the point: it has to beat the utility
+   * classes and inline styles it is overriding.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
