@@ -1,11 +1,18 @@
+import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { PermissionGate } from '@/features/auth';
 import { StockLevelsView } from '@/features/stock';
 
-export const metadata = { title: 'Stock · Beverage Ledger' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('stock.levels');
+  return { title: t('title') };
+}
 
-export default function StockPage() {
+export default async function StockPage() {
+  const t = await getTranslations('stock');
+
   return (
-    <PermissionGate permission="stock:read" title="You cannot see stock levels.">
+    <PermissionGate permission="stock:read" title={t('denied')}>
       <StockLevelsView />
     </PermissionGate>
   );

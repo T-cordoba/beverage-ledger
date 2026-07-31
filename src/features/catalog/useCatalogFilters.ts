@@ -18,11 +18,8 @@ export type CatalogFilterKey = (typeof CATALOG_FILTER_KEYS)[number];
 /** From the contract, so a renamed value breaks the build and not a request. */
 export type ProductStatus = NonNullable<ProductQuery['status']>;
 
-export const PRODUCT_STATUS_OPTIONS: { value: ProductStatus; label: string }[] = [
-  { value: 'active', label: 'Active' },
-  { value: 'inactive', label: 'Deactivated' },
-  { value: 'all', label: 'Any status' },
-];
+/** Labelled from `catalog.filters.statuses`, keyed by these same values. */
+export const PRODUCT_STATUSES: ProductStatus[] = ['active', 'inactive', 'all'];
 
 /** Every filter is a string here; '' means "no filter", which is what the Select speaks. */
 export type CatalogFilterValues = Record<CatalogFilterKey, string>;

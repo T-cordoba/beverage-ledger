@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';
 import {
   Button,
@@ -65,6 +66,10 @@ export function ProductFormDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  const t = useTranslations('catalog.form');
+  const tStates = useTranslations('common.states');
+  const tActions = useTranslations('common.actions');
+
   const [form, setForm] = useState<ProductForm>(() => formOf(product));
   const { data: categories = [] } = useCategories();
   const { data: brands = [] } = useBrands();
@@ -80,13 +85,14 @@ export function ProductFormDialog({
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
+    const name = form.name.trim();
 
     try {
       if (product) {
         await update.mutateAsync({
           id: product.id,
           input: {
-            name: form.name.trim(),
+            name,
             categoryId: form.categoryId,
             // The update contract has no nullable brand, so a brand can be
             // changed but not cleared. An empty value means "leave it".
@@ -98,10 +104,10 @@ export function ProductFormDialog({
             minimumStock: number(form.minimumStock),
           },
         });
-        notify('success', 'Product updated', `${form.name.trim()} was saved.`);
+        notify('success', t('updatedTitle'), t('updatedDescription', { name }));
       } else {
         await create.mutateAsync({
-          name: form.name.trim(),
+          name,
           categoryId: form.categoryId,
           brandId: form.brandId || null,
           subcategory: text(form.subcategory),
@@ -111,15 +117,15 @@ export function ProductFormDialog({
           caseSize: Number(form.caseSize),
           minimumStock: number(form.minimumStock),
         });
-        notify('success', 'Product created', `${form.name.trim()} joined the catalogue.`);
+        notify('success', t('createdTitle'), t('createdDescription', { name }));
       }
 
       onOpenChange(false);
     } catch (error) {
       notify(
         'error',
-        isEditing ? 'Could not update the product' : 'Could not create the product',
-        describeError(error, 'Please try again.'),
+        isEditing ? t('updateFailed') : t('createFailed'),
+        describeError(error, tStates('tryAgain')),
       );
     }
   };
@@ -128,13 +134,13 @@ export function ProductFormDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-xl">
         <form onSubmit={(event) => void submit(event)} className="space-y-4">
-          <DialogTitle>{isEditing ? `Edit ${product.name}` : 'New product'}</DialogTitle>
-          <DialogDescription>
-            Products are never deleted, only deactivated: the ledger references them.
-          </DialogDescription>
+          <DialogTitle>
+            {isEditing ? t('editTitle', { name: product.name }) : t('createTitle')}
+          </DialogTitle>
+          <DialogDescription>{t('description')}</DialogDescription>
 
           <div className="grid gap-4 text-left sm:grid-cols-2">
-            <Field label="Name" className="sm:col-span-2">
+            <Field label={t('name')} className="sm:col-span-2">
               {({ id }) => (
                 <Input
                   id={id}
@@ -142,19 +148,19 @@ export function ProductFormDialog({
                   minLength={2}
                   value={form.name}
                   onChange={(event) => set('name', event.target.value)}
-                  placeholder="Havana Club 7 Años"
+                  placeholder={t('namePlaceholder')}
                 />
               )}
             </Field>
 
-            <Field label="Category">
+            <Field label={t('category')}>
               {({ id }) => (
                 <Select
                   id={id}
                   value={form.categoryId}
                   onValueChange={(value) => set('categoryId', value)}
                   options={[
-                    { value: '', label: 'Pick a category' },
+                    { value: '', label: t('pickCategory') },
                     ...categories.map((category) => ({
                       value: category.id,
                       label: category.name,
@@ -165,8 +171,8 @@ export function ProductFormDialog({
             </Field>
 
             <Field
-              label="Brand"
-              hint={isEditing && product.brand ? 'A brand can be changed, not removed.' : undefined}
+              label={t('brand')}
+              hint={isEditing && product.brand ? t('brandHint') : undefined}
             >
               {({ id, describedBy }) => (
                 <Select
@@ -175,36 +181,36 @@ export function ProductFormDialog({
                   onValueChange={(value) => set('brandId', value)}
                   aria-describedby={describedBy}
                   options={[
-                    { value: '', label: 'No brand' },
+                    { value: '', label: t('noBrand') },
                     ...brands.map((brand) => ({ value: brand.id, label: brand.name })),
                   ]}
                 />
               )}
             </Field>
 
-            <Field label="Subcategory">
+            <Field label={t('subcategory')}>
               {({ id }) => (
                 <Input
                   id={id}
                   value={form.subcategory}
                   onChange={(event) => set('subcategory', event.target.value)}
-                  placeholder="Añejo"
+                  placeholder={t('subcategoryPlaceholder')}
                 />
               )}
             </Field>
 
-            <Field label="Origin">
+            <Field label={t('origin')}>
               {({ id }) => (
                 <Input
                   id={id}
                   value={form.origin}
                   onChange={(event) => set('origin', event.target.value)}
-                  placeholder="Cuba"
+                  placeholder={t('originPlaceholder')}
                 />
               )}
             </Field>
 
-            <Field label="ABV (%)">
+            <Field label={t('abv')}>
               {({ id }) => (
                 <Input
                   id={id}
@@ -218,24 +224,20 @@ export function ProductFormDialog({
               )}
             </Field>
 
-            <Field label="Age">
+            <Field label={t('age')}>
               {({ id }) => (
                 <Input
                   id={id}
                   value={form.age}
                   onChange={(event) => set('age', event.target.value)}
-                  placeholder="7 años"
+                  placeholder={t('agePlaceholder')}
                 />
               )}
             </Field>
 
             <Field
-              label="Case size"
-              hint={
-                isEditing
-                  ? 'Fixed after creation: it is the divisor behind every quantity already recorded.'
-                  : 'Singles per case. Quantities are normalized with it.'
-              }
+              label={t('caseSize')}
+              hint={isEditing ? t('caseSizeHintEdit') : t('caseSizeHintNew')}
             >
               {({ id, describedBy }) => (
                 <Input
@@ -251,10 +253,7 @@ export function ProductFormDialog({
               )}
             </Field>
 
-            <Field
-              label="Minimum stock"
-              hint="Reorder threshold, in singles. Empty means no alert."
-            >
+            <Field label={t('minimumStock')} hint={t('minimumStockHint')}>
               {({ id, describedBy }) => (
                 <Input
                   id={id}
@@ -277,7 +276,7 @@ export function ProductFormDialog({
               disabled={isSaving}
               onClick={() => onOpenChange(false)}
             >
-              Cancel
+              {tActions('cancel')}
             </Button>
             <Button
               type="submit"
@@ -286,7 +285,7 @@ export function ProductFormDialog({
               isLoading={isSaving}
               disabled={!form.categoryId}
             >
-              {isEditing ? 'Save' : 'Create'}
+              {isEditing ? tActions('save') : tActions('create')}
             </Button>
           </DialogFooter>
         </form>

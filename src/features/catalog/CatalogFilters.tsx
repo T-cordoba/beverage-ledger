@@ -1,10 +1,11 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Button, Card, Input, Select, type SelectOption } from '@/components/ui';
 import { cn } from '@/lib/utils';
 import { useBrands, useCategories, useProductFacets } from './api';
-import { PRODUCT_STATUS_OPTIONS } from './useCatalogFilters';
+import { PRODUCT_STATUSES } from './useCatalogFilters';
 import type { CatalogFilterKey, CatalogFiltersState, ProductStatus } from './useCatalogFilters';
 
 const toOptions = (values: string[], format?: (value: string) => string): SelectOption[] =>
@@ -25,6 +26,8 @@ export function CatalogFilters({
   /** Only the catalogue view manages deactivated products; pickers never show them. */
   showStatus?: boolean;
 }) {
+  const t = useTranslations('catalog.filters');
+  const tActions = useTranslations('common.actions');
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
 
   const { data: categories = [] } = useCategories();
@@ -34,27 +37,32 @@ export function CatalogFilters({
   const advanced: AdvancedField[] = [
     {
       key: 'brandId',
-      label: 'Brand',
-      anyLabel: 'All brands',
+      label: t('brand'),
+      anyLabel: t('allBrands'),
       options: brands.map((brand) => ({ value: brand.id, label: brand.name })),
     },
     {
       key: 'origin',
-      label: 'Origin',
-      anyLabel: 'All origins',
+      label: t('origin'),
+      anyLabel: t('allOrigins'),
       options: toOptions(facets?.origins ?? []),
     },
     {
       key: 'subcategory',
-      label: 'Subcategory',
-      anyLabel: 'All subcategories',
+      label: t('subcategory'),
+      anyLabel: t('allSubcategories'),
       options: toOptions(facets?.subcategories ?? []),
     },
-    { key: 'age', label: 'Age', anyLabel: 'All ages', options: toOptions(facets?.ages ?? []) },
+    {
+      key: 'age',
+      label: t('age'),
+      anyLabel: t('allAges'),
+      options: toOptions(facets?.ages ?? []),
+    },
     {
       key: 'abv',
-      label: 'ABV',
-      anyLabel: 'All ABVs',
+      label: t('abv'),
+      anyLabel: t('allAbvs'),
       options: toOptions((facets?.abvs ?? []).map(String), (value) => `${value}%`),
     },
   ];
@@ -65,10 +73,10 @@ export function CatalogFilters({
         <div className="max-w-full flex-1 sm:max-w-md">
           <Input
             type="search"
-            placeholder="Search by name..."
+            placeholder={t('searchPlaceholder')}
             value={state.search}
             onChange={(event) => state.setSearch(event.target.value)}
-            aria-label="Search products"
+            aria-label={t('searchLabel')}
             trailing={
               <svg
                 className="h-4 w-4 text-accent/60"
@@ -92,10 +100,10 @@ export function CatalogFilters({
           <Select
             value={state.filters.categoryId}
             onValueChange={(value) => state.setFilter('categoryId', value)}
-            aria-label="Filter by category"
+            aria-label={t('category')}
             className={cn(state.filters.categoryId === '' && 'text-contrast/80')}
             options={[
-              { value: '', label: 'All categories' },
+              { value: '', label: t('allCategories') },
               ...categories.map((category) => ({ value: category.id, label: category.name })),
             ]}
           />
@@ -106,8 +114,11 @@ export function CatalogFilters({
             <Select
               value={state.status}
               onValueChange={(value) => state.setStatus(value as ProductStatus)}
-              aria-label="Filter by status"
-              options={PRODUCT_STATUS_OPTIONS}
+              aria-label={t('status')}
+              options={PRODUCT_STATUSES.map((value) => ({
+                value,
+                label: t(`statuses.${value}`),
+              }))}
             />
           </div>
         )}
@@ -135,7 +146,7 @@ export function CatalogFilters({
               d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"
             />
           </svg>
-          <span className="hidden sm:inline">Advanced</span>
+          <span className="hidden sm:inline">{t('advanced')}</span>
           <svg
             className={cn(
               'h-3 w-3 transition-transform duration-base sm:h-4 sm:w-4',
@@ -151,7 +162,7 @@ export function CatalogFilters({
 
         {state.hasAny && (
           <Button variant="danger-outline" size="lg" onClick={state.clearAll}>
-            Clear filters
+            {tActions('clearFilters')}
           </Button>
         )}
       </div>
@@ -189,7 +200,7 @@ export function CatalogFilters({
               onClick={state.clearFilters}
               disabled={!state.hasFilters}
             >
-              Clear advanced
+              {t('clearAdvanced')}
             </Button>
           </div>
         </Card>
