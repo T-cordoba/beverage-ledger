@@ -9,6 +9,11 @@ import {
   Card,
   ConfirmDialog,
   DatePicker,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogTitle,
   Field,
   Input,
   Textarea,
@@ -28,9 +33,27 @@ import { useMovementDraft, type MovementDraft } from './useMovementDraft';
 /** Reads the accent span out of a rich message, so it is written once. */
 const strong = (chunks: ReactNode) => <span className="font-medium text-accent">{chunks}</span>;
 
-function DraftSummary({ draft, isSigned }: { draft: MovementDraft; isSigned: boolean }) {
+/**
+ * Every captured line, on demand.
+ *
+ * In a dialog rather than down the page: the picker between the form and here is
+ * as long as the catalogue, so the list this is checked against was a scroll
+ * away from the bar that acts on it — which is the one moment it matters.
+ */
+function DraftSummaryDialog({
+  draft,
+  isSigned,
+  open,
+  onOpenChange,
+}: {
+  draft: MovementDraft;
+  isSigned: boolean;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const t = useTranslations('movements.register.summary');
   const tUnits = useTranslations('common.units');
+  const tActions = useTranslations('common.actions');
   const format = useFormatter();
 
   /** Signed quantities read as `-2 bottles`, so the noun follows the magnitude. */
@@ -40,35 +63,50 @@ function DraftSummary({ draft, isSigned }: { draft: MovementDraft; isSigned: boo
   };
 
   return (
-    <Card className="bg-contrast/5">
-      <h3 className="mb-4 text-lg font-light text-foreground sm:text-xl">{t('lines')}</h3>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-lg space-y-4 text-left">
+        <DialogTitle>{t('title')}</DialogTitle>
+        <DialogDescription className="sr-only">{t('lines')}</DialogDescription>
 
-      <ul className="mb-4 space-y-2">
-        {draft.lines.map((line) => {
-          const parts: string[] = [];
-          if (line.BOTTLE !== 0) parts.push(describe(line.BOTTLE, 'bottle'));
-          if (line.CASE !== 0) parts.push(describe(line.CASE, 'case'));
+        {/* A long capture would otherwise push the totals off the bottom. */}
+        <ul className="max-h-[50vh] space-y-2 overflow-y-auto">
+          {draft.lines.map((line) => {
+            const parts: string[] = [];
+            if (line.BOTTLE !== 0) parts.push(describe(line.BOTTLE, 'bottle'));
+            if (line.CASE !== 0) parts.push(describe(line.CASE, 'case'));
 
-          return (
-            <li key={line.product.id} className="flex justify-between gap-4 text-sm sm:text-base">
-              <span className="font-light text-contrast">{line.product.name}</span>
-              <span className="shrink-0 font-medium text-accent">{parts.join(' + ')}</span>
-            </li>
-          );
-        })}
-      </ul>
+            return (
+              <li key={line.product.id} className="flex justify-between gap-4 text-sm sm:text-base">
+                <span className="font-light text-contrast">{line.product.name}</span>
+                <span className="shrink-0 font-medium text-accent">{parts.join(' + ')}</span>
+              </li>
+            );
+          })}
+        </ul>
 
-      <div className="flex items-center justify-between border-t border-contrast/10 pt-3 text-sm">
-        <span className="font-medium text-contrast/80">{t('total')}</span>
-        <div className="flex items-center gap-4">
-          <span className="font-semibold text-accent">
-            {describe(draft.totalBottles, 'bottle')}
-          </span>
-          <span className="text-contrast/60">•</span>
-          <span className="font-semibold text-accent">{describe(draft.totalCases, 'case')}</span>
+        <div className="flex items-center justify-between border-t border-contrast/10 pt-3 text-sm">
+          <span className="font-medium text-contrast/80">{t('total')}</span>
+          <div className="flex items-center gap-4">
+            <span className="font-semibold text-accent">
+              {describe(draft.totalBottles, 'bottle')}
+            </span>
+            <span className="text-contrast/60">•</span>
+            <span className="font-semibold text-accent">{describe(draft.totalCases, 'case')}</span>
+          </div>
         </div>
-      </div>
-    </Card>
+
+        <DialogFooter>
+          <Button
+            variant="secondary"
+            size="lg"
+            className="w-full"
+            onClick={() => onOpenChange(false)}
+          >
+            {tActions('close')}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -107,6 +145,7 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isDiscardOpen, setIsDiscardOpen] = useState(false);
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
 
   const trimmedReason = draft.reason.trim();
   const isReasonMissing = meta.requiresReason && trimmedReason.length < MIN_REASON_LENGTH;
@@ -316,20 +355,30 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
 
       {!draft.isEmpty && (
         <>
-          <DraftSummary draft={draft} isSigned={meta.isSigned} />
-
           <div className="sticky bottom-4 z-floating">
             <Card className="flex flex-col items-center gap-3 border-accent/30 bg-surface/95 sm:flex-row sm:justify-between">
-              <p className="text-sm text-contrast/80">
+              <button
+                type="button"
+                className="rounded-lg text-left text-sm text-contrast/80 underline-offset-4 transition-colors hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+                onClick={() => setIsSummaryOpen(true)}
+              >
                 {t.rich('summary.counts', {
                   products: draft.productCount,
                   units: totalUnits,
                   unitsAbs: Math.abs(draft.totalBaseUnits),
                   strong,
                 })}
-              </p>
+              </button>
 
               <div className="flex w-full gap-3 sm:w-auto">
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  className="flex-1 sm:flex-initial"
+                  onClick={() => setIsSummaryOpen(true)}
+                >
+                  {t('viewSummary')}
+                </Button>
                 <Button
                   variant="secondary"
                   size="lg"
@@ -386,6 +435,13 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
         confirmLabel={t('confirm')}
         onConfirm={() => void submit()}
         isConfirming={register.isPending}
+      />
+
+      <DraftSummaryDialog
+        draft={draft}
+        isSigned={meta.isSigned}
+        open={isSummaryOpen}
+        onOpenChange={setIsSummaryOpen}
       />
 
       <ConfirmDialog

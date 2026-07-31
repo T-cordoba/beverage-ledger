@@ -374,7 +374,9 @@
           "placeholder": "Número de remisión, turno, barra que lo pidió…"
         }
       },
+      "viewSummary": "Ver el resumen",
       "summary": {
+        "title": "Resumen del movimiento",
         "lines": "Líneas",
         "total": "Total",
         "counts": "<strong>{products}</strong> {products, plural, one {producto} other {productos}} · <strong>{units}</strong> {unitsAbs, plural, one {unidad} other {unidades}}"

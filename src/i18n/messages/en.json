@@ -374,7 +374,9 @@
           "placeholder": "Delivery number, shift, requesting bar…"
         }
       },
+      "viewSummary": "View the summary",
       "summary": {
+        "title": "Movement summary",
         "lines": "Lines",
         "total": "Total",
         "counts": "<strong>{products}</strong> {products, plural, one {product} other {products}} · <strong>{units}</strong> {unitsAbs, plural, one {unit} other {units}}"
