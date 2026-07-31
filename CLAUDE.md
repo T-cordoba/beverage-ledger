@@ -212,7 +212,9 @@ Antipatrón a evitar (era literalmente el `src/app/page.tsx` de antes): un compo
 
 **Plurales**: ICU en el mensaje, `t('common.units.bottle', { count })`. El `pluralize()` de antes concatenaba una `s` y no sobrevive a un idioma con otras reglas. Ojo con los años: `{year}` como número lo agrupa a "2.026", así que van como string.
 
-No hay `Pagination` numerada y no la va a haber: la API pagina por cursor, así que las listas crecen con un botón de "cargar más". Un componente de páginas numeradas necesitaría un total que el contrato no da. `DataTable` sí existe desde la Fase 6, cuando aparecieron cinco consumidores reales (existencias, kardex, catálogo, usuarios, taxonomía, auditoría); recibe columnas declarativas y se encarga del estado vacío y del de carga.
+**Paginación**: `Pagination` numerada sobre `usePagination`, que es dueño del par página/tamaño y vuelve a la 1 cuando cambian los filtros —la página 7 de un resultado que ahora tiene dos no devuelve nada, y una pantalla vacía se lee como rota, no como filtrada—. El hook expone el par a solas en `params`, y **eso es lo único que se puede esparcir en una petición**: mandar el estado entero manda también los setters como query params, y TypeScript no lo detecta —el chequeo de propiedades sobrantes solo salta en literales, nunca en una variable—. Categorías y marcas paginan en el navegador, no en el servidor: esas mismas filas llenan los desplegables del catálogo, que solo son honestos con todas las opciones, así que se traen enteras de todos modos.
+
+`DataTable` existe desde la Fase 6, cuando aparecieron cinco consumidores reales (existencias, kardex, catálogo, usuarios, taxonomía, auditoría); recibe columnas declarativas y se encarga del estado vacío y del de carga —con filas fantasma, no con un spinner centrado que después empuja la página—.
 
 **Formularios**: `Field` envuelve etiqueta, pista y error, y le pasa al control los ids que genera (`{({ id, describedBy }) => …}`). Es la única forma de garantizar que la asociación exista; no escribas `<label htmlFor>` a mano.
 
@@ -336,14 +338,14 @@ El contrato completo son **30 rutas (43 operaciones) y 58 esquemas**, con la API
 
 Lo esencial del dominio:
 
-- **Catálogo** — `/products`, `/categories`, `/brands`. Todo paginado por cursor con `search`, filtros y orden en el servidor: no descargues los 215. Leer es abierto a cualquier autenticado; escribir exige `catalog:manage`. Los productos no se borran, se desactivan con `isActive: false`.
+- **Catálogo** — `/products`, `/categories`, `/brands`. Todo paginado con `page` y `pageSize`, y con `search`, filtros y orden en el servidor: no descargues los 215. El `meta` trae `total` y `pageCount`; cada repositorio saca filas y `COUNT` del mismo `where`, porque un conteo que se desvía apunta a páginas que no existen. Leer es abierto a cualquier autenticado; escribir exige `catalog:manage`. Los productos no se borran, se desactivan con `isActive: false`.
 - **Movimientos** — el ciclo es **crear borrador → confirmar**, en dos llamadas. `POST /movements` abre un `DRAFT` que no toca existencias; `POST /movements/:id/confirm` aplica el delta. `useRegisterMovement` encadena las dos; si la segunda falla —una salida mayor al stock— el borrador se queda ahí en vez de tirar lo que el usuario capturó, y su id queda guardado con el borrador local: el siguiente intento hace `PATCH /movements/:id` sobre **ese mismo** movimiento en vez de abrir otro. Solo se abandona si respondió 404 o 409, o sea si ya no es un borrador. Anular es `POST /movements/:id/cancel` con motivo, y revierte el stock; sobre un `DRAFT` la misma llamada es "descartar", porque nunca aplicó nada.
 - **Cantidades** — `quantity` va **positiva** en `INBOUND` y `OUTBOUND` (el tipo lleva la dirección) y **con signo** en `ADJUSTMENT`, que corrige hacia ambos lados y **exige `reason`**. La unidad es `BOTTLE` o `CASE`; la API normaliza con el `caseSize` del producto.
 - **Bodegas** — `/locations` con CRUD tras `catalog:manage`; leer es abierto porque capturar un movimiento lo necesita. La default se reemplaza promoviendo otra, nunca vaciándola, y no se borra una que el ledger referencie. Todo lo que elige bodega pasa por `LocationSelect`.
 - **Traspasos** — `TRANSFER` mueve stock entre dos bodegas y **no cambia el total**: la API escribe una línea por lado, con signo. El movimiento lleva origen en `locationId` y destino en `destinationLocationId`, y `MovementItemDto` trae su propia `locationId`, así que el detalle de un traspaso tiene dos líneas por producto. La captura exige **ambas puntas explícitas**: en cualquier otro tipo omitir la bodega significa "la default", pero aquí dejar el origen vacío cuando la default ya es el destino pediría mover stock sobre sí mismo.
 - **Existencias** — `/stock` paginado, `/stock/low` para la tarjeta de "bajo mínimo" del dashboard, `/stock/:productId/kardex` para el histórico de un producto con saldo corrido. Todos aceptan `locationId`, y el kardex de un traspaso aparece en las dos bodegas con el signo que cada una vio. `/stock?productIds=` (separado por comas, tope 200) responde por un conjunto conocido: es lo que usa el picker para saber cuánto puede sacar, pedido en tandas de 50 porque la lista crece al cargar más páginas.
 - **Reportes** — `/reports/summary` (tarjetas del dashboard), `/reports/consumption` (`groupBy=product|category|brand`) y `/reports/activity` (serie temporal del gráfico). Rango omitido = últimos 30 días.
-- **Administración** — `/users` (crear, editar rol y estado; sin `DELETE`, se suspende), `/organization` (branding), `/audit-logs` (filtrable por entidad, acción, usuario y rango). Las categorías y marcas sí tienen `DELETE`, y responde 409 mientras algún producto las referencie.
+- **Administración** — `/users` (listar y editar rol y estado; sin `POST`, se invita, y sin `DELETE`, se suspende), `/invitations` (crear, listar y revocar, más `lookup` y `accept` públicos), `/organization` (branding), `/audit-logs` (filtrable por entidad, acción, usuario y rango). Las categorías y marcas sí tienen `DELETE`, y responde 409 mientras algún producto las referencie.
 - **PDF** — `GET /movements/:id/pdf`. Ya no es un IDOR: va scopeado a la organización.
 - **Errores** — todos con la misma forma: `{ statusCode, error, message, path, timestamp }`, donde `message` puede ser un string o un array (los errores de validación).
 
@@ -359,7 +361,7 @@ src/
     layout.tsx        <html lang> + NextIntlClientProvider + Providers
     providers.tsx     QueryClient + notificaciones + AuthProvider
     (marketing)/      landing pública en / — hero, features, cómo funciona, FAQ, CTA
-    (auth)/           login · register · auth/callback
+    (auth)/           login · invite/[token] · auth/callback
     (app)/            layout = AuthGuard + AppShell
       dashboard/      tarjetas, gráfico de actividad, bajo mínimo, últimos movimientos
       stock/          existencias · [productId] = kardex
@@ -454,9 +456,9 @@ Cerrado en la Fase 7:
 
 Sigue pendiente (Fase 8 en adelante):
 
-- **Un `INVITED` no tiene forma de entrar.** La pantalla de perfil (`features/profile`) cubrió el autoservicio —`PATCH /users/me` y `PUT /users/me/password`— pero un admin sigue sin poder asignarle contraseña a otro: no existe endpoint. Se crea con contraseña o se queda fuera. Arreglarlo es backend.
+- ~~Un `INVITED` no tiene forma de entrar~~ → se entra por invitación y no hay otra puerta. El admin genera un enlace de un solo uso (`POST /invitations`), el invitado lo abre en `/invite/<token>` y elige su propia contraseña; el token se guarda hasheado y viaja en el cuerpo, nunca en la ruta. De paso se cerró el registro abierto: `POST /auth/register` y `POST /users` ya no existen, y Google —que era la misma puerta con otra manija, porque creaba cuenta para cualquier dirección— ahora solo se engancha a una cuenta que ya existe.
 
-  Dos detalles del contrato que la pantalla tuvo que asumir: `PUT /users/me/password` responde 204 y **revoca todas las sesiones**, así que al terminar hay que cerrar la local —de ahí el campo de confirmación, porque un typo te saca de todas partes a la vez— y `/auth/me` no dice si la cuenta tiene contraseña, así que el formulario exige la actual siempre. Un usuario solo-Google, para el que la API no la exige, no podría ponerse la primera.
+  La pantalla de perfil sigue cubriendo el autoservicio, y dos detalles del contrato que la pantalla tuvo que asumir: `PUT /users/me/password` responde 204 y **revoca todas las sesiones**, así que al terminar hay que cerrar la local —de ahí el campo de confirmación, porque un typo te saca de todas partes a la vez— y `/auth/me` no dice si la cuenta tiene contraseña, así que el formulario exige la actual siempre. Un usuario solo-Google, para el que la API no la exige, no podría ponerse la primera.
 - **El `caseSize` no se puede editar** después de crear el producto, y eso se queda así: es el divisor con el que se calculó cada `quantity_base` histórico, así que cambiarlo reescribiría en silencio lo que el ledger dice. Si de verdad cambió el empaque, es un producto nuevo. La UI lo muestra deshabilitado en vez de fingir que se puede.
 
   Los otros dos límites que había aquí sí eran descuidos y se arreglaron: `UpdateProductDto.brandId` acepta `null` para desvincular, y el filtro de estado del catálogo pasó a `status: active | inactive | all`, que es el "ambos" que un booleano no podía expresar.
