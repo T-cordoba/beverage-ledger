@@ -72,7 +72,52 @@
   --duration-fast: 150ms;
   --duration-base: 200ms;
   --duration-slow: 300ms;
+  /**
+   * Landing motion, an order of magnitude slower than interface motion because
+   * it is doing the opposite job: a control has to feel instant, an entrance has
+   * to be seen. At 300ms a block being scrolled to had finished arriving before
+   * it was on screen, which on a 60Hz panel or under a slow scroll left nothing
+   * to look at.
+   */
+  --duration-enter: 400ms;
+  --duration-reveal: 900ms;
+  --duration-hero: 1200ms;
+  --duration-glow: 2000ms;
+
+  /**
+   * Between siblings that arrive as a sequence. The hero's step is the wider of
+   * the two because those lines come without being asked for: nobody scrolls to
+   * the first thing on the page, so it gets the room to be seen.
+   */
+  --stagger-reveal: 120ms;
+  --stagger-hero: 160ms;
+
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /**
+   * Gentler than --ease-out, which spends almost all of its travel in the first
+   * fifth. That is right for 200ms and wrong for a second: it reads as a jump
+   * followed by a wait.
+   */
+  --ease-reveal: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /**
+   * Landing backdrop. Flat near-black has no depth at any screen size, so the
+   * public page carries a warm pool behind the hero and falls off towards the
+   * edges. Both are decoration: they sit behind the content and never carry
+   * meaning.
+   */
+  --gradient-landing: radial-gradient(
+      68rem 38rem at 50% -8%,
+      rgb(var(--color-accent) / 0.16),
+      transparent 62%
+    ),
+    radial-gradient(46rem 32rem at 88% 18%, rgb(var(--color-info) / 0.07), transparent 66%),
+    radial-gradient(56rem 40rem at 6% 58%, rgb(var(--color-accent) / 0.06), transparent 62%);
+  --gradient-vignette: radial-gradient(
+    118% 88% at 50% 32%,
+    transparent 42%,
+    rgb(var(--color-scrim) / 0.6) 100%
+  );
 
   /* Typography */
   --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',

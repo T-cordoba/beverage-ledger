@@ -63,22 +63,50 @@ const config: Config = {
         panel: 'var(--shadow-panel)',
         overlay: 'var(--shadow-overlay)',
       },
+      backgroundImage: {
+        landing: 'var(--gradient-landing)',
+        vignette: 'var(--gradient-vignette)',
+      },
+      // Enables the `aria-invalid:` variant, which Tailwind does not ship among
+      // its default aria states.
+      aria: {
+        invalid: 'invalid="true"',
+      },
       transitionDuration: {
         fast: 'var(--duration-fast)',
         base: 'var(--duration-base)',
         slow: 'var(--duration-slow)',
+        reveal: 'var(--duration-reveal)',
       },
       transitionTimingFunction: {
         out: 'var(--ease-out)',
+        reveal: 'var(--ease-reveal)',
       },
       keyframes: {
         'fade-in-up': {
           from: { opacity: '0', transform: 'translateY(20px)' },
           to: { opacity: '1', transform: 'translateY(0)' },
         },
+        'hero-rise': {
+          from: {
+            opacity: '0',
+            transform: 'translate3d(0, 2rem, 0) scale(0.98)',
+            filter: 'blur(6px)',
+          },
+          to: { opacity: '1', transform: 'translate3d(0, 0, 0) scale(1)', filter: 'blur(0)' },
+        },
+        'glow-in': {
+          from: { opacity: '0', transform: 'scale(1.08)' },
+          to: { opacity: '1', transform: 'scale(1)' },
+        },
       },
       animation: {
-        'fade-in-up': 'fade-in-up 0.4s var(--ease-out)',
+        'fade-in-up': 'fade-in-up var(--duration-enter) var(--ease-out)',
+        // `both` holds the from-state during the delay that staggers the hero,
+        // and the to-state afterwards — without it every line flashes at its
+        // final position before its turn comes.
+        'hero-rise': 'hero-rise var(--duration-hero) var(--ease-reveal) both',
+        'glow-in': 'glow-in var(--duration-glow) var(--ease-reveal) both',
       },
     },
   },

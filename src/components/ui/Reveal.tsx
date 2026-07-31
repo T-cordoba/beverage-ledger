@@ -16,12 +16,16 @@ import { cn } from '@/lib/utils';
  */
 export function Reveal({
   children,
-  delayMs = 0,
+  step = 0,
   className,
 }: {
   children: ReactNode;
-  /** Staggers a row of sibling cards. Keep it short; this is not a curtain. */
-  delayMs?: number;
+  /**
+   * Position in a row of siblings, which staggers their arrival. Counted in
+   * steps rather than milliseconds so the length of one lives in --stagger-reveal
+   * and not in whichever page happened to need it.
+   */
+  step?: number;
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -43,13 +47,14 @@ export function Reveal({
           observer.disconnect();
         }
       },
-      // Grows the viewport downwards, so a block fires just before it is
-      // scrolled to and has finished arriving by the time it is being read.
-      // Shrinking it instead — a negative bottom margin — leaves a dead band at
-      // the foot of the screen: the section under the hero is half on screen at
-      // load, never reaches the line, and reads as an empty section to anyone
-      // who has not scrolled yet.
-      { rootMargin: '0px 0px 10% 0px' },
+      // Fires a little inside the fold rather than ahead of it. Growing the
+      // viewport downwards — a positive bottom margin — started the block while
+      // it was still off screen, so under a slow scroll or on a 60Hz panel the
+      // motion was over before there was anything to look at. The margin stays
+      // small and the threshold low on purpose: shrink the root too far and the
+      // section under the hero, which is already half on screen at load, never
+      // reaches the line and reads as an empty section.
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.1 },
     );
 
     observer.observe(element);
@@ -59,10 +64,10 @@ export function Reveal({
   return (
     <div
       ref={ref}
-      style={delayMs > 0 ? { transitionDelay: `${delayMs}ms` } : undefined}
+      style={step > 0 ? { transitionDelay: `calc(var(--stagger-reveal) * ${step})` } : undefined}
       className={cn(
-        'transition-[opacity,transform] duration-slow ease-out',
-        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0',
+        'transition-[opacity,transform,filter] duration-reveal ease-reveal',
+        isVisible ? 'translate-y-0 opacity-100 blur-0' : 'translate-y-8 opacity-0 blur-sm',
         className,
       )}
     >

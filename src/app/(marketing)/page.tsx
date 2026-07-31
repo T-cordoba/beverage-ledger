@@ -8,8 +8,8 @@ const FEATURES = ['ledger', 'stock', 'roles', 'reports'] as const;
 const STEPS = ['capture', 'confirm', 'read'] as const;
 const QUESTIONS = ['locations', 'mistakes', 'cases', 'roles'] as const;
 
-/** Between siblings in a row. Long enough to read as a sequence, short enough not to wait. */
-const STAGGER_MS = 60;
+/** The step itself is --stagger-hero; this only says which line goes when. */
+const heroDelay = (step: number) => ({ animationDelay: `calc(var(--stagger-hero) * ${step})` });
 
 function Section({
   id,
@@ -47,16 +47,30 @@ export default function LandingPage() {
   return (
     <>
       <section className="px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
-        <div className="mx-auto flex max-w-3xl animate-fade-in-up flex-col items-center gap-6 text-center">
-          <Badge tone="accent">{t('hero.eyebrow')}</Badge>
+        {/* Each line rises on its own delay rather than the block moving as one
+            slab: the eye follows the sequence down to the buttons, which is
+            where the page wants it. Pure CSS, so this stays a server component
+            and the copy is in the HTML from the first byte. */}
+        <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
+          <div className="animate-hero-rise" style={heroDelay(0)}>
+            <Badge tone="accent">{t('hero.eyebrow')}</Badge>
+          </div>
 
-          <h1 className="text-4xl font-light leading-tight text-foreground sm:text-5xl lg:text-6xl">
+          <h1
+            className="animate-hero-rise text-4xl font-light leading-tight text-foreground sm:text-5xl lg:text-6xl"
+            style={heroDelay(1)}
+          >
             {t('hero.title')}
           </h1>
 
-          <p className="max-w-2xl text-base text-contrast/70 sm:text-lg">{t('hero.subtitle')}</p>
+          <p
+            className="animate-hero-rise max-w-2xl text-base text-contrast/70 sm:text-lg"
+            style={heroDelay(2)}
+          >
+            {t('hero.subtitle')}
+          </p>
 
-          <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="animate-hero-rise flex flex-col gap-3 sm:flex-row" style={heroDelay(3)}>
             <Button size="lg" asChild>
               <Link href={ROUTES.signIn}>{t('hero.primary')}</Link>
             </Button>
@@ -65,7 +79,9 @@ export default function LandingPage() {
             </Button>
           </div>
 
-          <p className="text-sm text-contrast/50">{t('hero.note')}</p>
+          <p className="animate-hero-rise text-sm text-contrast/50" style={heroDelay(4)}>
+            {t('hero.note')}
+          </p>
         </div>
       </section>
 
@@ -73,7 +89,7 @@ export default function LandingPage() {
         <ul className="grid gap-4 sm:grid-cols-2">
           {FEATURES.map((feature, index) => (
             <li key={feature}>
-              <Reveal delayMs={index * STAGGER_MS} className="h-full">
+              <Reveal step={index} className="h-full">
                 <Card className="h-full space-y-2 bg-contrast/5">
                   <h3 className="text-lg font-medium text-accent">
                     {t(`features.items.${feature}.title`)}
@@ -90,7 +106,7 @@ export default function LandingPage() {
         <ol className="grid gap-6 sm:grid-cols-3">
           {STEPS.map((step, index) => (
             <li key={step}>
-              <Reveal delayMs={index * STAGGER_MS} className="space-y-3">
+              <Reveal step={index} className="space-y-3">
                 <span
                   aria-hidden="true"
                   className="flex h-10 w-10 items-center justify-center rounded-full bg-accent/15 text-sm font-medium text-accent"
