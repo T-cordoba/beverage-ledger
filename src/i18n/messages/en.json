@@ -159,7 +159,8 @@
       "menu": "Account menu",
       "menuFor": "Account menu for {name}",
       "profile": "Your profile",
-      "signOut": "Sign out"
+      "signOut": "Sign out",
+      "landing": "Go to the public site"
     }
   },
   "auth": {

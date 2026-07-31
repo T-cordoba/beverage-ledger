@@ -20,6 +20,7 @@ function initialsOf(name: string): string {
 
 export function Topbar() {
   const t = useTranslations('nav');
+  const tRoles = useTranslations('admin.roles');
   const { user, organization, can, signOut } = useAuth();
   const pathname = usePathname();
 
@@ -75,7 +76,9 @@ export function Topbar() {
             <div className="space-y-1">
               <p className="truncate text-sm font-medium text-foreground">{user?.name}</p>
               <p className="truncate text-xs text-contrast/60">{user?.email}</p>
-              <p className="text-xs uppercase tracking-wider text-accent/80">{user?.role}</p>
+              <p className="text-xs uppercase tracking-wider text-accent/80">
+                {user && tRoles(user.role)}
+              </p>
             </div>
             <LanguageSwitcher />
             <div className="space-y-2">
@@ -83,6 +86,13 @@ export function Topbar() {
               <PopoverClose asChild>
                 <Button variant="ghost" size="sm" className="w-full justify-start" asChild>
                   <Link href={ROUTES.profile}>{t('account.profile')}</Link>
+                </Button>
+              </PopoverClose>
+              {/* The logo goes to the dashboard, as it should inside a product,
+                  which left the public site with no way back to it. */}
+              <PopoverClose asChild>
+                <Button variant="ghost" size="sm" className="w-full justify-start" asChild>
+                  <Link href={ROUTES.home}>{t('account.landing')}</Link>
                 </Button>
               </PopoverClose>
               <Button
