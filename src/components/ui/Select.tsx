@@ -74,17 +74,19 @@ export function Select({
           position="popper"
           sideOffset={8}
           className={cn(
-            'z-dropdown max-h-64 min-w-[var(--radix-select-trigger-width)] overflow-hidden',
+            // The height is capped on the viewport, which is the box that
+            // scrolls; here it would only clip it a second time.
+            'z-dropdown min-w-[var(--radix-select-trigger-width)] overflow-hidden',
             'rounded-xl border border-border bg-surface shadow-overlay',
             'data-[state=closed]:animate-out data-[state=closed]:fade-out-0',
             'data-[state=open]:animate-in data-[state=open]:fade-in-0',
             'data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2',
           )}
         >
-          <SelectPrimitive.ScrollUpButton className="flex justify-center py-1 text-accent/60">
-            <ChevronDownIcon className="h-4 w-4 rotate-180" />
-          </SelectPrimitive.ScrollUpButton>
-          <SelectPrimitive.Viewport className="w-full">
+          {/* No ScrollUpButton/ScrollDownButton: they scroll on hover, which
+              hijacks the wheel and the trackpad for anyone who just wanted to
+              reach the item below. A plain overflow behaves as expected. */}
+          <SelectPrimitive.Viewport className="max-h-64 w-full overflow-y-auto">
             {options.map((option) => (
               <SelectPrimitive.Item
                 key={option.value || EMPTY_SENTINEL}
@@ -103,9 +105,6 @@ export function Select({
               </SelectPrimitive.Item>
             ))}
           </SelectPrimitive.Viewport>
-          <SelectPrimitive.ScrollDownButton className="flex justify-center py-1 text-accent/60">
-            <ChevronDownIcon className="h-4 w-4" />
-          </SelectPrimitive.ScrollDownButton>
         </SelectPrimitive.Content>
       </SelectPrimitive.Portal>
     </SelectPrimitive.Root>
