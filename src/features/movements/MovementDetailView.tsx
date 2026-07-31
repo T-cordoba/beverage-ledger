@@ -1,5 +1,6 @@
 'use client';
 
+import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useState, type FormEvent, type ReactNode } from 'react';
 import {
@@ -18,7 +19,6 @@ import {
 import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
 import { describeError, type Movement } from '@/lib/api';
-import { formatDateTime, pluralize } from '@/lib/utils';
 import { useCancelMovement, useConfirmMovement, useMovement } from './api';
 import { MIN_REASON_LENGTH, MOVEMENT_TYPES } from './movement-types';
 import { MovementPdfButton } from './MovementPdfButton';
@@ -38,13 +38,14 @@ function Detail({ label, children }: { label: string; children: ReactNode }) {
  * because a draft never touched stock and so has nothing to give back.
  */
 function CancelMovementDialog({ movement }: { movement: Movement }) {
+  const t = useTranslations('movements.detail.cancel');
+  const tStates = useTranslations('common.states');
   const [isOpen, setIsOpen] = useState(false);
   const [reason, setReason] = useState('');
   const cancel = useCancelMovement();
   const notify = useNotify();
 
-  const isDraft = movement.status === 'DRAFT';
-  const verb = isDraft ? 'Discard' : 'Void';
+  const variant = movement.status === 'DRAFT' ? 'draft' : 'confirmed';
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
@@ -55,44 +56,32 @@ function CancelMovementDialog({ movement }: { movement: Movement }) {
       setReason('');
       notify(
         'success',
-        isDraft ? 'Draft discarded' : 'Movement voided',
-        isDraft
-          ? `${movement.code} was closed without ever touching stock.`
-          : `${movement.code} was reverted and stock returned.`,
+        t(`${variant}.successTitle`),
+        t(`${variant}.successDescription`, { code: movement.code }),
       );
     } catch (error) {
-      notify(
-        'error',
-        `Could not ${verb.toLowerCase()} the movement`,
-        describeError(error, 'Please try again.'),
-      );
+      notify('error', t(`${variant}.failed`), describeError(error, tStates('tryAgain')));
     }
   };
 
   return (
     <>
       <Button variant="danger-outline" size="sm" onClick={() => setIsOpen(true)}>
-        {verb}
+        {t(`${variant}.verb`)}
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
           <form onSubmit={(event) => void submit(event)} className="space-y-4">
-            <DialogTitle>
-              {verb} {movement.code}?
-            </DialogTitle>
-            <DialogDescription>
-              {isDraft
-                ? 'The draft is closed and stops showing up as pending. Stock is untouched, because a draft never applied.'
-                : 'Whatever this movement took from stock goes back. The movement is kept, marked as cancelled — the ledger is never rewritten.'}
-            </DialogDescription>
+            <DialogTitle>{t(`${variant}.title`, { code: movement.code })}</DialogTitle>
+            <DialogDescription>{t(`${variant}.description`)}</DialogDescription>
 
             <div className="space-y-2 text-left">
               <label
                 htmlFor="cancel-reason"
                 className="block text-xs font-medium uppercase tracking-wider text-contrast/70"
               >
-                Reason
+                {t('reason')}
               </label>
               <Input
                 id="cancel-reason"
@@ -100,7 +89,7 @@ function CancelMovementDialog({ movement }: { movement: Movement }) {
                 minLength={MIN_REASON_LENGTH}
                 value={reason}
                 onChange={(event) => setReason(event.target.value)}
-                placeholder={isDraft ? 'Why is it being discarded?' : 'Why is it being voided?'}
+                placeholder={t(`${variant}.placeholder`)}
               />
             </div>
 
@@ -113,7 +102,7 @@ function CancelMovementDialog({ movement }: { movement: Movement }) {
                 onClick={() => setIsOpen(false)}
                 disabled={cancel.isPending}
               >
-                Keep it
+                {t('keep')}
               </Button>
               <Button
                 type="submit"
@@ -122,7 +111,7 @@ function CancelMovementDialog({ movement }: { movement: Movement }) {
                 className="flex-1"
                 isLoading={cancel.isPending}
               >
-                {verb}
+                {t(`${variant}.verb`)}
               </Button>
             </DialogFooter>
           </form>
@@ -133,33 +122,38 @@ function CancelMovementDialog({ movement }: { movement: Movement }) {
 }
 
 function ConfirmDraftButton({ movement }: { movement: Movement }) {
+  const t = useTranslations('movements.detail');
+  const tStates = useTranslations('common.states');
   const confirm = useConfirmMovement();
   const notify = useNotify();
 
   const submit = async () => {
     try {
       await confirm.mutateAsync(movement.id);
-      notify('success', 'Movement confirmed', `${movement.code} was applied to stock.`);
+      notify('success', t('confirmedTitle'), t('confirmedDescription', { code: movement.code }));
     } catch (error) {
-      notify('error', 'Could not confirm the movement', describeError(error, 'Please try again.'));
+      notify('error', t('confirmFailed'), describeError(error, tStates('tryAgain')));
     }
   };
 
   return (
     <Button size="sm" isLoading={confirm.isPending} onClick={() => void submit()}>
-      Confirm
+      {t('confirm')}
     </Button>
   );
 }
 
 export function MovementDetailView({ id }: { id: string }) {
+  const t = useTranslations('movements.detail');
+  const tUnits = useTranslations('common.units');
+  const format = useFormatter();
   const { can } = useAuth();
   const { data: movement, error, isPending } = useMovement(id);
 
   if (isPending) {
     return (
       <div className="flex items-center justify-center py-16">
-        <Spinner size="lg" label="Loading the movement" />
+        <Spinner size="lg" label={t('loading')} />
       </div>
     );
   }
@@ -167,11 +161,11 @@ export function MovementDetailView({ id }: { id: string }) {
   if (error || !movement) {
     return (
       <EmptyState
-        title="That movement is not available."
-        description="It may have been removed, or it belongs to another organization."
+        title={t('notFound')}
+        description={t('notFoundDescription')}
         action={
           <Button variant="secondary" size="sm" asChild>
-            <Link href={ROUTES.movements}>Back to history</Link>
+            <Link href={ROUTES.movements}>{t('backToHistory')}</Link>
           </Button>
         }
       />
@@ -187,7 +181,7 @@ export function MovementDetailView({ id }: { id: string }) {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-2">
           <Link href={ROUTES.movements} className="text-sm text-contrast/60 hover:text-accent">
-            ← Movement history
+            ← {t('backToHistory')}
           </Link>
           <h1 className="font-mono text-2xl text-accent sm:text-3xl">{movement.code}</h1>
           <div className="flex flex-wrap items-center gap-2">
@@ -205,32 +199,37 @@ export function MovementDetailView({ id }: { id: string }) {
 
       {isDraft && (
         <Card className="border-warning/30 bg-warning/10">
-          <p className="text-sm text-contrast/80">
-            This is a draft: it is captured but has not touched stock. Confirming applies it in a
-            single transaction; discarding closes it without moving anything.
-          </p>
+          <p className="text-sm text-contrast/80">{t('draftNotice')}</p>
         </Card>
       )}
 
       <Card>
         <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <Detail label="Occurred at">{formatDateTime(movement.occurredAt)}</Detail>
-          <Detail label="Registered by">{movement.createdBy.name}</Detail>
-          <Detail label="Created at">{formatDateTime(movement.createdAt)}</Detail>
+          <Detail label={t('occurredAt')}>
+            {format.dateTime(new Date(movement.occurredAt), 'full')}
+          </Detail>
+          <Detail label={t('registeredBy')}>{movement.createdBy.name}</Detail>
+          <Detail label={t('createdAt')}>
+            {format.dateTime(new Date(movement.createdAt), 'full')}
+          </Detail>
           {movement.confirmedAt && (
-            <Detail label="Confirmed at">{formatDateTime(movement.confirmedAt)}</Detail>
+            <Detail label={t('confirmedAt')}>
+              {format.dateTime(new Date(movement.confirmedAt), 'full')}
+            </Detail>
           )}
           {movement.cancelledAt && (
-            <Detail label="Cancelled at">{formatDateTime(movement.cancelledAt)}</Detail>
+            <Detail label={t('cancelledAt')}>
+              {format.dateTime(new Date(movement.cancelledAt), 'full')}
+            </Detail>
           )}
-          {movement.reason && <Detail label="Reason">{movement.reason}</Detail>}
-          {movement.note && <Detail label="Note">{movement.note}</Detail>}
+          {movement.reason && <Detail label={t('reason')}>{movement.reason}</Detail>}
+          {movement.note && <Detail label={t('note')}>{movement.note}</Detail>}
         </dl>
       </Card>
 
       <Card className="p-0">
         <h2 className="border-b border-border/40 p-4 text-lg font-light text-foreground sm:p-6">
-          Lines ({movement.items.length})
+          {t('lines', { count: movement.items.length })}
         </h2>
 
         <ul>
@@ -245,12 +244,13 @@ export function MovementDetailView({ id }: { id: string }) {
                   <p className="text-xs text-accent/70">{item.brandNameSnapshot}</p>
                 )}
                 <p className="text-xs text-contrast/50">
-                  {item.quantityBase} base {pluralize(Math.abs(item.quantityBase), 'unit')}
+                  {t('baseUnits', { count: item.quantityBase })}
                 </p>
               </div>
 
               <span className="shrink-0 text-right font-medium text-accent">
-                {item.quantity} {pluralize(item.quantity, item.unit.toLowerCase())}
+                {item.quantity}{' '}
+                {tUnits(item.unit === 'CASE' ? 'case' : 'bottle', { count: item.quantity })}
               </span>
             </li>
           ))}

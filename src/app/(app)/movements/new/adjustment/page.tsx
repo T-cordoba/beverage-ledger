@@ -1,14 +1,18 @@
+import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import { PermissionGate } from '@/features/auth';
 import { MOVEMENT_TYPES, RegisterMovementView } from '@/features/movements';
 
-export const metadata = { title: 'Register an adjustment · Beverage Ledger' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('movements.types.ADJUSTMENT');
+  return { title: t('action') };
+}
 
-export default function NewAdjustmentPage() {
+export default async function NewAdjustmentPage() {
+  const t = await getTranslations('movements.types.ADJUSTMENT');
+
   return (
-    <PermissionGate
-      permission={MOVEMENT_TYPES.ADJUSTMENT.permission}
-      title="You cannot register adjustments."
-    >
+    <PermissionGate permission={MOVEMENT_TYPES.ADJUSTMENT.permission} title={t('denied')}>
       <RegisterMovementView type="ADJUSTMENT" />
     </PermissionGate>
   );

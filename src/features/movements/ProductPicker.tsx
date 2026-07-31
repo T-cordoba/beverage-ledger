@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import { Badge, Button, Card, EmptyState, Spinner } from '@/components/ui';
 import { CatalogFilters, useProducts, type CatalogFiltersState } from '@/features/catalog';
@@ -7,7 +8,7 @@ import { CatalogFilters, useProducts, type CatalogFiltersState } from '@/feature
 // import here would close the cycle.
 import { useStockAvailability } from '@/features/stock/api';
 import type { MovementUnit, Product } from '@/lib/api';
-import { cn, formatNumber } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { MOVEMENT_TYPES } from './movement-types';
 import type { MovementDraft } from './useMovementDraft';
 
@@ -35,6 +36,8 @@ function QuantityStepper({
   canIncrease?: boolean;
   atLimitLabel?: string;
 }) {
+  const t = useTranslations('movements.picker');
+
   return (
     <div className="flex items-center justify-between rounded-xl border border-border/30 bg-background/50 px-4 py-3 backdrop-blur-sm sm:justify-start sm:gap-4 sm:px-6 sm:py-4">
       <span className="min-w-[60px] text-xs font-light uppercase tracking-wider text-contrast/80 sm:min-w-[80px] sm:text-sm">
@@ -45,7 +48,7 @@ function QuantityStepper({
           variant="secondary"
           size="icon-sm"
           onClick={() => onChange(-1)}
-          aria-label={`Remove ${unitLabel}`}
+          aria-label={t('remove', { unit: unitLabel })}
           className="rounded-lg text-base font-light hover:bg-accent/20 hover:text-foreground sm:h-10 sm:w-10 sm:text-lg"
         >
           −
@@ -56,7 +59,7 @@ function QuantityStepper({
         <Button
           size="icon-sm"
           onClick={() => onChange(1)}
-          aria-label={`Add ${unitLabel}`}
+          aria-label={t('add', { unit: unitLabel })}
           disabled={!canIncrease}
           title={canIncrease ? undefined : atLimitLabel}
           className="rounded-lg text-base font-light sm:h-10 sm:w-10 sm:text-lg"
@@ -80,13 +83,15 @@ function ProductRow({
   /** On hand at the origin, or null when this movement does not take stock out. */
   available: number | null;
 }) {
+  const t = useTranslations('movements.picker');
+  const tUnits = useTranslations('common.units');
   const isSelected = quantities.BOTTLE > 0 || quantities.CASE > 0;
 
   // Both steppers spend the same pool, so the limit is on base units and not on
   // either counter: six bottles and one case of twelve is eighteen off the shelf.
   const taken = quantities.BOTTLE + quantities.CASE * product.caseSize;
   const remaining = available === null ? Infinity : available - taken;
-  const atLimitLabel = `Only ${formatNumber(Math.max(remaining, 0))} left at this location`;
+  const atLimitLabel = t('atLimit', { count: Math.max(remaining, 0) });
 
   return (
     <li
@@ -164,7 +169,7 @@ function ProductRow({
                 </svg>
               }
             >
-              {product.caseSize} per case
+              {t('perCase', { count: product.caseSize })}
             </MetaItem>
           </div>
 
@@ -181,22 +186,22 @@ function ProductRow({
                 remaining <= 0 ? 'text-warning' : 'text-contrast/60',
               )}
             >
-              {formatNumber(available)} on hand
-              {taken > 0 && ` · ${formatNumber(Math.max(remaining, 0))} left`}
+              {t('onHand', { count: available })}
+              {taken > 0 && ` · ${t('left', { count: Math.max(remaining, 0) })}`}
             </p>
           )}
 
           <QuantityStepper
-            label="Bottles"
-            unitLabel="bottle"
+            label={tUnits('bottle', { count: 2 })}
+            unitLabel={tUnits('bottle', { count: 1 })}
             value={quantities.BOTTLE}
             onChange={(delta) => onAdjust('BOTTLE', delta)}
             canIncrease={remaining >= 1}
             atLimitLabel={atLimitLabel}
           />
           <QuantityStepper
-            label="Cases"
-            unitLabel="case"
+            label={tUnits('case', { count: 2 })}
+            unitLabel={tUnits('case', { count: 1 })}
             value={quantities.CASE}
             onChange={(delta) => onAdjust('CASE', delta)}
             canIncrease={remaining >= product.caseSize}
@@ -215,12 +220,14 @@ export function ProductPicker({
   filters: CatalogFiltersState;
   draft: MovementDraft;
 }) {
+  const t = useTranslations('movements.picker');
+  const tStates = useTranslations('common.states');
+  const tActions = useTranslations('common.actions');
   const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } = useProducts(
     filters.query,
   );
 
   const products = data?.pages.flatMap((page) => page.data) ?? [];
-  const loadedCount = products.length;
 
   // Only for the products on screen, and only when the movement takes stock out:
   // an inbound has no ceiling, and an adjustment is what corrects the number this
@@ -243,31 +250,28 @@ export function ProductPicker({
 
       <Card className="bg-surface/60 p-3 shadow-overlay sm:rounded-3xl sm:p-4 lg:p-8">
         <div className="mb-4 flex flex-col justify-between gap-2 sm:mb-6 sm:flex-row sm:items-center lg:mb-8">
-          <h2 className="text-xl font-light text-foreground sm:text-2xl">Select products</h2>
+          <h2 className="text-xl font-light text-foreground sm:text-2xl">{t('title')}</h2>
           {!isPending && (
             <p className="text-xs font-light text-contrast/60 sm:text-sm">
-              {formatNumber(loadedCount)} loaded
-              {hasNextPage && ' — more available'}
+              {tStates('loadedCount', { count: products.length })}
+              {hasNextPage && ` ${tStates('moreAvailable')}`}
             </p>
           )}
         </div>
 
         {isPending ? (
           <div className="flex items-center justify-center py-12">
-            <Spinner size="lg" label="Loading products" />
+            <Spinner size="lg" label={t('loading')} />
           </div>
         ) : error ? (
-          <EmptyState
-            title="The catalogue could not be loaded."
-            description="Check that the API is reachable and try again."
-          />
+          <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />
         ) : products.length === 0 ? (
           <EmptyState
-            title="No products match those filters."
+            title={t('empty')}
             action={
               filters.hasAny ? (
                 <Button variant="secondary" size="sm" onClick={filters.clearAll}>
-                  Clear filters
+                  {tActions('clearFilters')}
                 </Button>
               ) : undefined
             }
@@ -294,7 +298,7 @@ export function ProductPicker({
                   isLoading={isFetchingNextPage}
                   onClick={() => void fetchNextPage()}
                 >
-                  Load more products
+                  {t('loadMore')}
                 </Button>
               </div>
             )}
