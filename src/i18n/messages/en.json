@@ -75,9 +75,9 @@
       "eyebrow": "Liquor inventory",
       "title": "The bar's inventory, reconciled at closing.",
       "subtitle": "Every dispatch from the cellar, every supplier delivery and every breakage lands in a ledger that is never edited. Stock is what that ledger adds up to, not a number somebody types in.",
-      "primary": "Create an account",
+      "primary": "Sign in",
       "secondary": "See how it works",
-      "note": "Built for bars, casinos and restaurants that dispatch bottle by bottle."
+      "note": "Built for bars, casinos and restaurants that dispatch bottle by bottle. Access is by invitation."
     },
     "features": {
       "title": "What it solves",
@@ -143,7 +143,7 @@
     "cta": {
       "title": "Start with stock at zero",
       "body": "A new business starts with nothing on hand: stock appears when somebody records the first inbound. Nothing is invented for you.",
-      "primary": "Create an account"
+      "primary": "Sign in"
     },
     "footer": {
       "tagline": "Liquor inventory for hospitality operations.",

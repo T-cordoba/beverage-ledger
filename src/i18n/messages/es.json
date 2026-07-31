@@ -75,9 +75,9 @@
       "eyebrow": "Inventario de licores",
       "title": "El inventario de la barra, cuadrado al cierre.",
       "subtitle": "Cada salida de bodega, cada entrada de proveedor y cada merma quedan en un libro que no se edita. Las existencias son el resultado de ese libro, no un número que alguien escribe a mano.",
-      "primary": "Crear una cuenta",
+      "primary": "Iniciar sesión",
       "secondary": "Ver cómo funciona",
-      "note": "Pensado para bares, casinos y restaurantes que despachan botella a botella."
+      "note": "Pensado para bares, casinos y restaurantes que despachan botella a botella. Se entra por invitación."
     },
     "features": {
       "title": "Qué resuelve",
@@ -143,7 +143,7 @@
     "cta": {
       "title": "Empieza con el inventario en cero",
       "body": "Un negocio nuevo arranca sin existencias: el stock aparece cuando alguien registra la primera entrada. Nada se inventa por ti.",
-      "primary": "Crear una cuenta"
+      "primary": "Iniciar sesión"
     },
     "footer": {
       "tagline": "Inventario de licores para operaciones de hostelería.",
