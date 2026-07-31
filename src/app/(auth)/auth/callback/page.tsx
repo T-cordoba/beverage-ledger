@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Button, Card, Spinner } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
@@ -12,17 +13,16 @@ import { useGoogleCallback } from '@/features/auth';
  * the only thing left to do is trade the cookie for one.
  */
 export default function GoogleCallbackPage() {
+  const t = useTranslations('auth.callback');
   const { failed } = useGoogleCallback();
 
   if (failed) {
     return (
       <Card className="space-y-4 p-6 text-center sm:p-8">
-        <h1 className="text-xl font-light text-foreground">Sign-in did not complete</h1>
-        <p className="text-sm text-contrast/60">
-          Google sent you back without a usable session. Please try again.
-        </p>
+        <h1 className="text-xl font-light text-foreground">{t('failedTitle')}</h1>
+        <p className="text-sm text-contrast/60">{t('failedDescription')}</p>
         <Button asChild>
-          <Link href={ROUTES.signIn}>Back to sign in</Link>
+          <Link href={ROUTES.signIn}>{t('backToSignIn')}</Link>
         </Button>
       </Card>
     );
@@ -30,8 +30,8 @@ export default function GoogleCallbackPage() {
 
   return (
     <Card className="flex flex-col items-center gap-4 p-8 text-center">
-      <Spinner size="lg" label="Completing sign-in" />
-      <p className="text-sm text-contrast/60">Completing sign-in…</p>
+      <Spinner size="lg" label={t('completing')} />
+      <p className="text-sm text-contrast/60">{t('completing')}</p>
     </Card>
   );
 }

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { EmptyState } from './EmptyState';
@@ -49,6 +50,8 @@ export function DataTable<T>({
   empty,
   className,
 }: DataTableProps<T>) {
+  const t = useTranslations('common.states');
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -58,7 +61,7 @@ export function DataTable<T>({
   }
 
   if (rows.length === 0) {
-    return <>{empty ?? <EmptyState title="Nothing to show." />}</>;
+    return <>{empty ?? <EmptyState title={t('nothingToShow')} />}</>;
   }
 
   return (

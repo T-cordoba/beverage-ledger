@@ -1,3 +1,4 @@
+import type { Messages } from 'next-intl';
 import type { MovementType, Permission } from '@/lib/api';
 
 export const ROUTES = {
@@ -41,33 +42,40 @@ export function safeReturnTo(value: string | null): string {
   return value;
 }
 
+/** Typed against the catalogue, so a renamed message breaks the build here. */
+export type NavigationLabel = keyof Messages['nav']['items'];
+
 export interface NavigationItem {
   href: string;
-  label: string;
+  label: NavigationLabel;
   /** Hidden unless the session carries at least one. The API still enforces it. */
   permissions?: Permission[];
 }
 
 export const MAIN_NAVIGATION: NavigationItem[] = [
-  { href: ROUTES.dashboard, label: 'Dashboard', permissions: ['stock:read'] },
-  { href: ROUTES.stock, label: 'Stock', permissions: ['stock:read'] },
-  { href: ROUTES.movements, label: 'Movements', permissions: ['movement:read'] },
-  { href: ROUTES.catalog, label: 'Catalogue' },
-  { href: ROUTES.reports, label: 'Reports', permissions: ['report:read'] },
+  { href: ROUTES.dashboard, label: 'dashboard', permissions: ['stock:read'] },
+  { href: ROUTES.stock, label: 'stock', permissions: ['stock:read'] },
+  { href: ROUTES.movements, label: 'movements', permissions: ['movement:read'] },
+  { href: ROUTES.catalog, label: 'catalog' },
+  { href: ROUTES.reports, label: 'reports', permissions: ['report:read'] },
   {
     href: ROUTES.admin,
-    label: 'Admin',
+    label: 'admin',
     permissions: ['user:manage', 'catalog:manage', 'organization:manage', 'audit:read'],
   },
 ];
 
 export const ADMIN_NAVIGATION: NavigationItem[] = [
-  { href: ROUTES.adminUsers, label: 'Users', permissions: ['user:manage'] },
-  { href: ROUTES.adminCategories, label: 'Categories', permissions: ['catalog:manage'] },
-  { href: ROUTES.adminBrands, label: 'Brands', permissions: ['catalog:manage'] },
-  { href: ROUTES.adminLocations, label: 'Locations', permissions: ['catalog:manage'] },
-  { href: ROUTES.adminOrganization, label: 'Organization', permissions: ['organization:manage'] },
-  { href: ROUTES.adminAudit, label: 'Audit log', permissions: ['audit:read'] },
+  { href: ROUTES.adminUsers, label: 'adminUsers', permissions: ['user:manage'] },
+  { href: ROUTES.adminCategories, label: 'adminCategories', permissions: ['catalog:manage'] },
+  { href: ROUTES.adminBrands, label: 'adminBrands', permissions: ['catalog:manage'] },
+  { href: ROUTES.adminLocations, label: 'adminLocations', permissions: ['catalog:manage'] },
+  {
+    href: ROUTES.adminOrganization,
+    label: 'adminOrganization',
+    permissions: ['organization:manage'],
+  },
+  { href: ROUTES.adminAudit, label: 'adminAudit', permissions: ['audit:read'] },
 ];
 
 export function visibleNavigation(

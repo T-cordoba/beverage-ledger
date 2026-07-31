@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import { EmptyState } from '@/components/ui';
 import type { Permission } from '@/lib/api';
@@ -14,22 +15,19 @@ import { useAuth } from './auth-context';
  */
 export function PermissionGate({
   permission,
-  title = 'You do not have access to this section.',
+  title,
   children,
 }: {
   permission: Permission;
+  /** A sentence naming what is out of reach; the generic one otherwise. */
   title?: string;
   children: ReactNode;
 }) {
+  const t = useTranslations('auth.permissionGate');
   const { can } = useAuth();
 
   if (!can(permission)) {
-    return (
-      <EmptyState
-        title={title}
-        description="Ask an administrator for the permission if you need it."
-      />
-    );
+    return <EmptyState title={title ?? t('title')} description={t('description')} />;
   }
 
   return <>{children}</>;

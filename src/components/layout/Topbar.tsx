@@ -1,10 +1,13 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button, Popover, PopoverClose, PopoverContent, PopoverTrigger } from '@/components/ui';
+import { BRAND } from '@/config/branding';
 import { MAIN_NAVIGATION, ROUTES, visibleNavigation } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
+import { LanguageSwitcher } from '@/i18n';
 import { cn } from '@/lib/utils';
 
 function initialsOf(name: string): string {
@@ -16,6 +19,7 @@ function initialsOf(name: string): string {
 }
 
 export function Topbar() {
+  const t = useTranslations('nav');
   const { user, organization, can, signOut } = useAuth();
   const pathname = usePathname();
 
@@ -26,13 +30,14 @@ export function Topbar() {
       <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <Link href={ROUTES.dashboard} className="flex shrink-0 items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element -- the logo is a static asset, not a remote upload */}
-          <img src="/bl-logo.png" alt="" className="h-9 w-auto" aria-hidden="true" />
+          <img src={BRAND.logoSrc} alt="" className="h-9 w-auto" aria-hidden="true" />
+          {/* The tenant's name, not the product's: this ledger is theirs. */}
           <span className="hidden text-sm font-light text-foreground sm:inline">
-            {organization?.name ?? 'Beverage Ledger'}
+            {organization?.name ?? BRAND.name}
           </span>
         </Link>
 
-        <nav aria-label="Main" className="flex flex-1 items-center gap-1 overflow-x-auto">
+        <nav aria-label={t('main')} className="flex flex-1 items-center gap-1 overflow-x-auto">
           {items.map((item) => {
             const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
 
@@ -48,7 +53,7 @@ export function Topbar() {
                 )}
               >
                 <Link href={item.href} aria-current={isActive ? 'page' : undefined}>
-                  {item.label}
+                  {t(`items.${item.label}`)}
                 </Link>
               </Button>
             );
@@ -61,7 +66,7 @@ export function Topbar() {
               variant="secondary"
               size="icon"
               className="shrink-0 rounded-full"
-              aria-label={user ? `Account menu for ${user.name}` : 'Account menu'}
+              aria-label={user ? t('account.menuFor', { name: user.name }) : t('account.menu')}
             >
               <span className="text-xs font-medium">{user ? initialsOf(user.name) : '—'}</span>
             </Button>
@@ -72,11 +77,12 @@ export function Topbar() {
               <p className="truncate text-xs text-contrast/60">{user?.email}</p>
               <p className="text-xs uppercase tracking-wider text-accent/80">{user?.role}</p>
             </div>
+            <LanguageSwitcher />
             <div className="space-y-2">
               {/* A client navigation leaves the popover mounted, so it has to be told to close. */}
               <PopoverClose asChild>
                 <Button variant="ghost" size="sm" className="w-full justify-start" asChild>
-                  <Link href={ROUTES.profile}>Your profile</Link>
+                  <Link href={ROUTES.profile}>{t('account.profile')}</Link>
                 </Button>
               </PopoverClose>
               <Button
@@ -85,7 +91,7 @@ export function Topbar() {
                 className="w-full"
                 onClick={() => void signOut()}
               >
-                Sign out
+                {t('account.signOut')}
               </Button>
             </div>
           </PopoverContent>

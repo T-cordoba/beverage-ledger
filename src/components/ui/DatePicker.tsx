@@ -1,14 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import {
-  cn,
-  formatLongDate,
-  formatMonthYear,
-  getWeekdayNames,
-  parseDateKey,
-  toDateKey,
-} from '@/lib/utils';
+import { useFormatter, useLocale, useTranslations } from 'next-intl';
+import { useMemo, useState } from 'react';
+import { cn, getWeekdayNames, parseDateKey, toDateKey } from '@/lib/utils';
 import { Button } from './Button';
 import { Popover, PopoverContent, PopoverTrigger } from './Popover';
 
@@ -20,18 +14,15 @@ interface DatePickerProps {
   className?: string;
 }
 
-const weekdayNames = getWeekdayNames();
-
 function startOfMonth(date: Date) {
   return new Date(date.getFullYear(), date.getMonth(), 1);
 }
 
-export function DatePicker({
-  value,
-  onChange,
-  placeholder = 'Pick a date',
-  className,
-}: DatePickerProps) {
+export function DatePicker({ value, onChange, placeholder, className }: DatePickerProps) {
+  const t = useTranslations('common.datePicker');
+  const format = useFormatter();
+  const locale = useLocale();
+  const weekdayNames = useMemo(() => getWeekdayNames(locale), [locale]);
   const [isOpen, setIsOpen] = useState(false);
 
   // The month on screen is separate from the selected day: paging through
@@ -79,7 +70,11 @@ export function DatePicker({
                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
               />
             </svg>
-            <span>{value ? formatLongDate(parseDateKey(value)) : placeholder}</span>
+            <span>
+              {value
+                ? format.dateTime(parseDateKey(value), 'long')
+                : (placeholder ?? t('placeholder'))}
+            </span>
           </button>
         </PopoverTrigger>
 
@@ -89,7 +84,7 @@ export function DatePicker({
               variant="ghost"
               size="icon-sm"
               onClick={() => shiftMonth(-1)}
-              aria-label="Previous month"
+              aria-label={t('previousMonth')}
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -100,12 +95,12 @@ export function DatePicker({
                 />
               </svg>
             </Button>
-            <h3 className="font-medium text-accent">{formatMonthYear(viewMonth)}</h3>
+            <h3 className="font-medium text-accent">{format.dateTime(viewMonth, 'monthYear')}</h3>
             <Button
               variant="ghost"
               size="icon-sm"
               onClick={() => shiftMonth(1)}
-              aria-label="Next month"
+              aria-label={t('nextMonth')}
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -168,7 +163,7 @@ export function DatePicker({
           size="icon-sm"
           className="absolute right-2 top-1/2 -translate-y-1/2 text-accent"
           onClick={() => onChange('')}
-          aria-label="Clear the date"
+          aria-label={t('clear')}
         >
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
