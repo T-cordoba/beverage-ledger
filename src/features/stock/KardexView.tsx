@@ -30,7 +30,7 @@ export function KardexView({ productId }: { productId: string }) {
 
   const product = useProduct(productId);
   const pagination = usePagination(productId);
-  const kardex = useKardex(productId, undefined, pagination);
+  const kardex = useKardex(productId, undefined, pagination.params);
   const availability = useStockAvailability([productId]);
 
   const columns: DataTableColumn<KardexEntry>[] = [

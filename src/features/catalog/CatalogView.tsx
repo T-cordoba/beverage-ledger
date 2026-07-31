@@ -51,7 +51,7 @@ export function CatalogView() {
 
   const canManage = can('catalog:manage');
   const pagination = usePagination(JSON.stringify(filters.query));
-  const { data, error, isPending } = useProducts(filters.query, pagination);
+  const { data, error, isPending } = useProducts(filters.query, pagination.params);
 
   const products = data?.data ?? [];
 

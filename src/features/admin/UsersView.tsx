@@ -32,7 +32,7 @@ export function UsersView() {
 
   // No filters on this list, so the key never changes and the page never resets.
   const pagination = usePagination('users');
-  const { data, error, isPending } = useUsers(pagination);
+  const { data, error, isPending } = useUsers(pagination.params);
   const users = data?.data ?? [];
 
   const openForm = (user: User | null) => {

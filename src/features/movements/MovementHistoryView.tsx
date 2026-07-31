@@ -65,7 +65,7 @@ export function MovementHistoryView() {
   );
 
   const pagination = usePagination(JSON.stringify(query));
-  const { data, error, isPending } = useMovements(query, pagination);
+  const { data, error, isPending } = useMovements(query, pagination.params);
 
   const movements = data?.data ?? [];
   const hasFilters = Boolean(search || type || status || day);

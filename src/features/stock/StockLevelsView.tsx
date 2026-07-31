@@ -47,7 +47,7 @@ export function StockLevelsView() {
   );
 
   const pagination = usePagination(JSON.stringify(query));
-  const { data, error, isPending } = useStockLevels(query, pagination);
+  const { data, error, isPending } = useStockLevels(query, pagination.params);
 
   const rows = data?.data ?? [];
   const hasFilters = Boolean(search || categoryId || locationId);

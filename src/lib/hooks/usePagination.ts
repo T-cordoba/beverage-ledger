@@ -13,15 +13,26 @@ export const PAGE_SIZES = [10, 25, 50, MAX_PAGE_SIZE] as const;
 
 export const DEFAULT_PAGE_SIZE = 25;
 
-/** What every list hook spreads into its query params. */
+/** What every list hook spreads into its query params, and nothing else. */
 export interface PageParams {
   page: number;
   pageSize: number;
 }
 
-export interface PaginationState extends PageParams {
+export interface PaginationState {
+  page: number;
+  pageSize: number;
   setPage: (page: number) => void;
   setPageSize: (pageSize: number) => void;
+  /**
+   * The pair on its own, for spreading into a request.
+   *
+   * Separate from the state above because spreading the state sends the setters
+   * to the server as query params too, and TypeScript will not catch it: the
+   * excess-property check only fires on object literals, never on a variable
+   * that happens to carry more than the parameter type asks for.
+   */
+  params: PageParams;
 }
 
 /**
@@ -49,6 +60,7 @@ export function usePagination(
   return {
     page,
     pageSize,
+    params: { page, pageSize },
     setPage,
     setPageSize: (next: number) => {
       setStoredPageSize(next);

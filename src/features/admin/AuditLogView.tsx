@@ -74,7 +74,7 @@ export function AuditLogView() {
   );
 
   const pagination = usePagination(JSON.stringify(query));
-  const { data, error, isPending } = useAuditLogs(query, pagination);
+  const { data, error, isPending } = useAuditLogs(query, pagination.params);
 
   const logs = data?.data ?? [];
   const hasFilters = Boolean(entity || action || userId || day);
