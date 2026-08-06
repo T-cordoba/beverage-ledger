@@ -10,7 +10,7 @@ export function BrandsView() {
   const t = useTranslations('admin.brands');
   const tStates = useTranslations('common.states');
 
-  const { data: brands = [], isPending, isError } = useBrands();
+  const { data: brands = [], isPending, isError, isFetching, refetch } = useBrands();
   const create = useCreateBrand();
   const update = useUpdateBrand();
   const remove = useDeleteBrand();
@@ -39,6 +39,8 @@ export function BrandsView() {
       isPending={isPending}
       isError={isError}
       isSaving={create.isPending || update.isPending || remove.isPending}
+      isRefreshing={isFetching}
+      onRefresh={() => void refetch()}
       onCreate={async ({ name }: TaxonomyValues) => {
         try {
           await create.mutateAsync({ name });

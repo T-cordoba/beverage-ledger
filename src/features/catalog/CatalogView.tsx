@@ -12,6 +12,7 @@ import {
   EmptyState,
   FloatingAction,
   Pagination,
+  RefreshButton,
   Skeleton,
   useNotify,
   type DataTableColumn,
@@ -53,7 +54,7 @@ export function CatalogView() {
 
   const canManage = can('catalog:manage');
   const pagination = usePagination(JSON.stringify(filters.query));
-  const { data, error, isPending, isPlaceholderData } = useProducts(
+  const { data, error, isPending, isPlaceholderData, isFetching, refetch } = useProducts(
     filters.query,
     pagination.params,
   );
@@ -199,11 +200,14 @@ export function CatalogView() {
           </p>
         </div>
 
-        {canManage && (
-          <Button size="lg" className="hidden sm:inline-flex" onClick={() => openForm(null)}>
-            {t('new')}
-          </Button>
-        )}
+        <div className="flex items-center gap-2 sm:justify-end">
+          <RefreshButton onRefresh={() => void refetch()} isRefreshing={isFetching} />
+          {canManage && (
+            <Button size="lg" className="hidden sm:inline-flex" onClick={() => openForm(null)}>
+              {t('new')}
+            </Button>
+          )}
+        </div>
       </header>
 
       {canManage && (

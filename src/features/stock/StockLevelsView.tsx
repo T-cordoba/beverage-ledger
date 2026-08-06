@@ -11,6 +11,7 @@ import {
   EmptyState,
   Input,
   Pagination,
+  RefreshButton,
   Select,
   Skeleton,
   type DataTableColumn,
@@ -48,7 +49,10 @@ export function StockLevelsView() {
   );
 
   const pagination = usePagination(JSON.stringify(query));
-  const { data, error, isPending, isPlaceholderData } = useStockLevels(query, pagination.params);
+  const { data, error, isPending, isPlaceholderData, isFetching, refetch } = useStockLevels(
+    query,
+    pagination.params,
+  );
 
   // The query keeps the previous page on screen while the next one loads, which
   // is why `isPending` alone is not the answer: turning a page has data the
@@ -146,9 +150,12 @@ export function StockLevelsView() {
 
   return (
     <div className="space-y-6">
-      <header className="space-y-1">
-        <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
-        <p className="text-sm text-contrast/60">{t('subtitle')}</p>
+      <header className="flex items-start justify-between gap-3">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
+          <p className="text-sm text-contrast/60">{t('subtitle')}</p>
+        </div>
+        <RefreshButton onRefresh={() => void refetch()} isRefreshing={isFetching} />
       </header>
 
       <div className="grid gap-3 sm:grid-cols-3">

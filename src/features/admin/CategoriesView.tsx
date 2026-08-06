@@ -15,7 +15,7 @@ export function CategoriesView() {
   const t = useTranslations('admin.categories');
   const tStates = useTranslations('common.states');
 
-  const { data: categories = [], isPending, isError } = useCategories();
+  const { data: categories = [], isPending, isError, isFetching, refetch } = useCategories();
   const create = useCreateCategory();
   const update = useUpdateCategory();
   const remove = useDeleteCategory();
@@ -44,7 +44,9 @@ export function CategoriesView() {
       isPending={isPending}
       isError={isError}
       isSaving={create.isPending || update.isPending || remove.isPending}
+      isRefreshing={isFetching}
       withSortOrder
+      onRefresh={() => void refetch()}
       onCreate={async (values: TaxonomyValues) => {
         try {
           await create.mutateAsync(values);

@@ -18,6 +18,7 @@ import {
   FloatingAction,
   FormAlert,
   Input,
+  RefreshButton,
   Skeleton,
   useNotify,
   type DataTableColumn,
@@ -124,7 +125,7 @@ export function LocationsView() {
   const tActions = useTranslations('common.actions');
   const format = useFormatter();
 
-  const { data, isPending, isError } = useLocations();
+  const { data, isPending, isError, isFetching, refetch } = useLocations();
   const create = useCreateLocation();
   const update = useUpdateLocation();
   const remove = useDeleteLocation();
@@ -266,9 +267,12 @@ export function LocationsView() {
           <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
           <p className="text-sm text-contrast/60">{t('subtitle')}</p>
         </div>
-        <Button size="lg" className="hidden sm:inline-flex" onClick={() => openForm(null)}>
-          {t('new')}
-        </Button>
+        <div className="flex items-center gap-2 sm:justify-end">
+          <RefreshButton onRefresh={() => void refetch()} isRefreshing={isFetching} />
+          <Button size="lg" className="hidden sm:inline-flex" onClick={() => openForm(null)}>
+            {t('new')}
+          </Button>
+        </div>
       </header>
 
       <FloatingAction

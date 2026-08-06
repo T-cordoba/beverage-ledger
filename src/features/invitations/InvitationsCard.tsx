@@ -10,6 +10,7 @@ import {
   DataTable,
   EmptyState,
   Pagination,
+  RefreshButton,
   Skeleton,
   useNotify,
   type BadgeProps,
@@ -48,7 +49,9 @@ export function InvitationsCard() {
   const format = useFormatter();
 
   const pagination = usePagination('invitations');
-  const { data, error, isPending, isPlaceholderData } = useInvitations(pagination.params);
+  const { data, error, isPending, isPlaceholderData, isFetching, refetch } = useInvitations(
+    pagination.params,
+  );
   // Turning a page keeps the previous one on screen, so this and not `isPending`.
   const isLoading = isPending || isPlaceholderData;
   const revoke = useRevokeInvitation();
@@ -127,9 +130,12 @@ export function InvitationsCard() {
 
   return (
     <section className="space-y-4">
-      <div className="space-y-1">
-        <h2 className="text-xl font-light text-foreground">{t('title')}</h2>
-        <p className="text-sm text-contrast/60">{t('subtitle')}</p>
+      <div className="flex items-start justify-between gap-3">
+        <div className="space-y-1">
+          <h2 className="text-xl font-light text-foreground">{t('title')}</h2>
+          <p className="text-sm text-contrast/60">{t('subtitle')}</p>
+        </div>
+        <RefreshButton onRefresh={() => void refetch()} isRefreshing={isFetching} />
       </div>
 
       {error ? (

@@ -1,5 +1,6 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import {
@@ -9,6 +10,7 @@ import {
   DataTable,
   EmptyState,
   Pagination,
+  RefreshButton,
   Skeleton,
   Spinner,
   StatTile,
@@ -20,6 +22,7 @@ import { MovementTypeBadge } from '@/features/movements';
 import type { KardexEntry } from '@/lib/api';
 import { rowsOnPage, usePagination } from '@/lib/hooks';
 import { useKardex, useStockAvailability } from './api';
+import { stockKeys } from './keys';
 import { useDescribeCases } from './quantity';
 
 export function KardexView({ productId }: { productId: string }) {
@@ -35,6 +38,13 @@ export function KardexView({ productId }: { productId: string }) {
   // Turning a page keeps the previous one on screen, so this and not `isPending`.
   const isLoadingPage = kardex.isPending || kardex.isPlaceholderData;
   const availability = useStockAvailability([productId]);
+
+  // The whole stock branch, not just the ledger page: the tiles above the table
+  // read the on-hand figure from a separate query, and a refresh that moved one
+  // without the other would put a balance and a total side by side that no
+  // moment in time ever agreed on.
+  const queryClient = useQueryClient();
+  const refresh = () => void queryClient.invalidateQueries({ queryKey: stockKeys.all });
 
   const columns: DataTableColumn<KardexEntry>[] = [
     {
@@ -135,7 +145,10 @@ export function KardexView({ productId }: { productId: string }) {
         <Link href={ROUTES.stock} className="text-sm text-contrast/60 hover:text-accent">
           ← {t('backToStock')}
         </Link>
-        <h1 className="text-2xl font-light text-foreground sm:text-3xl">{product.data.name}</h1>
+        <div className="flex items-start justify-between gap-3">
+          <h1 className="text-2xl font-light text-foreground sm:text-3xl">{product.data.name}</h1>
+          <RefreshButton onRefresh={refresh} isRefreshing={kardex.isFetching} />
+        </div>
         <div className="flex flex-wrap items-center gap-2">
           {product.data.brand && <Badge>{product.data.brand.name}</Badge>}
           <Badge tone="accent">{product.data.category.name}</Badge>

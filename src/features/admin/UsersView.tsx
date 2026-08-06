@@ -11,6 +11,7 @@ import {
   EmptyState,
   FloatingAction,
   Pagination,
+  RefreshButton,
   Skeleton,
   useNotify,
   type DataTableColumn,
@@ -41,7 +42,9 @@ export function UsersView() {
 
   // No filters on this list, so the key never changes and the page never resets.
   const pagination = usePagination('users');
-  const { data, error, isPending, isPlaceholderData } = useUsers(pagination.params);
+  const { data, error, isPending, isPlaceholderData, isFetching, refetch } = useUsers(
+    pagination.params,
+  );
   // Turning a page keeps the previous one on screen, so this and not `isPending`.
   const isLoading = isPending || isPlaceholderData;
   const users = data?.data ?? [];
@@ -151,9 +154,12 @@ export function UsersView() {
           <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
           <p className="text-sm text-contrast/60">{t('subtitle')}</p>
         </div>
-        <Button size="lg" className="hidden sm:inline-flex" onClick={() => setIsInviteOpen(true)}>
-          {t('new')}
-        </Button>
+        <div className="flex items-center gap-2 sm:justify-end">
+          <RefreshButton onRefresh={() => void refetch()} isRefreshing={isFetching} />
+          <Button size="lg" className="hidden sm:inline-flex" onClick={() => setIsInviteOpen(true)}>
+            {t('new')}
+          </Button>
+        </div>
       </header>
 
       {error ? (

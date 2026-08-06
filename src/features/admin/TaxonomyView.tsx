@@ -18,6 +18,7 @@ import {
   FormAlert,
   Input,
   Pagination,
+  RefreshButton,
   Skeleton,
   type DataTableColumn,
 } from '@/components/ui';
@@ -66,7 +67,9 @@ interface TaxonomyViewProps {
   isPending: boolean;
   isError: boolean;
   isSaving: boolean;
+  isRefreshing: boolean;
   withSortOrder?: boolean;
+  onRefresh: () => void;
   onCreate: (values: TaxonomyValues) => Promise<void>;
   onUpdate: (id: string, values: TaxonomyValues) => Promise<void>;
   onDelete: (item: TaxonomyItem) => Promise<void>;
@@ -186,7 +189,9 @@ export function TaxonomyView({
   isPending,
   isError,
   isSaving,
+  isRefreshing,
   withSortOrder = false,
+  onRefresh,
   onCreate,
   onUpdate,
   onDelete,
@@ -277,9 +282,12 @@ export function TaxonomyView({
           <h1 className="text-2xl font-light text-foreground sm:text-3xl">{copy.title}</h1>
           <p className="text-sm text-contrast/60">{copy.subtitle}</p>
         </div>
-        <Button size="lg" className="hidden sm:inline-flex" onClick={() => openForm(null)}>
-          {copy.newItem}
-        </Button>
+        <div className="flex items-center gap-2 sm:justify-end">
+          <RefreshButton onRefresh={onRefresh} isRefreshing={isRefreshing} />
+          <Button size="lg" className="hidden sm:inline-flex" onClick={() => openForm(null)}>
+            {copy.newItem}
+          </Button>
+        </div>
       </header>
 
       <FloatingAction
