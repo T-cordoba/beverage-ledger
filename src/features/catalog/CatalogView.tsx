@@ -94,6 +94,7 @@ export function CatalogView() {
     {
       key: 'product',
       header: t('columns.product'),
+      primary: true,
       // Two lines, like the cell it stands in for: name over brand.
       skeleton: (
         <div className="space-y-0.5">
@@ -151,6 +152,7 @@ export function CatalogView() {
       key: 'status',
       header: t('columns.status'),
       align: 'end',
+      summary: true,
       skeleton: <Skeleton className="ml-auto h-6 w-16" />,
       cell: (product) =>
         product.isActive ? (
@@ -166,6 +168,7 @@ export function CatalogView() {
       key: 'actions',
       header: t('columns.actions'),
       align: 'end',
+      bare: true,
       // Two buttons, and they are what sets this row's height.
       skeleton: (
         <div className="flex justify-end gap-2">

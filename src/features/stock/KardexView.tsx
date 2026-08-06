@@ -50,7 +50,9 @@ export function KardexView({ productId }: { productId: string }) {
     {
       key: 'occurredAt',
       header: t('columns.occurredAt'),
-      className: 'whitespace-nowrap',
+      // Only from `sm` up: in the detail panel the date has a line of its own
+      // and wrapping is what keeps it from running off the edge.
+      className: 'sm:whitespace-nowrap',
       cell: (entry) => (
         <span className="text-contrast/70">
           {format.dateTime(new Date(entry.occurredAt), 'full')}
@@ -60,6 +62,7 @@ export function KardexView({ productId }: { productId: string }) {
     {
       key: 'movement',
       header: t('columns.movement'),
+      primary: true,
       // A badge sits in this cell, and it is what sets the row's height.
       skeleton: <Skeleton className="h-6 w-32" />,
       cell: (entry) => (
@@ -91,6 +94,7 @@ export function KardexView({ productId }: { productId: string }) {
       key: 'change',
       header: t('columns.change'),
       align: 'end',
+      summary: true,
       skeleton: <Skeleton className="ml-auto h-5 w-12" />,
       cell: (entry) => (
         <span className="font-medium text-foreground">

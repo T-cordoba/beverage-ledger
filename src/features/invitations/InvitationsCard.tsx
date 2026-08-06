@@ -81,6 +81,7 @@ export function InvitationsCard() {
     {
       key: 'email',
       header: t('columns.email'),
+      primary: true,
       cell: (invitation) => <span className="font-medium text-foreground">{invitation.email}</span>,
     },
     {
@@ -91,6 +92,7 @@ export function InvitationsCard() {
     {
       key: 'state',
       header: t('columns.state'),
+      summary: true,
       skeleton: <Skeleton className="h-6 w-20" />,
       cell: (invitation) => {
         const state = stateOf(invitation, now);
@@ -117,6 +119,7 @@ export function InvitationsCard() {
       key: 'actions',
       header: t('columns.actions'),
       align: 'end',
+      bare: true,
       // The revoke button is what sets this row's height.
       skeleton: <Skeleton className="ml-auto h-9 w-20" />,
       cell: (invitation) =>

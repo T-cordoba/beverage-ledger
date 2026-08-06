@@ -127,8 +127,10 @@ export function AuditLogView() {
     {
       key: 'createdAt',
       header: t('columns.when'),
+      summary: true,
       // Without this the timestamp wraps onto four lines and the row grows tall.
-      className: 'whitespace-nowrap',
+      // Only a concern where it shares a row: on a phone it has one of its own.
+      className: 'sm:whitespace-nowrap',
       cell: (log) => (
         <span className="text-contrast/70">{format.dateTime(new Date(log.createdAt), 'full')}</span>
       ),
@@ -156,6 +158,7 @@ export function AuditLogView() {
     {
       key: 'action',
       header: t('columns.action'),
+      primary: true,
       // The code stays reachable on hover: it is what an API log or a support
       // question will name, and the translated wording is not.
       cell: (log) => (

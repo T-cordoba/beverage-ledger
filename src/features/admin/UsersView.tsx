@@ -73,6 +73,7 @@ export function UsersView() {
     {
       key: 'member',
       header: t('columns.member'),
+      primary: true,
       // Two lines, like the cell it stands in for: name over address.
       skeleton: (
         <div className="space-y-0.5">
@@ -95,6 +96,7 @@ export function UsersView() {
     {
       key: 'role',
       header: t('columns.role'),
+      summary: true,
       cell: (user) => <span className="text-contrast/70">{tRoles(user.role)}</span>,
     },
     {
@@ -117,6 +119,7 @@ export function UsersView() {
       key: 'actions',
       header: t('columns.actions'),
       align: 'end',
+      bare: true,
       // Two buttons, and they are what sets this row's height.
       skeleton: (
         <div className="flex justify-end gap-2">

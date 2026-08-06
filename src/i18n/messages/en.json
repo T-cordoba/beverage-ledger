@@ -14,11 +14,13 @@
       "delete": "Delete",
       "dismiss": "Dismiss notification",
       "edit": "Edit",
+      "hideDetails": "Hide the detail",
       "loadMore": "Load more",
       "refresh": "Refresh",
       "retry": "Retry",
       "save": "Save",
       "search": "Search",
+      "showDetails": "Show the detail",
       "newMovement": "Record a movement"
     },
     "states": {

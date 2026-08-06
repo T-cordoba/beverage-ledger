@@ -71,6 +71,7 @@ export function StockLevelsView() {
     {
       key: 'product',
       header: t('columns.product'),
+      primary: true,
       // Two lines, like the cell it stands in for: name over brand.
       skeleton: (
         <div className="space-y-0.5">
@@ -100,6 +101,7 @@ export function StockLevelsView() {
       key: 'onHand',
       header: t('columns.onHand'),
       align: 'end',
+      summary: true,
       skeleton: (
         <div className="space-y-0.5">
           <Skeleton className="ml-auto h-5 w-20" />

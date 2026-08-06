@@ -195,6 +195,7 @@ export function LocationsView() {
     {
       key: 'name',
       header: t('columns.name'),
+      primary: true,
       skeleton: <Skeleton className="h-6 w-40" />,
       cell: (location) => (
         <span className="flex items-center gap-2">
@@ -207,7 +208,7 @@ export function LocationsView() {
       key: 'movementCount',
       header: t('columns.movementCount'),
       align: 'end',
-      hideBelow: 'sm',
+      summary: true,
       skeleton: <Skeleton className="ml-auto h-5 w-10" />,
       cell: (location) => (
         <span className="text-contrast/70">{format.number(location.movementCount)}</span>
@@ -217,6 +218,7 @@ export function LocationsView() {
       key: 'actions',
       header: t('columns.actions'),
       align: 'end',
+      bare: true,
       // Three buttons, and they are what set this row's height.
       skeleton: (
         <div className="flex justify-end gap-2">

@@ -221,6 +221,7 @@ export function TaxonomyView({
     {
       key: 'name',
       header: t('columns.name'),
+      primary: true,
       skeleton: <Skeleton className="h-5 w-40" />,
       cell: (item) => <span className="font-medium text-foreground">{item.name}</span>,
     },
@@ -242,6 +243,7 @@ export function TaxonomyView({
       key: 'productCount',
       header: t('columns.productCount'),
       align: 'end',
+      summary: true,
       skeleton: <Skeleton className="ml-auto h-5 w-8" />,
       cell: (item) => <span className="text-contrast/70">{format.number(item.productCount)}</span>,
     },
@@ -249,6 +251,7 @@ export function TaxonomyView({
       key: 'actions',
       header: t('columns.actions'),
       align: 'end',
+      bare: true,
       // Two buttons, and they are what set this row's height.
       skeleton: (
         <div className="flex justify-end gap-2">
