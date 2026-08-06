@@ -8,14 +8,11 @@ import { useAuth } from '@/features/auth';
 import { LanguageSwitcher } from '@/i18n';
 
 /**
- * Who is signed in and what they can do about it.
+ * Who is signed in and what they can do about it: the contents of the account
+ * menu, kept out of the header so the header is about navigation.
  *
- * Shared by the desktop account menu and the phone's overflow sheet: the two are
- * the same list in two containers, and written twice they would drift the first
- * time something is added to one of them.
- *
- * `onNavigate` closes whatever is holding it — a client navigation leaves both
- * the popover and the sheet mounted, so neither closes on its own.
+ * `onNavigate` closes whatever is holding it — a client navigation leaves the
+ * popover mounted, so it does not close on its own.
  */
 export function AccountActions({ onNavigate }: { onNavigate: () => void }) {
   const t = useTranslations('nav.account');

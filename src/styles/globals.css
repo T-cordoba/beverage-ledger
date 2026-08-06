@@ -4,6 +4,23 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  /**
+   * A scroller whose bar is not the affordance.
+   *
+   * Only for a strip that says it scrolls some other way — the bottom
+   * navigation fades its edges — never as a way to hide that there is more.
+   */
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @layer base {
   * {
     margin: 0;

@@ -168,8 +168,6 @@
   },
   "nav": {
     "main": "Principal",
-    "more": "Más",
-    "moreDescription": "Las demás secciones y las opciones de tu cuenta.",
     "items": {
       "dashboard": "Panel",
       "stock": "Existencias",
