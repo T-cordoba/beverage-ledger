@@ -116,6 +116,7 @@ export function NewMovementFab() {
       items={types.map((type) => ({
         label: t(`${type}.action`),
         href: ROUTES.newMovement(type),
+        icon: TYPE_ICONS[type],
       }))}
     />
   );

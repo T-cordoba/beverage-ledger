@@ -1,16 +1,21 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { Button, type ButtonProps } from './Button';
-import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from './Popover';
 
 export interface FloatingActionItem {
   label: string;
   /** A link, or a handler. One or the other. */
   href?: string;
   onClick?: () => void;
+  /**
+   * The same glyph the desktop row draws for this action. Without it the two
+   * ways into the same screen teach two different habits: one where the icon
+   * says which direction stock is moving, one where four labels differ by a word.
+   */
+  icon?: ReactNode;
 }
 
 function PlusIcon({ isOpen }: { isOpen?: boolean }) {
@@ -44,6 +49,14 @@ function Fab({ children, ...props }: ButtonProps) {
  * desktop it does not, and a button beside the title is both more conventional
  * and easier to find. So this hides itself at `sm` and the header shows its
  * button from `sm` up; between them there is always exactly one way to act.
+ *
+ * The open menu is laid out inside the same fixed box as the button rather than
+ * positioned against it. Any floating-element library — Radix's popover included
+ * — places a panel from coordinates it measured once and refreshes on scroll and
+ * resize. A phone's URL bar collapsing fires neither: it resizes the *visual*
+ * viewport, so the button rides up with it while a measured panel stays where
+ * the layout viewport used to be. Stacking the two in one flex column means
+ * there is nothing to measure and nothing to drift.
  */
 export function FloatingAction({
   label,
@@ -56,6 +69,25 @@ export function FloatingAction({
   className?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const menuId = useId();
+  const fabRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+
+      setIsOpen(false);
+      // Escape is a retreat, so the caret goes back where it was opened from;
+      // picking an item navigates instead, and there is nothing to return to.
+      fabRef.current?.focus();
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [isOpen]);
 
   if (items.length === 0) return null;
 
@@ -84,44 +116,65 @@ export function FloatingAction({
 
   return (
     <div className={wrapper}>
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
-        <PopoverTrigger asChild>
-          <Fab aria-label={label}>
-            <PlusIcon isOpen={isOpen} />
-          </Fab>
-        </PopoverTrigger>
-        {/* In place rather than portalled, and with no collision flipping: both
-            would have the panel positioned against the document while the button
-            it hangs off rides the visual viewport. See `PopoverContent`. */}
-        <PopoverContent
-          portal={false}
-          avoidCollisions={false}
-          align="end"
-          side="top"
-          className="w-56 space-y-1 p-2"
-        >
-          {items.map((item) => (
-            // A client navigation leaves the popover mounted, so it has to be
-            // told to close.
-            <PopoverClose asChild key={item.label}>
-              {item.href ? (
-                <Button variant="ghost" size="lg" className="w-full justify-start" asChild>
-                  <Link href={item.href}>{item.label}</Link>
+      {/* Catches the tap that means "never mind". Invisible on purpose: the menu
+          sits over a page the reader is still meant to see. */}
+      {isOpen && (
+        <div className="fixed inset-0" aria-hidden="true" onClick={() => setIsOpen(false)} />
+      )}
+
+      <div className="relative flex flex-col items-end gap-3">
+        {isOpen && (
+          <div
+            id={menuId}
+            className={cn(
+              'w-60 space-y-2 rounded-2xl border border-border bg-background/95 p-2 shadow-overlay backdrop-blur-sm',
+              'animate-in fade-in-0 slide-in-from-bottom-2 zoom-in-95',
+            )}
+          >
+            {items.map((item, index) => {
+              // The desktop row leads with the primary action and keeps the rest
+              // secondary; the same order here means the same thing.
+              const variant = index === 0 ? 'primary' : 'secondary';
+              const shared = {
+                variant,
+                size: 'lg',
+                className: 'w-full justify-start',
+              } as const;
+
+              return item.href ? (
+                <Button key={item.label} {...shared} asChild>
+                  <Link href={item.href} onClick={() => setIsOpen(false)}>
+                    {item.icon}
+                    {item.label}
+                  </Link>
                 </Button>
               ) : (
                 <Button
-                  variant="ghost"
-                  size="lg"
-                  className="w-full justify-start"
-                  onClick={item.onClick}
+                  key={item.label}
+                  {...shared}
+                  onClick={() => {
+                    setIsOpen(false);
+                    item.onClick?.();
+                  }}
                 >
+                  {item.icon}
                   {item.label}
                 </Button>
-              )}
-            </PopoverClose>
-          ))}
-        </PopoverContent>
-      </Popover>
+              );
+            })}
+          </div>
+        )}
+
+        <Fab
+          ref={fabRef}
+          aria-label={label}
+          aria-expanded={isOpen}
+          aria-controls={isOpen ? menuId : undefined}
+          onClick={() => setIsOpen((open) => !open)}
+        >
+          <PlusIcon isOpen={isOpen} />
+        </Fab>
+      </div>
     </div>
   );
 }

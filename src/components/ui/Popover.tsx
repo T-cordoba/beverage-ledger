@@ -1,37 +1,21 @@
 'use client';
 
 import * as PopoverPrimitive from '@radix-ui/react-popover';
-import { Fragment, type ComponentPropsWithRef } from 'react';
+import type { ComponentPropsWithRef } from 'react';
 import { cn } from '@/lib/utils';
 
 export const Popover = PopoverPrimitive.Root;
 export const PopoverTrigger = PopoverPrimitive.Trigger;
 export const PopoverClose = PopoverPrimitive.Close;
 
-interface PopoverContentProps extends ComponentPropsWithRef<typeof PopoverPrimitive.Content> {
-  /**
-   * Portalling escapes any ancestor that clips or transforms, which is what an
-   * overlay normally wants. It is wrong for a trigger that is itself `fixed`:
-   * the portalled panel is placed by coordinates measured against the document,
-   * while the trigger rides the visual viewport, so on a phone the two drift
-   * apart as the URL bar collapses and only meet again once scrolling stops.
-   * Rendered in place, the panel is laid out inside the fixed box and moves with
-   * it.
-   */
-  portal?: boolean;
-}
-
 export function PopoverContent({
   className,
   align = 'start',
   sideOffset = 8,
-  portal = true,
   ...props
-}: PopoverContentProps) {
-  const Wrapper = portal ? PopoverPrimitive.Portal : Fragment;
-
+}: ComponentPropsWithRef<typeof PopoverPrimitive.Content>) {
   return (
-    <Wrapper>
+    <PopoverPrimitive.Portal>
       <PopoverPrimitive.Content
         align={align}
         sideOffset={sideOffset}
@@ -44,6 +28,6 @@ export function PopoverContent({
         )}
         {...props}
       />
-    </Wrapper>
+    </PopoverPrimitive.Portal>
   );
 }
