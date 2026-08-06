@@ -53,14 +53,24 @@ export function safeReturnTo(value: string | null): string {
 /** Typed against the catalogue, so a renamed message breaks the build here. */
 export type NavigationLabel = keyof Messages['nav']['items'];
 
-export interface NavigationItem {
+export interface NavigationItem<Label extends NavigationLabel = NavigationLabel> {
   href: string;
-  label: NavigationLabel;
+  label: Label;
   /** Hidden unless the session carries at least one. The API still enforces it. */
   permissions?: Permission[];
 }
 
-export const MAIN_NAVIGATION: NavigationItem[] = [
+/**
+ * Narrowed so the phone's tab bar can hold an exhaustive icon per destination:
+ * a `Record` over this union stops compiling the day a seventh section appears
+ * without one, and an unlabelled glyph is worse than no glyph.
+ */
+export type MainNavigationLabel = Extract<
+  NavigationLabel,
+  'dashboard' | 'stock' | 'movements' | 'catalog' | 'reports' | 'admin'
+>;
+
+export const MAIN_NAVIGATION: NavigationItem<MainNavigationLabel>[] = [
   { href: ROUTES.dashboard, label: 'dashboard', permissions: ['stock:read'] },
   { href: ROUTES.stock, label: 'stock', permissions: ['stock:read'] },
   { href: ROUTES.movements, label: 'movements', permissions: ['movement:read'] },
@@ -86,9 +96,9 @@ export const ADMIN_NAVIGATION: NavigationItem[] = [
   { href: ROUTES.adminAudit, label: 'adminAudit', permissions: ['audit:read'] },
 ];
 
-export function visibleNavigation(
-  items: NavigationItem[],
+export function visibleNavigation<Label extends NavigationLabel>(
+  items: NavigationItem<Label>[],
   can: (permission: Permission) => boolean,
-): NavigationItem[] {
+): NavigationItem<Label>[] {
   return items.filter((item) => !item.permissions || item.permissions.some(can));
 }

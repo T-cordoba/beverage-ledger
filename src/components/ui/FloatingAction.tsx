@@ -91,7 +91,12 @@ export function FloatingAction({
 
   if (items.length === 0) return null;
 
-  const wrapper = cn('fixed bottom-4 right-4 z-floating sm:hidden', className);
+  // Clear of the navigation bar, which owns the bottom 4rem of a phone screen
+  // plus whatever the home indicator takes under it.
+  const wrapper = cn(
+    'fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] right-4 z-floating sm:hidden',
+    className,
+  );
 
   // A menu holding one thing is a button with an extra tap in front of it.
   if (items.length === 1) {

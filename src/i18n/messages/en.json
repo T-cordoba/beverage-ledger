@@ -168,6 +168,8 @@
   },
   "nav": {
     "main": "Main",
+    "more": "More",
+    "moreDescription": "The remaining sections and your account options.",
     "items": {
       "dashboard": "Dashboard",
       "stock": "Stock",

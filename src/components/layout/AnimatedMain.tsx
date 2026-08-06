@@ -13,9 +13,10 @@ import type { ReactNode } from 'react';
  * One animation for the whole view rather than one per element. Staggering a
  * table of a hundred rows reads as the page being slow, not as it being polished.
  *
- * The bottom padding below `sm` is the floating action button's berth: it is
- * fixed to that corner, and without the room it sits on top of whatever ends the
- * page — which on every list is the pagination.
+ * The bottom padding below `sm` is the berth for the two things fixed to that
+ * edge: the navigation bar and the floating action button above it. Without the
+ * room they sit on top of whatever ends the page, which on every list is the
+ * pagination.
  */
 export function AnimatedMain({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -23,7 +24,7 @@ export function AnimatedMain({ children }: { children: ReactNode }) {
   return (
     <main
       key={pathname}
-      className="mx-auto max-w-6xl animate-fade-in-up px-4 pb-24 pt-6 sm:px-6 sm:pb-8 lg:px-8 lg:pb-12 lg:pt-10"
+      className="mx-auto max-w-6xl animate-fade-in-up px-4 pb-44 pt-6 sm:px-6 sm:pb-8 lg:px-8 lg:pb-12 lg:pt-10"
     >
       {children}
     </main>
