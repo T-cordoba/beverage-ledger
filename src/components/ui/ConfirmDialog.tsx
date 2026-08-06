@@ -56,7 +56,7 @@ export function ConfirmDialog({
           <Button
             variant="secondary"
             size="lg"
-            className="flex-1"
+            className="sm:flex-1"
             disabled={isConfirming}
             onClick={() => onOpenChange(false)}
           >
@@ -65,7 +65,7 @@ export function ConfirmDialog({
           <Button
             variant={confirm}
             size="lg"
-            className="flex-1"
+            className="sm:flex-1"
             isLoading={isConfirming}
             onClick={onConfirm}
           >

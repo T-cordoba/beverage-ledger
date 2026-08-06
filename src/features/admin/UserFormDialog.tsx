@@ -138,13 +138,13 @@ export function UserFormDialog({
               type="button"
               variant="secondary"
               size="lg"
-              className="flex-1"
+              className="sm:flex-1"
               disabled={update.isPending}
               onClick={() => onOpenChange(false)}
             >
               {tActions('cancel')}
             </Button>
-            <Button type="submit" size="lg" className="flex-1" isLoading={update.isPending}>
+            <Button type="submit" size="lg" className="sm:flex-1" isLoading={update.isPending}>
               {tActions('save')}
             </Button>
           </DialogFooter>

@@ -162,13 +162,13 @@ function TaxonomyFormDialog({
               type="button"
               variant="secondary"
               size="lg"
-              className="flex-1"
+              className="sm:flex-1"
               disabled={isSaving}
               onClick={() => onOpenChange(false)}
             >
               {tActions('cancel')}
             </Button>
-            <Button type="submit" size="lg" className="flex-1" isLoading={isSaving}>
+            <Button type="submit" size="lg" className="sm:flex-1" isLoading={isSaving}>
               {item ? tActions('save') : tActions('create')}
             </Button>
           </DialogFooter>

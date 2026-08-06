@@ -115,12 +115,12 @@ export function InviteDialog({
                 type="button"
                 variant="secondary"
                 size="lg"
-                className="flex-1"
+                className="sm:flex-1"
                 onClick={close}
               >
                 {tActions('close')}
               </Button>
-              <Button type="button" size="lg" className="flex-1" onClick={() => void copy()}>
+              <Button type="button" size="lg" className="sm:flex-1" onClick={() => void copy()}>
                 {hasCopied ? t('copied') : t('copy')}
               </Button>
             </DialogFooter>
@@ -177,13 +177,13 @@ export function InviteDialog({
               type="button"
               variant="secondary"
               size="lg"
-              className="flex-1"
+              className="sm:flex-1"
               disabled={invite.isPending}
               onClick={close}
             >
               {tActions('cancel')}
             </Button>
-            <Button type="submit" size="lg" className="flex-1" isLoading={invite.isPending}>
+            <Button type="submit" size="lg" className="sm:flex-1" isLoading={invite.isPending}>
               {t('submit')}
             </Button>
           </DialogFooter>

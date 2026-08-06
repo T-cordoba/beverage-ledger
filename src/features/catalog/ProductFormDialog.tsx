@@ -314,7 +314,7 @@ export function ProductFormDialog({
               type="button"
               variant="secondary"
               size="lg"
-              className="flex-1"
+              className="sm:flex-1"
               disabled={isSaving}
               onClick={() => onOpenChange(false)}
             >
@@ -322,7 +322,7 @@ export function ProductFormDialog({
             </Button>
             {/* Not disabled while the category is missing: a dead button says
                 nothing about why. Submitting is what points at the field. */}
-            <Button type="submit" size="lg" className="flex-1" isLoading={isSaving}>
+            <Button type="submit" size="lg" className="sm:flex-1" isLoading={isSaving}>
               {isEditing ? tActions('save') : tActions('create')}
             </Button>
           </DialogFooter>

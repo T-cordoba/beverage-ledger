@@ -108,7 +108,7 @@ function CancelMovementDialog({ movement }: { movement: Movement }) {
                 type="button"
                 variant="secondary"
                 size="lg"
-                className="flex-1"
+                className="sm:flex-1"
                 onClick={() => setIsOpen(false)}
                 disabled={cancel.isPending}
               >
@@ -118,7 +118,7 @@ function CancelMovementDialog({ movement }: { movement: Movement }) {
                 type="submit"
                 variant="danger"
                 size="lg"
-                className="flex-1"
+                className="sm:flex-1"
                 isLoading={cancel.isPending}
               >
                 {t(`${variant}.verb`)}

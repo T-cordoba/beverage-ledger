@@ -62,6 +62,14 @@ export function DialogDescription({
   );
 }
 
+/**
+ * Stacked on a phone, side by side from `sm` up.
+ *
+ * Buttons in here share the row with `sm:flex-1`, never plain `flex-1`: while
+ * the axis is vertical, `flex-1` means "grow in height", and with `flex-basis:0`
+ * winning over the button's own height each one collapses to the height of its
+ * text. Stacked, they already fill the width on their own.
+ */
 export function DialogFooter({ className, ...props }: ComponentPropsWithRef<'div'>) {
   return <div className={cn('flex flex-col gap-3 sm:flex-row sm:gap-4', className)} {...props} />;
 }
