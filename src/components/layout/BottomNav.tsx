@@ -11,11 +11,22 @@ import { cn } from '@/lib/utils';
 import { NAV_ICONS } from './nav-icons';
 
 /**
- * A tab never narrows past this, which is what makes the strip scroll instead of
- * squeezing six labels into a row nobody can read. Below the count that fills
- * the screen they grow to share it evenly.
+ * Four tabs and a half across the strip, whatever the strip is wide.
+ *
+ * A fade at the edge says there is more only to someone already looking at the
+ * edge; what actually tells you a row scrolls is a tab cut in half by it. A
+ * fixed width cannot promise that — how much of the last one shows depends on
+ * the screen — but a fraction of the container can, and the same number covers
+ * every case without a branch:
+ *
+ * - four sections come to 89% of the row, so `grow` hands them the rest and
+ *   nothing scrolls;
+ * - five or six overflow it, `shrink-0` refuses to squeeze them, and what is
+ *   left on screen is four and the half that says to keep going.
+ *
+ * The narrowest phone still gives each tab about 70px, which is a thumb.
  */
-const TAB_WIDTH = 'basis-20';
+const TAB_WIDTH = 'basis-[calc(100%/4.5)]';
 
 /** Layout rounding leaves a fraction of a pixel of scroll that means nothing. */
 const EDGE_SLACK = 2;
