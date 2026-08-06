@@ -18,7 +18,10 @@ export function MarketingNav() {
         <Link href={ROUTES.home} className="flex shrink-0 items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element -- the logo is a static asset, not a remote upload */}
           <img src={BRAND.logoSrc} alt="" className="h-9 w-auto" aria-hidden="true" />
-          <span className="text-sm font-light text-foreground">{BRAND.name}</span>
+          {/* The logo carries the brand on a phone: the row also holds the
+              language picker and the sign-in button, and the name is what has to
+              give for those two to keep their full labels. */}
+          <span className="hidden text-sm font-light text-foreground sm:inline">{BRAND.name}</span>
         </Link>
 
         <nav aria-label={t('label')} className="hidden flex-1 items-center gap-1 md:flex">

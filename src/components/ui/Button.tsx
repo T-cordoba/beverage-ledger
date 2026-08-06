@@ -47,7 +47,10 @@ export function Button({
   ...props
 }: ButtonProps) {
   const classes = cn(
-    'inline-flex items-center justify-center rounded-xl font-medium transition-colors duration-base',
+    // Never wraps: every size is a fixed height, so a label that breaks onto a
+    // second line spills out of the pill instead of growing it. A long label has
+    // to widen the button, and where there is no room the parent decides.
+    'inline-flex items-center justify-center whitespace-nowrap rounded-xl font-medium transition-colors duration-base',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
     'disabled:pointer-events-none disabled:opacity-50',
     variantStyles[variant],
