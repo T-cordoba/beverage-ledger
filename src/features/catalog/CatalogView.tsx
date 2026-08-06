@@ -19,7 +19,7 @@ import {
 } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
-import { rowsOnPage, usePagination } from '@/lib/hooks';
+import { rowsOnPage, useManualRefresh, usePagination } from '@/lib/hooks';
 import { describeError, type Product } from '@/lib/api';
 import { useProducts, useUpdateProduct } from './api';
 import { CatalogFilters } from './CatalogFilters';
@@ -54,7 +54,7 @@ export function CatalogView() {
 
   const canManage = can('catalog:manage');
   const pagination = usePagination(JSON.stringify(filters.query));
-  const { data, error, isPending, isPlaceholderData, isFetching, refetch } = useProducts(
+  const { data, error, isPending, isPlaceholderData, refetch } = useProducts(
     filters.query,
     pagination.params,
   );
@@ -62,7 +62,8 @@ export function CatalogView() {
   // The query keeps the previous page on screen while the next one loads, which
   // is why `isPending` alone is not the answer: turning a page has data the
   // whole time, only from the page before it.
-  const isLoading = isPending || isPlaceholderData;
+  const { refresh, isRefreshing } = useManualRefresh(refetch);
+  const isLoading = isPending || isPlaceholderData || isRefreshing;
   const products = data?.data ?? [];
 
   const openForm = (product: Product | null) => {
@@ -204,7 +205,7 @@ export function CatalogView() {
         </div>
 
         <div className="flex items-center gap-2 sm:justify-end">
-          <RefreshButton onRefresh={() => void refetch()} isRefreshing={isFetching} />
+          <RefreshButton onRefresh={refresh} isRefreshing={isRefreshing} />
           {canManage && (
             <Button size="lg" className="hidden sm:inline-flex" onClick={() => openForm(null)}>
               {t('new')}

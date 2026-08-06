@@ -126,6 +126,17 @@ export function DataTable<T>({
 
   const detailed = columns.filter((column) => !isOnPhone(column));
 
+  /**
+   * How many columns the panel spans, counted at the only width it is ever shown
+   * at — the phone's, plus the disclosure's own.
+   *
+   * Not `columns.length`: a fixed layout takes its column count from whichever
+   * row declares the most cells, and a `colSpan` of six over a row that only
+   * shows three invents three empty columns to hold the difference. The visible
+   * ones then get crammed into half the table and the headers collide.
+   */
+  const phoneSpan = columns.filter((column) => !hiddenAt(column)).length + 1;
+
   const toggle = (key: string) =>
     setOpenRows((open) => {
       const next = new Set(open);
@@ -166,7 +177,10 @@ export function DataTable<T>({
                   key={column.key}
                   scope="col"
                   className={cn(
-                    'whitespace-nowrap px-3 py-3 text-xs font-medium uppercase tracking-wider text-contrast/60',
+                    // `truncate` rather than plain `whitespace-nowrap`: under a
+                    // fixed layout a header wider than its column would print
+                    // straight over the one beside it.
+                    'truncate px-3 py-3 text-xs font-medium uppercase tracking-wider text-contrast/60',
                     column.align === 'end' ? 'text-right' : 'text-left',
                     hidden && hideClasses[hidden],
                   )}
@@ -198,7 +212,10 @@ export function DataTable<T>({
                     return (
                       <td
                         key={column.key}
-                        className={cn('px-3 py-3', hidden && hideClasses[hidden])}
+                        // Clipped: a ghost is declared at the width of the text
+                        // it stands in for, and under a fixed layout that is
+                        // often wider than the column it landed in.
+                        className={cn('overflow-hidden px-3 py-3', hidden && hideClasses[hidden])}
                       >
                         {column.skeleton ?? <Skeleton className="h-5" />}
                       </td>
@@ -265,11 +282,7 @@ export function DataTable<T>({
 
                     {isOpen && (
                       <tr className="border-b border-border/20 sm:hidden">
-                        <td
-                          id={detailId}
-                          colSpan={columns.length + 1}
-                          className="bg-contrast/5 px-3 pb-3"
-                        >
+                        <td id={detailId} colSpan={phoneSpan} className="bg-contrast/5 px-3 pb-3">
                           <dl className="animate-in space-y-2 fade-in-0 slide-in-from-top-1">
                             {detailed.map((column) =>
                               column.bare ? (

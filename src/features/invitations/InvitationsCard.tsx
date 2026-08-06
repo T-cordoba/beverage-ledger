@@ -17,7 +17,7 @@ import {
   type DataTableColumn,
 } from '@/components/ui';
 import { describeError, type Invitation } from '@/lib/api';
-import { rowsOnPage, usePagination } from '@/lib/hooks';
+import { rowsOnPage, useManualRefresh, usePagination } from '@/lib/hooks';
 import { useInvitations, useRevokeInvitation } from './api';
 
 type InvitationState = 'pending' | 'accepted' | 'revoked' | 'expired';
@@ -49,11 +49,10 @@ export function InvitationsCard() {
   const format = useFormatter();
 
   const pagination = usePagination('invitations');
-  const { data, error, isPending, isPlaceholderData, isFetching, refetch } = useInvitations(
-    pagination.params,
-  );
+  const { data, error, isPending, isPlaceholderData, refetch } = useInvitations(pagination.params);
   // Turning a page keeps the previous one on screen, so this and not `isPending`.
-  const isLoading = isPending || isPlaceholderData;
+  const { refresh, isRefreshing } = useManualRefresh(refetch);
+  const isLoading = isPending || isPlaceholderData || isRefreshing;
   const revoke = useRevokeInvitation();
   const notify = useNotify();
 
@@ -138,7 +137,7 @@ export function InvitationsCard() {
           <h2 className="text-xl font-light text-foreground">{t('title')}</h2>
           <p className="text-sm text-contrast/60">{t('subtitle')}</p>
         </div>
-        <RefreshButton onRefresh={() => void refetch()} isRefreshing={isFetching} />
+        <RefreshButton onRefresh={refresh} isRefreshing={isRefreshing} />
       </div>
 
       {error ? (

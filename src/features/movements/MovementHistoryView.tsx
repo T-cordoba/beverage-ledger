@@ -12,7 +12,7 @@ import {
   Select,
 } from '@/components/ui';
 import type { MovementStatus, MovementType } from '@/lib/api';
-import { rowsOnPage, useDebouncedValue, usePagination } from '@/lib/hooks';
+import { rowsOnPage, useDebouncedValue, useManualRefresh, usePagination } from '@/lib/hooks';
 import { parseDateKey } from '@/lib/utils';
 import { useMovements, type MovementQuery } from './api';
 import { MovementCard, MovementCardSkeleton } from './MovementCard';
@@ -65,7 +65,7 @@ export function MovementHistoryView() {
   );
 
   const pagination = usePagination(JSON.stringify(query));
-  const { data, error, isPending, isPlaceholderData, isFetching, refetch } = useMovements(
+  const { data, error, isPending, isPlaceholderData, refetch } = useMovements(
     query,
     pagination.params,
   );
@@ -73,7 +73,8 @@ export function MovementHistoryView() {
   // The query keeps the previous page on screen while the next one loads, which
   // is why `isPending` alone is not the answer: turning a page has data the
   // whole time, only from the page before it.
-  const isLoading = isPending || isPlaceholderData;
+  const { refresh, isRefreshing } = useManualRefresh(refetch);
+  const isLoading = isPending || isPlaceholderData || isRefreshing;
   const movements = data?.data ?? [];
   const hasFilters = Boolean(search || type || status || day);
 
@@ -91,7 +92,7 @@ export function MovementHistoryView() {
           <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
           <p className="text-sm text-contrast/60">{t('subtitle')}</p>
         </div>
-        <RefreshButton onRefresh={() => void refetch()} isRefreshing={isFetching} />
+        <RefreshButton onRefresh={refresh} isRefreshing={isRefreshing} />
       </header>
 
       {/* On its own line rather than beside the heading: four named actions do

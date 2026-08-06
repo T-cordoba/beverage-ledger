@@ -9,13 +9,15 @@ import {
   useUpdateCategory,
 } from '@/features/catalog';
 import { describeError } from '@/lib/api';
+import { useManualRefresh } from '@/lib/hooks';
 import { TaxonomyView, type TaxonomyItem, type TaxonomyValues } from './TaxonomyView';
 
 export function CategoriesView() {
   const t = useTranslations('admin.categories');
   const tStates = useTranslations('common.states');
 
-  const { data: categories = [], isPending, isError, isFetching, refetch } = useCategories();
+  const { data: categories = [], isPending, isError, refetch } = useCategories();
+  const { refresh, isRefreshing } = useManualRefresh(refetch);
   const create = useCreateCategory();
   const update = useUpdateCategory();
   const remove = useDeleteCategory();
@@ -44,9 +46,9 @@ export function CategoriesView() {
       isPending={isPending}
       isError={isError}
       isSaving={create.isPending || update.isPending || remove.isPending}
-      isRefreshing={isFetching}
+      isRefreshing={isRefreshing}
       withSortOrder
-      onRefresh={() => void refetch()}
+      onRefresh={refresh}
       onCreate={async (values: TaxonomyValues) => {
         try {
           await create.mutateAsync(values);

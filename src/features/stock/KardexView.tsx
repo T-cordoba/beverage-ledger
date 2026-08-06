@@ -20,7 +20,7 @@ import { ROUTES } from '@/config/navigation';
 import { useProduct } from '@/features/catalog';
 import { MovementTypeBadge } from '@/features/movements';
 import type { KardexEntry } from '@/lib/api';
-import { rowsOnPage, usePagination } from '@/lib/hooks';
+import { rowsOnPage, useManualRefresh, usePagination } from '@/lib/hooks';
 import { useKardex, useStockAvailability } from './api';
 import { stockKeys } from './keys';
 import { useDescribeCases } from './quantity';
@@ -35,8 +35,6 @@ export function KardexView({ productId }: { productId: string }) {
   const product = useProduct(productId);
   const pagination = usePagination(productId);
   const kardex = useKardex(productId, undefined, pagination.params);
-  // Turning a page keeps the previous one on screen, so this and not `isPending`.
-  const isLoadingPage = kardex.isPending || kardex.isPlaceholderData;
   const availability = useStockAvailability([productId]);
 
   // The whole stock branch, not just the ledger page: the tiles above the table
@@ -44,7 +42,13 @@ export function KardexView({ productId }: { productId: string }) {
   // without the other would put a balance and a total side by side that no
   // moment in time ever agreed on.
   const queryClient = useQueryClient();
-  const refresh = () => void queryClient.invalidateQueries({ queryKey: stockKeys.all });
+  const { refresh, isRefreshing } = useManualRefresh(() =>
+    queryClient.invalidateQueries({ queryKey: stockKeys.all }),
+  );
+
+  // Turning a page keeps the previous one on screen, so this and not `isPending`.
+  // A refresh the reader asked for shows the ghosts too, or the button reads dead.
+  const isLoadingPage = kardex.isPending || kardex.isPlaceholderData || isRefreshing;
 
   const columns: DataTableColumn<KardexEntry>[] = [
     {
@@ -151,7 +155,7 @@ export function KardexView({ productId }: { productId: string }) {
         </Link>
         <div className="flex items-start justify-between gap-3">
           <h1 className="text-2xl font-light text-foreground sm:text-3xl">{product.data.name}</h1>
-          <RefreshButton onRefresh={refresh} isRefreshing={kardex.isFetching} />
+          <RefreshButton onRefresh={refresh} isRefreshing={isRefreshing} />
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {product.data.brand && <Badge>{product.data.brand.name}</Badge>}

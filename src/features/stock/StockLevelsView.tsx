@@ -20,7 +20,7 @@ import { ROUTES } from '@/config/navigation';
 import { useCategories } from '@/features/catalog';
 import { LocationSelect } from '@/features/locations';
 import type { StockLevel } from '@/lib/api';
-import { rowsOnPage, useDebouncedValue, usePagination } from '@/lib/hooks';
+import { rowsOnPage, useDebouncedValue, useManualRefresh, usePagination } from '@/lib/hooks';
 import { useStockLevels, type StockQuery } from './api';
 import { useDescribeCases } from './quantity';
 
@@ -49,7 +49,7 @@ export function StockLevelsView() {
   );
 
   const pagination = usePagination(JSON.stringify(query));
-  const { data, error, isPending, isPlaceholderData, isFetching, refetch } = useStockLevels(
+  const { data, error, isPending, isPlaceholderData, refetch } = useStockLevels(
     query,
     pagination.params,
   );
@@ -57,7 +57,8 @@ export function StockLevelsView() {
   // The query keeps the previous page on screen while the next one loads, which
   // is why `isPending` alone is not the answer: turning a page has data the
   // whole time, only from the page before it.
-  const isLoading = isPending || isPlaceholderData;
+  const { refresh, isRefreshing } = useManualRefresh(refetch);
+  const isLoading = isPending || isPlaceholderData || isRefreshing;
   const rows = data?.data ?? [];
   const hasFilters = Boolean(search || categoryId || locationId);
 
@@ -157,7 +158,7 @@ export function StockLevelsView() {
           <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
           <p className="text-sm text-contrast/60">{t('subtitle')}</p>
         </div>
-        <RefreshButton onRefresh={() => void refetch()} isRefreshing={isFetching} />
+        <RefreshButton onRefresh={refresh} isRefreshing={isRefreshing} />
       </header>
 
       <div className="grid gap-3 sm:grid-cols-3">

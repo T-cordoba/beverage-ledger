@@ -25,6 +25,7 @@ import {
 } from '@/components/ui';
 import { describeError, type Location } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
+import { useManualRefresh } from '@/lib/hooks';
 import { useCreateLocation, useDeleteLocation, useLocations, useUpdateLocation } from './api';
 
 function LocationFormDialog({
@@ -125,7 +126,8 @@ export function LocationsView() {
   const tActions = useTranslations('common.actions');
   const format = useFormatter();
 
-  const { data, isPending, isError, isFetching, refetch } = useLocations();
+  const { data, isPending, isError, refetch } = useLocations();
+  const { refresh, isRefreshing } = useManualRefresh(refetch);
   const create = useCreateLocation();
   const update = useUpdateLocation();
   const remove = useDeleteLocation();
@@ -270,7 +272,7 @@ export function LocationsView() {
           <p className="text-sm text-contrast/60">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-2 sm:justify-end">
-          <RefreshButton onRefresh={() => void refetch()} isRefreshing={isFetching} />
+          <RefreshButton onRefresh={refresh} isRefreshing={isRefreshing} />
           <Button size="lg" className="hidden sm:inline-flex" onClick={() => openForm(null)}>
             {t('new')}
           </Button>
@@ -291,7 +293,7 @@ export function LocationsView() {
             columns={columns}
             rows={locations}
             rowKey={(location) => location.id}
-            isLoading={isPending}
+            isLoading={isPending || isRefreshing}
             loadingLabel={t('loading')}
             className="px-2 py-1 sm:px-4 sm:py-2"
             empty={<EmptyState title={t('empty')} />}

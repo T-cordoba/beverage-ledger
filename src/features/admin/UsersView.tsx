@@ -19,7 +19,7 @@ import {
 import { useAuth } from '@/features/auth';
 import { InvitationsCard, InviteDialog } from '@/features/invitations';
 import { describeError, type User } from '@/lib/api';
-import { rowsOnPage, usePagination } from '@/lib/hooks';
+import { rowsOnPage, useManualRefresh, usePagination } from '@/lib/hooks';
 import { useUpdateUser, useUsers } from './api';
 import { STATUS_TONES } from './roles';
 import { UserFormDialog } from './UserFormDialog';
@@ -42,11 +42,11 @@ export function UsersView() {
 
   // No filters on this list, so the key never changes and the page never resets.
   const pagination = usePagination('users');
-  const { data, error, isPending, isPlaceholderData, isFetching, refetch } = useUsers(
-    pagination.params,
-  );
+  const { data, error, isPending, isPlaceholderData, refetch } = useUsers(pagination.params);
+  const { refresh, isRefreshing } = useManualRefresh(refetch);
   // Turning a page keeps the previous one on screen, so this and not `isPending`.
-  const isLoading = isPending || isPlaceholderData;
+  // A refresh the reader asked for shows the ghosts too, or the button reads dead.
+  const isLoading = isPending || isPlaceholderData || isRefreshing;
   const users = data?.data ?? [];
 
   const isReactivating = suspending?.status === 'SUSPENDED';
@@ -158,7 +158,7 @@ export function UsersView() {
           <p className="text-sm text-contrast/60">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-2 sm:justify-end">
-          <RefreshButton onRefresh={() => void refetch()} isRefreshing={isFetching} />
+          <RefreshButton onRefresh={refresh} isRefreshing={isRefreshing} />
           <Button size="lg" className="hidden sm:inline-flex" onClick={() => setIsInviteOpen(true)}>
             {t('new')}
           </Button>

@@ -16,7 +16,7 @@ import {
 } from '@/components/ui';
 import { useAuth } from '@/features/auth';
 import type { AuditAction, AuditEntity, AuditLog } from '@/lib/api';
-import { MAX_PAGE_SIZE, rowsOnPage, usePagination } from '@/lib/hooks';
+import { MAX_PAGE_SIZE, rowsOnPage, useManualRefresh, usePagination } from '@/lib/hooks';
 import { parseDateKey } from '@/lib/utils';
 import { useAuditLogs, useUsers, type AuditQuery } from './api';
 import { auditActionsOf, AUDIT_ENTITIES, auditEntityOf } from './audit-actions';
@@ -83,12 +83,14 @@ export function AuditLogView() {
   );
 
   const pagination = usePagination(JSON.stringify(query));
-  const { data, error, isPending, isPlaceholderData, isFetching, refetch } = useAuditLogs(
+  const { data, error, isPending, isPlaceholderData, refetch } = useAuditLogs(
     query,
     pagination.params,
   );
+  const { refresh, isRefreshing } = useManualRefresh(refetch);
   // Turning a page keeps the previous one on screen, so this and not `isPending`.
-  const isLoading = isPending || isPlaceholderData;
+  // A refresh the reader asked for shows the ghosts too, or the button reads dead.
+  const isLoading = isPending || isPlaceholderData || isRefreshing;
 
   const logs = data?.data ?? [];
   const hasFilters = Boolean(entity || action || userId || day);
@@ -215,7 +217,7 @@ export function AuditLogView() {
           <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
           <p className="text-sm text-contrast/60">{t('subtitle')}</p>
         </div>
-        <RefreshButton onRefresh={() => void refetch()} isRefreshing={isFetching} />
+        <RefreshButton onRefresh={refresh} isRefreshing={isRefreshing} />
       </header>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

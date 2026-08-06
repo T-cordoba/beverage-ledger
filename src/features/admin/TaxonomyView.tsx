@@ -307,7 +307,7 @@ export function TaxonomyView({
             columns={columns}
             rows={visible}
             rowKey={(item) => item.id}
-            isLoading={isPending}
+            isLoading={isPending || isRefreshing}
             // The whole list arrives in one request and pages in the browser, so
             // there is no page total to go on yet: a full page is the guess.
             skeletonRows={pagination.pageSize}

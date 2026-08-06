@@ -1,4 +1,5 @@
 export { useDebouncedValue } from './useDebouncedValue';
+export { useManualRefresh } from './useManualRefresh';
 export {
   usePagination,
   rowsOnPage,
