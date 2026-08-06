@@ -145,7 +145,16 @@ export function DataTable<T>({
       role={isLoading ? 'status' : undefined}
       aria-busy={isLoading || undefined}
     >
-      <table className="w-full border-collapse text-sm">
+      {/* Fixed layout on a phone, automatic from `sm` up.
+
+          An automatic table takes its column widths from the min-content of the
+          cells, and a cell holding an address has no space to break at — one
+          `tommy.cormo@gmail.com` asks for 180px and gets it, `truncate` included,
+          because truncation cannot shrink a column that sizes itself to its text.
+          Two such columns and the table is wider than the screen. Fixed layout
+          reverses that: the columns divide what there is, and `truncate` finally
+          means what it says. */}
+      <table className="w-full table-fixed border-collapse text-sm sm:table-auto">
         <caption className="sr-only">{isLoading ? (loadingLabel ?? caption) : caption}</caption>
         <thead>
           <tr className="border-b border-border/60">
@@ -220,7 +229,10 @@ export function DataTable<T>({
                           <td
                             key={column.key}
                             className={cn(
-                              'px-3 py-3 text-foreground',
+                              // The safety net under the fixed layout: a word
+                              // with nowhere to break is broken rather than left
+                              // to spill over the column beside it.
+                              'break-words px-3 py-3 text-foreground',
                               column.align === 'end' ? 'text-right' : 'text-left',
                               hidden && hideClasses[hidden],
                               column.className,
