@@ -629,13 +629,65 @@
     "audit": {
       "title": "Log de auditoría",
       "subtitle": "Quién hizo qué, cuándo y desde dónde. Antes de que esto existiera la aplicación no podía responder a ninguna de las tres.",
-      "entityPlaceholder": "Entidad, por ejemplo movement",
       "entityLabel": "Filtrar por entidad",
-      "actionPlaceholder": "Acción, por ejemplo movement.confirmed",
+      "anyEntity": "Todas las entidades",
       "actionLabel": "Filtrar por acción",
+      "anyAction": "Todas las acciones",
       "userLabel": "Filtrar por usuario",
       "anyone": "Cualquiera",
       "dateLabel": "Filtrar por fecha",
+      "entities": {
+        "movement": "Movimientos",
+        "product": "Productos",
+        "category": "Categorías",
+        "brand": "Marcas",
+        "location": "Bodegas",
+        "user": "Usuarios",
+        "invitation": "Invitaciones",
+        "organization": "Organización"
+      },
+      "actionNames": {
+        "movement": {
+          "created": "Borrador abierto",
+          "updated": "Borrador editado",
+          "confirmed": "Movimiento confirmado",
+          "cancelled": "Movimiento anulado"
+        },
+        "product": {
+          "created": "Producto creado",
+          "updated": "Producto editado",
+          "deactivated": "Producto desactivado"
+        },
+        "category": {
+          "created": "Categoría creada",
+          "updated": "Categoría renombrada",
+          "deleted": "Categoría eliminada"
+        },
+        "brand": {
+          "created": "Marca creada",
+          "updated": "Marca renombrada",
+          "deleted": "Marca eliminada"
+        },
+        "location": {
+          "created": "Bodega creada",
+          "updated": "Bodega editada",
+          "deleted": "Bodega eliminada"
+        },
+        "user": {
+          "signed-in": "Inicio de sesión",
+          "sign-in-failed": "Inicio de sesión rechazado",
+          "password-changed": "Contraseña cambiada",
+          "updated": "Usuario editado"
+        },
+        "invitation": {
+          "created": "Invitación enviada",
+          "revoked": "Invitación revocada",
+          "accepted": "Invitación aceptada"
+        },
+        "organization": {
+          "updated": "Organización editada"
+        }
+      },
       "loadFailed": "No se pudo cargar el log de auditoría.",
       "loading": "Cargando el log de auditoría",
       "caption": "Traza de auditoría",

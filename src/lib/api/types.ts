@@ -28,6 +28,8 @@ export type Organization = Schemas['OrganizationDto'];
 export type UpdateOrganizationInput = Schemas['UpdateOrganizationDto'];
 
 export type AuditLog = Schemas['AuditLogDto'];
+export type AuditAction = Schemas['AuditAction'];
+export type AuditEntity = Schemas['AuditEntity'];
 
 export type Category = Schemas['CategoryDto'];
 export type CreateCategoryInput = Schemas['CreateCategoryDto'];

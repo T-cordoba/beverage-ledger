@@ -629,13 +629,65 @@
     "audit": {
       "title": "Audit log",
       "subtitle": "Who did what, when, and from where. Before this existed the app could not answer any of those.",
-      "entityPlaceholder": "Entity, like movement",
       "entityLabel": "Filter by entity",
-      "actionPlaceholder": "Action, like movement.confirmed",
+      "anyEntity": "Every entity",
       "actionLabel": "Filter by action",
+      "anyAction": "Every action",
       "userLabel": "Filter by user",
       "anyone": "Anyone",
       "dateLabel": "Filter by date",
+      "entities": {
+        "movement": "Movements",
+        "product": "Products",
+        "category": "Categories",
+        "brand": "Brands",
+        "location": "Warehouses",
+        "user": "Users",
+        "invitation": "Invitations",
+        "organization": "Organization"
+      },
+      "actionNames": {
+        "movement": {
+          "created": "Draft opened",
+          "updated": "Draft edited",
+          "confirmed": "Movement confirmed",
+          "cancelled": "Movement cancelled"
+        },
+        "product": {
+          "created": "Product created",
+          "updated": "Product edited",
+          "deactivated": "Product deactivated"
+        },
+        "category": {
+          "created": "Category created",
+          "updated": "Category renamed",
+          "deleted": "Category deleted"
+        },
+        "brand": {
+          "created": "Brand created",
+          "updated": "Brand renamed",
+          "deleted": "Brand deleted"
+        },
+        "location": {
+          "created": "Warehouse created",
+          "updated": "Warehouse edited",
+          "deleted": "Warehouse deleted"
+        },
+        "user": {
+          "signed-in": "Signed in",
+          "sign-in-failed": "Sign-in refused",
+          "password-changed": "Password changed",
+          "updated": "User edited"
+        },
+        "invitation": {
+          "created": "Invitation sent",
+          "revoked": "Invitation revoked",
+          "accepted": "Invitation accepted"
+        },
+        "organization": {
+          "updated": "Organization edited"
+        }
+      },
       "loadFailed": "The audit log could not be loaded.",
       "loading": "Loading the audit log",
       "caption": "Audit trail",

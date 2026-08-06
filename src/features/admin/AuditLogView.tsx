@@ -8,17 +8,18 @@ import {
   DataTable,
   DatePicker,
   EmptyState,
-  Input,
   Pagination,
+  RefreshButton,
   Select,
   Skeleton,
   type DataTableColumn,
 } from '@/components/ui';
 import { useAuth } from '@/features/auth';
-import type { AuditLog } from '@/lib/api';
-import { MAX_PAGE_SIZE, rowsOnPage, useDebouncedValue, usePagination } from '@/lib/hooks';
+import type { AuditAction, AuditEntity, AuditLog } from '@/lib/api';
+import { MAX_PAGE_SIZE, rowsOnPage, usePagination } from '@/lib/hooks';
 import { parseDateKey } from '@/lib/utils';
 import { useAuditLogs, useUsers, type AuditQuery } from './api';
+import { auditActionsOf, AUDIT_ENTITIES, auditEntityOf } from './audit-actions';
 
 /**
  * The whole membership in one request, to fill the "who" filter.
@@ -51,31 +52,41 @@ export function AuditLogView() {
   const format = useFormatter();
 
   const { can } = useAuth();
-  const [entity, setEntity] = useState('');
-  const [action, setAction] = useState('');
+  const [entity, setEntity] = useState<AuditEntity | ''>('');
+  const [action, setAction] = useState<AuditAction | ''>('');
   const [userId, setUserId] = useState('');
   const [day, setDay] = useState('');
-
-  const debouncedEntity = useDebouncedValue(entity);
-  const debouncedAction = useDebouncedValue(action);
 
   // The trail names its actors, but only a user manager can list them to filter by.
   const canListUsers = can('user:manage');
   const { data: userPage } = useUsers(EVERY_USER, canListUsers);
   const users = canListUsers ? (userPage?.data ?? []) : [];
 
+  const entityOptions = [
+    { value: '', label: t('anyEntity') },
+    ...AUDIT_ENTITIES.map((value) => ({ value, label: t(`entities.${value}`) })),
+  ];
+
+  const actionOptions = [
+    { value: '', label: t('anyAction') },
+    ...auditActionsOf(entity).map((value) => ({ value, label: t(`actionNames.${value}`) })),
+  ];
+
   const query = useMemo<AuditQuery>(
     () => ({
-      ...(debouncedEntity ? { entity: debouncedEntity } : {}),
-      ...(debouncedAction ? { action: debouncedAction } : {}),
+      ...(entity ? { entity } : {}),
+      ...(action ? { action } : {}),
       ...(userId ? { userId } : {}),
       ...(day ? dayBounds(day) : {}),
     }),
-    [day, debouncedAction, debouncedEntity, userId],
+    [action, day, entity, userId],
   );
 
   const pagination = usePagination(JSON.stringify(query));
-  const { data, error, isPending, isPlaceholderData } = useAuditLogs(query, pagination.params);
+  const { data, error, isPending, isPlaceholderData, isFetching, refetch } = useAuditLogs(
+    query,
+    pagination.params,
+  );
   // Turning a page keeps the previous one on screen, so this and not `isPending`.
   const isLoading = isPending || isPlaceholderData;
 
@@ -87,6 +98,29 @@ export function AuditLogView() {
     setAction('');
     setUserId('');
     setDay('');
+  };
+
+  const chooseEntity = (value: string) => {
+    const next = value as AuditEntity | '';
+
+    setEntity(next);
+
+    // An action belongs to one entity, so keeping one from another asks for a
+    // pair no row can satisfy, and an empty table reads as broken rather than
+    // as filtered.
+    if (action && next && auditEntityOf(action) !== next) {
+      setAction('');
+    }
+  };
+
+  const chooseAction = (value: string) => {
+    const next = value as AuditAction | '';
+
+    setAction(next);
+
+    if (next) {
+      setEntity(auditEntityOf(next));
+    }
   };
 
   const columns: DataTableColumn<AuditLog>[] = [
@@ -122,7 +156,13 @@ export function AuditLogView() {
     {
       key: 'action',
       header: t('columns.action'),
-      cell: (log) => <span className="font-mono text-xs text-accent">{log.action}</span>,
+      // The code stays reachable on hover: it is what an API log or a support
+      // question will name, and the translated wording is not.
+      cell: (log) => (
+        <span className="text-accent" title={log.action}>
+          {t(`actionNames.${log.action}`)}
+        </span>
+      ),
     },
     {
       key: 'entity',
@@ -136,7 +176,7 @@ export function AuditLogView() {
       ),
       cell: (log) => (
         <div className="min-w-0 space-y-0.5">
-          <p className="text-contrast/70">{log.entity}</p>
+          <p className="text-contrast/70">{t(`entities.${log.entity}`)}</p>
           {log.entityId && (
             <p className="truncate font-mono text-xs text-contrast/40">{log.entityId}</p>
           )}
@@ -167,25 +207,29 @@ export function AuditLogView() {
 
   return (
     <div className="space-y-6">
-      <header className="space-y-1">
-        <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
-        <p className="text-sm text-contrast/60">{t('subtitle')}</p>
+      <header className="flex items-start justify-between gap-3">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
+          <p className="text-sm text-contrast/60">{t('subtitle')}</p>
+        </div>
+        <RefreshButton onRefresh={() => void refetch()} isRefreshing={isFetching} />
       </header>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <Input
-          type="search"
-          placeholder={t('entityPlaceholder')}
+        {/* Dropdowns and not free text: the trail records two dozen named
+            actions, and nobody outside this codebase can guess how they are
+            spelled, so a typed filter only ever returned nothing. */}
+        <Select
           value={entity}
-          onChange={(event) => setEntity(event.target.value)}
+          onValueChange={chooseEntity}
           aria-label={t('entityLabel')}
+          options={entityOptions}
         />
-        <Input
-          type="search"
-          placeholder={t('actionPlaceholder')}
+        <Select
           value={action}
-          onChange={(event) => setAction(event.target.value)}
+          onValueChange={chooseAction}
           aria-label={t('actionLabel')}
+          options={actionOptions}
         />
         {canListUsers && (
           <Select

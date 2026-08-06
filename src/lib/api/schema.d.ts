@@ -636,6 +636,42 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    /** @enum {string} */
+    AuditEntity:
+      | 'user'
+      | 'invitation'
+      | 'organization'
+      | 'category'
+      | 'brand'
+      | 'product'
+      | 'location'
+      | 'movement';
+    /** @enum {string} */
+    AuditAction:
+      | 'user.signed-in'
+      | 'user.sign-in-failed'
+      | 'user.password-changed'
+      | 'user.updated'
+      | 'invitation.created'
+      | 'invitation.revoked'
+      | 'invitation.accepted'
+      | 'organization.updated'
+      | 'category.created'
+      | 'category.updated'
+      | 'category.deleted'
+      | 'brand.created'
+      | 'brand.updated'
+      | 'brand.deleted'
+      | 'product.created'
+      | 'product.updated'
+      | 'product.deactivated'
+      | 'location.created'
+      | 'location.updated'
+      | 'location.deleted'
+      | 'movement.created'
+      | 'movement.updated'
+      | 'movement.confirmed'
+      | 'movement.cancelled';
     AuditLogActorDto: {
       /** Format: uuid */
       id: string;
@@ -647,9 +683,9 @@ export interface components {
       /** Format: uuid */
       id: string;
       /** @example movement.confirmed */
-      action: string;
+      action: components['schemas']['AuditAction'];
       /** @example movement */
-      entity: string;
+      entity: components['schemas']['AuditEntity'];
       entityId: string | null;
       /** @description Flat scalar detail about the change */
       metadata: Record<string, never>;
@@ -1262,10 +1298,10 @@ export interface operations {
         page?: number;
         /** @description How many items a page holds */
         pageSize?: number;
-        entity?: string;
+        entity?: components['schemas']['AuditEntity'];
         /** @description Id of the audited record, to follow one thing over time */
         entityId?: string;
-        action?: string;
+        action?: components['schemas']['AuditAction'];
         /** @description Who performed the action */
         userId?: string;
         from?: string;
