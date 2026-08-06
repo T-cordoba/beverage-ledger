@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import {
   createContext,
   useCallback,
@@ -94,6 +95,8 @@ function NotificationList({
   notifications: Notification[];
   onDismiss: (id: number) => void;
 }) {
+  const t = useTranslations('common.actions');
+
   // The container renders even when empty: a screen reader only announces
   // changes to a live region that was already in the DOM, so returning null
   // while there is nothing to show would silence the first notification.
@@ -116,7 +119,7 @@ function NotificationList({
               size="icon-sm"
               className="absolute right-2 top-2 h-6 w-6 rounded-full"
               onClick={() => onDismiss(notification.id)}
-              aria-label="Dismiss notification"
+              aria-label={t('dismiss')}
             >
               <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
