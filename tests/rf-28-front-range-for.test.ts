@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { rangeFor, type ReportPeriod } from '@/features/reports/range';
 
-/**
- * RF-28 - FRONT - rangeFor(period)
- * Un test por cada camino de la tabla de docs/testing/RF-28-reporte-consumo.md.
- */
 describe('rangeFor', () => {
   const daysBetween = (from: string, to: string) => (Date.parse(to) - Date.parse(from)) / 86400000;
 
@@ -22,7 +18,7 @@ describe('rangeFor', () => {
     expect(days).toBeLessThanOrEqual(31);
   });
 
-  it('Camino 3 - el periodo es year y el rango es de un anio', () => {
+  it('Camino 3 - el periodo es year y el rango es de un año', () => {
     const range = rangeFor('year');
     const days = daysBetween(range.from, range.to);
 
@@ -31,8 +27,6 @@ describe('rangeFor', () => {
   });
 
   it('Camino 4 - el periodo no es ninguno de los tres y el rango queda en cero', () => {
-    // 'quarter' no existe en el tipo ReportPeriod: es el camino que solo se
-    // alcanza en ejecucion, cuando llega un valor sin tipar.
     const range = rangeFor('quarter' as ReportPeriod);
 
     expect(range.from).toBe(range.to);

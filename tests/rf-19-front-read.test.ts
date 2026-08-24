@@ -1,10 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { read } from '@/features/movements/useMovementDraft';
 
-/**
- * RF-19 - FRONT - read(type)
- * Un test por cada camino de la tabla de docs/testing/RF-19-borrador-movimiento.md.
- */
 describe('read', () => {
   const CLAVE = 'beverage-ledger:movement-draft:OUTBOUND';
 
@@ -21,13 +17,11 @@ describe('read', () => {
   const almacenamiento = window.localStorage;
 
   afterEach(() => {
-    // El camino 1 deja la ventana sin almacenamiento: se lo devuelvo y lo vacio.
     Object.defineProperty(window, 'localStorage', { value: almacenamiento, configurable: true });
     window.localStorage.clear();
   });
 
   it('Camino 1 - el almacenamiento esta denegado y devuelve el borrador vacio', () => {
-    // Una ventana sin localStorage es lo que ve el catch en modo privado.
     delete (window as { localStorage?: Storage }).localStorage;
 
     expect(read('OUTBOUND')).toEqual(BORRADOR_VACIO);

@@ -2,11 +2,6 @@ import { describe, expect, it } from 'vitest';
 import { ApiError } from '@/lib/api/errors';
 import { unwrap } from '@/lib/api/client';
 
-/**
- * RF-22 - CONEXION - unwrap(result)
- * Un test por cada camino de la tabla de docs/testing/RF-22-existencias-actuales.md.
- * Las respuestas son objetos Response reales, no dobles de prueba.
- */
 describe('unwrap', () => {
   it('Camino 1 - la respuesta no es correcta y lanza ApiError', () => {
     const result = {
