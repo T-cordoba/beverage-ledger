@@ -82,7 +82,7 @@ export interface MovementDraft {
 
 const storageKeyFor = (type: MovementType) => `beverage-ledger:movement-draft:${type}`;
 
-function read(type: MovementType): DraftState {
+export function read(type: MovementType): DraftState {
   try {
     const stored = window.localStorage.getItem(storageKeyFor(type));
     return stored ? { ...EMPTY_STATE, ...(JSON.parse(stored) as DraftState) } : EMPTY_STATE;
