@@ -5,11 +5,6 @@ import { useLowStock } from '@/features/stock/api';
 import { API_ORIGIN } from '@/config/api';
 import { storeSession } from '@/lib/api/session';
 
-/**
- * RF-27 - FRONT - useLowStock(limit, enabled)
- * Un test por cada camino de la tabla de docs/testing/RF-27-bajo-minimo.md.
- * Habla con la API de verdad, asi que hace falta tenerla levantada.
- */
 describe('useLowStock', () => {
   beforeAll(async () => {
     const response = await fetch(`${API_ORIGIN}/api/v1/auth/login`, {
@@ -21,8 +16,6 @@ describe('useLowStock', () => {
       }),
     });
 
-    // storeSession es la misma funcion que usa la pantalla de login: deja el
-    // token en memoria y el cliente lo adjunta a cada peticion.
     storeSession(await response.json());
   });
 

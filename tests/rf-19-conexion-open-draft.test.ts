@@ -4,14 +4,7 @@ import { openDraft } from '@/features/movements/api';
 import { api, unwrap } from '@/lib/api';
 import { storeSession } from '@/lib/api/session';
 
-/**
- * RF-19 - CONEXION - openDraft(input)
- * Un test por cada camino de la tabla de docs/testing/RF-19-borrador-movimiento.md.
- * Abre movimientos de verdad contra la API, asi que hace falta tenerla levantada.
- */
 describe('openDraft', () => {
-  // La nota marca lo que abrio la prueba, para poder anularlo al terminar y
-  // borrarlo despues con el `pnpm test:clean` de la API.
   const NOTA = 'vitest';
 
   let productId = '';
@@ -34,8 +27,6 @@ describe('openDraft', () => {
       }),
     });
 
-    // storeSession es la misma funcion que usa la pantalla de login: deja el
-    // token en memoria y el cliente lo adjunta a cada peticion.
     storeSession(await response.json());
 
     const products = unwrap(

@@ -4,12 +4,6 @@ import { describe, expect, it } from 'vitest';
 import { useDescribeCases } from '@/features/stock/quantity';
 import messages from '@/i18n/messages/es.json';
 
-/**
- * RF-22 - FRONT - useDescribeCases()
- * Un test por cada camino de la tabla de docs/testing/RF-22-existencias-actuales.md.
- * El hook necesita el proveedor de next-intl porque la frase sale de los mensajes
- * en espaniol, que son los de verdad.
- */
 describe('useDescribeCases', () => {
   const describeCases = () =>
     renderHook(() => useDescribeCases(), {
