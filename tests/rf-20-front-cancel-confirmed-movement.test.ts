@@ -1,3 +1,4 @@
+
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { API_ORIGIN } from '@/config/api';
 import { openDraft } from '@/features/movements/api';
@@ -32,7 +33,7 @@ describe('Anular un movimiento confirmado - Front', () => {
 
     const locations = unwrap(
       await api.GET('/api/v1/locations', {
-        params: { query: { pageSize: 2 } },
+        params: { query: { pageSize: 1 } },
       }),
     );
 
@@ -50,28 +51,18 @@ describe('Anular un movimiento confirmado - Front', () => {
     }
   });
 
-  it('Camino 1 - no hay movimiento seleccionado para anular', () => {
-    const movimiento = null;
+  it('Camino 1 - la cancelación falla y se obtiene un error', async () => {
+    const response = await api.POST('/api/v1/movements/{id}/cancel', {
+      params: { path: { id: 'id-inexistente' } },
+      body: {
+        reason: 'Error en el registro',
+      },
+    });
 
-    expect(movimiento).toBeNull();
+    expect(response.error).toBeDefined();
   });
 
-  it('Camino 2 - el movimiento está confirmado', () => {
-    const movimiento = {
-      id: 'movimiento-1',
-      status: 'CONFIRMED',
-    };
-
-    expect(movimiento.status).toBe('CONFIRMED');
-  });
-
-  it('Camino 3 - se ingresa un motivo para anular', () => {
-    const reason = 'Error en el registro';
-
-    expect(reason.trim()).not.toBe('');
-  });
-
-  it('Camino 4 - se confirma y luego se anula el movimiento mediante el API', async () => {
+  it('Camino 2 - la cancelación es exitosa y el movimiento queda cancelado', async () => {
     const draft = await openDraft({
       type: 'OUTBOUND',
       items: [
@@ -98,7 +89,8 @@ describe('Anular un movimiento confirmado - Front', () => {
 
     const cancelado = unwrap(
       await api.POST('/api/v1/movements/{id}/cancel', {
-        params: { path: { id: draft.id } },
+        params: { path: { id: draft.id },
+        },
         body: {
           reason: 'Anulación de prueba RF-20',
         },
@@ -108,3 +100,4 @@ describe('Anular un movimiento confirmado - Front', () => {
     expect(cancelado.status).toBe('CANCELLED');
   });
 });
+

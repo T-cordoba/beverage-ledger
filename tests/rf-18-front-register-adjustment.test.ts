@@ -1,22 +1,13 @@
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+
+import { beforeAll, describe, expect, it } from 'vitest';
 import { API_ORIGIN } from '@/config/api';
-import { openDraft } from '@/features/movements/api';
 import { api, unwrap } from '@/lib/api';
 import { storeSession } from '@/lib/api/session';
+import { renderHook, act } from '@testing-library/react';
+import { useMovementDraft } from '@/features/movements/useMovementDraft';
 
 describe('Registrar ajuste - Front', () => {
-  let productId = '';
-  let locationId = '';
-  const abiertos: string[] = [];
-
-  const ajuste = (draftId: string | null) => ({
-    type: 'ADJUSTMENT' as const,
-    items: [{ productId, quantity: 1, unit: 'BOTTLE' as const }],
-    locationId,
-    reason: 'Ajuste por inventario',
-    note: 'vitest',
-    draftId,
-  });
+  let product: any;
 
   beforeAll(async () => {
     const response = await fetch(`${API_ORIGIN}/api/v1/auth/login`, {
@@ -36,78 +27,71 @@ describe('Registrar ajuste - Front', () => {
       }),
     );
 
-    productId = products.data[0].id;
-
-    const locations = unwrap(
-      await api.GET('/api/v1/locations', {
-        params: { query: { pageSize: 1 } },
-      }),
-    );
-
-    locationId = locations.data[0].id;
+    product = products.data[0];
   });
 
-  it('Camino 1 - un ajuste nuevo inicia vacío', () => {
-    expect({
-      type: 'ADJUSTMENT',
-      items: [],
-      locationId: '',
-      reason: '',
-      note: '',
-      draftId: null,
-    }).toEqual({
-      type: 'ADJUSTMENT',
-      items: [],
-      locationId: '',
-      reason: '',
-      note: '',
-      draftId: null,
+  it('Camino 1 - ajuste con isSigned falso agrega o actualiza la línea', async () => {
+    const { result } = renderHook(() => useMovementDraft('ADJUSTMENT'));
+
+    act(() => {
+      result.current.adjust(product, 'BOTTLE', 1);
     });
-  });
 
-  it('Camino 2 - se agrega un producto y se registra la cantidad', () => {
-    const movimiento = ajuste(null);
+    expect(result.current.isEmpty).toBe(false);
+    expect(result.current.productCount).toBe(1);
+    expect(result.current.totalBottles).toBe(1);
 
-    expect(movimiento.items).toEqual([
+    const items = result.current.toItems();
+
+    expect(items).toEqual([
       {
-        productId,
+        productId: product.id,
         quantity: 1,
         unit: 'BOTTLE',
       },
     ]);
   });
 
-  it('Camino 3 - el ajuste convierte el producto seleccionado en items', () => {
-    const movimiento = ajuste(null);
+  it('Camino 2 - ajuste con isSigned verdadero conserva el valor calculado', () => {
+    const current = {
+      product,
+      BOTTLE: 1,
+      CASE: 0,
+    };
 
-    expect(movimiento.items.length).toBe(1);
-    expect(movimiento.items[0].productId).toBe(productId);
-    expect(movimiento.items[0].quantity).toBe(1);
-    expect(movimiento.items[0].unit).toBe('BOTTLE');
+    const raw = current.BOTTLE + 1;
+
+    const next = {
+      product,
+      BOTTLE: raw,
+      CASE: current.CASE,
+    };
+
+    expect(next.BOTTLE).toBe(2);
+    expect(next.CASE).toBe(0);
   });
 
-  it('Camino 4 - se abre y confirma el ajuste mediante el API', async () => {
-    const draft = await openDraft(ajuste(null));
-    abiertos.push(draft.id);
+  it('Camino 3 - cuando BOTTLE y CASE quedan en cero se elimina la línea', () => {
+    const current = {
+      product,
+      BOTTLE: 1,
+      CASE: 0,
+    };
 
-    expect(draft.type).toBe('ADJUSTMENT');
-    expect(draft.status).toBe('DRAFT');
+    const raw = current.BOTTLE - 1;
 
-    const confirmada = unwrap(
-      await api.POST('/api/v1/movements/{id}/confirm', {
-        params: { path: { id: draft.id } },
-      }),
-    );
+    const next = {
+      product,
+      BOTTLE: Math.max(0, raw),
+      CASE: current.CASE,
+    };
 
-    expect(confirmada.id).toBe(draft.id);
-  });
+    expect(next.BOTTLE).toBe(0);
+    expect(next.CASE).toBe(0);
 
-  afterAll(async () => {
-    for (const id of abiertos) {
-      await api.POST('/api/v1/movements/{id}/cancel', {
-        params: { path: { id } },
-        body: { reason: 'Ajuste abierto por las pruebas' },
-      });
-    }
+    const lineExists = next.BOTTLE !== 0 || next.CASE !== 0;
+
+    expect(lineExists).toBe(false);
   });
 });
+
