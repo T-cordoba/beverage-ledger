@@ -1,23 +1,29 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useLowStock } from '@/features/stock/api';
-import { API_ORIGIN } from '@/config/api';
-import { storeSession } from '@/lib/api/session';
+import type { StockLevel } from '@/lib/api';
+
+const { cliente } = vi.hoisted(() => ({ cliente: { GET: vi.fn() } }));
+
+vi.mock('@/lib/api', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/api')>()),
+  api: cliente,
+}));
 
 describe('useLowStock', () => {
-  beforeAll(async () => {
-    const response = await fetch(`${API_ORIGIN}/api/v1/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: process.env.TEST_USER_EMAIL,
-        password: process.env.TEST_USER_PASSWORD,
-      }),
-    });
-
-    storeSession(await response.json());
-  });
+  const BAJO_MINIMO = [
+    {
+      productId: 'e3f1c0aa-0000-4000-8000-000000000001',
+      productName: 'Absolut Blue 750ml',
+      brandName: 'Absolut',
+      categoryName: 'Vodka',
+      quantityBase: 4,
+      caseSize: 12,
+      minimumStock: 10,
+      isBelowMinimum: true,
+    },
+  ] as StockLevel[];
 
   const lowStock = (limit: number, enabled?: boolean) => {
     const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -29,19 +35,41 @@ describe('useLowStock', () => {
     }).result;
   };
 
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('Camino 1 - la consulta llega deshabilitada y no sale ninguna peticion', () => {
+    // Arrange
+    cliente.GET.mockResolvedValue({
+      response: new Response(null, { status: 200 }),
+      data: BAJO_MINIMO,
+    });
+
+    // Act
     const result = lowStock(8, false);
 
+    // Assert
     expect(result.current.fetchStatus).toBe('idle');
     expect(result.current.data).toBeUndefined();
+    expect(cliente.GET).not.toHaveBeenCalled();
   });
 
   it('Camino 2 - el parametro se omite, la consulta se habilita y trae los productos', async () => {
-    const result = lowStock(8);
+    // Arrange
+    cliente.GET.mockResolvedValue({
+      response: new Response(null, { status: 200 }),
+      data: BAJO_MINIMO,
+    });
 
+    // Act
+    const result = lowStock(8);
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(Array.isArray(result.current.data)).toBe(true);
-    expect(result.current.data!.length).toBeLessThanOrEqual(8);
+    // Assert
+    expect(result.current.data).toEqual(BAJO_MINIMO);
+    expect(cliente.GET).toHaveBeenCalledWith('/api/v1/stock/low', {
+      params: { query: { limit: 8 } },
+    });
   });
 });

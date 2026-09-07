@@ -1,69 +1,80 @@
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { API_ORIGIN } from '@/config/api';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { openDraft } from '@/features/movements/api';
-import { api, unwrap } from '@/lib/api';
-import { storeSession } from '@/lib/api/session';
+import type { Movement } from '@/lib/api';
+
+// Solo el cliente HTTP se sustituye: unwrap sigue siendo el real, que es lo que
+// convierte el par { data, error } en el movimiento o en un ApiError.
+const { cliente } = vi.hoisted(() => ({
+  cliente: { PATCH: vi.fn(), POST: vi.fn() },
+}));
+
+vi.mock('@/lib/api', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/api')>()),
+  api: cliente,
+}));
 
 describe('openDraft', () => {
-  const NOTA = 'vitest';
+  const BORRADOR_VIVO = 'd1000000-0000-4000-8000-000000000001';
+  const PRODUCTO = 'e3f1c0aa-0000-4000-8000-000000000001';
 
-  let productId = '';
-  const abiertos: string[] = [];
+  const movimiento = (id: string) => ({ id, status: 'DRAFT', type: 'OUTBOUND' }) as Movement;
+
+  const respuesta = (status: number, data?: Movement) => ({
+    response: new Response(null, { status }),
+    data,
+  });
 
   const salida = (draftId: string | null) => ({
     type: 'OUTBOUND' as const,
-    items: [{ productId, quantity: 1, unit: 'BOTTLE' as const }],
-    note: NOTA,
+    items: [{ productId: PRODUCTO, quantity: 1, unit: 'BOTTLE' as const }],
     draftId,
   });
 
-  beforeAll(async () => {
-    const response = await fetch(`${API_ORIGIN}/api/v1/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: process.env.TEST_USER_EMAIL,
-        password: process.env.TEST_USER_PASSWORD,
-      }),
-    });
-
-    storeSession(await response.json());
-
-    const products = unwrap(
-      await api.GET('/api/v1/products', { params: { query: { pageSize: 1 } } }),
-    );
-
-    productId = products.data[0].id;
-  });
-
-  afterAll(async () => {
-    for (const id of abiertos) {
-      await api.POST('/api/v1/movements/{id}/cancel', {
-        params: { path: { id } },
-        body: { reason: 'Borrador abierto por las pruebas' },
-      });
-    }
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
   it('Camino 1 - no hay borrador previo y se abre un movimiento nuevo', async () => {
-    const movement = await openDraft(salida(null));
-    abiertos.push(movement.id);
+    // Arrange
+    const nuevo = movimiento('d1000000-0000-4000-8000-000000000009');
+    cliente.POST.mockResolvedValue(respuesta(201, nuevo));
 
-    expect(movement.status).toBe('DRAFT');
+    // Act
+    const abierto = await openDraft(salida(null));
+
+    // Assert
+    expect(abierto).toEqual(nuevo);
+    expect(cliente.PATCH).not.toHaveBeenCalled();
+    expect(cliente.POST).toHaveBeenCalledTimes(1);
   });
 
   it('Camino 2 - hay un borrador vivo y se reutiliza el mismo movimiento', async () => {
-    const reutilizado = await openDraft(salida(abiertos[0]));
+    // Arrange
+    const vivo = movimiento(BORRADOR_VIVO);
+    cliente.PATCH.mockResolvedValue(respuesta(200, vivo));
 
-    expect(reutilizado.id).toBe(abiertos[0]);
+    // Act
+    const abierto = await openDraft(salida(BORRADOR_VIVO));
+
+    // Assert
+    expect(abierto.id).toBe(BORRADOR_VIVO);
+    expect(cliente.PATCH).toHaveBeenCalledTimes(1);
+    expect(cliente.POST).not.toHaveBeenCalled();
   });
 
   it('Camino 3 - el borrador ya no existe y se abre un movimiento nuevo', async () => {
-    const inventado = crypto.randomUUID();
+    // Arrange
+    const nuevo = movimiento('d1000000-0000-4000-8000-000000000009');
+    cliente.PATCH.mockResolvedValue(respuesta(409));
+    cliente.POST.mockResolvedValue(respuesta(201, nuevo));
 
-    const movement = await openDraft(salida(inventado));
-    abiertos.push(movement.id);
+    // Act
+    const abierto = await openDraft(salida(BORRADOR_VIVO));
 
-    expect(movement.id).not.toBe(inventado);
+    // Assert
+    expect(abierto).toEqual(nuevo);
+    expect(abierto.id).not.toBe(BORRADOR_VIVO);
+    expect(cliente.PATCH).toHaveBeenCalledTimes(1);
+    expect(cliente.POST).toHaveBeenCalledTimes(1);
   });
 });
