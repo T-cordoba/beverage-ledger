@@ -2,7 +2,7 @@ name: SonarCloud
 
 on:
   push:
-    branches: [master, test/white-box]
+    branches: [master]
   pull_request:
     branches: [master]
 
