@@ -13,9 +13,11 @@ import {
   REPORT_PERIODS,
   useActivityReport,
   useSummaryReport,
+  type ActivityGranularity,
   type ReportPeriod,
 } from '@/features/reports';
 import { LowStockCard } from '@/features/stock';
+import type { ActivityRow } from '@/lib/api';
 import { ActivityChart } from './ActivityChart';
 
 /** How many tiles the summary paints, so its placeholder is the same shape. */
@@ -73,94 +75,18 @@ export function DashboardView() {
       <NewMovementPanel />
       <NewMovementFab />
 
-      {canSeeReports &&
-        (summary.isPending ? (
-          // Eight tiles in the same grid the real ones land in, so nothing below
-          // jumps when the numbers arrive.
-          <div
-            role="status"
-            aria-label={t('loadingSummary')}
-            className="grid grid-cols-2 gap-3 lg:grid-cols-4"
-          >
-            {Array.from({ length: SUMMARY_TILES }, (_, index) => (
-              <Card key={index} className="space-y-2 bg-contrast/5">
-                <Skeleton className="mx-auto h-8 w-20" />
-                <Skeleton className="mx-auto h-3 w-24" />
-                <Skeleton className="mx-auto h-3 w-16" />
-              </Card>
-            ))}
-          </div>
-        ) : summary.error ? (
-          <EmptyState title={t('summaryFailed')} description={tStates('apiUnreachable')} />
-        ) : (
-          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <StatTile
-              label={t('tiles.unitsOnHand')}
-              value={format.number(summary.data.unitsOnHand)}
-              hint={t('hints.now')}
-            />
-            <StatTile
-              label={t('tiles.belowMinimum')}
-              value={format.number(summary.data.productsBelowMinimum)}
-              hint={t('hints.now')}
-              tone={summary.data.productsBelowMinimum > 0 ? 'warning' : 'success'}
-            />
-            <StatTile
-              label={t('tiles.activeProducts')}
-              value={format.number(summary.data.activeProducts)}
-              hint={t('hints.now')}
-            />
-            <StatTile
-              label={t('tiles.productsMoved')}
-              value={format.number(summary.data.productsMoved)}
-              hint={t('hints.period')}
-            />
-            <StatTile
-              label={t('tiles.movements')}
-              value={format.number(summary.data.movements)}
-              hint={t('hints.confirmedInPeriod')}
-            />
-            <StatTile
-              label={t('tiles.unitsIn')}
-              value={format.number(summary.data.unitsIn)}
-              hint={t('hints.period')}
-            />
-            <StatTile
-              label={t('tiles.unitsOut')}
-              value={format.number(summary.data.unitsOut)}
-              hint={t('hints.period')}
-            />
-            <StatTile
-              label={t('tiles.netAdjusted')}
-              value={format.number(summary.data.unitsAdjusted, 'signed')}
-              hint={t('hints.period')}
-              tone={summary.data.unitsAdjusted < 0 ? 'warning' : 'accent'}
-            />
-          </div>
-        ))}
+      {canSeeReports && (
+        <SummaryTiles summary={summary} t={t} tStates={tStates} format={format} />
+      )}
 
       <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
         {canSeeReports && (
-          <Card className="min-w-0 space-y-4 bg-contrast/5">
-            <div className="flex items-center justify-between gap-3">
-              <h2 className="text-lg font-medium text-accent">{t('activity.title')}</h2>
-              <Button variant="ghost" size="sm" asChild>
-                <Link href={ROUTES.reports}>{t('activity.link')}</Link>
-              </Button>
-            </div>
-
-            {activity.isPending ? (
-              <div role="status" aria-label={t('activity.loading')}>
-                <Skeleton className="h-40" />
-              </div>
-            ) : activity.error ? (
-              <EmptyState title={t('activity.loadFailed')} />
-            ) : activityRows.length === 0 ? (
-              <EmptyState title={t('activity.empty')} />
-            ) : (
-              <ActivityChart rows={activityRows} granularity={granularity} />
-            )}
-          </Card>
+          <ActivitySection
+            activity={activity}
+            activityRows={activityRows}
+            granularity={granularity}
+            t={t}
+          />
         )}
 
         {can('stock:read') && <LowStockCard />}
@@ -168,5 +94,123 @@ export function DashboardView() {
 
       {can('movement:read') && <RecentMovementsCard />}
     </div>
+  );
+}
+
+function SummaryTiles({
+  summary,
+  t,
+  tStates,
+  format,
+}: {
+  summary: ReturnType<typeof useSummaryReport>;
+  t: ReturnType<typeof useTranslations<'dashboard'>>;
+  tStates: ReturnType<typeof useTranslations<'common.states'>>;
+  format: ReturnType<typeof useFormatter>;
+}) {
+  if (summary.isPending) {
+    // Eight tiles in the same grid the real ones land in, so nothing below
+    // jumps when the numbers arrive.
+    return (
+      <div
+        role="status"
+        aria-label={t('loadingSummary')}
+        className="grid grid-cols-2 gap-3 lg:grid-cols-4"
+      >
+        {Array.from({ length: SUMMARY_TILES }, (_, index) => (
+          <Card key={index} className="space-y-2 bg-contrast/5">
+            <Skeleton className="mx-auto h-8 w-20" />
+            <Skeleton className="mx-auto h-3 w-24" />
+            <Skeleton className="mx-auto h-3 w-16" />
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
+  if (summary.error) {
+    return <EmptyState title={t('summaryFailed')} description={tStates('apiUnreachable')} />;
+  }
+
+  return (
+    <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <StatTile
+        label={t('tiles.unitsOnHand')}
+        value={format.number(summary.data.unitsOnHand)}
+        hint={t('hints.now')}
+      />
+      <StatTile
+        label={t('tiles.belowMinimum')}
+        value={format.number(summary.data.productsBelowMinimum)}
+        hint={t('hints.now')}
+        tone={summary.data.productsBelowMinimum > 0 ? 'warning' : 'success'}
+      />
+      <StatTile
+        label={t('tiles.activeProducts')}
+        value={format.number(summary.data.activeProducts)}
+        hint={t('hints.now')}
+      />
+      <StatTile
+        label={t('tiles.productsMoved')}
+        value={format.number(summary.data.productsMoved)}
+        hint={t('hints.period')}
+      />
+      <StatTile
+        label={t('tiles.movements')}
+        value={format.number(summary.data.movements)}
+        hint={t('hints.confirmedInPeriod')}
+      />
+      <StatTile
+        label={t('tiles.unitsIn')}
+        value={format.number(summary.data.unitsIn)}
+        hint={t('hints.period')}
+      />
+      <StatTile
+        label={t('tiles.unitsOut')}
+        value={format.number(summary.data.unitsOut)}
+        hint={t('hints.period')}
+      />
+      <StatTile
+        label={t('tiles.netAdjusted')}
+        value={format.number(summary.data.unitsAdjusted, 'signed')}
+        hint={t('hints.period')}
+        tone={summary.data.unitsAdjusted < 0 ? 'warning' : 'accent'}
+      />
+    </div>
+  );
+}
+
+function ActivitySection({
+  activity,
+  activityRows,
+  granularity,
+  t,
+}: {
+  activity: ReturnType<typeof useActivityReport>;
+  activityRows: ActivityRow[];
+  granularity: ActivityGranularity;
+  t: ReturnType<typeof useTranslations<'dashboard'>>;
+}) {
+  return (
+    <Card className="min-w-0 space-y-4 bg-contrast/5">
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="text-lg font-medium text-accent">{t('activity.title')}</h2>
+        <Button variant="ghost" size="sm" asChild>
+          <Link href={ROUTES.reports}>{t('activity.link')}</Link>
+        </Button>
+      </div>
+
+      {activity.isPending ? (
+        <div role="status" aria-label={t('activity.loading')}>
+          <Skeleton className="h-40" />
+        </div>
+      ) : activity.error ? (
+        <EmptyState title={t('activity.loadFailed')} />
+      ) : activityRows.length === 0 ? (
+        <EmptyState title={t('activity.empty')} />
+      ) : (
+        <ActivityChart rows={activityRows} granularity={granularity} />
+      )}
+    </Card>
   );
 }
