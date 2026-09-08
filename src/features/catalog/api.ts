@@ -29,7 +29,6 @@ export const catalogKeys = {
   all: ['products'] as const,
   products: (query: ProductQuery, page: PageParams) => ['products', query, page] as const,
   product: (id: string) => ['products', 'detail', id] as const,
-  byIds: (ids: string[]) => ['products', 'by-ids', ids] as const,
   facets: ['product-facets'] as const,
   categories: ['categories'] as const,
   brands: ['brands'] as const,
@@ -44,36 +43,6 @@ export function useProducts(query: ProductQuery, page: PageParams) {
     // list is replaced by a spinner on each keystroke that settles, which reads
     // as flicker, and paging blanks the table instead of swapping its rows.
     placeholderData: keepPreviousData,
-  });
-}
-
-/**
- * Resolves a known set of products in one request.
- *
- * `status: 'all'` because a line already on the ledger may point at a product
- * that has since been deactivated, and dropping it would silently shorten what
- * is being restored.
- */
-export function useProductsByIds(ids: string[], enabled = true) {
-  const sorted = [...ids].sort();
-
-  return useQuery({
-    queryKey: catalogKeys.byIds(sorted),
-    queryFn: async () =>
-      unwrap(
-        await api.GET('/api/v1/products', {
-          params: {
-            query: {
-              productIds: sorted.join(','),
-              status: 'all',
-              // A draft with more distinct products than one page holds is not
-              // something the capture screen can produce.
-              pageSize: Math.min(sorted.length, MAX_PAGE_SIZE),
-            },
-          },
-        }),
-      ),
-    enabled: enabled && sorted.length > 0,
   });
 }
 
