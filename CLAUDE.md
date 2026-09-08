@@ -74,12 +74,16 @@ pnpm install --frozen-lockfile  # lo que hace CI: falla si el lockfile no cuadra
 pnpm dev                        # servidor de desarrollo (Turbopack) en :3000
 pnpm build                      # build de producción
 pnpm start                      # servir el build
+pnpm test                       # Vitest, las pruebas de caminos de tests/
+pnpm test:coverage              # las mismas + coverage/lcov.info para SonarCloud
 pnpm api:types                  # regenera src/lib/api/schema.d.ts desde la API viva
 pnpm i18n:check                 # es.json y en.json tienen las mismas claves
 pnpm lint                       # ESLint
 pnpm typecheck                  # tsc --noEmit
 pnpm format                     # Prettier --write
 ```
+
+Cuatro pruebas de `tests/` (`rf-01-front-handle-submit`, `rf-03-front-accept-invite-form`, `rf-09-front-submit`, `rf-29-front-change-status`) hacen login real y golpean la API: necesitan `TEST_USER_EMAIL` y `TEST_USER_PASSWORD` en el `.env` y un `NEXT_PUBLIC_API_URL` que responda. `rf-09` además **escribe**: reasigna el `origin` de un producto y crea uno nuevo que deja desactivado. En CI corren igual, contra Render, por decisión del usuario.
 
 `api:types` lee el origen de **`NEXT_PUBLIC_API_URL`** (`scripts/generate-api-types.mjs`), así que regenera contra lo que tengas configurado —API local o la de Render— sin editar el `package.json`. Antes estaba quemado a `localhost:3001`, lo que dejaba el contrato irregenerable cuando la API local no se podía levantar. El script usa la API de Node de `openapi-typescript` en vez del CLI, y el `pnpm format` posterior es lo que hace la salida idéntica a lo versionado.
 
@@ -126,7 +130,11 @@ Lo que se aplaza: signup de organizaciones, billing, invitaciones, subdominios, 
 
 **Auth propia con Passport (local + Google OAuth), no un proveedor gestionado.** Decisión del usuario: control total sobre el modelo de permisos y sin coste por usuario.
 
-**Sin infraestructura de tests en este trabajo.** El usuario construye el proceso de verificación y validación a lo largo del semestre, y es él quien debe hacerlo. **No añadas Jest, Vitest, Playwright, GitHub Actions ni Husky.** Sí escribe código testeable: services sin acoplamiento a HTTP ni a Prisma, dependencias inyectadas, lógica de negocio en funciones puras.
+**El proceso de V&V lo diseña el usuario, no el agente.** Es su trabajo del semestre, así que **no añadas herramienta de pruebas nueva sin que te la pidan**. Lo que ya existe y sí se mantiene: **Vitest** con las pruebas de caminos en `tests/`, y un workflow de **GitHub Actions** que publica el coverage en SonarCloud. La regla anterior —"no añadas Jest, Vitest, Playwright, GitHub Actions ni Husky"— es de la etapa de construcción y quedó derogada cuando empezó el trabajo de V&V.
+
+Sí escribe código testeable: services sin acoplamiento a HTTP ni a Prisma, dependencias inyectadas, lógica de negocio en funciones puras.
+
+**El coverage está acotado a propósito.** `coverage.include` de `vitest.config.mts` lista los archivos que alguna prueba ejecuta de verdad, y `sonar.coverage.exclusions` de `sonar-project.properties` escribe el complemento —los patrones de Sonar no admiten negación—. Las dos listas tienen que moverse juntas: si una prueba nueva estrena un módulo, va a las dos. Medir sobre todo `src/` daría un porcentaje que no dice nada, porque cuenta como 0 % lo que nadie se propuso probar.
 
 ---
 
