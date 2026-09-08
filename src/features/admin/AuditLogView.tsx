@@ -45,6 +45,52 @@ function dayBounds(dateKey: string): { from: string; to: string } {
   return { from: start.toISOString(), to: end.toISOString() };
 }
 
+function renderWhenCell(log: AuditLog, format: ReturnType<typeof useFormatter>) {
+  return (
+    <span className="text-contrast/70">{format.dateTime(new Date(log.createdAt), 'full')}</span>
+  );
+}
+
+function renderWhoCell(log: AuditLog, t: ReturnType<typeof useTranslations<'admin.audit'>>) {
+  return log.user ? (
+    <div className="min-w-0 space-y-0.5">
+      <p className="text-foreground">{log.user.name}</p>
+      <p className="truncate text-xs text-contrast/50">{log.user.email}</p>
+    </div>
+  ) : (
+    <span className="text-xs text-contrast/50">{t('system')}</span>
+  );
+}
+
+function renderActionCell(log: AuditLog, t: ReturnType<typeof useTranslations<'admin.audit'>>) {
+  return (
+    <span className="text-accent" title={log.action}>
+      {t(`actionNames.${log.action}`)}
+    </span>
+  );
+}
+
+function renderEntityCell(log: AuditLog, t: ReturnType<typeof useTranslations<'admin.audit'>>) {
+  return (
+    <div className="min-w-0 space-y-0.5">
+      <p className="text-contrast/70">{t(`entities.${log.entity}`)}</p>
+      {log.entityId && (
+        <p className="truncate font-mono text-xs text-contrast/40">{log.entityId}</p>
+      )}
+    </div>
+  );
+}
+
+function renderMetadataCell(log: AuditLog) {
+  return <span className="text-xs text-contrast/60">{describeMetadata(log.metadata)}</span>;
+}
+
+function renderIpCell(log: AuditLog, tStates: ReturnType<typeof useTranslations<'common.states'>>) {
+  return (
+    <span className="font-mono text-xs text-contrast/50">{log.ipAddress ?? tStates('none')}</span>
+  );
+}
+
 export function AuditLogView() {
   const t = useTranslations('admin.audit');
   const tStates = useTranslations('common.states');
@@ -133,9 +179,7 @@ export function AuditLogView() {
       // Without this the timestamp wraps onto four lines and the row grows tall.
       // Only a concern where it shares a row: on a phone it has one of its own.
       className: 'sm:whitespace-nowrap',
-      cell: (log) => (
-        <span className="text-contrast/70">{format.dateTime(new Date(log.createdAt), 'full')}</span>
-      ),
+      cell: (log) => renderWhenCell(log, format),
     },
     {
       key: 'user',
@@ -147,15 +191,7 @@ export function AuditLogView() {
           <Skeleton className="h-4 w-40" />
         </div>
       ),
-      cell: (log) =>
-        log.user ? (
-          <div className="min-w-0 space-y-0.5">
-            <p className="text-foreground">{log.user.name}</p>
-            <p className="truncate text-xs text-contrast/50">{log.user.email}</p>
-          </div>
-        ) : (
-          <span className="text-xs text-contrast/50">{t('system')}</span>
-        ),
+      cell: (log) => renderWhoCell(log, t),
     },
     {
       key: 'action',
@@ -163,11 +199,7 @@ export function AuditLogView() {
       primary: true,
       // The code stays reachable on hover: it is what an API log or a support
       // question will name, and the translated wording is not.
-      cell: (log) => (
-        <span className="text-accent" title={log.action}>
-          {t(`actionNames.${log.action}`)}
-        </span>
-      ),
+      cell: (log) => renderActionCell(log, t),
     },
     {
       key: 'entity',
@@ -179,22 +211,13 @@ export function AuditLogView() {
           <Skeleton className="h-4 w-32" />
         </div>
       ),
-      cell: (log) => (
-        <div className="min-w-0 space-y-0.5">
-          <p className="text-contrast/70">{t(`entities.${log.entity}`)}</p>
-          {log.entityId && (
-            <p className="truncate font-mono text-xs text-contrast/40">{log.entityId}</p>
-          )}
-        </div>
-      ),
+      cell: (log) => renderEntityCell(log, t),
     },
     {
       key: 'metadata',
       header: t('columns.detail'),
       hideBelow: 'lg',
-      cell: (log) => (
-        <span className="text-xs text-contrast/60">{describeMetadata(log.metadata)}</span>
-      ),
+      cell: renderMetadataCell,
     },
     {
       key: 'ipAddress',
@@ -202,11 +225,7 @@ export function AuditLogView() {
       align: 'end',
       hideBelow: 'lg',
       skeleton: <Skeleton className="ml-auto h-5 w-24" />,
-      cell: (log) => (
-        <span className="font-mono text-xs text-contrast/50">
-          {log.ipAddress ?? tStates('none')}
-        </span>
-      ),
+      cell: (log) => renderIpCell(log, tStates),
     },
   ];
 
