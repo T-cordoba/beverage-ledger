@@ -40,33 +40,27 @@ describe('useLowStock', () => {
   });
 
   it('Camino 1 - la consulta llega deshabilitada y no sale ninguna peticion', () => {
-    // Arrange
     cliente.GET.mockResolvedValue({
       response: new Response(null, { status: 200 }),
       data: BAJO_MINIMO,
     });
 
-    // Act
     const result = lowStock(8, false);
 
-    // Assert
     expect(result.current.fetchStatus).toBe('idle');
     expect(result.current.data).toBeUndefined();
     expect(cliente.GET).not.toHaveBeenCalled();
   });
 
   it('Camino 2 - el parametro se omite, la consulta se habilita y trae los productos', async () => {
-    // Arrange
     cliente.GET.mockResolvedValue({
       response: new Response(null, { status: 200 }),
       data: BAJO_MINIMO,
     });
 
-    // Act
     const result = lowStock(8);
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    // Assert
     expect(result.current.data).toEqual(BAJO_MINIMO);
     expect(cliente.GET).toHaveBeenCalledWith('/api/v1/stock/low', {
       params: { query: { limit: 8 } },

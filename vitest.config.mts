@@ -12,11 +12,8 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
-    // Los tests que todavia escriben en la API real no se pueden solapar.
     fileParallelism: false,
     env: {
-      // src/config/api.ts lanza al importarse si falta, y hasta los tests que no
-      // salen a la red importan el cliente.
       NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001',
     },
   },
