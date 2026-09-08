@@ -131,8 +131,23 @@ export function ActivityChart({
 
         <div
           ref={plotRef}
-          role="img"
+          // Arrows and Home/End move a cursor across the periods, so the role
+          // has to be the interactive one that matches those keys: `img` would
+          // promise a picture and leave the focus and the keys unexplained.
+          role="slider"
           tabIndex={0}
+          aria-valuemin={0}
+          aria-valuemax={Math.max(0, rows.length - 1)}
+          aria-valuenow={activeIndex ?? 0}
+          aria-valuetext={
+            active
+              ? t('pointLabel', {
+                  period: labelFor(active.period),
+                  unitsIn: active.unitsIn,
+                  unitsOut: active.unitsOut,
+                })
+              : undefined
+          }
           aria-label={t('chartLabel', {
             granularity: tGranularity(granularity),
             from: first ? labelFor(first.period) : '',
