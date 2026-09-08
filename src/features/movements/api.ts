@@ -185,7 +185,9 @@ export function useResumeDraft() {
           ? movement.items.filter((item) => item.quantityBase < 0)
           : movement.items;
 
-      const productIds = [...new Set(items.map((item) => item.productId))].sort();
+      const productIds = [...new Set(items.map((item) => item.productId))].sort((a, b) =>
+        a.localeCompare(b),
+      );
 
       const products = unwrap(
         await api.GET('/api/v1/products', {

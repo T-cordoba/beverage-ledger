@@ -41,7 +41,7 @@ export function useStockAvailability(
   // time, so this keeps the URL bounded and lets an already-fetched page stay
   // cached instead of refetching everything whenever one more product loads.
   const chunks: string[][] = [];
-  const ids = [...productIds].sort();
+  const ids = [...productIds].sort((a, b) => a.localeCompare(b));
 
   for (let index = 0; index < ids.length; index += AVAILABILITY_CHUNK) {
     chunks.push(ids.slice(index, index + AVAILABILITY_CHUNK));
