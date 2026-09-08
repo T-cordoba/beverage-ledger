@@ -150,10 +150,15 @@ export function DataTable<T>({
     return <>{empty ?? <EmptyState title={t('nothingToShow')} />}</>;
   }
 
+  // `<output>` carries an implicit status role, which Sonar wants over a bare
+  // `role="status"` div for broader assistive-tech support. It only replaces
+  // the div while loading — output defaults to inline, so `block` matches the
+  // div's layout in that state.
+  const Wrapper = isLoading ? 'output' : 'div';
+
   return (
-    <div
-      className={cn('overflow-x-auto', className)}
-      role={isLoading ? 'status' : undefined}
+    <Wrapper
+      className={cn('overflow-x-auto', isLoading && 'block', className)}
       aria-busy={isLoading || undefined}
     >
       {/* Fixed layout on a phone, automatic from `sm` up.
@@ -312,6 +317,6 @@ export function DataTable<T>({
               })}
         </tbody>
       </table>
-    </div>
+    </Wrapper>
   );
 }
