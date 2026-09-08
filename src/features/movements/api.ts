@@ -117,7 +117,7 @@ export interface RegisterMovementInput {
 /** Statuses that make a draft unusable: someone else confirmed, voided or removed it. */
 const GONE_DRAFT_STATUSES = new Set([404, 409]);
 
-async function openDraft({ draftId, ...input }: RegisterMovementInput): Promise<Movement> {
+export async function openDraft({ draftId, ...input }: RegisterMovementInput): Promise<Movement> {
   if (draftId) {
     const updated = await api.PATCH('/api/v1/movements/{id}', {
       params: { path: { id: draftId } },
