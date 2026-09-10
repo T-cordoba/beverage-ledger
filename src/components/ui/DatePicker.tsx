@@ -111,15 +111,14 @@ export function DatePicker({ value, onChange, placeholder, className }: DatePick
     },
   }[mode];
 
+  const cellVariantClasses = (isSelected: boolean, isToday: boolean): string => {
+    if (isSelected) return 'bg-accent font-medium text-background hover:bg-accent-hover';
+    if (isToday) return 'bg-contrast/10 font-medium text-accent';
+    return 'text-contrast hover:text-accent';
+  };
+
   const cellClasses = (isSelected: boolean, isToday: boolean) =>
-    cn(
-      'w-full text-sm',
-      isSelected
-        ? 'bg-accent font-medium text-background hover:bg-accent-hover'
-        : isToday
-          ? 'bg-contrast/10 font-medium text-accent'
-          : 'text-contrast hover:text-accent',
-    );
+    cn('w-full text-sm', cellVariantClasses(isSelected, isToday));
 
   return (
     <div className={cn('relative', className)}>

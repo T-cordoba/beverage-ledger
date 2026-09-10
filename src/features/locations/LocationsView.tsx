@@ -229,38 +229,41 @@ export function LocationsView() {
           <Skeleton className="h-9 w-20" />
         </div>
       ),
-      cell: (location) => (
-        <div className="flex justify-end gap-2">
-          {!location.isDefault && (
-            <Button
-              variant="secondary"
-              size="sm"
-              disabled={isSaving}
-              onClick={() => void promote(location)}
-            >
-              {t('makeDefault')}
+      cell: (location) => {
+        let deleteBlockedReason: string | undefined;
+        if (location.isDefault) {
+          deleteBlockedReason = t('delete.blockedDefault');
+        } else if (location.movementCount > 0) {
+          deleteBlockedReason = t('delete.blockedInUse', { count: location.movementCount });
+        }
+
+        return (
+          <div className="flex justify-end gap-2">
+            {!location.isDefault && (
+              <Button
+                variant="secondary"
+                size="sm"
+                disabled={isSaving}
+                onClick={() => void promote(location)}
+              >
+                {t('makeDefault')}
+              </Button>
+            )}
+            <Button variant="secondary" size="sm" onClick={() => openForm(location)}>
+              {t('rename')}
             </Button>
-          )}
-          <Button variant="secondary" size="sm" onClick={() => openForm(location)}>
-            {t('rename')}
-          </Button>
-          <Button
-            variant="danger-outline"
-            size="sm"
-            disabled={location.isDefault || location.movementCount > 0}
-            title={
-              location.isDefault
-                ? t('delete.blockedDefault')
-                : location.movementCount > 0
-                  ? t('delete.blockedInUse', { count: location.movementCount })
-                  : undefined
-            }
-            onClick={() => setDeleting(location)}
-          >
-            {tActions('delete')}
-          </Button>
-        </div>
-      ),
+            <Button
+              variant="danger-outline"
+              size="sm"
+              disabled={location.isDefault || location.movementCount > 0}
+              title={deleteBlockedReason}
+              onClick={() => setDeleting(location)}
+            >
+              {tActions('delete')}
+            </Button>
+          </div>
+        );
+      },
     },
   ];
 

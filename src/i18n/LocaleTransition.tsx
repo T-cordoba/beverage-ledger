@@ -1,7 +1,14 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { createContext, useContext, useTransition, type ReactNode } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useTransition,
+  type ReactNode,
+} from 'react';
 import { cn } from '@/lib/utils';
 import { setLocale } from './actions';
 import type { Locale } from './config';
@@ -37,16 +44,21 @@ export function LocaleTransitionProvider({ children }: { children: ReactNode }) 
   const router = useRouter();
   const [isChanging, startTransition] = useTransition();
 
-  const change = (locale: Locale) => {
-    startTransition(async () => {
-      await setLocale(locale);
-      // Only a fresh server render carries the new messages down.
-      router.refresh();
-    });
-  };
+  const change = useCallback(
+    (locale: Locale) => {
+      startTransition(async () => {
+        await setLocale(locale);
+        // Only a fresh server render carries the new messages down.
+        router.refresh();
+      });
+    },
+    [router, startTransition],
+  );
+
+  const value = useMemo(() => ({ isChanging, change }), [isChanging, change]);
 
   return (
-    <LocaleTransitionContext.Provider value={{ isChanging, change }}>
+    <LocaleTransitionContext.Provider value={value}>
       {/* Opacity rather than anything that removes the content: the layout has
           to hold still, or the page collapses and rebuilds mid-swap. */}
       <div className={cn('transition-opacity duration-slow', isChanging && 'opacity-40')}>

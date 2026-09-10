@@ -2,7 +2,7 @@
 
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { Button, Card, EmptyState, SegmentedControl, Skeleton, StatTile } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
@@ -75,9 +75,7 @@ export function DashboardView() {
       <NewMovementPanel />
       <NewMovementFab />
 
-      {canSeeReports && (
-        <SummaryTiles summary={summary} t={t} tStates={tStates} format={format} />
-      )}
+      {canSeeReports && <SummaryTiles summary={summary} t={t} tStates={tStates} format={format} />}
 
       <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
         {canSeeReports && (
@@ -112,11 +110,7 @@ function SummaryTiles({
     // Eight tiles in the same grid the real ones land in, so nothing below
     // jumps when the numbers arrive.
     return (
-      <div
-        role="status"
-        aria-label={t('loadingSummary')}
-        className="grid grid-cols-2 gap-3 lg:grid-cols-4"
-      >
+      <output aria-label={t('loadingSummary')} className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {Array.from({ length: SUMMARY_TILES }, (_, index) => (
           <Card key={index} className="space-y-2 bg-contrast/5">
             <Skeleton className="mx-auto h-8 w-20" />
@@ -124,7 +118,7 @@ function SummaryTiles({
             <Skeleton className="mx-auto h-3 w-16" />
           </Card>
         ))}
-      </div>
+      </output>
     );
   }
 
@@ -191,6 +185,21 @@ function ActivitySection({
   granularity: ActivityGranularity;
   t: ReturnType<typeof useTranslations<'dashboard'>>;
 }) {
+  let body: ReactNode;
+  if (activity.isPending) {
+    body = (
+      <output aria-label={t('activity.loading')} className="block">
+        <Skeleton className="h-40" />
+      </output>
+    );
+  } else if (activity.error) {
+    body = <EmptyState title={t('activity.loadFailed')} />;
+  } else if (activityRows.length === 0) {
+    body = <EmptyState title={t('activity.empty')} />;
+  } else {
+    body = <ActivityChart rows={activityRows} granularity={granularity} />;
+  }
+
   return (
     <Card className="min-w-0 space-y-4 bg-contrast/5">
       <div className="flex items-center justify-between gap-3">
@@ -200,17 +209,7 @@ function ActivitySection({
         </Button>
       </div>
 
-      {activity.isPending ? (
-        <div role="status" aria-label={t('activity.loading')}>
-          <Skeleton className="h-40" />
-        </div>
-      ) : activity.error ? (
-        <EmptyState title={t('activity.loadFailed')} />
-      ) : activityRows.length === 0 ? (
-        <EmptyState title={t('activity.empty')} />
-      ) : (
-        <ActivityChart rows={activityRows} granularity={granularity} />
-      )}
+      {body}
     </Card>
   );
 }
