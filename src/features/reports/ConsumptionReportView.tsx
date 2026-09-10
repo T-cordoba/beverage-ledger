@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormatter, useTranslations } from 'next-intl';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { Card, EmptyState, SegmentedControl, Skeleton, StatTile } from '@/components/ui';
 import type { ConsumptionGroupBy, ConsumptionRow } from '@/lib/api';
 import { cn } from '@/lib/utils';
@@ -67,6 +67,13 @@ function ConsumptionBars({ rows }: { rows: ConsumptionRow[] }) {
   );
 }
 
+function rankBadgeClasses(index: number): string {
+  if (index === 0) return 'bg-accent/20 text-accent';
+  if (index === 1) return 'bg-contrast/20 text-contrast/70';
+  if (index === 2) return 'bg-warning/20 text-warning';
+  return 'bg-contrast/10 text-contrast/60';
+}
+
 function ConsumptionTable({ rows }: { rows: ConsumptionRow[] }) {
   const t = useTranslations('reports');
   const format = useFormatter();
@@ -85,13 +92,7 @@ function ConsumptionTable({ rows }: { rows: ConsumptionRow[] }) {
             <span
               className={cn(
                 'flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold',
-                index === 0
-                  ? 'bg-accent/20 text-accent'
-                  : index === 1
-                    ? 'bg-contrast/20 text-contrast/70'
-                    : index === 2
-                      ? 'bg-warning/20 text-warning'
-                      : 'bg-contrast/10 text-contrast/60',
+                rankBadgeClasses(index),
               )}
             >
               {index + 1}
@@ -126,6 +127,37 @@ export function ConsumptionReportView() {
 
   const rows = consumption.data?.data ?? [];
 
+  let consumptionView: ReactNode;
+  if (consumption.isPending) {
+    consumptionView = (
+      <output aria-label={t('loading')} className="grid gap-4 sm:gap-6 lg:grid-cols-2">
+        {/* The bar chart draws ten, the ranking fifteen. */}
+        <ReportCardSkeleton rows={10} />
+        <ReportCardSkeleton rows={TOP_ROWS} />
+      </output>
+    );
+  } else if (consumption.error) {
+    consumptionView = (
+      <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />
+    );
+  } else if (rows.length === 0) {
+    consumptionView = <EmptyState title={t('empty')} />;
+  } else {
+    consumptionView = (
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
+        <Card className="min-w-0 bg-contrast/5">
+          <h2 className="mb-4 text-lg font-medium text-accent">{t('mostDispatched')}</h2>
+          <ConsumptionBars rows={rows} />
+        </Card>
+
+        <Card className="min-w-0 bg-contrast/5">
+          <h2 className="mb-4 text-lg font-medium text-accent">{t('ranking')}</h2>
+          <ConsumptionTable rows={rows} />
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <header className="space-y-1 text-center">
@@ -154,18 +186,14 @@ export function ConsumptionReportView() {
       </div>
 
       {summary.isPending ? (
-        <div
-          role="status"
-          aria-label={t('loadingSummary')}
-          className="grid grid-cols-2 gap-3 lg:grid-cols-4"
-        >
+        <output aria-label={t('loadingSummary')} className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           {Array.from({ length: SUMMARY_TILES }, (_, index) => (
             <Card key={index} className="space-y-2 bg-contrast/5">
               <Skeleton className="mx-auto h-8 w-20" />
               <Skeleton className="mx-auto h-3 w-24" />
             </Card>
           ))}
-        </div>
+        </output>
       ) : (
         summary.data && (
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
@@ -180,29 +208,7 @@ export function ConsumptionReportView() {
         )
       )}
 
-      {consumption.isPending ? (
-        <div role="status" aria-label={t('loading')} className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-          {/* The bar chart draws ten, the ranking fifteen. */}
-          <ReportCardSkeleton rows={10} />
-          <ReportCardSkeleton rows={TOP_ROWS} />
-        </div>
-      ) : consumption.error ? (
-        <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />
-      ) : rows.length === 0 ? (
-        <EmptyState title={t('empty')} />
-      ) : (
-        <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-          <Card className="min-w-0 bg-contrast/5">
-            <h2 className="mb-4 text-lg font-medium text-accent">{t('mostDispatched')}</h2>
-            <ConsumptionBars rows={rows} />
-          </Card>
-
-          <Card className="min-w-0 bg-contrast/5">
-            <h2 className="mb-4 text-lg font-medium text-accent">{t('ranking')}</h2>
-            <ConsumptionTable rows={rows} />
-          </Card>
-        </div>
-      )}
+      {consumptionView}
     </div>
   );
 }

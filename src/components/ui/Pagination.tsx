@@ -9,25 +9,30 @@ import { Select } from './Select';
 /** First and last are always reachable, plus this many either side of the current page. */
 const AROUND_CURRENT = 1;
 
+/** A page number, or a gap collapsing the numbers skipped after `afterPage`. */
+type PageWindowItem = { type: 'page'; page: number } | { type: 'gap'; afterPage: number };
+
 /**
- * The page numbers to render, with `null` standing for a gap.
+ * The page numbers to render, with gaps standing in for the ones skipped.
  *
  * Every page fits while there are few of them; past that the row would grow
- * without bound, so the middle collapses and the ends stay reachable.
+ * without bound, so the middle collapses and the ends stay reachable. Each gap
+ * carries the page before it, since that is what makes it unique for a key —
+ * there is otherwise nothing to identify one occurrence.
  */
-function pageWindow(page: number, pageCount: number): (number | null)[] {
+function pageWindow(page: number, pageCount: number): PageWindowItem[] {
   const wanted = new Set([1, pageCount]);
 
   for (let n = page - AROUND_CURRENT; n <= page + AROUND_CURRENT; n++) {
     if (n >= 1 && n <= pageCount) wanted.add(n);
   }
 
-  const result: (number | null)[] = [];
+  const result: PageWindowItem[] = [];
   let previous = 0;
 
   for (const n of [...wanted].sort((a, b) => a - b)) {
-    if (n - previous > 1) result.push(null);
-    result.push(n);
+    if (n - previous > 1) result.push({ type: 'gap', afterPage: previous });
+    result.push({ type: 'page', page: n });
     previous = n;
   }
 
@@ -113,27 +118,31 @@ export function Pagination({
           </span>
 
           <ol className="hidden items-center gap-1 sm:flex">
-            {pageWindow(page, pageCount).map((candidate, index) =>
-              candidate === null ? (
-                <li key={`gap-${index}`} aria-hidden="true" className="px-1 text-contrast/40">
+            {pageWindow(page, pageCount).map((item) =>
+              item.type === 'gap' ? (
+                <li
+                  key={`gap-${item.afterPage}`}
+                  aria-hidden="true"
+                  className="px-1 text-contrast/40"
+                >
                   …
                 </li>
               ) : (
-                <li key={candidate}>
+                <li key={item.page}>
                   <Button
                     variant="ghost"
                     size="icon-sm"
-                    aria-label={t('goToPage', { page: candidate })}
-                    aria-current={candidate === page ? 'page' : undefined}
+                    aria-label={t('goToPage', { page: item.page })}
+                    aria-current={item.page === page ? 'page' : undefined}
                     disabled={isLoading}
                     className={
-                      candidate === page
+                      item.page === page
                         ? 'bg-accent font-medium text-background hover:bg-accent-hover'
                         : 'text-contrast'
                     }
-                    onClick={() => onPageChange(candidate)}
+                    onClick={() => onPageChange(item.page)}
                   >
-                    {format.number(candidate)}
+                    {format.number(item.page)}
                   </Button>
                 </li>
               ),

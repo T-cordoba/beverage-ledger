@@ -2,6 +2,7 @@
 
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 import { Button, Card, EmptyState, Skeleton } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { useRecentMovements } from './api';
@@ -16,6 +17,48 @@ export function RecentMovementsCard({ enabled = true }: { enabled?: boolean }) {
   const { data, error, isPending } = useRecentMovements(SHORTLIST_SIZE, enabled);
   const movements = data?.data ?? [];
 
+  let body: ReactNode;
+  if (isPending) {
+    body = (
+      <output aria-label={t('loading')} className="block space-y-2">
+        {Array.from({ length: 4 }, (_, index) => (
+          <div key={index} className="rounded-lg bg-contrast/5 p-3">
+            <Skeleton className="h-10" />
+          </div>
+        ))}
+      </output>
+    );
+  } else if (error) {
+    body = <EmptyState title={t('loadFailed')} />;
+  } else if (movements.length === 0) {
+    body = <EmptyState title={t('empty')} />;
+  } else {
+    body = (
+      <ul className="space-y-2">
+        {movements.map((movement) => (
+          <li key={movement.id} className="rounded-lg bg-contrast/5 p-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <Link
+                href={ROUTES.movement(movement.id)}
+                className="font-mono text-sm text-accent hover:underline"
+              >
+                {movement.code}
+              </Link>
+              <div className="flex items-center gap-2">
+                <MovementTypeBadge type={movement.type} />
+                <MovementStatusBadge status={movement.status} />
+              </div>
+            </div>
+            <p className="mt-1 truncate text-xs text-contrast/50">
+              {format.dateTime(new Date(movement.occurredAt), 'full')} · {movement.itemCount}{' '}
+              {tUnits('line', { count: movement.itemCount })} · {movement.createdBy.name}
+            </p>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
   return (
     <Card className="min-w-0 space-y-4 bg-contrast/5">
       <div className="flex items-center justify-between gap-3">
@@ -25,42 +68,7 @@ export function RecentMovementsCard({ enabled = true }: { enabled?: boolean }) {
         </Button>
       </div>
 
-      {isPending ? (
-        <ul role="status" aria-label={t('loading')} className="space-y-2">
-          {Array.from({ length: 4 }, (_, index) => (
-            <li key={index} className="rounded-lg bg-contrast/5 p-3">
-              <Skeleton className="h-10" />
-            </li>
-          ))}
-        </ul>
-      ) : error ? (
-        <EmptyState title={t('loadFailed')} />
-      ) : movements.length === 0 ? (
-        <EmptyState title={t('empty')} />
-      ) : (
-        <ul className="space-y-2">
-          {movements.map((movement) => (
-            <li key={movement.id} className="rounded-lg bg-contrast/5 p-3">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <Link
-                  href={ROUTES.movement(movement.id)}
-                  className="font-mono text-sm text-accent hover:underline"
-                >
-                  {movement.code}
-                </Link>
-                <div className="flex items-center gap-2">
-                  <MovementTypeBadge type={movement.type} />
-                  <MovementStatusBadge status={movement.status} />
-                </div>
-              </div>
-              <p className="mt-1 truncate text-xs text-contrast/50">
-                {format.dateTime(new Date(movement.occurredAt), 'full')} · {movement.itemCount}{' '}
-                {tUnits('line', { count: movement.itemCount })} · {movement.createdBy.name}
-              </p>
-            </li>
-          ))}
-        </ul>
-      )}
+      {body}
     </Card>
   );
 }
