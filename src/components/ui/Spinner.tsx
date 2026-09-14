@@ -15,8 +15,7 @@ interface SpinnerProps {
 
 export function Spinner({ size = 'md', className, label }: SpinnerProps) {
   return (
-    <span
-      role={label ? 'status' : undefined}
+    <output
       aria-label={label}
       aria-hidden={label ? undefined : true}
       className={cn(
@@ -24,6 +23,9 @@ export function Spinner({ size = 'md', className, label }: SpinnerProps) {
         sizeStyles[size],
         className,
       )}
-    />
+    >
+      {/* Si hay label, lo mostramos como contenido accesible */}
+      {label}
+    </output>
   );
 }
