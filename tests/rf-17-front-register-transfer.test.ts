@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useMovementDraft } from '@/features/movements/useMovementDraft';
-import { openDraft } from '@/features/movements/api';
+import { openDraft } from '@/features/movements/open-draft';
 
-vi.mock('@/features/movements/api', () => ({
+vi.mock('@/features/movements/open-draft', () => ({
   openDraft: vi.fn(),
 }));
 
