@@ -313,9 +313,7 @@ function ActionsCell({
 // renderers above: a JSX-returning function must not be lexically defined
 // inside the component that uses it. ---
 
-function buildNameColumn(
-  t: ReturnType<typeof useTranslations>,
-): DataTableColumn<TaxonomyItem> {
+function buildNameColumn(t: ReturnType<typeof useTranslations>): DataTableColumn<TaxonomyItem> {
   return {
     key: 'name',
     header: t('columns.name'),
@@ -427,8 +425,10 @@ export function TaxonomyView({
     if (withSortOrder) {
       cols.push(buildSortOrderColumn(t, format));
     }
-    cols.push(buildProductCountColumn(t, format));
-    cols.push(buildActionsColumn(t, tActions, copy, openForm, setDeleting));
+    cols.push(
+      buildProductCountColumn(t, format),
+      buildActionsColumn(t, tActions, copy, openForm, setDeleting),
+    );
     return cols;
   }, [t, tActions, format, withSortOrder, copy]);
 
