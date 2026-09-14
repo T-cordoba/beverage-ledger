@@ -1,8 +1,9 @@
 import createClient, { type Middleware } from 'openapi-fetch';
 import { API_ORIGIN } from '@/config/api';
 import { ApiError } from './errors';
+import { ensureAccessToken } from './refresh';
 import type { paths } from './schema';
-import { ensureAccessToken, forgetSession } from './session';
+import { forgetSession } from './session';
 
 /**
  * Routes that open a session. They carry no token, and asking for one there

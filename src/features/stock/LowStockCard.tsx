@@ -5,7 +5,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { Badge, Button, Card, EmptyState, Skeleton } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
-import { useLowStock } from './api';
+import { useLowStock } from './low-stock';
 
 const SHORTLIST_SIZE = 8;
 
