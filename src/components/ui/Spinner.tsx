@@ -25,7 +25,7 @@ export function Spinner({ size = 'md', className, label }: SpinnerProps) {
       )}
     >
       {/* Si hay label, lo mostramos como contenido accesible */}
-      {label ? label : null}
+      {label}
     </output>
   );
 }

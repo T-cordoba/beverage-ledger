@@ -425,8 +425,10 @@ export function TaxonomyView({
     if (withSortOrder) {
       cols.push(buildSortOrderColumn(t, format));
     }
-    cols.push(buildProductCountColumn(t, format));
-    cols.push(buildActionsColumn(t, tActions, copy, openForm, setDeleting));
+    cols.push(
+      buildProductCountColumn(t, format),
+      buildActionsColumn(t, tActions, copy, openForm, setDeleting),
+    );
     return cols;
   }, [t, tActions, format, withSortOrder, copy]);
 
