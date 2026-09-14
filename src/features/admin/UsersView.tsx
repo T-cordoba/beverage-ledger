@@ -30,16 +30,9 @@ import { UserFormDialog } from './UserFormDialog';
 // definitions (S6478). Each receives exactly the data/callbacks it needs
 // as props instead of closing over UsersView's scope.
 
-// `useTranslations` returns a function typed to only accept the literal
-// message keys of its namespace (`NamespacedMessageKeys<...>`), and its
-// `values` param is overloaded per-key (sometimes strictly `undefined`),
-// both narrower than this wrapper's original `string` / `Record<...>`
-// signature. Since t/tRoles/tStatuses/tActions each have a different, more
-// specific type, this local alias has to accept `any` for both params so
-// those concrete translators stay assignable to it — the real key/values
-// safety still comes from next-intl at each `t('...')` call site, not from
-// this alias.
-type Translator = (key: any, values?: any) => string;
+// The namespace-specific key types are compatible with this shared return type,
+// while next-intl still checks each translation call at its original call site.
+type Translator = ReturnType<typeof useTranslations>;
 
 function MemberCell({ user, isSelf, t }: { user: User; isSelf: boolean; t: Translator }) {
   return (
