@@ -80,16 +80,6 @@ export function useStockAvailability(
   };
 }
 
-/** A shortlist, not a page: the endpoint returns the worst offenders and stops. */
-export function useLowStock(limit: number, enabled = true) {
-  return useQuery({
-    queryKey: stockKeys.low(limit),
-    queryFn: async () =>
-      unwrap(await api.GET('/api/v1/stock/low', { params: { query: { limit } } })),
-    enabled,
-  });
-}
-
 export function useKardex(productId: string, locationId: string | undefined, page: PageParams) {
   return useQuery({
     queryKey: stockKeys.kardex(productId, locationId, page),
