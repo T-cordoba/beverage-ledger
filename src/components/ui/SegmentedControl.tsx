@@ -1,5 +1,4 @@
 'use client';
-
 import { cn } from '@/lib/utils';
 import { Button } from './Button';
 
@@ -26,14 +25,17 @@ export function SegmentedControl<T extends string>({
   className,
 }: SegmentedControlProps<T>) {
   return (
-    <div
-      role="group"
+    <fieldset
       aria-label={label}
       className={cn('flex w-full items-center justify-center gap-2 sm:w-auto', className)}
     >
+      {/* Legend oculto para accesibilidad */}
+      <legend className="sr-only">{label}</legend>
+
       <span aria-hidden="true" className="shrink-0 text-sm font-medium text-contrast/80">
         {label}
       </span>
+
       <div className="flex overflow-hidden rounded-lg border border-border bg-surface/80">
         {options.map((option) => (
           <Button
@@ -53,6 +55,6 @@ export function SegmentedControl<T extends string>({
           </Button>
         ))}
       </div>
-    </div>
+    </fieldset>
   );
 }
