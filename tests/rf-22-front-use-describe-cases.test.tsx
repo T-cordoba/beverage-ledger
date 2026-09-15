@@ -14,26 +14,14 @@ describe('useDescribeCases', () => {
       ),
     }).result.current;
 
-  it('Camino 1 - el producto se vende por unidad y no hay frase de cajas', () => {
+  it.each([
+    ['el producto se vende por unidad', 24, 1],
+    ['no hay existencias', 0, 12],
+    ['hay existencias pero no alcanzan para una caja', 5, 12],
+  ])('Camino 1-3 - %s y no hay frase de cajas', (_caso, quantityBase, caseSize) => {
     const describir = describeCases();
 
-    const frase = describir(24, 1);
-
-    expect(frase).toBeNull();
-  });
-
-  it('Camino 2 - no hay existencias y no hay frase de cajas', () => {
-    const describir = describeCases();
-
-    const frase = describir(0, 12);
-
-    expect(frase).toBeNull();
-  });
-
-  it('Camino 3 - hay existencias pero no alcanzan para una caja', () => {
-    const describir = describeCases();
-
-    const frase = describir(5, 12);
+    const frase = describir(quantityBase, caseSize);
 
     expect(frase).toBeNull();
   });
