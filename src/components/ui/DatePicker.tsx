@@ -27,7 +27,7 @@ function startOfMonth(date: Date) {
   return new Date(date.getFullYear(), date.getMonth(), 1);
 }
 
-function ChevronIcon({ direction }: { direction: 'left' | 'right' }) {
+function ChevronIcon({ direction }: Readonly<{ direction: 'left' | 'right' }>) {
   return (
     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path
@@ -40,7 +40,7 @@ function ChevronIcon({ direction }: { direction: 'left' | 'right' }) {
   );
 }
 
-export function DatePicker({ value, onChange, placeholder, className }: DatePickerProps) {
+export function DatePicker({ value, onChange, placeholder, className }: Readonly<DatePickerProps>) {
   const t = useTranslations('common.datePicker');
   const format = useFormatter();
   const locale = useLocale();

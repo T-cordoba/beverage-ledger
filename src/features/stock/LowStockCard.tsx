@@ -13,7 +13,7 @@ const SHORTLIST_SIZE = 8;
  * The reorder shortlist. The API orders it by how far under the threshold each
  * product sits, so the first row is the one to buy first.
  */
-export function LowStockCard({ enabled = true }: { enabled?: boolean }) {
+export function LowStockCard({ enabled = true }: Readonly<{ enabled?: boolean }>) {
   const t = useTranslations('stock.low');
   const tUnits = useTranslations('common.units');
   const format = useFormatter();

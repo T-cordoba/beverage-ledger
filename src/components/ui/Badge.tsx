@@ -16,7 +16,7 @@ export interface BadgeProps extends ComponentPropsWithRef<'span'> {
   emphasis?: boolean;
 }
 
-export function Badge({ tone = 'neutral', emphasis = false, className, ...props }: BadgeProps) {
+export function Badge({ tone = 'neutral', emphasis = false, className, ...props }: Readonly<BadgeProps>) {
   return (
     <span
       className={cn(

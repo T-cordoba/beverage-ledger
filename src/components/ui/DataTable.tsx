@@ -65,7 +65,7 @@ const hideClasses = {
   lg: 'hidden lg:table-cell',
 } as const;
 
-function Chevron({ isOpen }: { isOpen: boolean }) {
+function Chevron({ isOpen }: Readonly<{ isOpen: boolean }>) {
   return (
     <svg
       aria-hidden="true"
@@ -103,7 +103,7 @@ export function DataTable<T>({
   skeletonRows = SKELETON_ROWS,
   empty,
   className,
-}: DataTableProps<T>) {
+}: Readonly<DataTableProps<T>>) {
   const t = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
   const tableId = useId();

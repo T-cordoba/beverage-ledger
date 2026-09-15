@@ -10,7 +10,7 @@ import type { MovementType } from '@/lib/api';
 import { cn } from '@/lib/utils';
 import { MOVEMENT_TYPE_ORDER, MOVEMENT_TYPES } from './movement-types';
 
-function Glyph({ d }: { d: string }) {
+function Glyph({ d }: Readonly<{ d: string }>) {
   return (
     <svg
       aria-hidden="true"
@@ -55,7 +55,7 @@ function useAllowedTypes(): MovementType[] {
  * One button per movement type the session may record. An operator sees only
  * the dispatch; a manager sees all four. Nothing renders when none apply.
  */
-export function NewMovementActions({ className }: { className?: string }) {
+export function NewMovementActions({ className }: Readonly<{ className?: string }>) {
   const t = useTranslations('movements.types');
   const types = useAllowedTypes();
 

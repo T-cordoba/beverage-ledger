@@ -22,7 +22,7 @@ const SUMMARY_TILES = 4;
  * third of the height, so the page settled and then jumped when the numbers
  * arrived. The heading and the rows are drawn because that is what lands here.
  */
-function ReportCardSkeleton({ rows }: { rows: number }) {
+function ReportCardSkeleton({ rows }: Readonly<{ rows: number }>) {
   return (
     <Card className="min-w-0 space-y-4 bg-contrast/5">
       <Skeleton className="h-6 w-40" />
@@ -35,7 +35,7 @@ function ReportCardSkeleton({ rows }: { rows: number }) {
   );
 }
 
-function ConsumptionBars({ rows }: { rows: ConsumptionRow[] }) {
+function ConsumptionBars({ rows }: Readonly<{ rows: ConsumptionRow[] }>) {
   const format = useFormatter();
   const top = rows[0]?.quantityBase || 1;
 
@@ -74,7 +74,7 @@ function rankBadgeClasses(index: number): string {
   return 'bg-contrast/10 text-contrast/60';
 }
 
-function ConsumptionTable({ rows }: { rows: ConsumptionRow[] }) {
+function ConsumptionTable({ rows }: Readonly<{ rows: ConsumptionRow[] }>) {
   const t = useTranslations('reports');
   const format = useFormatter();
 

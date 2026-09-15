@@ -10,7 +10,7 @@ import { MovementStatusBadge, MovementTypeBadge } from './MovementCard';
 
 const SHORTLIST_SIZE = 6;
 
-export function RecentMovementsCard({ enabled = true }: { enabled?: boolean }) {
+export function RecentMovementsCard({ enabled = true }: Readonly<{ enabled?: boolean }>) {
   const t = useTranslations('movements.recent');
   const tUnits = useTranslations('common.units');
   const format = useFormatter();

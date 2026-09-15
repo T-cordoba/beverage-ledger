@@ -65,7 +65,7 @@ export function Pagination({
   onPageSizeChange,
   isLoading = false,
   className,
-}: PaginationProps) {
+}: Readonly<PaginationProps>) {
   const t = useTranslations('common.pagination');
   const format = useFormatter();
 
@@ -164,7 +164,7 @@ export function Pagination({
   );
 }
 
-function ChevronIcon({ direction }: { direction: 'left' | 'right' }) {
+function ChevronIcon({ direction }: Readonly<{ direction: 'left' | 'right' }>) {
   return (
     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path
