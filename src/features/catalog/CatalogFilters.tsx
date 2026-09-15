@@ -21,11 +21,11 @@ interface AdvancedField {
 export function CatalogFilters({
   state,
   showStatus = false,
-}: {
+}: Readonly<{
   state: CatalogFiltersState;
   /** Only the catalogue view manages deactivated products; pickers never show them. */
   showStatus?: boolean;
-}) {
+}>) {
   const t = useTranslations('catalog.filters');
   const tActions = useTranslations('common.actions');
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);

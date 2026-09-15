@@ -30,7 +30,6 @@ describe('AcceptInviteForm render - Front', () => {
 
     // Assert
     expect(response.status).toBeDefined();
-
   });
 
   it('Camino 2 - token invalido, se muestra tarjeta de error', async () => {
@@ -63,7 +62,6 @@ describe('AcceptInviteForm render - Front', () => {
       json: async () => ({
         email: 'invitado@ejemplo.com',
         organizationName: 'Beverage Ledger',
-
       }),
     });
 

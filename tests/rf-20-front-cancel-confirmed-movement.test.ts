@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { openDraft } from '@/features/movements/api';
+import { openDraft } from '@/features/movements/open-draft';
 import { api, unwrap } from '@/lib/api';
 
-vi.mock('@/features/movements/api', () => ({
+vi.mock('@/features/movements/open-draft', () => ({
   openDraft: vi.fn(),
 }));
 
@@ -49,13 +49,10 @@ describe('Anular un movimiento confirmado - Front', () => {
 
     // Assert
     expect(response.error).toBeDefined();
-    expect(mockedApiPost).toHaveBeenCalledWith(
-      '/api/v1/movements/{id}/cancel',
-      {
-        params: { path: { id: 'id-inexistente' } },
-        body: { reason: 'Error en el registro' },
-      },
-    );
+    expect(mockedApiPost).toHaveBeenCalledWith('/api/v1/movements/{id}/cancel', {
+      params: { path: { id: 'id-inexistente' } },
+      body: { reason: 'Error en el registro' },
+    });
   });
 
   it('Camino 2 - la cancelación es exitosa y el movimiento queda cancelado', async () => {

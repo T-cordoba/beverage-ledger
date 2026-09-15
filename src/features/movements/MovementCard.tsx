@@ -13,13 +13,13 @@ const statusTones = {
   CANCELLED: 'danger',
 } as const satisfies Record<MovementStatus, 'warning' | 'success' | 'danger'>;
 
-export function MovementTypeBadge({ type }: { type: MovementType }) {
+export function MovementTypeBadge({ type }: Readonly<{ type: MovementType }>) {
   const t = useTranslations('movements.types');
 
   return <Badge tone={type === 'OUTBOUND' ? 'accent' : 'info'}>{t(`${type}.label`)}</Badge>;
 }
 
-export function MovementStatusBadge({ status }: { status: MovementStatus }) {
+export function MovementStatusBadge({ status }: Readonly<{ status: MovementStatus }>) {
   const t = useTranslations('movements.status');
 
   return <Badge tone={statusTones[status]}>{t(status)}</Badge>;
@@ -55,7 +55,7 @@ export function MovementCardSkeleton() {
   );
 }
 
-export function MovementCard({ movement }: { movement: MovementSummary }) {
+export function MovementCard({ movement }: Readonly<{ movement: MovementSummary }>) {
   const t = useTranslations('movements.card');
   const tUnits = useTranslations('common.units');
   const format = useFormatter();

@@ -30,7 +30,6 @@ describe('handleSubmit - Front', () => {
     });
     const body = await response.json();
 
-
     // Assert
     expect(response.ok).toBe(false);
     expect(response.status).toBe(401);

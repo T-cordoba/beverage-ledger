@@ -27,7 +27,7 @@ import { MIN_REASON_LENGTH, MOVEMENT_TYPES } from './movement-types';
 import { MovementPdfButton } from './MovementPdfButton';
 import { MovementStatusBadge, MovementTypeBadge } from './MovementCard';
 
-function Detail({ label, children }: { label: string; children: ReactNode }) {
+function Detail({ label, children }: Readonly<{ label: string; children: ReactNode }>) {
   return (
     <div className="space-y-1">
       <dt className="text-xs font-medium uppercase tracking-wider text-contrast/60">{label}</dt>
@@ -40,7 +40,7 @@ function Detail({ label, children }: { label: string; children: ReactNode }) {
  * Voiding and discarding are the same call: cancelling. Only the copy differs,
  * because a draft never touched stock and so has nothing to give back.
  */
-function CancelMovementDialog({ movement }: { movement: Movement }) {
+function CancelMovementDialog({ movement }: Readonly<{ movement: Movement }>) {
   const t = useTranslations('movements.detail.cancel');
   const tStates = useTranslations('common.states');
   const [isOpen, setIsOpen] = useState(false);
@@ -131,7 +131,7 @@ function CancelMovementDialog({ movement }: { movement: Movement }) {
   );
 }
 
-function ConfirmDraftButton({ movement }: { movement: Movement }) {
+function ConfirmDraftButton({ movement }: Readonly<{ movement: Movement }>) {
   const t = useTranslations('movements.detail');
   const tStates = useTranslations('common.states');
   const confirm = useConfirmMovement();
@@ -153,7 +153,7 @@ function ConfirmDraftButton({ movement }: { movement: Movement }) {
   );
 }
 
-export function MovementDetailView({ id }: { id: string }) {
+export function MovementDetailView({ id }: Readonly<{ id: string }>) {
   const t = useTranslations('movements.detail');
   const tUnits = useTranslations('common.units');
   const format = useFormatter();

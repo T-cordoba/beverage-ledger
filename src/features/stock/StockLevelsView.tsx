@@ -24,20 +24,7 @@ import { rowsOnPage, useDebouncedValue, useManualRefresh, usePagination } from '
 import { useStockLevels, type StockQuery } from './api';
 import { useDescribeCases } from './quantity';
 
-type Format = ReturnType<typeof useFormatter>;
-// Narrow shapes rather than `ReturnType<typeof useTranslations>`: next-intl's
-// typed translator is an overloaded generic that blows up `tsc` with
-// "Type instantiation is excessively deep" once passed around as a value.
-type UnitLabel = (key: 'unit', values: { count: number }) => string;
-type StateLabel = (key: 'none') => string;
-type LevelLabel = (key: 'belowMinimum' | 'ok') => string;
-type DescribeCases = ReturnType<typeof useDescribeCases>;
-
-// `DataTable` calls `column.cell(row)` as a plain function, not as JSX — these
-// are render helpers, not components, so they live outside `StockLevelsView`
-// and take the already-resolved formatter/translators as arguments instead of
-// calling hooks themselves.
-function renderProductCell(row: StockLevel) {
+function ProductCell({ row }: Readonly<{ row: StockLevel }>) {
   return (
     <div className="min-w-0 space-y-0.5">
       <Link
@@ -51,16 +38,14 @@ function renderProductCell(row: StockLevel) {
   );
 }
 
-function renderCategoryCell(row: StockLevel) {
+function CategoryCell({ row }: Readonly<{ row: StockLevel }>) {
   return <span className="text-contrast/70">{row.categoryName}</span>;
 }
 
-function renderOnHandCell(
-  row: StockLevel,
-  format: Format,
-  tUnits: UnitLabel,
-  describeCases: DescribeCases,
-) {
+function OnHandCell({ row }: Readonly<{ row: StockLevel }>) {
+  const tUnits = useTranslations('common.units');
+  const format = useFormatter();
+  const describeCases = useDescribeCases();
   const cases = describeCases(row.quantityBase, row.caseSize);
 
   return (
@@ -76,7 +61,9 @@ function renderOnHandCell(
   );
 }
 
-function renderMinimumCell(row: StockLevel, format: Format, tStates: StateLabel) {
+function MinimumCell({ row }: Readonly<{ row: StockLevel }>) {
+  const tStates = useTranslations('common.states');
+  const format = useFormatter();
   return (
     <span className="text-contrast/70">
       {row.minimumStock === null ? tStates('none') : format.number(row.minimumStock)}
@@ -84,7 +71,8 @@ function renderMinimumCell(row: StockLevel, format: Format, tStates: StateLabel)
   );
 }
 
-function renderStatusCell(row: StockLevel, t: LevelLabel) {
+function StatusCell({ row }: Readonly<{ row: StockLevel }>) {
+  const t = useTranslations('stock.levels');
   return row.isBelowMinimum ? (
     <Badge tone="warning">{t('belowMinimum')}</Badge>
   ) : (
@@ -92,13 +80,16 @@ function renderStatusCell(row: StockLevel, t: LevelLabel) {
   );
 }
 
+const productCell = (row: StockLevel) => <ProductCell row={row} />;
+const categoryCell = (row: StockLevel) => <CategoryCell row={row} />;
+const onHandCell = (row: StockLevel) => <OnHandCell row={row} />;
+const minimumCell = (row: StockLevel) => <MinimumCell row={row} />;
+const statusCell = (row: StockLevel) => <StatusCell row={row} />;
+
 export function StockLevelsView() {
   const t = useTranslations('stock.levels');
-  const tUnits = useTranslations('common.units');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
-  const format = useFormatter();
-  const describeCases = useDescribeCases();
 
   const [search, setSearch] = useState('');
   const [categoryId, setCategoryId] = useState('');
@@ -148,13 +139,13 @@ export function StockLevelsView() {
           <Skeleton className="h-4 w-24" />
         </div>
       ),
-      cell: renderProductCell,
+      cell: productCell,
     },
     {
       key: 'category',
       header: t('columns.category'),
       hideBelow: 'md',
-      cell: renderCategoryCell,
+      cell: categoryCell,
     },
     {
       key: 'onHand',
@@ -167,7 +158,7 @@ export function StockLevelsView() {
           <Skeleton className="ml-auto h-4 w-16" />
         </div>
       ),
-      cell: (row) => renderOnHandCell(row, format, tUnits, describeCases),
+      cell: onHandCell,
     },
     {
       key: 'minimum',
@@ -175,14 +166,14 @@ export function StockLevelsView() {
       align: 'end',
       hideBelow: 'sm',
       skeleton: <Skeleton className="ml-auto h-5 w-10" />,
-      cell: (row) => renderMinimumCell(row, format, tStates),
+      cell: minimumCell,
     },
     {
       key: 'status',
       header: t('columns.status'),
       align: 'end',
       skeleton: <Skeleton className="ml-auto h-6 w-16" />,
-      cell: (row) => renderStatusCell(row, t),
+      cell: statusCell,
     },
   ];
 

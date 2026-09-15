@@ -30,7 +30,6 @@ describe('submit (ProductFormDialog) - Front', () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
-
   });
 
   it('Camino 1 - producto existente actualizado exitosamente', async () => {
@@ -96,7 +95,6 @@ describe('submit (ProductFormDialog) - Front', () => {
     const categories = unwrap(
       await api.GET('/api/v1/categories', {
         params: { query: { pageSize: 1 } },
-
       }),
     );
 

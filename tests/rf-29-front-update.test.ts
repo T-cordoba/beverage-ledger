@@ -97,7 +97,6 @@ describe('changeStatus - Front', () => {
 
     // Act
     const response = await api.PATCH('/api/v1/users/{id}', {
-
       params: { path: { id: '00000000-0000-4000-8000-000000000000' } },
       body: { status: 'SUSPENDED' as any },
     });

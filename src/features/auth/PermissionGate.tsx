@@ -17,12 +17,12 @@ export function PermissionGate({
   permission,
   title,
   children,
-}: {
+}: Readonly<{
   permission: Permission;
   /** A sentence naming what is out of reach; the generic one otherwise. */
   title?: string;
   children: ReactNode;
-}) {
+}>) {
   const t = useTranslations('auth.permissionGate');
   const { can } = useAuth();
 

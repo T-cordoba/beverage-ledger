@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type { MainNavigationLabel } from '@/config/navigation';
 
-function Glyph({ d }: { d: string }) {
+function Glyph({ d }: Readonly<{ d: string }>) {
   return (
     <svg
       aria-hidden="true"

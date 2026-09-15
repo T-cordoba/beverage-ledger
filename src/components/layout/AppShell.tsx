@@ -7,7 +7,7 @@ import { Topbar } from './Topbar';
  * Navigation sits at the top on a desktop and at the bottom on a phone, and
  * exactly one of the two renders at any width — see `BottomNav` for why.
  */
-export function AppShell({ children }: { children: ReactNode }) {
+export function AppShell({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Topbar />

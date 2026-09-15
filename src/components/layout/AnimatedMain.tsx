@@ -18,7 +18,7 @@ import type { ReactNode } from 'react';
  * room they sit on top of whatever ends the page, which on every list is the
  * pagination.
  */
-export function AnimatedMain({ children }: { children: ReactNode }) {
+export function AnimatedMain({ children }: Readonly<{ children: ReactNode }>) {
   const pathname = usePathname();
 
   return (

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { rowsOnPage } from '@/lib/hooks/usePagination';
+import { rowsOnPage } from '@/lib/hooks/pagination';
 
 describe('rowsOnPage', () => {
   it('Camino 1 - sin total conocido devuelve el tamaño de pagina completo', () => {
