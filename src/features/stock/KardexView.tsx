@@ -77,7 +77,6 @@ function BalanceCell({ entry }: Readonly<{ entry: KardexEntry }>) {
 
 export function KardexView({ productId }: Readonly<{ productId: string }>) {
   const t = useTranslations('stock.kardex');
-  const tUnits = useTranslations('common.units');
   const tStates = useTranslations('common.states');
   const format = useFormatter();
   const describeCases = useDescribeCases();

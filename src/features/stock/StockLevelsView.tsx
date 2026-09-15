@@ -82,11 +82,8 @@ function StatusCell({ row }: Readonly<{ row: StockLevel }>) {
 
 export function StockLevelsView() {
   const t = useTranslations('stock.levels');
-  const tUnits = useTranslations('common.units');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
-  const format = useFormatter();
-  const describeCases = useDescribeCases();
 
   const [search, setSearch] = useState('');
   const [categoryId, setCategoryId] = useState('');
