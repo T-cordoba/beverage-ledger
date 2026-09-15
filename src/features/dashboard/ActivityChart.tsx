@@ -29,10 +29,10 @@ function heightOf(value: number, max: number): string {
 export function ActivityChart({
   rows,
   granularity,
-}: {
+}: Readonly<{
   rows: ActivityRow[];
   granularity: ActivityGranularity;
-}) {
+}>) {
   const t = useTranslations('dashboard.activity');
   const tGranularity = useTranslations('reports.granularity');
   const format = useFormatter();

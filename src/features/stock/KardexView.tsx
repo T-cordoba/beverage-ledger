@@ -25,7 +25,7 @@ import { useKardex, useStockAvailability } from './api';
 import { stockKeys } from './keys';
 import { useDescribeCases } from './quantity';
 
-export function KardexView({ productId }: { productId: string }) {
+export function KardexView({ productId }: Readonly<{ productId: string }>) {
   const t = useTranslations('stock.kardex');
   const tUnits = useTranslations('common.units');
   const tStates = useTranslations('common.states');

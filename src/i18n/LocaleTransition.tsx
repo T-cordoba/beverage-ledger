@@ -40,7 +40,7 @@ export function useLocaleTransition(): LocaleTransitionValue {
  * The transition is owned here and not in the switcher because the switcher sits
  * inside the topbar, and what has to fade is the whole document.
  */
-export function LocaleTransitionProvider({ children }: { children: ReactNode }) {
+export function LocaleTransitionProvider({ children }: Readonly<{ children: ReactNode }>) {
   const router = useRouter();
   const [isChanging, startTransition] = useTransition();
 

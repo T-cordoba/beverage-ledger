@@ -13,7 +13,7 @@ interface SpinnerProps {
   label?: string;
 }
 
-export function Spinner({ size = 'md', className, label }: SpinnerProps) {
+export function Spinner({ size = 'md', className, label }: Readonly<SpinnerProps>) {
   return (
     <output
       aria-label={label}

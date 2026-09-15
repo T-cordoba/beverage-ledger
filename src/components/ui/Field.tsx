@@ -26,7 +26,7 @@ interface FieldProps {
  * the association is the whole point of the wrapper, and handing the caller the
  * ids is the only way to guarantee it without cloning elements.
  */
-export function Field({ label, hint, error, children, className }: FieldProps) {
+export function Field({ label, hint, error, children, className }: Readonly<FieldProps>) {
   const id = useId();
   const hintId = hint ? `${id}-hint` : undefined;
   const errorId = error ? `${id}-error` : undefined;

@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 import { MOVEMENT_TYPES } from './movement-types';
 import type { MovementDraft } from './useMovementDraft';
 
-function MetaItem({ icon, children }: { icon: ReactNode; children: ReactNode }) {
+function MetaItem({ icon, children }: Readonly<{ icon: ReactNode; children: ReactNode }>) {
   return (
     <div className="flex items-center gap-1.5 text-xs text-contrast/70">
       {icon}
@@ -30,7 +30,7 @@ function QuantityStepper({
   onChange,
   canIncrease = true,
   atLimitLabel,
-}: {
+}: Readonly<{
   label: string;
   /** What a unit of this stepper is worth, when it is not one base unit. */
   note?: string;
@@ -39,7 +39,7 @@ function QuantityStepper({
   onChange: (delta: number) => void;
   canIncrease?: boolean;
   atLimitLabel?: string;
-}) {
+}>) {
   const t = useTranslations('movements.picker');
 
   return (
@@ -79,13 +79,13 @@ function ProductCard({
   quantities,
   onAdjust,
   available,
-}: {
+}: Readonly<{
   product: Product;
   quantities: Record<MovementUnit, number>;
   onAdjust: (unit: MovementUnit, delta: number) => void;
   /** On hand at the origin, or null when this movement does not take stock out. */
   available: number | null;
-}) {
+}>) {
   const t = useTranslations('movements.picker');
   const tUnits = useTranslations('common.units');
   const isSelected = quantities.BOTTLE > 0 || quantities.CASE > 0;
@@ -218,10 +218,10 @@ function ProductCard({
 export function ProductPicker({
   filters,
   draft,
-}: {
+}: Readonly<{
   filters: CatalogFiltersState;
   draft: MovementDraft;
-}) {
+}>) {
   const t = useTranslations('movements.picker');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');

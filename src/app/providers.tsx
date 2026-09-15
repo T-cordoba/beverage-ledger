@@ -7,7 +7,7 @@ import { AuthProvider } from '@/features/auth';
 import { LocaleTransitionProvider } from '@/i18n';
 import { createQueryClient } from '@/lib/query/query-client';
 
-export function Providers({ children }: { children: ReactNode }) {
+export function Providers({ children }: Readonly<{ children: ReactNode }>) {
   // Created once per browser session, not per render: a client rebuilt on
   // re-render would drop the cache with it.
   const [queryClient] = useState(createQueryClient);

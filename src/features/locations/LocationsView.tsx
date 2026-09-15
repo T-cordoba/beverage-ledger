@@ -34,13 +34,13 @@ function LocationFormDialog({
   open,
   onOpenChange,
   onSubmit,
-}: {
+}: Readonly<{
   location: Location | null;
   isSaving: boolean;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (values: { name: string; isDefault: boolean }) => Promise<void>;
-}) {
+}>) {
   const t = useTranslations('locations.form');
   const tActions = useTranslations('common.actions');
   const [name, setName] = useState(location?.name ?? '');
