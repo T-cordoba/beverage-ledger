@@ -13,5 +13,28 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     fileParallelism: false,
+    env: {
+      NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001',
+    },
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'lcov'],
+      reportsDirectory: './coverage',
+      // Whitelist, not discovery: only the modules a test actually executes.
+      // Mirrored by sonar.coverage.exclusions in sonar-project.properties.
+      include: [
+        'src/config/api.ts',
+        'src/features/admin/audit-actions.ts',
+        'src/features/movements/open-draft.ts',
+        'src/features/movements/useMovementDraft.ts',
+        'src/features/reports/range.ts',
+        'src/features/stock/low-stock.ts',
+        'src/features/stock/quantity.ts',
+        'src/lib/api/client.ts',
+        'src/lib/api/errors.ts',
+        'src/lib/api/session.ts',
+        'src/lib/hooks/pagination.ts',
+      ],
+    },
   },
 });

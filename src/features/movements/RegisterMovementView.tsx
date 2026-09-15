@@ -52,12 +52,12 @@ function DraftSummaryDialog({
   isSigned,
   open,
   onOpenChange,
-}: {
+}: Readonly<{
   draft: MovementDraft;
   isSigned: boolean;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-}) {
+}>) {
   const t = useTranslations('movements.register.summary');
   const tUnits = useTranslations('common.units');
   const tActions = useTranslations('common.actions');
@@ -117,7 +117,7 @@ function DraftSummaryDialog({
   );
 }
 
-export function RegisterMovementView({ type }: { type: MovementType }) {
+export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>) {
   const t = useTranslations('movements.register');
   const tTypes = useTranslations('movements.types');
   const tStates = useTranslations('common.states');

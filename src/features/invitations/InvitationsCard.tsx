@@ -29,11 +29,6 @@ const STATE_TONES: Record<InvitationState, BadgeProps['tone']> = {
   expired: 'warning',
 };
 
-/**
- * Four states out of three nullable columns: the API stores what happened, not a
- * label, so expiry is a comparison rather than a stored word that would go stale
- * the moment the clock passed it.
- */
 function stateOf(invitation: Invitation, now: number): InvitationState {
   if (invitation.acceptedAt) return 'accepted';
   if (invitation.revokedAt) return 'revoked';
@@ -41,6 +36,71 @@ function stateOf(invitation: Invitation, now: number): InvitationState {
   return 'pending';
 }
 
+// === CELLS COMO COMPONENTES EXTERNOS ===
+function EmailCell({ invitation }: Readonly<{ invitation: Invitation }>) {
+  return <span className="font-medium text-foreground">{invitation.email}</span>;
+}
+
+function RoleCell({
+  invitation,
+  tRoles,
+}: Readonly<{
+  invitation: Invitation;
+  tRoles: ReturnType<typeof useTranslations>;
+}>) {
+  return <span className="text-contrast/70">{tRoles(invitation.role)}</span>;
+}
+
+function StateCell({
+  invitation,
+  now,
+  t,
+}: Readonly<{
+  invitation: Invitation;
+  now: number;
+  t: ReturnType<typeof useTranslations>;
+}>) {
+  const state = stateOf(invitation, now);
+  return <Badge tone={STATE_TONES[state]}>{t(`states.${state}`)}</Badge>;
+}
+
+function ExpiresCell({
+  invitation,
+  format,
+}: Readonly<{
+  invitation: Invitation;
+  format: ReturnType<typeof useFormatter>;
+}>) {
+  return (
+    <span className="text-contrast/70">
+      {format.dateTime(new Date(invitation.expiresAt), 'short')}
+    </span>
+  );
+}
+
+function InvitedByCell({ invitation }: Readonly<{ invitation: Invitation }>) {
+  return <span className="text-contrast/70">{invitation.invitedByName}</span>;
+}
+
+function ActionsCell({
+  invitation,
+  now,
+  t,
+  setRevoking,
+}: Readonly<{
+  invitation: Invitation;
+  now: number;
+  t: ReturnType<typeof useTranslations>;
+  setRevoking: (inv: Invitation) => void;
+}>) {
+  return stateOf(invitation, now) === 'pending' ? (
+    <Button variant="danger-outline" size="sm" onClick={() => setRevoking(invitation)}>
+      {t('revoke')}
+    </Button>
+  ) : null;
+}
+
+// === COMPONENTE PRINCIPAL ===
 export function InvitationsCard() {
   const t = useTranslations('admin.invitations');
   const tRoles = useTranslations('admin.roles');
@@ -50,7 +110,6 @@ export function InvitationsCard() {
 
   const pagination = usePagination('invitations');
   const { data, error, isPending, isPlaceholderData, refetch } = useInvitations(pagination.params);
-  // Turning a page keeps the previous one on screen, so this and not `isPending`.
   const { refresh, isRefreshing } = useManualRefresh(refetch);
   const isLoading = isPending || isPlaceholderData || isRefreshing;
   const revoke = useRevokeInvitation();
@@ -58,16 +117,13 @@ export function InvitationsCard() {
 
   const [revoking, setRevoking] = useState<Invitation | null>(null);
 
-  // One reading for the whole render, so two rows cannot disagree about "now".
   const now = Date.now();
   const invitations = data?.data ?? [];
 
   const confirmRevoke = async () => {
     if (!revoking) return;
-
     const invitation = revoking;
     setRevoking(null);
-
     try {
       await revoke.mutateAsync(invitation.id);
       notify('success', t('revoked'), t('revokedDescription', { email: invitation.email }));
@@ -81,52 +137,39 @@ export function InvitationsCard() {
       key: 'email',
       header: t('columns.email'),
       primary: true,
-      cell: (invitation) => <span className="font-medium text-foreground">{invitation.email}</span>,
+      cell: (inv) => <EmailCell invitation={inv} />,
     },
     {
       key: 'role',
       header: t('columns.role'),
-      cell: (invitation) => <span className="text-contrast/70">{tRoles(invitation.role)}</span>,
+      cell: (inv) => <RoleCell invitation={inv} tRoles={tRoles} />,
     },
     {
       key: 'state',
       header: t('columns.state'),
       summary: true,
       skeleton: <Skeleton className="h-6 w-20" />,
-      cell: (invitation) => {
-        const state = stateOf(invitation, now);
-        return <Badge tone={STATE_TONES[state]}>{t(`states.${state}`)}</Badge>;
-      },
+      cell: (inv) => <StateCell invitation={inv} now={now} t={t} />,
     },
     {
       key: 'expiresAt',
       header: t('columns.expires'),
       hideBelow: 'sm',
-      cell: (invitation) => (
-        <span className="text-contrast/70">
-          {format.dateTime(new Date(invitation.expiresAt), 'short')}
-        </span>
-      ),
+      cell: (inv) => <ExpiresCell invitation={inv} format={format} />,
     },
     {
       key: 'invitedBy',
       header: t('columns.invitedBy'),
       hideBelow: 'md',
-      cell: (invitation) => <span className="text-contrast/70">{invitation.invitedByName}</span>,
+      cell: (inv) => <InvitedByCell invitation={inv} />,
     },
     {
       key: 'actions',
       header: t('columns.actions'),
       align: 'end',
       bare: true,
-      // The revoke button is what sets this row's height.
       skeleton: <Skeleton className="ml-auto h-9 w-20" />,
-      cell: (invitation) =>
-        stateOf(invitation, now) === 'pending' ? (
-          <Button variant="danger-outline" size="sm" onClick={() => setRevoking(invitation)}>
-            {t('revoke')}
-          </Button>
-        ) : null,
+      cell: (inv) => <ActionsCell invitation={inv} now={now} t={t} setRevoking={setRevoking} />,
     },
   ];
 
@@ -148,7 +191,7 @@ export function InvitationsCard() {
             caption={t('title')}
             columns={columns}
             rows={invitations}
-            rowKey={(invitation) => invitation.id}
+            rowKey={(inv) => inv.id}
             isLoading={isLoading}
             skeletonRows={rowsOnPage(pagination.page, pagination.pageSize, data?.meta.total)}
             loadingLabel={t('loading')}

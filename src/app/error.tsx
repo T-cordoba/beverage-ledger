@@ -17,10 +17,10 @@ import { ROUTES } from '@/config/navigation';
 export default function AppError({
   error,
   reset,
-}: {
+}: Readonly<{
   error: Error & { digest?: string };
   reset: () => void;
-}) {
+}>) {
   const t = useTranslations('errors.unexpected');
 
   useEffect(() => {

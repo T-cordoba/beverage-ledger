@@ -8,7 +8,6 @@ export {
   useRecentMovements,
   useRegisterMovement,
   type MovementQuery,
-  type RegisterMovementInput,
 } from './api';
 export {
   MovementCard,
@@ -20,6 +19,7 @@ export { MovementDetailView } from './MovementDetailView';
 export { MovementHistoryView } from './MovementHistoryView';
 export { MovementPdfButton } from './MovementPdfButton';
 export { MIN_REASON_LENGTH, MOVEMENT_TYPE_ORDER, MOVEMENT_TYPES } from './movement-types';
+export { openDraft, type RegisterMovementInput } from './open-draft';
 export { NewMovementActions, NewMovementFab, NewMovementPanel } from './NewMovementActions';
 export { ProductPicker } from './ProductPicker';
 export { RecentMovementsCard } from './RecentMovementsCard';

@@ -23,7 +23,7 @@ export function SegmentedControl<T extends string>({
   onChange,
   label,
   className,
-}: SegmentedControlProps<T>) {
+}: Readonly<SegmentedControlProps<T>>) {
   return (
     <fieldset
       aria-label={label}

@@ -18,7 +18,7 @@ export function Reveal({
   children,
   step = 0,
   className,
-}: {
+}: Readonly<{
   children: ReactNode;
   /**
    * Position in a row of siblings, which staggers their arrival. Counted in
@@ -27,7 +27,7 @@ export function Reveal({
    */
   step?: number;
   className?: string;
-}) {
+}>) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 

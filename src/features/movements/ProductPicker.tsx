@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 import { MOVEMENT_TYPES } from './movement-types';
 import type { MovementDraft } from './useMovementDraft';
 
-function MetaItem({ icon, children }: { icon: ReactNode; children: ReactNode }) {
+function MetaItem({ icon, children }: Readonly<{ icon: ReactNode; children: ReactNode }>) {
   return (
     <div className="flex items-center gap-1.5 text-xs text-contrast/70">
       {icon}
@@ -30,7 +30,7 @@ function QuantityStepper({
   onChange,
   canIncrease = true,
   atLimitLabel,
-}: {
+}: Readonly<{
   label: string;
   /** What a unit of this stepper is worth, when it is not one base unit. */
   note?: string;
@@ -39,7 +39,7 @@ function QuantityStepper({
   onChange: (delta: number) => void;
   canIncrease?: boolean;
   atLimitLabel?: string;
-}) {
+}>) {
   const t = useTranslations('movements.picker');
 
   return (
@@ -79,13 +79,13 @@ function ProductCard({
   quantities,
   onAdjust,
   available,
-}: {
+}: Readonly<{
   product: Product;
   quantities: Record<MovementUnit, number>;
   onAdjust: (unit: MovementUnit, delta: number) => void;
   /** On hand at the origin, or null when this movement does not take stock out. */
   available: number | null;
-}) {
+}>) {
   const t = useTranslations('movements.picker');
   const tUnits = useTranslations('common.units');
   const isSelected = quantities.BOTTLE > 0 || quantities.CASE > 0;
@@ -218,10 +218,10 @@ function ProductCard({
 export function ProductPicker({
   filters,
   draft,
-}: {
+}: Readonly<{
   filters: CatalogFiltersState;
   draft: MovementDraft;
-}) {
+}>) {
   const t = useTranslations('movements.picker');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
@@ -254,6 +254,61 @@ export function ProductPicker({
   const availableOf = (productId: string): number | null =>
     isReady ? (levels.get(productId) ?? 0) : null;
 
+  let listView: ReactNode;
+  if (isPending) {
+    listView = (
+      <div className="flex items-center justify-center py-12">
+        <Spinner size="lg" label={t('loading')} />
+      </div>
+    );
+  } else if (error) {
+    listView = <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />;
+  } else if (products.length === 0) {
+    listView = (
+      <EmptyState
+        title={t('empty')}
+        action={
+          filters.hasAny ? (
+            <Button variant="secondary" size="sm" onClick={filters.clearAll}>
+              {tActions('clearFilters')}
+            </Button>
+          ) : undefined
+        }
+      />
+    );
+  } else {
+    listView = (
+      <>
+        {/* Three across at most: each card carries two steppers and the
+            on-hand figure, and a fourth column squeezes those into nothing. */}
+        <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              quantities={draft.quantityOf(product.id)}
+              onAdjust={(unit, delta) => draft.adjust(product, unit, delta)}
+              available={availableOf(product.id)}
+            />
+          ))}
+        </ul>
+
+        {data && (
+          <Pagination
+            className="mt-6"
+            page={pagination.page}
+            pageSize={pagination.pageSize}
+            total={data.meta.total}
+            pageCount={data.meta.pageCount}
+            isLoading={isTurningPage}
+            onPageChange={pagination.setPage}
+            onPageSizeChange={pagination.setPageSize}
+          />
+        )}
+      </>
+    );
+  }
+
   return (
     <div className="space-y-4 sm:space-y-6">
       <CatalogFilters state={filters} />
@@ -269,53 +324,7 @@ export function ProductPicker({
           <h2 className="text-xl font-light text-foreground sm:text-2xl">{t('title')}</h2>
         </div>
 
-        {isPending ? (
-          <div className="flex items-center justify-center py-12">
-            <Spinner size="lg" label={t('loading')} />
-          </div>
-        ) : error ? (
-          <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />
-        ) : products.length === 0 ? (
-          <EmptyState
-            title={t('empty')}
-            action={
-              filters.hasAny ? (
-                <Button variant="secondary" size="sm" onClick={filters.clearAll}>
-                  {tActions('clearFilters')}
-                </Button>
-              ) : undefined
-            }
-          />
-        ) : (
-          <>
-            {/* Three across at most: each card carries two steppers and the
-                on-hand figure, and a fourth column squeezes those into nothing. */}
-            <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-              {products.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  quantities={draft.quantityOf(product.id)}
-                  onAdjust={(unit, delta) => draft.adjust(product, unit, delta)}
-                  available={availableOf(product.id)}
-                />
-              ))}
-            </ul>
-
-            {data && (
-              <Pagination
-                className="mt-6"
-                page={pagination.page}
-                pageSize={pagination.pageSize}
-                total={data.meta.total}
-                pageCount={data.meta.pageCount}
-                isLoading={isTurningPage}
-                onPageChange={pagination.setPage}
-                onPageSizeChange={pagination.setPageSize}
-              />
-            )}
-          </>
-        )}
+        {listView}
       </Card>
     </div>
   );

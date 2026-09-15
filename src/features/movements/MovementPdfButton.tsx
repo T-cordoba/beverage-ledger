@@ -6,7 +6,7 @@ import { Button, useNotify } from '@/components/ui';
 import { describeError } from '@/lib/api';
 import { downloadMovementPdf } from './api';
 
-export function MovementPdfButton({ id, code }: { id: string; code: string }) {
+export function MovementPdfButton({ id, code }: Readonly<{ id: string; code: string }>) {
   const t = useTranslations('movements.card');
   const tStates = useTranslations('common.states');
   const notify = useNotify();

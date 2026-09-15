@@ -27,7 +27,7 @@ function startOfMonth(date: Date) {
   return new Date(date.getFullYear(), date.getMonth(), 1);
 }
 
-function ChevronIcon({ direction }: { direction: 'left' | 'right' }) {
+function ChevronIcon({ direction }: Readonly<{ direction: 'left' | 'right' }>) {
   return (
     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path
@@ -40,7 +40,7 @@ function ChevronIcon({ direction }: { direction: 'left' | 'right' }) {
   );
 }
 
-export function DatePicker({ value, onChange, placeholder, className }: DatePickerProps) {
+export function DatePicker({ value, onChange, placeholder, className }: Readonly<DatePickerProps>) {
   const t = useTranslations('common.datePicker');
   const format = useFormatter();
   const locale = useLocale();
@@ -111,15 +111,14 @@ export function DatePicker({ value, onChange, placeholder, className }: DatePick
     },
   }[mode];
 
+  const cellVariantClasses = (isSelected: boolean, isToday: boolean): string => {
+    if (isSelected) return 'bg-accent font-medium text-background hover:bg-accent-hover';
+    if (isToday) return 'bg-contrast/10 font-medium text-accent';
+    return 'text-contrast hover:text-accent';
+  };
+
   const cellClasses = (isSelected: boolean, isToday: boolean) =>
-    cn(
-      'w-full text-sm',
-      isSelected
-        ? 'bg-accent font-medium text-background hover:bg-accent-hover'
-        : isToday
-          ? 'bg-contrast/10 font-medium text-accent'
-          : 'text-contrast hover:text-accent',
-    );
+    cn('w-full text-sm', cellVariantClasses(isSelected, isToday));
 
   return (
     <div className={cn('relative', className)}>
