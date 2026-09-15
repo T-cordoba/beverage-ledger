@@ -11,51 +11,26 @@ function wouldClearAction(action: string, next: string): boolean {
 }
 
 describe('chooseEntity - logica de limpieza de accion', () => {
-  it('Camino 1 - action vacia: no se limpia la accion', () => {
-    // Arrange
-    const action = '';
-    const next = 'product';
-
+  it.each([
+    ['action vacia: no se limpia la accion', '', 'product', false],
+    ['next vacio: no se limpia la accion', 'product.created', '', false],
+    [
+      'accion pertenece a la entidad seleccionada: no se limpia',
+      'product.created',
+      'product',
+      false,
+    ],
+    [
+      'accion no pertenece a la entidad seleccionada: se limpia',
+      'product.created',
+      'movement',
+      true,
+    ],
+  ])('Camino 1-4 - %s', (_caso, action, next, expected) => {
     // Act
     const result = wouldClearAction(action, next);
 
     // Assert
-    expect(result).toBe(false);
-  });
-
-  it('Camino 2 - next vacio: no se limpia la accion', () => {
-    // Arrange
-    const action = 'product.created';
-    const next = '';
-
-    // Act
-    const result = wouldClearAction(action, next);
-
-    // Assert
-    expect(result).toBe(false);
-  });
-
-  it('Camino 3 - accion pertenece a la entidad seleccionada: no se limpia', () => {
-    // Arrange
-    const action = 'product.created';
-    const next = 'product';
-
-    // Act
-    const result = wouldClearAction(action, next);
-
-    // Assert
-    expect(result).toBe(false);
-  });
-
-  it('Camino 4 - accion no pertenece a la entidad seleccionada: se limpia', () => {
-    // Arrange
-    const action = 'product.created';
-    const next = 'movement';
-
-    // Act
-    const result = wouldClearAction(action, next);
-
-    // Assert
-    expect(result).toBe(true);
+    expect(result).toBe(expected);
   });
 });
