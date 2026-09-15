@@ -39,13 +39,13 @@ describe('changeStatus - Front', () => {
       },
       error: undefined,
       response: { ok: true, status: 200 },
-    } as any);
+    } as unknown as Awaited<ReturnType<typeof api.GET>>);
 
     mockedApiPatch.mockResolvedValue({
       data: { id: 'user-1', status: 'ACTIVE' },
       error: undefined,
       response: { ok: true, status: 200 },
-    } as any);
+    } as unknown as Awaited<ReturnType<typeof api.PATCH>>);
 
     // Act
     const users = unwrap(
@@ -57,7 +57,7 @@ describe('changeStatus - Front', () => {
     const reactivated = unwrap(
       await api.PATCH('/api/v1/users/{id}', {
         params: { path: { id: 'user-1' } },
-        body: { status: 'ACTIVE' as any },
+        body: { status: 'ACTIVE' },
       }),
     );
 
@@ -74,12 +74,12 @@ describe('changeStatus - Front', () => {
       data: { id: 'user-2', status: 'SUSPENDED' },
       error: undefined,
       response: { ok: true, status: 200 },
-    } as any);
+    } as unknown as Awaited<ReturnType<typeof api.PATCH>>);
 
     // Act
     const response = await api.PATCH('/api/v1/users/{id}', {
       params: { path: { id: 'user-2' } },
-      body: { status: 'SUSPENDED' as any },
+      body: { status: 'SUSPENDED' },
     });
     const suspended = unwrap(response);
 
@@ -93,12 +93,12 @@ describe('changeStatus - Front', () => {
     mockedApiPatch.mockResolvedValue({
       error: { message: 'User not found' },
       response: { ok: false, status: 404 },
-    } as any);
+    } as unknown as Awaited<ReturnType<typeof api.PATCH>>);
 
     // Act
     const response = await api.PATCH('/api/v1/users/{id}', {
       params: { path: { id: '00000000-0000-4000-8000-000000000000' } },
-      body: { status: 'SUSPENDED' as any },
+      body: { status: 'SUSPENDED' },
     });
 
     // Assert

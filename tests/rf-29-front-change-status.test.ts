@@ -1,10 +1,10 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { API_ORIGIN } from '@/config/api';
-import { api, unwrap } from '@/lib/api';
+import { api, unwrap, type User } from '@/lib/api';
 import { storeSession } from '@/lib/api/session';
 
 describe('changeStatus - Front', () => {
-  let users: any[];
+  let users: User[];
 
   beforeAll(async () => {
     const response = await fetch(`${API_ORIGIN}/api/v1/auth/login`, {
@@ -48,7 +48,7 @@ describe('changeStatus - Front', () => {
   it('Camino 3 - la mutacion falla y se notifica error', async () => {
     const response = await api.PATCH('/api/v1/users/{id}', {
       params: { path: { id: '00000000-0000-4000-8000-000000000000' } },
-      body: { status: 'SUSPENDED' as any },
+      body: { status: 'SUSPENDED' },
     });
 
     expect(response.error).toBeDefined();

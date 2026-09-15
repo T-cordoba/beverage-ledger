@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useMovementDraft } from '@/features/movements/useMovementDraft';
 import { openDraft } from '@/features/movements/open-draft';
-import { api, unwrap } from '@/lib/api';
+import { api, unwrap, type Movement } from '@/lib/api';
 
 vi.mock('@/features/movements/open-draft', () => ({
   openDraft: vi.fn(),
@@ -52,12 +52,12 @@ describe('Registrar entrada - Front', () => {
       id: 'movement-1',
       type: 'INBOUND',
       status: 'DRAFT',
-    } as any);
+    } as unknown as Movement);
 
     mockedApiPost.mockResolvedValue({
       error: { message: 'Movimiento no encontrado' },
       response: { ok: false, status: 404 },
-    } as any);
+    } as unknown as Awaited<ReturnType<typeof api.POST>>);
 
     const { result } = renderHook(() => useMovementDraft('INBOUND'));
 
@@ -89,13 +89,13 @@ describe('Registrar entrada - Front', () => {
       id: 'movement-2',
       type: 'INBOUND',
       status: 'DRAFT',
-    } as any);
+    } as unknown as Movement);
 
     mockedApiPost.mockResolvedValue({
       data: { id: 'movement-2', status: 'CONFIRMED' },
       error: undefined,
       response: { ok: true, status: 200 },
-    } as any);
+    } as unknown as Awaited<ReturnType<typeof api.POST>>);
 
     const { result } = renderHook(() => useMovementDraft('INBOUND'));
 

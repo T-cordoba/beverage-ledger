@@ -38,7 +38,7 @@ describe('submit (ProductFormDialog) - Front', () => {
       data: { id: product.id, origin: 'Escocia Test' },
       error: undefined,
       response: { ok: true, status: 200 },
-    } as any);
+    } as unknown as Awaited<ReturnType<typeof api.PATCH>>);
 
     // Act
     const resultado = unwrap(
@@ -57,7 +57,7 @@ describe('submit (ProductFormDialog) - Front', () => {
     mockedApiPatch.mockResolvedValue({
       error: { message: 'Product not found' },
       response: { ok: false, status: 404 },
-    } as any);
+    } as unknown as Awaited<ReturnType<typeof api.PATCH>>);
 
     // Act
     const response = await api.PATCH('/api/v1/products/{id}', {
@@ -76,20 +76,20 @@ describe('submit (ProductFormDialog) - Front', () => {
       data: { data: [{ id: 'category-1', name: 'Bebidas' }] },
       error: undefined,
       response: { ok: true, status: 200 },
-    } as any);
+    } as unknown as Awaited<ReturnType<typeof api.GET>>);
 
     const nombreNuevo = `Vitest-RF09-Front-${Date.now()}`;
     mockedApiPost.mockResolvedValue({
       data: { id: 'product-2', name: nombreNuevo },
       error: undefined,
       response: { ok: true, status: 201 },
-    } as any);
+    } as unknown as Awaited<ReturnType<typeof api.POST>>);
 
     mockedApiPatch.mockResolvedValue({
       data: { id: 'product-2', isActive: false },
       error: undefined,
       response: { ok: true, status: 200 },
-    } as any);
+    } as unknown as Awaited<ReturnType<typeof api.PATCH>>);
 
     // Act
     const categories = unwrap(
@@ -129,11 +129,11 @@ describe('submit (ProductFormDialog) - Front', () => {
       error: { message: 'Validation failed' },
 
       response: { ok: false, status: 400 },
-    } as any);
+    } as unknown as Awaited<ReturnType<typeof api.POST>>);
 
     // Act
     const response = await api.POST('/api/v1/products', {
-      body: { name: '', categoryId: '', caseSize: 0 } as any,
+      body: { name: '', categoryId: '', caseSize: 0 },
     });
 
     // Assert

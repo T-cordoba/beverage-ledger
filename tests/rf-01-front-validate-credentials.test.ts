@@ -13,11 +13,11 @@ describe('handleSubmit - Front', () => {
 
   it('Camino 1 - signIn lanza excepcion y se muestra el error', async () => {
     // Arrange
-    (fetch as any).mockResolvedValue({
+    vi.mocked(fetch).mockResolvedValue({
       ok: false,
       status: 401,
       json: async () => ({ message: 'Credenciales inválidas' }),
-    });
+    } as unknown as Response);
 
     // Act
     const response = await fetch(`${API_ORIGIN}/api/v1/auth/login`, {
@@ -38,7 +38,7 @@ describe('handleSubmit - Front', () => {
 
   it('Camino 2 - signIn tiene exito y devuelve datos de sesion', async () => {
     // Arrange
-    (fetch as any).mockResolvedValue({
+    vi.mocked(fetch).mockResolvedValue({
       ok: true,
       status: 200,
       json: async () => ({
@@ -46,7 +46,7 @@ describe('handleSubmit - Front', () => {
         user: { id: 'user-1', email: 'admin@beverageledger.local' },
         expiresIn: 900,
       }),
-    });
+    } as unknown as Response);
 
     // Act
     const response = await fetch(`${API_ORIGIN}/api/v1/auth/login`, {

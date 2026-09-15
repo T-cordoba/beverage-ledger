@@ -15,11 +15,11 @@ describe('AcceptInviteForm render - Front', () => {
     // Arrange
     // El estado isPending es transitorio y no alcanzable via API directamente.
     // Se verifica que el endpoint de preview existe y responde.
-    (fetch as any).mockResolvedValue({
+    vi.mocked(fetch).mockResolvedValue({
       ok: false,
       status: 404,
       json: async () => ({ message: 'Invitation not found' }),
-    });
+    } as unknown as Response);
 
     // Act
     const response = await fetch(`${API_ORIGIN}/api/v1/invitations/lookup`, {
@@ -34,11 +34,11 @@ describe('AcceptInviteForm render - Front', () => {
 
   it('Camino 2 - token invalido, se muestra tarjeta de error', async () => {
     // Arrange
-    (fetch as any).mockResolvedValue({
+    vi.mocked(fetch).mockResolvedValue({
       ok: false,
       status: 404,
       json: async () => ({ message: 'Invitation not found or expired' }),
-    });
+    } as unknown as Response);
 
     // Act
     const response = await fetch(`${API_ORIGIN}/api/v1/invitations/lookup`, {
@@ -56,14 +56,14 @@ describe('AcceptInviteForm render - Front', () => {
 
   it('Camino 3 - token valido, se muestra formulario de aceptacion', async () => {
     // Arrange
-    (fetch as any).mockResolvedValue({
+    vi.mocked(fetch).mockResolvedValue({
       ok: true,
       status: 200,
       json: async () => ({
         email: 'invitado@ejemplo.com',
         organizationName: 'Beverage Ledger',
       }),
-    });
+    } as unknown as Response);
 
     // Act
     const response = await fetch(`${API_ORIGIN}/api/v1/invitations/lookup`, {

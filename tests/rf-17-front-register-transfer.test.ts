@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useMovementDraft } from '@/features/movements/useMovementDraft';
 import { openDraft } from '@/features/movements/open-draft';
+import type { Movement } from '@/lib/api';
 
 vi.mock('@/features/movements/open-draft', () => ({
   openDraft: vi.fn(),
@@ -29,7 +30,7 @@ describe('Registrar traspaso - Front', () => {
       id: 'movement-1',
       type: 'TRANSFER',
       status: 'DRAFT',
-    } as any);
+    } as unknown as Movement);
 
     const { result } = renderHook(() => useMovementDraft('TRANSFER'));
 

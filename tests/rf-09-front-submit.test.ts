@@ -1,10 +1,10 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { API_ORIGIN } from '@/config/api';
-import { api, unwrap } from '@/lib/api';
+import { api, unwrap, type Product } from '@/lib/api';
 import { storeSession } from '@/lib/api/session';
 
 describe('submit (ProductFormDialog) - Front', () => {
-  let product: any;
+  let product: Product;
 
   beforeAll(async () => {
     const response = await fetch(`${API_ORIGIN}/api/v1/auth/login`, {
@@ -76,7 +76,7 @@ describe('submit (ProductFormDialog) - Front', () => {
 
   it('Camino 4 - creacion falla por datos invalidos', async () => {
     const response = await api.POST('/api/v1/products', {
-      body: { name: '', categoryId: '', caseSize: 0 } as any,
+      body: { name: '', categoryId: '', caseSize: 0 },
     });
 
     expect(response.error).toBeDefined();

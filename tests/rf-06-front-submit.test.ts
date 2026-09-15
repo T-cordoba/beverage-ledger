@@ -27,7 +27,7 @@ describe('submit (ChangePasswordForm) - Front', () => {
     mockedApiPut.mockResolvedValue({
       error: { message: 'The current password is incorrect' },
       response: { ok: false, status: 401 },
-    } as any);
+    } as unknown as Awaited<ReturnType<typeof api.PUT>>);
 
     // Act
     const response = await api.PUT('/api/v1/users/me/password', {
@@ -49,7 +49,7 @@ describe('submit (ChangePasswordForm) - Front', () => {
       data: undefined,
       error: undefined,
       response: { ok: true, status: 204 },
-    } as any);
+    } as unknown as Awaited<ReturnType<typeof api.PUT>>);
 
     // Act
     const response = await api.PUT('/api/v1/users/me/password', {

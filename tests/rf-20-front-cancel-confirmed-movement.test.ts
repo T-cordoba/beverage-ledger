@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { openDraft } from '@/features/movements/open-draft';
-import { api, unwrap } from '@/lib/api';
+import { api, unwrap, type Movement } from '@/lib/api';
 
 vi.mock('@/features/movements/open-draft', () => ({
   openDraft: vi.fn(),
@@ -37,7 +37,7 @@ describe('Anular un movimiento confirmado - Front', () => {
     mockedApiPost.mockResolvedValue({
       error: { message: 'Movimiento no encontrado' },
       response: { ok: false, status: 404 },
-    } as any);
+    } as unknown as Awaited<ReturnType<typeof api.POST>>);
 
     // Act
     const response = await api.POST('/api/v1/movements/{id}/cancel', {
@@ -61,19 +61,19 @@ describe('Anular un movimiento confirmado - Front', () => {
       id: 'movement-1',
       type: 'OUTBOUND',
       status: 'DRAFT',
-    } as any);
+    } as unknown as Movement);
 
     mockedApiPost
       .mockResolvedValueOnce({
         data: { id: 'movement-1', status: 'CONFIRMED' },
         error: undefined,
         response: { ok: true, status: 200 },
-      } as any)
+      } as unknown as Awaited<ReturnType<typeof api.POST>>)
       .mockResolvedValueOnce({
         data: { id: 'movement-1', status: 'CANCELLED' },
         error: undefined,
         response: { ok: true, status: 200 },
-      } as any);
+      } as unknown as Awaited<ReturnType<typeof api.POST>>);
 
     // Act
     const draft = await openDraft({
