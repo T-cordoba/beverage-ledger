@@ -10,7 +10,7 @@ import { describeError } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
 import { useAuth } from './auth-context';
 
-function GoogleButton({ label }: { label: string }) {
+function GoogleButton({ label }: Readonly<{ label: string }>) {
   const t = useTranslations('auth.google');
 
   if (!IS_GOOGLE_SIGN_IN_ENABLED) return null;

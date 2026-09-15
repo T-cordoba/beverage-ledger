@@ -34,19 +34,21 @@ function LocationFormDialog({
   open,
   onOpenChange,
   onSubmit,
-}: {
+}: Readonly<{
   location: Location | null;
   isSaving: boolean;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (values: { name: string; isDefault: boolean }) => Promise<void>;
-}) {
+}>) {
   const t = useTranslations('locations.form');
   const tActions = useTranslations('common.actions');
   const [name, setName] = useState(location?.name ?? '');
   const [isDefault, setIsDefault] = useState(location?.isDefault ?? false);
 
-  const validation = useFormValidation({ name: rules.text(name, { minLength: 2 }) });
+  const validation = useFormValidation({
+    name: rules.text(name, { minLength: 2 }),
+  });
 
   const submit = async () => {
     await onSubmit({ name: name.trim(), isDefault });
@@ -64,6 +66,7 @@ function LocationFormDialog({
           <DialogTitle>
             {location ? t('editTitle', { name: location.name }) : t('createTitle')}
           </DialogTitle>
+
           <DialogDescription>{t('description')}</DialogDescription>
 
           {validation.alert && <FormAlert title={validation.alert} />}
@@ -110,6 +113,7 @@ function LocationFormDialog({
             >
               {tActions('cancel')}
             </Button>
+
             <Button type="submit" size="lg" className="sm:flex-1" isLoading={isSaving}>
               {location ? tActions('save') : tActions('create')}
             </Button>
@@ -120,11 +124,140 @@ function LocationFormDialog({
   );
 }
 
+function LocationNameCell({ location }: Readonly<{ location: Location }>) {
+  const t = useTranslations('locations');
+
+  return (
+    <span className="flex items-center gap-2">
+      <span className="font-medium text-foreground">{location.name}</span>
+      {location.isDefault && <Badge tone="info">{t('default')}</Badge>}
+    </span>
+  );
+}
+
+function LocationMovementCountCell({ location }: Readonly<{ location: Location }>) {
+  const format = useFormatter();
+
+  return <span className="text-contrast/70">{format.number(location.movementCount)}</span>;
+}
+
+function LocationActionsCell({
+  location,
+  isSaving,
+  onPromote,
+  onOpenForm,
+  onDelete,
+}: Readonly<{
+  location: Location;
+  isSaving: boolean;
+  onPromote: (location: Location) => Promise<void>;
+  onOpenForm: (location: Location) => void;
+  onDelete: (location: Location) => void;
+}>) {
+  const t = useTranslations('locations');
+  const tActions = useTranslations('common.actions');
+
+  let deleteBlockedReason: string | undefined;
+
+  if (location.isDefault) {
+    deleteBlockedReason = t('delete.blockedDefault');
+  } else if (location.movementCount > 0) {
+    deleteBlockedReason = t('delete.blockedInUse', {
+      count: location.movementCount,
+    });
+  }
+
+  return (
+    <div className="flex justify-end gap-2">
+      {!location.isDefault && (
+        <Button
+          variant="secondary"
+          size="sm"
+          disabled={isSaving}
+          onClick={() => void onPromote(location)}
+        >
+          {t('makeDefault')}
+        </Button>
+      )}
+
+      <Button variant="secondary" size="sm" onClick={() => onOpenForm(location)}>
+        {t('rename')}
+      </Button>
+
+      <Button
+        variant="danger-outline"
+        size="sm"
+        disabled={location.isDefault || location.movementCount > 0}
+        title={deleteBlockedReason}
+        onClick={() => onDelete(location)}
+      >
+        {tActions('delete')}
+      </Button>
+    </div>
+  );
+}
+
+function createLocationColumns({
+  t,
+  isSaving,
+  onPromote,
+  onOpenForm,
+  onDelete,
+}: {
+  // Headers still come from the message catalogue: the factory sits outside the
+  // component, so the translator has to be handed to it rather than hooked.
+  t: ReturnType<typeof useTranslations>;
+  isSaving: boolean;
+  onPromote: (location: Location) => Promise<void>;
+  onOpenForm: (location: Location) => void;
+  onDelete: (location: Location) => void;
+}): DataTableColumn<Location>[] {
+  return [
+    {
+      key: 'name',
+      header: t('columns.name'),
+      primary: true,
+      skeleton: <Skeleton className="h-6 w-40" />,
+      cell: (location) => <LocationNameCell location={location} />,
+    },
+    {
+      key: 'movementCount',
+      header: t('columns.movementCount'),
+      align: 'end',
+      summary: true,
+      skeleton: <Skeleton className="ml-auto h-5 w-10" />,
+      cell: (location) => <LocationMovementCountCell location={location} />,
+    },
+    {
+      key: 'actions',
+      header: t('columns.actions'),
+      align: 'end',
+      bare: true,
+      // Three buttons, and they are what set this row's height.
+      skeleton: (
+        <div className="flex justify-end gap-2">
+          <Skeleton className="h-9 w-28" />
+          <Skeleton className="h-9 w-20" />
+          <Skeleton className="h-9 w-20" />
+        </div>
+      ),
+      cell: (location) => (
+        <LocationActionsCell
+          location={location}
+          isSaving={isSaving}
+          onPromote={onPromote}
+          onOpenForm={onOpenForm}
+          onDelete={onDelete}
+        />
+      ),
+    },
+  ];
+}
+
 export function LocationsView() {
   const t = useTranslations('locations');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
-  const format = useFormatter();
 
   const { data, isPending, isError, refetch } = useLocations();
   const { refresh, isRefreshing } = useManualRefresh(refetch);
@@ -150,17 +283,26 @@ export function LocationsView() {
       if (editing) {
         await update.mutateAsync({
           id: editing.id,
-          input: { name: values.name, ...(values.isDefault ? { isDefault: true } : {}) },
+          input: {
+            name: values.name,
+            ...(values.isDefault ? { isDefault: true } : {}),
+          },
         });
+
         notify('success', t('notify.saved'), t('notify.savedDescription', { name: values.name }));
       } else {
-        await create.mutateAsync({ name: values.name, isDefault: values.isDefault });
+        await create.mutateAsync({
+          name: values.name,
+          isDefault: values.isDefault,
+        });
+
         notify(
           'success',
           t('notify.created'),
           t('notify.createdDescription', { name: values.name }),
         );
       }
+
       setIsFormOpen(false);
     } catch (error) {
       notify('error', t('notify.saveFailed'), describeError(error, tStates('tryAgain')));
@@ -170,6 +312,7 @@ export function LocationsView() {
   const destroy = async (location: Location) => {
     try {
       await remove.mutateAsync(location.id);
+
       notify(
         'success',
         t('notify.deleted'),
@@ -182,7 +325,11 @@ export function LocationsView() {
 
   const promote = async (location: Location) => {
     try {
-      await update.mutateAsync({ id: location.id, input: { isDefault: true } });
+      await update.mutateAsync({
+        id: location.id,
+        input: { isDefault: true },
+      });
+
       notify(
         'success',
         t('notify.defaultChanged'),
@@ -193,86 +340,26 @@ export function LocationsView() {
     }
   };
 
-  const columns: DataTableColumn<Location>[] = [
-    {
-      key: 'name',
-      header: t('columns.name'),
-      primary: true,
-      skeleton: <Skeleton className="h-6 w-40" />,
-      cell: (location) => (
-        <span className="flex items-center gap-2">
-          <span className="font-medium text-foreground">{location.name}</span>
-          {location.isDefault && <Badge tone="info">{t('default')}</Badge>}
-        </span>
-      ),
-    },
-    {
-      key: 'movementCount',
-      header: t('columns.movementCount'),
-      align: 'end',
-      summary: true,
-      skeleton: <Skeleton className="ml-auto h-5 w-10" />,
-      cell: (location) => (
-        <span className="text-contrast/70">{format.number(location.movementCount)}</span>
-      ),
-    },
-    {
-      key: 'actions',
-      header: t('columns.actions'),
-      align: 'end',
-      bare: true,
-      // Three buttons, and they are what set this row's height.
-      skeleton: (
-        <div className="flex justify-end gap-2">
-          <Skeleton className="h-9 w-28" />
-          <Skeleton className="h-9 w-20" />
-          <Skeleton className="h-9 w-20" />
-        </div>
-      ),
-      cell: (location) => (
-        <div className="flex justify-end gap-2">
-          {!location.isDefault && (
-            <Button
-              variant="secondary"
-              size="sm"
-              disabled={isSaving}
-              onClick={() => void promote(location)}
-            >
-              {t('makeDefault')}
-            </Button>
-          )}
-          <Button variant="secondary" size="sm" onClick={() => openForm(location)}>
-            {t('rename')}
-          </Button>
-          <Button
-            variant="danger-outline"
-            size="sm"
-            disabled={location.isDefault || location.movementCount > 0}
-            title={
-              location.isDefault
-                ? t('delete.blockedDefault')
-                : location.movementCount > 0
-                  ? t('delete.blockedInUse', { count: location.movementCount })
-                  : undefined
-            }
-            onClick={() => setDeleting(location)}
-          >
-            {tActions('delete')}
-          </Button>
-        </div>
-      ),
-    },
-  ];
+  const columns = createLocationColumns({
+    t,
+    isSaving,
+    onPromote: promote,
+    onOpenForm: openForm,
+    onDelete: setDeleting,
+  });
 
   return (
     <div className="space-y-6">
       <header className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
         <div className="space-y-1">
           <h1 className="text-2xl font-light text-foreground sm:text-3xl">{t('title')}</h1>
+
           <p className="text-sm text-contrast/60">{t('subtitle')}</p>
         </div>
+
         <div className="flex items-center gap-2 sm:justify-end">
           <RefreshButton onRefresh={refresh} isRefreshing={isRefreshing} />
+
           <Button size="lg" className="hidden sm:inline-flex" onClick={() => openForm(null)}>
             {t('new')}
           </Button>
@@ -323,6 +410,7 @@ export function LocationsView() {
         onConfirm={() => {
           const location = deleting;
           setDeleting(null);
+
           if (location) void destroy(location);
         }}
       />

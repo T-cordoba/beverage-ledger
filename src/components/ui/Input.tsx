@@ -10,7 +10,7 @@ export interface InputProps extends ComponentPropsWithRef<'input'> {
   trailing?: ReactNode;
 }
 
-export function Input({ className, trailing, ...props }: InputProps) {
+export function Input({ className, trailing, ...props }: Readonly<InputProps>) {
   const input = (
     <input
       className={cn(
@@ -45,7 +45,7 @@ export function Input({ className, trailing, ...props }: InputProps) {
  * a typo revokes every session of the account at once. The toggle is a button
  * and not a checkbox so that it never becomes part of the form's value.
  */
-export function PasswordInput(props: Omit<InputProps, 'type' | 'trailing'>) {
+export function PasswordInput(props: Readonly<Omit<InputProps, 'type' | 'trailing'>>) {
   const t = useTranslations('common.password');
   const [isVisible, setIsVisible] = useState(false);
 

@@ -5,7 +5,7 @@ import { BRAND } from '@/config/branding';
 import { ROUTES } from '@/config/navigation';
 import { LanguageSwitcher } from '@/i18n';
 
-export default function AuthLayout({ children }: { children: ReactNode }) {
+export default function AuthLayout({ children }: Readonly<{ children: ReactNode }>) {
   const t = useTranslations('auth');
 
   return (

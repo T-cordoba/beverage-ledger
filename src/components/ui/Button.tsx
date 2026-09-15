@@ -45,7 +45,7 @@ export function Button({
   children,
   disabled,
   ...props
-}: ButtonProps) {
+}: Readonly<ButtonProps>) {
   const classes = cn(
     // Never wraps: every size is a fixed height, so a label that breaks onto a
     // second line spills out of the pill instead of growing it. A long label has

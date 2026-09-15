@@ -1,7 +1,6 @@
 'use client';
-
 import { useFormatter, useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Button,
   Card,
@@ -32,12 +31,10 @@ export interface TaxonomyItem {
   /** Categories carry a display order; brands do not. */
   sortOrder?: number;
 }
-
 export interface TaxonomyValues {
   name: string;
   sortOrder: number;
 }
-
 /**
  * The wording, resolved by the caller.
  *
@@ -60,7 +57,6 @@ export interface TaxonomyCopy {
   deleteDescription: string;
   blockedInUse: (count: number) => string;
 }
-
 interface TaxonomyViewProps {
   copy: TaxonomyCopy;
   items: TaxonomyItem[];
@@ -75,6 +71,112 @@ interface TaxonomyViewProps {
   onDelete: (item: TaxonomyItem) => Promise<void>;
 }
 
+// --- Field inputs, extracted so the `Field` render-prop children are plain
+// references to outside components instead of inline function bodies. ---
+
+function NameFieldInput({
+  id,
+  describedBy,
+  invalid,
+  value,
+  onChange,
+  onBlur,
+}: Readonly<{
+  id: string;
+  describedBy?: string;
+  invalid?: boolean;
+  value: string;
+  onChange: (value: string) => void;
+  onBlur: () => void;
+}>) {
+  return (
+    <Input
+      id={id}
+      required
+      aria-describedby={describedBy}
+      aria-invalid={invalid}
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+      onBlur={onBlur}
+    />
+  );
+}
+
+function SortOrderFieldInput({
+  id,
+  describedBy,
+  invalid,
+  value,
+  onChange,
+  onBlur,
+}: Readonly<{
+  id: string;
+  describedBy?: string;
+  invalid?: boolean;
+  value: string;
+  onChange: (value: string) => void;
+  onBlur: () => void;
+}>) {
+  return (
+    <Input
+      id={id}
+      type="number"
+      min={0}
+      aria-describedby={describedBy}
+      aria-invalid={invalid}
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+      onBlur={onBlur}
+    />
+  );
+}
+
+/** Shape `Field` hands back to its `children` render prop. */
+type FieldRenderProps = { id: string; describedBy?: string; invalid?: boolean };
+
+// --- Factories that build the `Field` render-prop callback. Declaring the
+// returned function here — outside TaxonomyFormDialog — is what satisfies the
+// "no nested components" rule: the JSX-returning function is no longer
+// lexically defined inside another component's body, only invoked from one. ---
+
+function createNameFieldRenderer(
+  value: string,
+  onChange: (value: string) => void,
+  onBlur: () => void,
+) {
+  return function NameFieldRenderer({ id, describedBy, invalid }: Readonly<FieldRenderProps>) {
+    return (
+      <NameFieldInput
+        id={id}
+        describedBy={describedBy}
+        invalid={invalid}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+      />
+    );
+  };
+}
+
+function createSortOrderFieldRenderer(
+  value: string,
+  onChange: (value: string) => void,
+  onBlur: () => void,
+) {
+  return function SortOrderFieldRenderer({ id, describedBy, invalid }: Readonly<FieldRenderProps>) {
+    return (
+      <SortOrderFieldInput
+        id={id}
+        describedBy={describedBy}
+        invalid={invalid}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+      />
+    );
+  };
+}
+
 function TaxonomyFormDialog({
   item,
   copy,
@@ -83,7 +185,7 @@ function TaxonomyFormDialog({
   open,
   onOpenChange,
   onSubmit,
-}: {
+}: Readonly<{
   item: TaxonomyItem | null;
   copy: TaxonomyCopy;
   withSortOrder: boolean;
@@ -91,23 +193,20 @@ function TaxonomyFormDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (values: TaxonomyValues) => Promise<void>;
-}) {
+}>) {
   const t = useTranslations('admin.taxonomy');
   const tActions = useTranslations('common.actions');
   const [name, setName] = useState(item?.name ?? '');
   const [sortOrder, setSortOrder] = useState(String(item?.sortOrder ?? 0));
-
   const validation = useFormValidation({
     name: rules.text(name, { minLength: 2 }),
     sortOrder: withSortOrder
       ? rules.numeric(sortOrder, { optional: false, min: 0, integer: true })
       : undefined,
   });
-
   const submit = async () => {
     await onSubmit({ name: name.trim(), sortOrder: Number(sortOrder) || 0 });
   };
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -119,44 +218,21 @@ function TaxonomyFormDialog({
         >
           <DialogTitle>{item ? copy.editTitle(item.name) : copy.createTitle}</DialogTitle>
           <DialogDescription>{copy.formDescription}</DialogDescription>
-
           {validation.alert && <FormAlert title={validation.alert} />}
-
           <Field label={t('name')} error={validation.errorFor('name')}>
-            {({ id, describedBy, invalid }) => (
-              <Input
-                id={id}
-                required
-                aria-describedby={describedBy}
-                aria-invalid={invalid}
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-                onBlur={() => validation.touch('name')}
-              />
-            )}
+            {createNameFieldRenderer(name, setName, () => validation.touch('name'))}
           </Field>
-
           {withSortOrder && (
             <Field
               label={t('sortOrder')}
               hint={t('sortOrderHint')}
               error={validation.errorFor('sortOrder')}
             >
-              {({ id, describedBy, invalid }) => (
-                <Input
-                  id={id}
-                  type="number"
-                  min={0}
-                  aria-describedby={describedBy}
-                  aria-invalid={invalid}
-                  value={sortOrder}
-                  onChange={(event) => setSortOrder(event.target.value)}
-                  onBlur={() => validation.touch('sortOrder')}
-                />
+              {createSortOrderFieldRenderer(sortOrder, setSortOrder, () =>
+                validation.touch('sortOrder'),
               )}
             </Field>
           )}
-
           <DialogFooter>
             <Button
               type="button"
@@ -178,6 +254,135 @@ function TaxonomyFormDialog({
   );
 }
 
+// --- Table cell renderers, extracted so they aren't recreated (and re-detected
+// as nested components) on every TaxonomyView render. Each takes only what it needs. ---
+
+function NameCell({ name }: Readonly<{ name: string }>) {
+  return <span className="font-medium text-foreground">{name}</span>;
+}
+
+function SortOrderCell({
+  value,
+  format,
+}: Readonly<{ value: number; format: ReturnType<typeof useFormatter> }>) {
+  return <span className="text-contrast/70">{format.number(value)}</span>;
+}
+
+function ProductCountCell({
+  value,
+  format,
+}: Readonly<{ value: number; format: ReturnType<typeof useFormatter> }>) {
+  return <span className="text-contrast/70">{format.number(value)}</span>;
+}
+
+function ActionsCell({
+  item,
+  copy,
+  t,
+  tActions,
+  onRename,
+  onDeleteRequest,
+}: Readonly<{
+  item: TaxonomyItem;
+  copy: TaxonomyCopy;
+  t: ReturnType<typeof useTranslations>;
+  tActions: ReturnType<typeof useTranslations>;
+  onRename: (item: TaxonomyItem) => void;
+  onDeleteRequest: (item: TaxonomyItem) => void;
+}>) {
+  return (
+    <div className="flex justify-end gap-2">
+      <Button variant="secondary" size="sm" onClick={() => onRename(item)}>
+        {t('rename')}
+      </Button>
+      <Button
+        variant="danger-outline"
+        size="sm"
+        disabled={item.productCount > 0}
+        title={item.productCount > 0 ? copy.blockedInUse(item.productCount) : undefined}
+        onClick={() => onDeleteRequest(item)}
+      >
+        {tActions('delete')}
+      </Button>
+    </div>
+  );
+}
+
+// --- Column factories. Each returns a DataTableColumn whose `cell` closure is
+// declared here — outside TaxonomyView — for the same reason as the Field
+// renderers above: a JSX-returning function must not be lexically defined
+// inside the component that uses it. ---
+
+function buildNameColumn(t: ReturnType<typeof useTranslations>): DataTableColumn<TaxonomyItem> {
+  return {
+    key: 'name',
+    header: t('columns.name'),
+    primary: true,
+    skeleton: <Skeleton className="h-5 w-40" />,
+    cell: (item) => <NameCell name={item.name} />,
+  };
+}
+
+function buildSortOrderColumn(
+  t: ReturnType<typeof useTranslations>,
+  format: ReturnType<typeof useFormatter>,
+): DataTableColumn<TaxonomyItem> {
+  return {
+    key: 'sortOrder',
+    header: t('columns.sortOrder'),
+    align: 'end',
+    hideBelow: 'sm',
+    skeleton: <Skeleton className="ml-auto h-5 w-8" />,
+    cell: (item) => <SortOrderCell value={item.sortOrder ?? 0} format={format} />,
+  };
+}
+
+function buildProductCountColumn(
+  t: ReturnType<typeof useTranslations>,
+  format: ReturnType<typeof useFormatter>,
+): DataTableColumn<TaxonomyItem> {
+  return {
+    key: 'productCount',
+    header: t('columns.productCount'),
+    align: 'end',
+    summary: true,
+    skeleton: <Skeleton className="ml-auto h-5 w-8" />,
+    cell: (item) => <ProductCountCell value={item.productCount} format={format} />,
+  };
+}
+
+function buildActionsColumn(
+  t: ReturnType<typeof useTranslations>,
+  tActions: ReturnType<typeof useTranslations>,
+  copy: TaxonomyCopy,
+  onRename: (item: TaxonomyItem) => void,
+  onDeleteRequest: (item: TaxonomyItem) => void,
+): DataTableColumn<TaxonomyItem> {
+  return {
+    key: 'actions',
+    header: t('columns.actions'),
+    align: 'end',
+    bare: true,
+    // Two buttons, and they are what set this row's height.
+    skeleton: (
+      <div className="flex justify-end gap-2">
+        <Skeleton className="h-9 w-20" />
+        <Skeleton className="h-9 w-20" />
+      </div>
+    ),
+    cell: (item) => (
+      <ActionsCell
+        item={item}
+        copy={copy}
+        t={t}
+        tActions={tActions}
+        onRename={onRename}
+        onDeleteRequest={onDeleteRequest}
+      />
+    ),
+  };
+}
+
 /**
  * Categories and brands are the same screen: a name, how many products point at
  * it, and a delete that only goes through while nothing does. Only the display
@@ -195,16 +400,14 @@ export function TaxonomyView({
   onCreate,
   onUpdate,
   onDelete,
-}: TaxonomyViewProps) {
+}: Readonly<TaxonomyViewProps>) {
   const t = useTranslations('admin.taxonomy');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
   const format = useFormatter();
-
   const [editing, setEditing] = useState<TaxonomyItem | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [deleting, setDeleting] = useState<TaxonomyItem | null>(null);
-
   // Paged in the browser, unlike every other list. These same rows also fill the
   // catalogue's dropdowns, which are only honest holding every option, so they
   // are fetched whole either way; this only decides how many are painted.
@@ -217,66 +420,17 @@ export function TaxonomyView({
     setIsFormOpen(true);
   };
 
-  const columns: DataTableColumn<TaxonomyItem>[] = [
-    {
-      key: 'name',
-      header: t('columns.name'),
-      primary: true,
-      skeleton: <Skeleton className="h-5 w-40" />,
-      cell: (item) => <span className="font-medium text-foreground">{item.name}</span>,
-    },
-    ...(withSortOrder
-      ? [
-          {
-            key: 'sortOrder',
-            header: t('columns.sortOrder'),
-            align: 'end',
-            hideBelow: 'sm',
-            skeleton: <Skeleton className="ml-auto h-5 w-8" />,
-            cell: (item) => (
-              <span className="text-contrast/70">{format.number(item.sortOrder ?? 0)}</span>
-            ),
-          } satisfies DataTableColumn<TaxonomyItem>,
-        ]
-      : []),
-    {
-      key: 'productCount',
-      header: t('columns.productCount'),
-      align: 'end',
-      summary: true,
-      skeleton: <Skeleton className="ml-auto h-5 w-8" />,
-      cell: (item) => <span className="text-contrast/70">{format.number(item.productCount)}</span>,
-    },
-    {
-      key: 'actions',
-      header: t('columns.actions'),
-      align: 'end',
-      bare: true,
-      // Two buttons, and they are what set this row's height.
-      skeleton: (
-        <div className="flex justify-end gap-2">
-          <Skeleton className="h-9 w-20" />
-          <Skeleton className="h-9 w-20" />
-        </div>
-      ),
-      cell: (item) => (
-        <div className="flex justify-end gap-2">
-          <Button variant="secondary" size="sm" onClick={() => openForm(item)}>
-            {t('rename')}
-          </Button>
-          <Button
-            variant="danger-outline"
-            size="sm"
-            disabled={item.productCount > 0}
-            title={item.productCount > 0 ? copy.blockedInUse(item.productCount) : undefined}
-            onClick={() => setDeleting(item)}
-          >
-            {tActions('delete')}
-          </Button>
-        </div>
-      ),
-    },
-  ];
+  const columns = useMemo<DataTableColumn<TaxonomyItem>[]>(() => {
+    const cols: DataTableColumn<TaxonomyItem>[] = [buildNameColumn(t)];
+    if (withSortOrder) {
+      cols.push(buildSortOrderColumn(t, format));
+    }
+    cols.push(
+      buildProductCountColumn(t, format),
+      buildActionsColumn(t, tActions, copy, openForm, setDeleting),
+    );
+    return cols;
+  }, [t, tActions, format, withSortOrder, copy]);
 
   return (
     <div className="space-y-6">
@@ -292,12 +446,10 @@ export function TaxonomyView({
           </Button>
         </div>
       </header>
-
       <FloatingAction
         label={copy.newItem}
         items={[{ label: copy.newItem, onClick: () => openForm(null) }]}
       />
-
       {isError ? (
         <EmptyState title={copy.loadFailed} description={tStates('apiUnreachable')} />
       ) : (
@@ -317,7 +469,6 @@ export function TaxonomyView({
           />
         </Card>
       )}
-
       {!isPending && !isError && (
         <Pagination
           page={pagination.page}
@@ -328,7 +479,6 @@ export function TaxonomyView({
           onPageSizeChange={pagination.setPageSize}
         />
       )}
-
       {/* Keyed so the dialog seeds itself from whichever row is being renamed. */}
       <TaxonomyFormDialog
         key={editing?.id ?? 'new'}
@@ -347,7 +497,6 @@ export function TaxonomyView({
           setIsFormOpen(false);
         }}
       />
-
       <ConfirmDialog
         open={deleting !== null}
         onOpenChange={(open) => !open && setDeleting(null)}

@@ -38,7 +38,7 @@ export function useNotify(): Notify {
   return notify;
 }
 
-export function NotificationsProvider({ children }: { children: ReactNode }) {
+export function NotificationsProvider({ children }: Readonly<{ children: ReactNode }>) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const nextId = useRef(0);
 
@@ -91,10 +91,10 @@ const toneStyles: Record<NotificationTone, { panel: string; icon: string; path: 
 function NotificationList({
   notifications,
   onDismiss,
-}: {
+}: Readonly<{
   notifications: Notification[];
   onDismiss: (id: number) => void;
-}) {
+}>) {
   const t = useTranslations('common.actions');
 
   // The container renders even when empty: a screen reader only announces

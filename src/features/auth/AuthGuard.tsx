@@ -16,7 +16,7 @@ import { useAuth, useSignInPath } from './auth-context';
  * the API's job anyway — this only avoids rendering a screen that is about to
  * answer 401.
  */
-export function AuthGuard({ children }: { children: ReactNode }) {
+export function AuthGuard({ children }: Readonly<{ children: ReactNode }>) {
   const t = useTranslations('auth.guard');
   const { isLoading, isAuthenticated } = useAuth();
   const router = useRouter();
