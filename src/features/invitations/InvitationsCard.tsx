@@ -37,17 +37,17 @@ function stateOf(invitation: Invitation, now: number): InvitationState {
 }
 
 // === CELLS COMO COMPONENTES EXTERNOS ===
-function EmailCell({ invitation }: { invitation: Invitation }) {
+function EmailCell({ invitation }: Readonly<{ invitation: Invitation }>) {
   return <span className="font-medium text-foreground">{invitation.email}</span>;
 }
 
 function RoleCell({
   invitation,
   tRoles,
-}: {
+}: Readonly<{
   invitation: Invitation;
   tRoles: ReturnType<typeof useTranslations>;
-}) {
+}>) {
   return <span className="text-contrast/70">{tRoles(invitation.role)}</span>;
 }
 
@@ -55,11 +55,11 @@ function StateCell({
   invitation,
   now,
   t,
-}: {
+}: Readonly<{
   invitation: Invitation;
   now: number;
   t: ReturnType<typeof useTranslations>;
-}) {
+}>) {
   const state = stateOf(invitation, now);
   return <Badge tone={STATE_TONES[state]}>{t(`states.${state}`)}</Badge>;
 }
@@ -67,10 +67,10 @@ function StateCell({
 function ExpiresCell({
   invitation,
   format,
-}: {
+}: Readonly<{
   invitation: Invitation;
   format: ReturnType<typeof useFormatter>;
-}) {
+}>) {
   return (
     <span className="text-contrast/70">
       {format.dateTime(new Date(invitation.expiresAt), 'short')}
@@ -78,7 +78,7 @@ function ExpiresCell({
   );
 }
 
-function InvitedByCell({ invitation }: { invitation: Invitation }) {
+function InvitedByCell({ invitation }: Readonly<{ invitation: Invitation }>) {
   return <span className="text-contrast/70">{invitation.invitedByName}</span>;
 }
 
@@ -87,12 +87,12 @@ function ActionsCell({
   now,
   t,
   setRevoking,
-}: {
+}: Readonly<{
   invitation: Invitation;
   now: number;
   t: ReturnType<typeof useTranslations>;
   setRevoking: (inv: Invitation) => void;
-}) {
+}>) {
   return stateOf(invitation, now) === 'pending' ? (
     <Button variant="danger-outline" size="sm" onClick={() => setRevoking(invitation)}>
       {t('revoke')}
