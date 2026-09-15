@@ -25,9 +25,64 @@ import { useKardex, useStockAvailability } from './api';
 import { stockKeys } from './keys';
 import { useDescribeCases } from './quantity';
 
+function OccurredAtCell({ entry }: Readonly<{ entry: KardexEntry }>) {
+  const format = useFormatter();
+  return (
+    <span className="text-contrast/70">
+      {format.dateTime(new Date(entry.occurredAt), 'full')}
+    </span>
+  );
+}
+
+function MovementCell({ entry }: Readonly<{ entry: KardexEntry }>) {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Link
+        href={ROUTES.movement(entry.movementId)}
+        className="font-mono text-sm text-accent hover:underline"
+      >
+        {entry.movementCode}
+      </Link>
+      <MovementTypeBadge type={entry.type} />
+    </div>
+  );
+}
+
+function CapturedCell({ entry }: Readonly<{ entry: KardexEntry }>) {
+  const tUnits = useTranslations('common.units');
+  const format = useFormatter();
+  return (
+    <span className="text-contrast/70">
+      {format.number(entry.quantity)}{' '}
+      {tUnits(entry.unit === 'CASE' ? 'case' : 'bottle', { count: entry.quantity })}
+    </span>
+  );
+}
+
+function ChangeCell({ entry }: Readonly<{ entry: KardexEntry }>) {
+  const format = useFormatter();
+  return (
+    <span className="font-medium text-foreground">
+      {format.number(entry.quantityBase, 'signed')}
+    </span>
+  );
+}
+
+function BalanceCell({ entry }: Readonly<{ entry: KardexEntry }>) {
+  const format = useFormatter();
+  return (
+    <span className="font-medium text-accent">{format.number(entry.balanceAfter)}</span>
+  );
+}
+
+const occurredAtCell = (entry: KardexEntry) => <OccurredAtCell entry={entry} />;
+const movementCell = (entry: KardexEntry) => <MovementCell entry={entry} />;
+const capturedCell = (entry: KardexEntry) => <CapturedCell entry={entry} />;
+const changeCell = (entry: KardexEntry) => <ChangeCell entry={entry} />;
+const balanceCell = (entry: KardexEntry) => <BalanceCell entry={entry} />;
+
 export function KardexView({ productId }: Readonly<{ productId: string }>) {
   const t = useTranslations('stock.kardex');
-  const tUnits = useTranslations('common.units');
   const tStates = useTranslations('common.states');
   const format = useFormatter();
   const describeCases = useDescribeCases();
@@ -57,11 +112,7 @@ export function KardexView({ productId }: Readonly<{ productId: string }>) {
       // Only from `sm` up: in the detail panel the date has a line of its own
       // and wrapping is what keeps it from running off the edge.
       className: 'sm:whitespace-nowrap',
-      cell: (entry) => (
-        <span className="text-contrast/70">
-          {format.dateTime(new Date(entry.occurredAt), 'full')}
-        </span>
-      ),
+      cell: occurredAtCell,
     },
     {
       key: 'movement',
@@ -69,17 +120,7 @@ export function KardexView({ productId }: Readonly<{ productId: string }>) {
       primary: true,
       // A badge sits in this cell, and it is what sets the row's height.
       skeleton: <Skeleton className="h-6 w-32" />,
-      cell: (entry) => (
-        <div className="flex flex-wrap items-center gap-2">
-          <Link
-            href={ROUTES.movement(entry.movementId)}
-            className="font-mono text-sm text-accent hover:underline"
-          >
-            {entry.movementCode}
-          </Link>
-          <MovementTypeBadge type={entry.type} />
-        </div>
-      ),
+      cell: movementCell,
     },
     {
       key: 'captured',
@@ -87,12 +128,7 @@ export function KardexView({ productId }: Readonly<{ productId: string }>) {
       align: 'end',
       hideBelow: 'sm',
       skeleton: <Skeleton className="ml-auto h-5 w-20" />,
-      cell: (entry) => (
-        <span className="text-contrast/70">
-          {format.number(entry.quantity)}{' '}
-          {tUnits(entry.unit === 'CASE' ? 'case' : 'bottle', { count: entry.quantity })}
-        </span>
-      ),
+      cell: capturedCell,
     },
     {
       key: 'change',
@@ -100,20 +136,14 @@ export function KardexView({ productId }: Readonly<{ productId: string }>) {
       align: 'end',
       summary: true,
       skeleton: <Skeleton className="ml-auto h-5 w-12" />,
-      cell: (entry) => (
-        <span className="font-medium text-foreground">
-          {format.number(entry.quantityBase, 'signed')}
-        </span>
-      ),
+      cell: changeCell,
     },
     {
       key: 'balance',
       header: t('columns.balance'),
       align: 'end',
       skeleton: <Skeleton className="ml-auto h-5 w-12" />,
-      cell: (entry) => (
-        <span className="font-medium text-accent">{format.number(entry.balanceAfter)}</span>
-      ),
+      cell: balanceCell,
     },
   ];
 
