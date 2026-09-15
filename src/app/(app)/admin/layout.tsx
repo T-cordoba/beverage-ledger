@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { AdminNav } from '@/features/admin';
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default function AdminLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <div className="space-y-6">
       <AdminNav />

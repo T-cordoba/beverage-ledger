@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
  * the jolt this avoids. Always `aria-hidden` — the announcement belongs to the
  * region that is busy, not to each grey box inside it.
  */
-export function Skeleton({ className }: { className?: string }) {
+export function Skeleton({ className }: Readonly<{ className?: string }>) {
   return (
     <span
       aria-hidden="true"
@@ -18,7 +18,7 @@ export function Skeleton({ className }: { className?: string }) {
 }
 
 /** A stack of lines, for a block of text whose length is not known. */
-export function SkeletonText({ lines = 3, className }: { lines?: number; className?: string }) {
+export function SkeletonText({ lines = 3, className }: Readonly<{ lines?: number; className?: string }>) {
   return (
     <span className={cn('block space-y-2', className)}>
       {Array.from({ length: lines }, (_, index) => (

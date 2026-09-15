@@ -14,7 +14,7 @@ import { LanguageSwitcher } from '@/i18n';
  * `onNavigate` closes whatever is holding it — a client navigation leaves the
  * popover mounted, so it does not close on its own.
  */
-export function AccountActions({ onNavigate }: { onNavigate: () => void }) {
+export function AccountActions({ onNavigate }: Readonly<{ onNavigate: () => void }>) {
   const t = useTranslations('nav.account');
   const tRoles = useTranslations('admin.roles');
   const { user, signOut } = useAuth();

@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { useLowStock } from '@/features/stock/api';
+import { useLowStock } from '@/features/stock/low-stock';
 import type { StockLevel } from '@/lib/api';
 
 const { cliente } = vi.hoisted(() => ({ cliente: { GET: vi.fn() } }));

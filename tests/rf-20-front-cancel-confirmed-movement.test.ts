@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { openDraft } from '@/features/movements/api';
+import { openDraft } from '@/features/movements/open-draft';
 import { api, unwrap } from '@/lib/api';
 
-vi.mock('@/features/movements/api', () => ({
+vi.mock('@/features/movements/open-draft', () => ({
   openDraft: vi.fn(),
 }));
 

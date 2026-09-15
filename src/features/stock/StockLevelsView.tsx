@@ -24,13 +24,72 @@ import { rowsOnPage, useDebouncedValue, useManualRefresh, usePagination } from '
 import { useStockLevels, type StockQuery } from './api';
 import { useDescribeCases } from './quantity';
 
-export function StockLevelsView() {
-  const t = useTranslations('stock.levels');
+function ProductCell({ row }: Readonly<{ row: StockLevel }>) {
+  return (
+    <div className="min-w-0 space-y-0.5">
+      <Link
+        href={ROUTES.productStock(row.productId)}
+        className="font-medium text-foreground hover:text-accent"
+      >
+        {row.productName}
+      </Link>
+      {row.brandName && <p className="text-xs text-accent/70">{row.brandName}</p>}
+    </div>
+  );
+}
+
+function CategoryCell({ row }: Readonly<{ row: StockLevel }>) {
+  return <span className="text-contrast/70">{row.categoryName}</span>;
+}
+
+function OnHandCell({ row }: Readonly<{ row: StockLevel }>) {
   const tUnits = useTranslations('common.units');
-  const tStates = useTranslations('common.states');
-  const tActions = useTranslations('common.actions');
   const format = useFormatter();
   const describeCases = useDescribeCases();
+  const cases = describeCases(row.quantityBase, row.caseSize);
+
+  return (
+    <div className="space-y-0.5">
+      <p className="font-medium text-foreground">
+        {format.number(row.quantityBase)}{' '}
+        <span className="text-xs font-normal text-contrast/50">
+          {tUnits('unit', { count: row.quantityBase })}
+        </span>
+      </p>
+      {cases && <p className="text-xs text-contrast/50">{cases}</p>}
+    </div>
+  );
+}
+
+function MinimumCell({ row }: Readonly<{ row: StockLevel }>) {
+  const tStates = useTranslations('common.states');
+  const format = useFormatter();
+  return (
+    <span className="text-contrast/70">
+      {row.minimumStock === null ? tStates('none') : format.number(row.minimumStock)}
+    </span>
+  );
+}
+
+function StatusCell({ row }: Readonly<{ row: StockLevel }>) {
+  const t = useTranslations('stock.levels');
+  return row.isBelowMinimum ? (
+    <Badge tone="warning">{t('belowMinimum')}</Badge>
+  ) : (
+    <span className="text-xs text-contrast/40">{t('ok')}</span>
+  );
+}
+
+const productCell = (row: StockLevel) => <ProductCell row={row} />;
+const categoryCell = (row: StockLevel) => <CategoryCell row={row} />;
+const onHandCell = (row: StockLevel) => <OnHandCell row={row} />;
+const minimumCell = (row: StockLevel) => <MinimumCell row={row} />;
+const statusCell = (row: StockLevel) => <StatusCell row={row} />;
+
+export function StockLevelsView() {
+  const t = useTranslations('stock.levels');
+  const tStates = useTranslations('common.states');
+  const tActions = useTranslations('common.actions');
 
   const [search, setSearch] = useState('');
   const [categoryId, setCategoryId] = useState('');
@@ -80,23 +139,13 @@ export function StockLevelsView() {
           <Skeleton className="h-4 w-24" />
         </div>
       ),
-      cell: (row) => (
-        <div className="min-w-0 space-y-0.5">
-          <Link
-            href={ROUTES.productStock(row.productId)}
-            className="font-medium text-foreground hover:text-accent"
-          >
-            {row.productName}
-          </Link>
-          {row.brandName && <p className="text-xs text-accent/70">{row.brandName}</p>}
-        </div>
-      ),
+      cell: productCell,
     },
     {
       key: 'category',
       header: t('columns.category'),
       hideBelow: 'md',
-      cell: (row) => <span className="text-contrast/70">{row.categoryName}</span>,
+      cell: categoryCell,
     },
     {
       key: 'onHand',
@@ -109,21 +158,7 @@ export function StockLevelsView() {
           <Skeleton className="ml-auto h-4 w-16" />
         </div>
       ),
-      cell: (row) => {
-        const cases = describeCases(row.quantityBase, row.caseSize);
-
-        return (
-          <div className="space-y-0.5">
-            <p className="font-medium text-foreground">
-              {format.number(row.quantityBase)}{' '}
-              <span className="text-xs font-normal text-contrast/50">
-                {tUnits('unit', { count: row.quantityBase })}
-              </span>
-            </p>
-            {cases && <p className="text-xs text-contrast/50">{cases}</p>}
-          </div>
-        );
-      },
+      cell: onHandCell,
     },
     {
       key: 'minimum',
@@ -131,23 +166,14 @@ export function StockLevelsView() {
       align: 'end',
       hideBelow: 'sm',
       skeleton: <Skeleton className="ml-auto h-5 w-10" />,
-      cell: (row) => (
-        <span className="text-contrast/70">
-          {row.minimumStock === null ? tStates('none') : format.number(row.minimumStock)}
-        </span>
-      ),
+      cell: minimumCell,
     },
     {
       key: 'status',
       header: t('columns.status'),
       align: 'end',
       skeleton: <Skeleton className="ml-auto h-6 w-16" />,
-      cell: (row) =>
-        row.isBelowMinimum ? (
-          <Badge tone="warning">{t('belowMinimum')}</Badge>
-        ) : (
-          <span className="text-xs text-contrast/40">{t('ok')}</span>
-        ),
+      cell: statusCell,
     },
   ];
 

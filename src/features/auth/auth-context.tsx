@@ -75,7 +75,7 @@ async function fetchSession(): Promise<CurrentSession | null> {
   return unwrap(await api.GET('/api/v1/auth/me'));
 }
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({ children }: Readonly<{ children: ReactNode }>) {
   const queryClient = useQueryClient();
   const router = useRouter();
 

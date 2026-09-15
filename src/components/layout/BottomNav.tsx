@@ -41,7 +41,7 @@ function isCurrent(pathname: string, href: string): boolean {
  * Painted over the strip rather than beside it, so the tab at the edge is seen
  * to pass under it — a gap of empty bar would read as the end of the row.
  */
-function EdgeFade({ side, isVisible }: { side: 'left' | 'right'; isVisible: boolean }) {
+function EdgeFade({ side, isVisible }: Readonly<{ side: 'left' | 'right'; isVisible: boolean }>) {
   return (
     <div
       aria-hidden="true"
