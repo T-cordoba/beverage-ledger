@@ -36,7 +36,6 @@ function stateOf(invitation: Invitation, now: number): InvitationState {
   return 'pending';
 }
 
-// === CELLS COMO COMPONENTES EXTERNOS ===
 function EmailCell({ invitation }: Readonly<{ invitation: Invitation }>) {
   return <span className="font-medium text-foreground">{invitation.email}</span>;
 }
@@ -100,39 +99,22 @@ function ActionsCell({
   ) : null;
 }
 
-// === COMPONENTE PRINCIPAL ===
-export function InvitationsCard() {
-  const t = useTranslations('admin.invitations');
-  const tRoles = useTranslations('admin.roles');
-  const tStates = useTranslations('common.states');
-  const tActions = useTranslations('common.actions');
-  const format = useFormatter();
-
-  const pagination = usePagination('invitations');
-  const { data, error, isPending, isPlaceholderData, refetch } = useInvitations(pagination.params);
-  const { refresh, isRefreshing } = useManualRefresh(refetch);
-  const isLoading = isPending || isPlaceholderData || isRefreshing;
-  const revoke = useRevokeInvitation();
-  const notify = useNotify();
-
-  const [revoking, setRevoking] = useState<Invitation | null>(null);
-
-  const now = Date.now();
-  const invitations = data?.data ?? [];
-
-  const confirmRevoke = async () => {
-    if (!revoking) return;
-    const invitation = revoking;
-    setRevoking(null);
-    try {
-      await revoke.mutateAsync(invitation.id);
-      notify('success', t('revoked'), t('revokedDescription', { email: invitation.email }));
-    } catch (cause) {
-      notify('error', t('revokeFailed'), describeError(cause, tStates('tryAgain')));
-    }
-  };
-
-  const columns: DataTableColumn<Invitation>[] = [
+function createInvitationColumns({
+  t,
+  tRoles,
+  format,
+  now,
+  setRevoking,
+}: {
+  // Headers still come from the message catalogue: the factory sits outside the
+  // component, so the translators are handed to it rather than hooked.
+  t: ReturnType<typeof useTranslations>;
+  tRoles: ReturnType<typeof useTranslations>;
+  format: ReturnType<typeof useFormatter>;
+  now: number;
+  setRevoking: (invitation: Invitation) => void;
+}): DataTableColumn<Invitation>[] {
+  return [
     {
       key: 'email',
       header: t('columns.email'),
@@ -172,6 +154,40 @@ export function InvitationsCard() {
       cell: (inv) => <ActionsCell invitation={inv} now={now} t={t} setRevoking={setRevoking} />,
     },
   ];
+}
+
+export function InvitationsCard() {
+  const t = useTranslations('admin.invitations');
+  const tRoles = useTranslations('admin.roles');
+  const tStates = useTranslations('common.states');
+  const tActions = useTranslations('common.actions');
+  const format = useFormatter();
+
+  const pagination = usePagination('invitations');
+  const { data, error, isPending, isPlaceholderData, refetch } = useInvitations(pagination.params);
+  const { refresh, isRefreshing } = useManualRefresh(refetch);
+  const isLoading = isPending || isPlaceholderData || isRefreshing;
+  const revoke = useRevokeInvitation();
+  const notify = useNotify();
+
+  const [revoking, setRevoking] = useState<Invitation | null>(null);
+
+  const now = Date.now();
+  const invitations = data?.data ?? [];
+
+  const confirmRevoke = async () => {
+    if (!revoking) return;
+    const invitation = revoking;
+    setRevoking(null);
+    try {
+      await revoke.mutateAsync(invitation.id);
+      notify('success', t('revoked'), t('revokedDescription', { email: invitation.email }));
+    } catch (cause) {
+      notify('error', t('revokeFailed'), describeError(cause, tStates('tryAgain')));
+    }
+  };
+
+  const columns = createInvitationColumns({ t, tRoles, format, now, setRevoking });
 
   return (
     <section className="space-y-4">

@@ -42,7 +42,7 @@ export function ActivityChart({
 
   const max = maxOf(rows);
   const first = rows[0];
-  const last = rows[rows.length - 1];
+  const last = rows.at(-1);
 
   const labelFor = (period: string) =>
     format.dateTime(new Date(period), granularity === 'month' ? 'monthYear' : 'short');

@@ -34,6 +34,8 @@ import { useMovementDraft, type MovementDraft } from './useMovementDraft';
 
 /** Reads the accent span out of a rich message, so it is written once. */
 const strong = (chunks: ReactNode) => <span className="font-medium text-accent">{chunks}</span>;
+
+/** Same, but for a message that already sits on an accent-tinted background. */
 const strongForeground = (chunks: ReactNode) => (
   <span className="font-medium text-foreground">{chunks}</span>
 );
