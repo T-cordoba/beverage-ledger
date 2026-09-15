@@ -34,6 +34,7 @@ export default defineConfig({
         'src/lib/api/errors.ts',
         'src/lib/api/session.ts',
         'src/lib/hooks/pagination.ts',
+        'src/lib/hooks/useDebouncedValue.ts',
       ],
     },
   },
