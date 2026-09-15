@@ -34,6 +34,9 @@ import { useMovementDraft, type MovementDraft } from './useMovementDraft';
 
 /** Reads the accent span out of a rich message, so it is written once. */
 const strong = (chunks: ReactNode) => <span className="font-medium text-accent">{chunks}</span>;
+const strongForeground = (chunks: ReactNode) => (
+  <span className="font-medium text-foreground">{chunks}</span>
+);
 
 /**
  * Every captured line, on demand.
@@ -265,7 +268,7 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
             {t.rich('resumable', {
               code: resumable.code,
               count: resumable.itemCount,
-              strong: (chunks) => <span className="font-medium text-foreground">{chunks}</span>,
+              strong: strongForeground,
             })}
           </p>
           <Button
