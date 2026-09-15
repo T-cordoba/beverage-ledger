@@ -19,11 +19,11 @@ export function RefreshButton({
   onRefresh,
   isRefreshing = false,
   className,
-}: {
+}: Readonly<{
   onRefresh: () => void;
   isRefreshing?: boolean;
   className?: string;
-}) {
+}>) {
   const t = useTranslations('common.actions');
 
   return (

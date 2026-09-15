@@ -63,11 +63,11 @@ export function ProductFormDialog({
   product,
   open,
   onOpenChange,
-}: {
+}: Readonly<{
   product: Product | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-}) {
+}>) {
   const t = useTranslations('catalog.form');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');

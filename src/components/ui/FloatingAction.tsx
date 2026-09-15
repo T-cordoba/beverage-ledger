@@ -18,7 +18,7 @@ export interface FloatingActionItem {
   icon?: ReactNode;
 }
 
-function PlusIcon({ isOpen }: { isOpen?: boolean }) {
+function PlusIcon({ isOpen }: Readonly<{ isOpen?: boolean }>) {
   return (
     <svg
       aria-hidden="true"
@@ -33,7 +33,7 @@ function PlusIcon({ isOpen }: { isOpen?: boolean }) {
 }
 
 /** The circle itself, so the three places that render one agree on its size. */
-function Fab({ children, ...props }: ButtonProps) {
+function Fab({ children, ...props }: Readonly<ButtonProps>) {
   return (
     <Button size="icon" className="h-14 w-14 rounded-full shadow-overlay" {...props}>
       {children}
@@ -62,12 +62,12 @@ export function FloatingAction({
   label,
   items,
   className,
-}: {
+}: Readonly<{
   /** Names the control itself, for the collapsed state and for screen readers. */
   label: string;
   items: FloatingActionItem[];
   className?: string;
-}) {
+}>) {
   const [isOpen, setIsOpen] = useState(false);
   const menuId = useId();
   const fabRef = useRef<HTMLButtonElement>(null);

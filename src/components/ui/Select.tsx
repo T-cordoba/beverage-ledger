@@ -51,7 +51,7 @@ export function Select({
   'aria-label': ariaLabel,
   'aria-describedby': describedBy,
   'aria-invalid': invalid,
-}: SelectProps) {
+}: Readonly<SelectProps>) {
   return (
     <SelectPrimitive.Root
       value={toRadixValue(value)}
@@ -121,7 +121,7 @@ export function Select({
   );
 }
 
-function ChevronDownIcon({ className }: { className?: string }) {
+function ChevronDownIcon({ className }: Readonly<{ className?: string }>) {
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -129,7 +129,7 @@ function ChevronDownIcon({ className }: { className?: string }) {
   );
 }
 
-function CheckIcon({ className }: { className?: string }) {
+function CheckIcon({ className }: Readonly<{ className?: string }>) {
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

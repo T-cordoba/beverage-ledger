@@ -30,7 +30,7 @@ export function LocationSelect({
   anyLabel,
   excludeId,
   ...aria
-}: LocationSelectProps) {
+}: Readonly<LocationSelectProps>) {
   const t = useTranslations('locations.select');
   const tStates = useTranslations('common.states');
   const { data, isPending } = useLocations();

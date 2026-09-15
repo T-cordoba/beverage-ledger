@@ -43,7 +43,10 @@ export function secret(value: string, { minLength = 0 }: { minLength?: number } 
 
 // Deliberately loose. The address is proven by the invitation that gets
 // delivered, so anything stricter only rejects addresses that do work.
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+// The domain is matched label by label, with the dot excluded from each one:
+// `[^\s@]+\.[^\s@]+` lets the engine re-split the domain at every dot, which is
+// quadratic on an address that ends up rejected.
+const EMAIL = /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/;
 
 export function email(value: string, { optional = false } = {}): FieldIssue | undefined {
   const trimmed = value.trim();

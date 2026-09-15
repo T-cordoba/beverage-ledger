@@ -41,7 +41,7 @@ export function useStockAvailability(
   // time, so this keeps the URL bounded and lets an already-fetched page stay
   // cached instead of refetching everything whenever one more product loads.
   const chunks: string[][] = [];
-  const ids = [...productIds].sort();
+  const ids = [...productIds].sort((a, b) => a.localeCompare(b));
 
   for (let index = 0; index < ids.length; index += AVAILABILITY_CHUNK) {
     chunks.push(ids.slice(index, index + AVAILABILITY_CHUNK));
@@ -78,16 +78,6 @@ export function useStockAvailability(
     levels,
     isReady: enabled && results.length > 0 && results.every((one) => one.isSuccess),
   };
-}
-
-/** A shortlist, not a page: the endpoint returns the worst offenders and stops. */
-export function useLowStock(limit: number, enabled = true) {
-  return useQuery({
-    queryKey: stockKeys.low(limit),
-    queryFn: async () =>
-      unwrap(await api.GET('/api/v1/stock/low', { params: { query: { limit } } })),
-    enabled,
-  });
 }
 
 export function useKardex(productId: string, locationId: string | undefined, page: PageParams) {

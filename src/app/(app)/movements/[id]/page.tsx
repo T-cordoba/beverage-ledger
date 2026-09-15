@@ -7,7 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t('metaTitle') };
 }
 
-export default async function MovementPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function MovementPage({ params }: Readonly<{ params: Promise<{ id: string }> }>) {
   const { id } = await params;
 
   return <MovementDetailView id={id} />;

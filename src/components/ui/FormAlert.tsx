@@ -18,13 +18,13 @@ export function FormAlert({
   title,
   children,
   className,
-}: {
+}: Readonly<{
   tone?: keyof typeof toneStyles;
   title: ReactNode;
   /** Detail under the title — a list of what is missing, usually. */
   children?: ReactNode;
   className?: string;
-}) {
+}>) {
   return (
     <div
       role="alert"

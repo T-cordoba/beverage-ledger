@@ -30,10 +30,10 @@ import { useCreateInvitation } from './api';
 export function InviteDialog({
   open,
   onOpenChange,
-}: {
+}: Readonly<{
   open: boolean;
   onOpenChange: (open: boolean) => void;
-}) {
+}>) {
   const t = useTranslations('admin.invitations.form');
   const tRoles = useTranslations('admin.roles');
   const tRoleDescriptions = useTranslations('admin.roleDescriptions');

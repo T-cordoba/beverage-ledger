@@ -25,17 +25,8 @@ import { useKardex, useStockAvailability } from './api';
 import { stockKeys } from './keys';
 import { useDescribeCases } from './quantity';
 
-type Format = ReturnType<typeof useFormatter>;
-// A narrow shape rather than `ReturnType<typeof useTranslations>`: next-intl's
-// typed translator is an overloaded generic that blows up `tsc` with
-// "Type instantiation is excessively deep" once passed around as a value.
-type UnitLabel = (key: 'case' | 'bottle', values: { count: number }) => string;
-
-// `DataTable` calls `column.cell(row)` as a plain function, not as JSX — these
-// are render helpers, not components, so they live outside `KardexView` and
-// take the already-resolved formatter/translator as arguments instead of
-// calling hooks themselves.
-function renderOccurredAtCell(entry: KardexEntry, format: Format) {
+function OccurredAtCell({ entry }: Readonly<{ entry: KardexEntry }>) {
+  const format = useFormatter();
   return (
     <span className="text-contrast/70">
       {format.dateTime(new Date(entry.occurredAt), 'full')}
@@ -43,7 +34,7 @@ function renderOccurredAtCell(entry: KardexEntry, format: Format) {
   );
 }
 
-function renderMovementCell(entry: KardexEntry) {
+function MovementCell({ entry }: Readonly<{ entry: KardexEntry }>) {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <Link
@@ -57,7 +48,9 @@ function renderMovementCell(entry: KardexEntry) {
   );
 }
 
-function renderCapturedCell(entry: KardexEntry, format: Format, tUnits: UnitLabel) {
+function CapturedCell({ entry }: Readonly<{ entry: KardexEntry }>) {
+  const tUnits = useTranslations('common.units');
+  const format = useFormatter();
   return (
     <span className="text-contrast/70">
       {format.number(entry.quantity)}{' '}
@@ -66,7 +59,8 @@ function renderCapturedCell(entry: KardexEntry, format: Format, tUnits: UnitLabe
   );
 }
 
-function renderChangeCell(entry: KardexEntry, format: Format) {
+function ChangeCell({ entry }: Readonly<{ entry: KardexEntry }>) {
+  const format = useFormatter();
   return (
     <span className="font-medium text-foreground">
       {format.number(entry.quantityBase, 'signed')}
@@ -74,13 +68,21 @@ function renderChangeCell(entry: KardexEntry, format: Format) {
   );
 }
 
-function renderBalanceCell(entry: KardexEntry, format: Format) {
-  return <span className="font-medium text-accent">{format.number(entry.balanceAfter)}</span>;
+function BalanceCell({ entry }: Readonly<{ entry: KardexEntry }>) {
+  const format = useFormatter();
+  return (
+    <span className="font-medium text-accent">{format.number(entry.balanceAfter)}</span>
+  );
 }
 
-export function KardexView({ productId }: { productId: string }) {
+const occurredAtCell = (entry: KardexEntry) => <OccurredAtCell entry={entry} />;
+const movementCell = (entry: KardexEntry) => <MovementCell entry={entry} />;
+const capturedCell = (entry: KardexEntry) => <CapturedCell entry={entry} />;
+const changeCell = (entry: KardexEntry) => <ChangeCell entry={entry} />;
+const balanceCell = (entry: KardexEntry) => <BalanceCell entry={entry} />;
+
+export function KardexView({ productId }: Readonly<{ productId: string }>) {
   const t = useTranslations('stock.kardex');
-  const tUnits = useTranslations('common.units');
   const tStates = useTranslations('common.states');
   const format = useFormatter();
   const describeCases = useDescribeCases();
@@ -110,7 +112,7 @@ export function KardexView({ productId }: { productId: string }) {
       // Only from `sm` up: in the detail panel the date has a line of its own
       // and wrapping is what keeps it from running off the edge.
       className: 'sm:whitespace-nowrap',
-      cell: (entry) => renderOccurredAtCell(entry, format),
+      cell: occurredAtCell,
     },
     {
       key: 'movement',
@@ -118,7 +120,7 @@ export function KardexView({ productId }: { productId: string }) {
       primary: true,
       // A badge sits in this cell, and it is what sets the row's height.
       skeleton: <Skeleton className="h-6 w-32" />,
-      cell: renderMovementCell,
+      cell: movementCell,
     },
     {
       key: 'captured',
@@ -126,7 +128,7 @@ export function KardexView({ productId }: { productId: string }) {
       align: 'end',
       hideBelow: 'sm',
       skeleton: <Skeleton className="ml-auto h-5 w-20" />,
-      cell: (entry) => renderCapturedCell(entry, format, tUnits),
+      cell: capturedCell,
     },
     {
       key: 'change',
@@ -134,14 +136,14 @@ export function KardexView({ productId }: { productId: string }) {
       align: 'end',
       summary: true,
       skeleton: <Skeleton className="ml-auto h-5 w-12" />,
-      cell: (entry) => renderChangeCell(entry, format),
+      cell: changeCell,
     },
     {
       key: 'balance',
       header: t('columns.balance'),
       align: 'end',
       skeleton: <Skeleton className="ml-auto h-5 w-12" />,
-      cell: (entry) => renderBalanceCell(entry, format),
+      cell: balanceCell,
     },
   ];
 

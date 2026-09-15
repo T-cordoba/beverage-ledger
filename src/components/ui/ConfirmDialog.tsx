@@ -34,7 +34,7 @@ export function ConfirmDialog({
   cancelLabel,
   onConfirm,
   isConfirming = false,
-}: ConfirmDialogProps) {
+}: Readonly<ConfirmDialogProps>) {
   const { circle, confirm } = toneStyles[tone];
 
   return (

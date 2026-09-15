@@ -5,7 +5,7 @@ import { Footer, MarketingNav } from '@/components/layout';
  * The public shell. No guard and no session required — what it shows changes
  * with the session, but it never waits for one.
  */
-export default function MarketingLayout({ children }: { children: ReactNode }) {
+export default function MarketingLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     // `isolate` is what keeps the backdrop below: without a stacking context of
     // its own, a negative z-index child paints behind this element's background

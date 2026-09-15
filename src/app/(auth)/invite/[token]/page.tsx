@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
  * leaves the browser that way: the form posts it in a request body, so it stays
  * out of the API's access logs and out of any Referer header.
  */
-export default async function InvitePage({ params }: { params: Promise<{ token: string }> }) {
+export default async function InvitePage({ params }: Readonly<{ params: Promise<{ token: string }> }>) {
   const { token } = await params;
   return <AcceptInviteForm token={token} />;
 }
