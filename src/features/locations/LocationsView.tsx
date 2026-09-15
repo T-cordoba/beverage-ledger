@@ -124,7 +124,7 @@ function LocationFormDialog({
   );
 }
 
-function LocationNameCell({ location }: { location: Location }) {
+function LocationNameCell({ location }: Readonly<{ location: Location }>) {
   const t = useTranslations('locations');
 
   return (
@@ -135,7 +135,7 @@ function LocationNameCell({ location }: { location: Location }) {
   );
 }
 
-function LocationMovementCountCell({ location }: { location: Location }) {
+function LocationMovementCountCell({ location }: Readonly<{ location: Location }>) {
   const format = useFormatter();
 
   return <span className="text-contrast/70">{format.number(location.movementCount)}</span>;
@@ -147,13 +147,13 @@ function LocationActionsCell({
   onPromote,
   onOpenForm,
   onDelete,
-}: {
+}: Readonly<{
   location: Location;
   isSaving: boolean;
   onPromote: (location: Location) => Promise<void>;
   onOpenForm: (location: Location) => void;
   onDelete: (location: Location) => void;
-}) {
+}>) {
   const t = useTranslations('locations');
   const tActions = useTranslations('common.actions');
 
