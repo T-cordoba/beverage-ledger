@@ -16,7 +16,7 @@ import { useAcceptInvitation, useInvitationPreview } from './api';
  */
 const MIN_PASSWORD_LENGTH = 12;
 
-export function AcceptInviteForm({ token }: { token: string }) {
+export function AcceptInviteForm({ token }: Readonly<{ token: string }>) {
   const t = useTranslations('invite');
   const tCommon = useTranslations('common');
   const tRoles = useTranslations('admin.roles');

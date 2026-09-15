@@ -37,6 +37,102 @@ function detailsOf(product: Product): string {
     .join(' · ');
 }
 
+function productCellSkeleton() {
+  return (
+    <div className="space-y-0.5">
+      <Skeleton className="h-5 w-44" />
+      <Skeleton className="h-4 w-24" />
+    </div>
+  );
+}
+
+function renderProductCell(product: Product, tNoBrand: string) {
+  return (
+    <div className="min-w-0 space-y-0.5">
+      <Link
+        href={ROUTES.productStock(product.id)}
+        className="font-medium text-foreground hover:text-accent"
+      >
+        {product.name}
+      </Link>
+      <p className="text-xs text-accent/70">{product.brand?.name ?? tNoBrand}</p>
+    </div>
+  );
+}
+
+function renderCategoryCell(product: Product) {
+  return <span className="text-contrast/70">{product.category.name}</span>;
+}
+
+function renderDetailsCell(product: Product) {
+  return <span className="text-xs text-contrast/60">{detailsOf(product)}</span>;
+}
+
+function caseSizeCellSkeleton() {
+  return <Skeleton className="ml-auto h-5 w-8" />;
+}
+
+function renderCaseSizeCell(product: Product, format: ReturnType<typeof useFormatter>) {
+  return <span className="text-contrast/70">{format.number(product.caseSize)}</span>;
+}
+
+function renderMinimumStockCell(
+  product: Product,
+  format: ReturnType<typeof useFormatter>,
+  tNone: string,
+) {
+  return (
+    <span className="text-contrast/70">
+      {product.minimumStock === null ? tNone : format.number(product.minimumStock)}
+    </span>
+  );
+}
+
+function statusCellSkeleton() {
+  return <Skeleton className="ml-auto h-6 w-16" />;
+}
+
+function renderStatusCell(product: Product, tActive: string, tDeactivated: string) {
+  return product.isActive ? (
+    <span className="text-xs text-contrast/40">{tActive}</span>
+  ) : (
+    <Badge tone="danger">{tDeactivated}</Badge>
+  );
+}
+
+function actionsCellSkeleton() {
+  return (
+    <div className="flex justify-end gap-2">
+      <Skeleton className="h-9 w-16" />
+      <Skeleton className="h-9 w-24" />
+    </div>
+  );
+}
+
+function renderActionsCell(
+  product: Product,
+  onEdit: (product: Product) => void,
+  onToggle: (product: Product) => void,
+  tEdit: string,
+  tDeactivate: string,
+  tActivate: string,
+) {
+  return (
+    <div className="flex justify-end gap-2">
+      <Button variant="secondary" size="sm" onClick={() => onEdit(product)}>
+        {tEdit}
+      </Button>
+      <Button
+        variant={product.isActive ? 'danger-outline' : 'secondary'}
+        size="sm"
+        onClick={() => onToggle(product)}
+      >
+        {product.isActive ? tDeactivate : tActivate}
+      </Button>
+    </div>
+  );
+}
+
 export function CatalogView() {
   const t = useTranslations('catalog');
   const tStates = useTranslations('common.states');
@@ -97,70 +193,44 @@ export function CatalogView() {
       header: t('columns.product'),
       primary: true,
       // Two lines, like the cell it stands in for: name over brand.
-      skeleton: (
-        <div className="space-y-0.5">
-          <Skeleton className="h-5 w-44" />
-          <Skeleton className="h-4 w-24" />
-        </div>
-      ),
-      cell: (product) => (
-        <div className="min-w-0 space-y-0.5">
-          <Link
-            href={ROUTES.productStock(product.id)}
-            className="font-medium text-foreground hover:text-accent"
-          >
-            {product.name}
-          </Link>
-          <p className="text-xs text-accent/70">{product.brand?.name ?? t('noBrand')}</p>
-        </div>
-      ),
+      skeleton: productCellSkeleton(),
+      cell: (product) => renderProductCell(product, t('noBrand')),
     },
     {
       key: 'category',
       header: t('columns.category'),
       hideBelow: 'sm',
-      cell: (product) => <span className="text-contrast/70">{product.category.name}</span>,
+      cell: renderCategoryCell,
     },
     {
       key: 'details',
       header: t('columns.details'),
       hideBelow: 'lg',
-      cell: (product) => <span className="text-xs text-contrast/60">{detailsOf(product)}</span>,
+      cell: renderDetailsCell,
     },
     {
       key: 'caseSize',
       header: t('columns.caseSize'),
       align: 'end',
       hideBelow: 'md',
-      skeleton: <Skeleton className="ml-auto h-5 w-8" />,
-      cell: (product) => (
-        <span className="text-contrast/70">{format.number(product.caseSize)}</span>
-      ),
+      skeleton: caseSizeCellSkeleton(),
+      cell: (product) => renderCaseSizeCell(product, format),
     },
     {
       key: 'minimumStock',
       header: t('columns.minimum'),
       align: 'end',
       hideBelow: 'md',
-      skeleton: <Skeleton className="ml-auto h-5 w-8" />,
-      cell: (product) => (
-        <span className="text-contrast/70">
-          {product.minimumStock === null ? tStates('none') : format.number(product.minimumStock)}
-        </span>
-      ),
+      skeleton: caseSizeCellSkeleton(),
+      cell: (product) => renderMinimumStockCell(product, format, tStates('none')),
     },
     {
       key: 'status',
       header: t('columns.status'),
       align: 'end',
       summary: true,
-      skeleton: <Skeleton className="ml-auto h-6 w-16" />,
-      cell: (product) =>
-        product.isActive ? (
-          <span className="text-xs text-contrast/40">{t('active')}</span>
-        ) : (
-          <Badge tone="danger">{t('deactivated')}</Badge>
-        ),
+      skeleton: statusCellSkeleton(),
+      cell: (product) => renderStatusCell(product, t('active'), t('deactivated')),
     },
   ];
 
@@ -171,26 +241,16 @@ export function CatalogView() {
       align: 'end',
       bare: true,
       // Two buttons, and they are what sets this row's height.
-      skeleton: (
-        <div className="flex justify-end gap-2">
-          <Skeleton className="h-9 w-16" />
-          <Skeleton className="h-9 w-24" />
-        </div>
-      ),
-      cell: (product) => (
-        <div className="flex justify-end gap-2">
-          <Button variant="secondary" size="sm" onClick={() => openForm(product)}>
-            {tActions('edit')}
-          </Button>
-          <Button
-            variant={product.isActive ? 'danger-outline' : 'secondary'}
-            size="sm"
-            onClick={() => setToggling(product)}
-          >
-            {product.isActive ? t('deactivate') : t('activate')}
-          </Button>
-        </div>
-      ),
+      skeleton: actionsCellSkeleton(),
+      cell: (product) =>
+        renderActionsCell(
+          product,
+          openForm,
+          setToggling,
+          tActions('edit'),
+          t('deactivate'),
+          t('activate'),
+        ),
     });
   }
 

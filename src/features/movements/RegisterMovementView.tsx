@@ -34,6 +34,9 @@ import { useMovementDraft, type MovementDraft } from './useMovementDraft';
 
 /** Reads the accent span out of a rich message, so it is written once. */
 const strong = (chunks: ReactNode) => <span className="font-medium text-accent">{chunks}</span>;
+const strongForeground = (chunks: ReactNode) => (
+  <span className="font-medium text-foreground">{chunks}</span>
+);
 
 /**
  * Every captured line, on demand.
@@ -47,12 +50,12 @@ function DraftSummaryDialog({
   isSigned,
   open,
   onOpenChange,
-}: {
+}: Readonly<{
   draft: MovementDraft;
   isSigned: boolean;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-}) {
+}>) {
   const t = useTranslations('movements.register.summary');
   const tUnits = useTranslations('common.units');
   const tActions = useTranslations('common.actions');
@@ -112,7 +115,7 @@ function DraftSummaryDialog({
   );
 }
 
-export function RegisterMovementView({ type }: { type: MovementType }) {
+export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>) {
   const t = useTranslations('movements.register');
   const tTypes = useTranslations('movements.types');
   const tStates = useTranslations('common.states');
@@ -265,7 +268,7 @@ export function RegisterMovementView({ type }: { type: MovementType }) {
             {t.rich('resumable', {
               code: resumable.code,
               count: resumable.itemCount,
-              strong: (chunks) => <span className="font-medium text-foreground">{chunks}</span>,
+              strong: strongForeground,
             })}
           </p>
           <Button

@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import {
   Button,
   DatePicker,
@@ -85,6 +85,65 @@ export function MovementHistoryView() {
     setDay('');
   };
 
+  let resultsView: ReactNode;
+  if (error) {
+    resultsView = <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />;
+  } else if (isLoading || movements.length > 0) {
+    resultsView = (
+      <>
+        {/* Ghost cards rather than a centred spinner: a spinner takes one line
+            and then the page it was standing in for shoves everything below it
+            down the screen. */}
+        <div
+          ref={pagination.anchorRef}
+          className="grid scroll-mt-20 gap-4"
+          aria-busy={isLoading || undefined}
+        >
+          {isLoading ? (
+            // `<output>` carries an implicit status role, which Sonar wants over
+            // a bare `role="status"` div. `contents` keeps the skeletons as
+            // direct grid items instead of nesting them a level deep.
+            <output aria-label={t('loading')} className="contents">
+              {Array.from(
+                { length: rowsOnPage(pagination.page, pagination.pageSize, data?.meta.total) },
+                (_, index) => (
+                  <MovementCardSkeleton key={index} />
+                ),
+              )}
+            </output>
+          ) : (
+            movements.map((movement) => <MovementCard key={movement.id} movement={movement} />)
+          )}
+        </div>
+
+        {data && (
+          <Pagination
+            page={pagination.page}
+            pageSize={pagination.pageSize}
+            total={data.meta.total}
+            pageCount={data.meta.pageCount}
+            isLoading={isLoading}
+            onPageChange={pagination.setPage}
+            onPageSizeChange={pagination.setPageSize}
+          />
+        )}
+      </>
+    );
+  } else {
+    resultsView = (
+      <EmptyState
+        title={hasFilters ? t('emptyFiltered') : t('empty')}
+        action={
+          hasFilters ? (
+            <Button variant="secondary" size="sm" onClick={clearFilters}>
+              {tActions('clearFilters')}
+            </Button>
+          ) : undefined
+        }
+      />
+    );
+  }
+
   return (
     <div className="space-y-6">
       <header className="flex items-start justify-between gap-3">
@@ -135,58 +194,7 @@ export function MovementHistoryView() {
         </div>
       )}
 
-      {error ? (
-        <EmptyState title={t('loadFailed')} description={tStates('apiUnreachable')} />
-      ) : isLoading || movements.length > 0 ? (
-        <>
-          {/* Ghost cards rather than a centred spinner: a spinner takes one line
-              and then the page it was standing in for shoves everything below it
-              down the screen. */}
-          <div
-            ref={pagination.anchorRef}
-            className="grid scroll-mt-20 gap-4"
-            role={isLoading ? 'status' : undefined}
-            aria-busy={isLoading || undefined}
-          >
-            {isLoading ? (
-              <>
-                <span className="sr-only">{t('loading')}</span>
-                {Array.from(
-                  { length: rowsOnPage(pagination.page, pagination.pageSize, data?.meta.total) },
-                  (_, index) => (
-                    <MovementCardSkeleton key={index} />
-                  ),
-                )}
-              </>
-            ) : (
-              movements.map((movement) => <MovementCard key={movement.id} movement={movement} />)
-            )}
-          </div>
-
-          {data && (
-            <Pagination
-              page={pagination.page}
-              pageSize={pagination.pageSize}
-              total={data.meta.total}
-              pageCount={data.meta.pageCount}
-              isLoading={isLoading}
-              onPageChange={pagination.setPage}
-              onPageSizeChange={pagination.setPageSize}
-            />
-          )}
-        </>
-      ) : (
-        <EmptyState
-          title={hasFilters ? t('emptyFiltered') : t('empty')}
-          action={
-            hasFilters ? (
-              <Button variant="secondary" size="sm" onClick={clearFilters}>
-                {tActions('clearFilters')}
-              </Button>
-            ) : undefined
-          }
-        />
-      )}
+      {resultsView}
     </div>
   );
 }

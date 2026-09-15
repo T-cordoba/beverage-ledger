@@ -34,12 +34,12 @@ export function UserFormDialog({
   isSelf,
   open,
   onOpenChange,
-}: {
+}: Readonly<{
   user: User;
   isSelf: boolean;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-}) {
+}>) {
   const t = useTranslations('admin.users.form');
   const tRoles = useTranslations('admin.roles');
   const tRoleDescriptions = useTranslations('admin.roleDescriptions');

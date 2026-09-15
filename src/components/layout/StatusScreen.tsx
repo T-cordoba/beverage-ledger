@@ -11,14 +11,14 @@ export function StatusScreen({
   title,
   description,
   children,
-}: {
+}: Readonly<{
   /** The HTTP-ish status, shown large. Omitted when there is no number to give. */
   code?: string;
   title: string;
   description: string;
   /** The way out: one or two links or buttons. */
   children: ReactNode;
-}) {
+}>) {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-background px-4 py-12 text-center text-foreground">
       {/* eslint-disable-next-line @next/next/no-img-element -- static asset, not a remote upload */}

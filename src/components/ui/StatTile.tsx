@@ -18,7 +18,13 @@ interface StatTileProps {
   className?: string;
 }
 
-export function StatTile({ label, value, hint, tone = 'accent', className }: StatTileProps) {
+export function StatTile({
+  label,
+  value,
+  hint,
+  tone = 'accent',
+  className,
+}: Readonly<StatTileProps>) {
   return (
     <Card className={cn('space-y-1 bg-contrast/5 text-center', className)}>
       <p className={cn('text-2xl font-light', toneStyles[tone])}>{value}</p>

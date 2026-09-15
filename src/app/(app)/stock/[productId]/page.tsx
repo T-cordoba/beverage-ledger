@@ -10,9 +10,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ProductStockPage({
   params,
-}: {
+}: Readonly<{
   params: Promise<{ productId: string }>;
-}) {
+}>) {
   const { productId } = await params;
   const t = await getTranslations('stock');
 
