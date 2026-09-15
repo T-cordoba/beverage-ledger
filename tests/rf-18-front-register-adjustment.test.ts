@@ -1,42 +1,36 @@
-
-import { beforeAll, describe, expect, it } from 'vitest';
-import { API_ORIGIN } from '@/config/api';
-import { api, unwrap } from '@/lib/api';
-import { storeSession } from '@/lib/api/session';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useMovementDraft } from '@/features/movements/useMovementDraft';
 
+const product = {
+  id: 'product-1',
+  name: 'Producto de prueba',
+  category: { id: 'category-1', name: 'Bebidas' },
+  brand: { id: 'brand-1', name: 'Marca prueba' },
+  subcategory: 'Destilados',
+  abv: 40,
+  origin: 'Argentina',
+  age: '5 años',
+  caseSize: 12,
+  minimumStock: 10,
+  isActive: true,
+};
+
 describe('Registrar ajuste - Front', () => {
-  let product: any;
-
-  beforeAll(async () => {
-    const response = await fetch(`${API_ORIGIN}/api/v1/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: process.env.TEST_USER_EMAIL,
-        password: process.env.TEST_USER_PASSWORD,
-      }),
-    });
-
-    storeSession(await response.json());
-
-    const products = unwrap(
-      await api.GET('/api/v1/products', {
-        params: { query: { pageSize: 1 } },
-      }),
-    );
-
-    product = products.data[0];
+  beforeEach(() => {
+    window.localStorage.removeItem('beverage-ledger:movement-draft:ADJUSTMENT');
   });
 
-  it('Camino 1 - ajuste con isSigned falso agrega o actualiza la línea', async () => {
+  it('Camino 1 - ajuste con isSigned falso agrega o actualiza la línea', () => {
+    // Arrange
     const { result } = renderHook(() => useMovementDraft('ADJUSTMENT'));
 
+    // Act
     act(() => {
       result.current.adjust(product, 'BOTTLE', 1);
     });
 
+    // Assert
     expect(result.current.isEmpty).toBe(false);
     expect(result.current.productCount).toBe(1);
     expect(result.current.totalBottles).toBe(1);
@@ -53,45 +47,46 @@ describe('Registrar ajuste - Front', () => {
   });
 
   it('Camino 2 - ajuste con isSigned verdadero conserva el valor calculado', () => {
+    // Arrange
     const current = {
       product,
       BOTTLE: 1,
       CASE: 0,
     };
 
+    // Act
     const raw = current.BOTTLE + 1;
-
     const next = {
       product,
       BOTTLE: raw,
       CASE: current.CASE,
     };
 
+    // Assert
     expect(next.BOTTLE).toBe(2);
     expect(next.CASE).toBe(0);
   });
 
   it('Camino 3 - cuando BOTTLE y CASE quedan en cero se elimina la línea', () => {
+    // Arrange
     const current = {
       product,
       BOTTLE: 1,
       CASE: 0,
     };
 
+    // Act
     const raw = current.BOTTLE - 1;
-
     const next = {
       product,
       BOTTLE: Math.max(0, raw),
       CASE: current.CASE,
     };
-
-    expect(next.BOTTLE).toBe(0);
-    expect(next.CASE).toBe(0);
-
     const lineExists = next.BOTTLE !== 0 || next.CASE !== 0;
 
+    // Assert
+    expect(next.BOTTLE).toBe(0);
+    expect(next.CASE).toBe(0);
     expect(lineExists).toBe(false);
   });
 });
-

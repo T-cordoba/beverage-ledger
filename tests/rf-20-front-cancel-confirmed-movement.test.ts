@@ -1,57 +1,45 @@
-
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { API_ORIGIN } from '@/config/api';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { openDraft } from '@/features/movements/api';
 import { api, unwrap } from '@/lib/api';
-import { storeSession } from '@/lib/api/session';
+
+vi.mock('@/features/movements/api', () => ({
+  openDraft: vi.fn(),
+}));
+
+vi.mock('@/lib/api', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/api')>();
+  return {
+    ...actual,
+    api: {
+      GET: vi.fn(),
+      POST: vi.fn(),
+    },
+  };
+});
+
+const mockedOpenDraft = vi.mocked(openDraft);
+const mockedApiPost = vi.mocked(api.POST);
+
+const productId = 'product-1';
+const locationId = 'location-1';
 
 describe('Anular un movimiento confirmado - Front', () => {
-  let productId = '';
-  let locationId = '';
-
-  const movimientos: string[] = [];
-
-  beforeAll(async () => {
-    const response = await fetch(`${API_ORIGIN}/api/v1/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: process.env.TEST_USER_EMAIL,
-        password: process.env.TEST_USER_PASSWORD,
-      }),
-    });
-
-    storeSession(await response.json());
-
-    const products = unwrap(
-      await api.GET('/api/v1/products', {
-        params: { query: { pageSize: 1 } },
-      }),
-    );
-
-    productId = products.data[0].id;
-
-    const locations = unwrap(
-      await api.GET('/api/v1/locations', {
-        params: { query: { pageSize: 1 } },
-      }),
-    );
-
-    locationId = locations.data[0].id;
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
-  afterAll(async () => {
-    for (const id of movimientos) {
-      try {
-        await api.POST('/api/v1/movements/{id}/cancel', {
-          params: { path: { id } },
-          body: { reason: 'Movimiento creado por las pruebas' },
-        });
-      } catch {}
-    }
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('Camino 1 - la cancelación falla y se obtiene un error', async () => {
+    // Arrange
+    mockedApiPost.mockResolvedValue({
+      error: { message: 'Movimiento no encontrado' },
+      response: { ok: false, status: 404 },
+    } as any);
+
+    // Act
     const response = await api.POST('/api/v1/movements/{id}/cancel', {
       params: { path: { id: 'id-inexistente' } },
       body: {
@@ -59,10 +47,38 @@ describe('Anular un movimiento confirmado - Front', () => {
       },
     });
 
+    // Assert
     expect(response.error).toBeDefined();
+    expect(mockedApiPost).toHaveBeenCalledWith(
+      '/api/v1/movements/{id}/cancel',
+      {
+        params: { path: { id: 'id-inexistente' } },
+        body: { reason: 'Error en el registro' },
+      },
+    );
   });
 
   it('Camino 2 - la cancelación es exitosa y el movimiento queda cancelado', async () => {
+    // Arrange
+    mockedOpenDraft.mockResolvedValue({
+      id: 'movement-1',
+      type: 'OUTBOUND',
+      status: 'DRAFT',
+    } as any);
+
+    mockedApiPost
+      .mockResolvedValueOnce({
+        data: { id: 'movement-1', status: 'CONFIRMED' },
+        error: undefined,
+        response: { ok: true, status: 200 },
+      } as any)
+      .mockResolvedValueOnce({
+        data: { id: 'movement-1', status: 'CANCELLED' },
+        error: undefined,
+        response: { ok: true, status: 200 },
+      } as any);
+
+    // Act
     const draft = await openDraft({
       type: 'OUTBOUND',
       items: [
@@ -77,27 +93,23 @@ describe('Anular un movimiento confirmado - Front', () => {
       draftId: null,
     });
 
-    movimientos.push(draft.id);
-
     const confirmado = unwrap(
       await api.POST('/api/v1/movements/{id}/confirm', {
         params: { path: { id: draft.id } },
       }),
     );
 
-    expect(confirmado.status).toBe('CONFIRMED');
-
     const cancelado = unwrap(
       await api.POST('/api/v1/movements/{id}/cancel', {
-        params: { path: { id: draft.id },
-        },
+        params: { path: { id: draft.id } },
         body: {
           reason: 'Anulación de prueba RF-20',
         },
       }),
     );
 
+    // Assert
+    expect(confirmado.status).toBe('CONFIRMED');
     expect(cancelado.status).toBe('CANCELLED');
   });
 });
-
