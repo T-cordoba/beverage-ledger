@@ -7,7 +7,7 @@ import { useLocaleTransition } from './LocaleTransition';
 
 const options = LOCALES.map((locale) => ({ value: locale, label: LOCALE_LABELS[locale] }));
 
-export function LanguageSwitcher({ className }: { className?: string }) {
+export function LanguageSwitcher({ className }: Readonly<{ className?: string }>) {
   const t = useTranslations('common.language');
   const locale = useLocale();
   const { isChanging, change } = useLocaleTransition();

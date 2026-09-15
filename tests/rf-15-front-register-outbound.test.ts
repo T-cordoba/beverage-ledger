@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useMovementDraft } from '@/features/movements/useMovementDraft';
-import { openDraft } from '@/features/movements/api';
+import { openDraft } from '@/features/movements/open-draft';
 import { api, unwrap } from '@/lib/api';
 
-vi.mock('@/features/movements/api', () => ({
+vi.mock('@/features/movements/open-draft', () => ({
   openDraft: vi.fn(),
 }));
 
@@ -79,10 +79,9 @@ describe('Registrar salida - Front', () => {
     // Assert
     expect(movement.status).toBe('DRAFT');
     expect(response.error).toBeDefined();
-    expect(mockedApiPost).toHaveBeenCalledWith(
-      '/api/v1/movements/{id}/confirm',
-      { params: { path: { id: 'id-inexistente' } } },
-    );
+    expect(mockedApiPost).toHaveBeenCalledWith('/api/v1/movements/{id}/confirm', {
+      params: { path: { id: 'id-inexistente' } },
+    });
   });
 
   it('Camino 2 - la salida se registra correctamente', async () => {
@@ -118,9 +117,7 @@ describe('Registrar salida - Front', () => {
     expect(result.current.isEmpty).toBe(false);
     expect(result.current.productCount).toBe(1);
     expect(result.current.totalBottles).toBe(1);
-    expect(items).toEqual([
-      { productId: product.id, quantity: 1, unit: 'BOTTLE' },
-    ]);
+    expect(items).toEqual([{ productId: product.id, quantity: 1, unit: 'BOTTLE' }]);
     expect(movement.type).toBe('OUTBOUND');
     expect(movement.status).toBe('DRAFT');
     expect(confirmed.id).toBe(movement.id);

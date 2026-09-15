@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { openDraft } from '@/features/movements/api';
+import { openDraft } from '@/features/movements/open-draft';
 import type { Movement } from '@/lib/api';
 
 const { cliente } = vi.hoisted(() => ({

@@ -16,12 +16,12 @@ function Section({
   title,
   subtitle,
   children,
-}: {
+}: Readonly<{
   id?: string;
   title: string;
   subtitle?: string;
   children: ReactNode;
-}) {
+}>) {
   return (
     <section
       id={id}

@@ -14,28 +14,14 @@ describe('rangeFor', () => {
     vi.useRealTimers();
   });
 
-  it('Camino 1 - el periodo es week y el rango es de siete dias', () => {
-    const period: ReportPeriod = 'week';
-
+  it.each<{ period: ReportPeriod; from: string; description: string }>([
+    { period: 'week', from: '2026-08-25T12:00:00.000Z', description: 'de siete dias' },
+    { period: 'month', from: '2026-08-01T12:00:00.000Z', description: 'de un mes' },
+    { period: 'year', from: '2025-09-01T12:00:00.000Z', description: 'de un año' },
+  ])('Camino - el periodo es $period y el rango es $description', ({ period, from }) => {
     const range = rangeFor(period);
 
-    expect(range).toEqual({ from: '2026-08-25T12:00:00.000Z', to: HASTA });
-  });
-
-  it('Camino 2 - el periodo es month y el rango es de un mes', () => {
-    const period: ReportPeriod = 'month';
-
-    const range = rangeFor(period);
-
-    expect(range).toEqual({ from: '2026-08-01T12:00:00.000Z', to: HASTA });
-  });
-
-  it('Camino 3 - el periodo es year y el rango es de un año', () => {
-    const period: ReportPeriod = 'year';
-
-    const range = rangeFor(period);
-
-    expect(range).toEqual({ from: '2025-09-01T12:00:00.000Z', to: HASTA });
+    expect(range).toEqual({ from, to: HASTA });
   });
 
   it('Camino 4 - el periodo no es ninguno de los tres y el rango queda en cero', () => {
