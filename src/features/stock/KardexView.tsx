@@ -25,6 +25,59 @@ import { useKardex, useStockAvailability } from './api';
 import { stockKeys } from './keys';
 import { useDescribeCases } from './quantity';
 
+type Format = ReturnType<typeof useFormatter>;
+// A narrow shape rather than `ReturnType<typeof useTranslations>`: next-intl's
+// typed translator is an overloaded generic that blows up `tsc` with
+// "Type instantiation is excessively deep" once passed around as a value.
+type UnitLabel = (key: 'case' | 'bottle', values: { count: number }) => string;
+
+// `DataTable` calls `column.cell(row)` as a plain function, not as JSX — these
+// are render helpers, not components, so they live outside `KardexView` and
+// take the already-resolved formatter/translator as arguments instead of
+// calling hooks themselves.
+function renderOccurredAtCell(entry: KardexEntry, format: Format) {
+  return (
+    <span className="text-contrast/70">
+      {format.dateTime(new Date(entry.occurredAt), 'full')}
+    </span>
+  );
+}
+
+function renderMovementCell(entry: KardexEntry) {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Link
+        href={ROUTES.movement(entry.movementId)}
+        className="font-mono text-sm text-accent hover:underline"
+      >
+        {entry.movementCode}
+      </Link>
+      <MovementTypeBadge type={entry.type} />
+    </div>
+  );
+}
+
+function renderCapturedCell(entry: KardexEntry, format: Format, tUnits: UnitLabel) {
+  return (
+    <span className="text-contrast/70">
+      {format.number(entry.quantity)}{' '}
+      {tUnits(entry.unit === 'CASE' ? 'case' : 'bottle', { count: entry.quantity })}
+    </span>
+  );
+}
+
+function renderChangeCell(entry: KardexEntry, format: Format) {
+  return (
+    <span className="font-medium text-foreground">
+      {format.number(entry.quantityBase, 'signed')}
+    </span>
+  );
+}
+
+function renderBalanceCell(entry: KardexEntry, format: Format) {
+  return <span className="font-medium text-accent">{format.number(entry.balanceAfter)}</span>;
+}
+
 export function KardexView({ productId }: { productId: string }) {
   const t = useTranslations('stock.kardex');
   const tUnits = useTranslations('common.units');
@@ -57,11 +110,7 @@ export function KardexView({ productId }: { productId: string }) {
       // Only from `sm` up: in the detail panel the date has a line of its own
       // and wrapping is what keeps it from running off the edge.
       className: 'sm:whitespace-nowrap',
-      cell: (entry) => (
-        <span className="text-contrast/70">
-          {format.dateTime(new Date(entry.occurredAt), 'full')}
-        </span>
-      ),
+      cell: (entry) => renderOccurredAtCell(entry, format),
     },
     {
       key: 'movement',
@@ -69,17 +118,7 @@ export function KardexView({ productId }: { productId: string }) {
       primary: true,
       // A badge sits in this cell, and it is what sets the row's height.
       skeleton: <Skeleton className="h-6 w-32" />,
-      cell: (entry) => (
-        <div className="flex flex-wrap items-center gap-2">
-          <Link
-            href={ROUTES.movement(entry.movementId)}
-            className="font-mono text-sm text-accent hover:underline"
-          >
-            {entry.movementCode}
-          </Link>
-          <MovementTypeBadge type={entry.type} />
-        </div>
-      ),
+      cell: renderMovementCell,
     },
     {
       key: 'captured',
@@ -87,12 +126,7 @@ export function KardexView({ productId }: { productId: string }) {
       align: 'end',
       hideBelow: 'sm',
       skeleton: <Skeleton className="ml-auto h-5 w-20" />,
-      cell: (entry) => (
-        <span className="text-contrast/70">
-          {format.number(entry.quantity)}{' '}
-          {tUnits(entry.unit === 'CASE' ? 'case' : 'bottle', { count: entry.quantity })}
-        </span>
-      ),
+      cell: (entry) => renderCapturedCell(entry, format, tUnits),
     },
     {
       key: 'change',
@@ -100,20 +134,14 @@ export function KardexView({ productId }: { productId: string }) {
       align: 'end',
       summary: true,
       skeleton: <Skeleton className="ml-auto h-5 w-12" />,
-      cell: (entry) => (
-        <span className="font-medium text-foreground">
-          {format.number(entry.quantityBase, 'signed')}
-        </span>
-      ),
+      cell: (entry) => renderChangeCell(entry, format),
     },
     {
       key: 'balance',
       header: t('columns.balance'),
       align: 'end',
       skeleton: <Skeleton className="ml-auto h-5 w-12" />,
-      cell: (entry) => (
-        <span className="font-medium text-accent">{format.number(entry.balanceAfter)}</span>
-      ),
+      cell: (entry) => renderBalanceCell(entry, format),
     },
   ];
 
