@@ -80,6 +80,12 @@ function StatusCell({ row }: Readonly<{ row: StockLevel }>) {
   );
 }
 
+const productCell = (row: StockLevel) => <ProductCell row={row} />;
+const categoryCell = (row: StockLevel) => <CategoryCell row={row} />;
+const onHandCell = (row: StockLevel) => <OnHandCell row={row} />;
+const minimumCell = (row: StockLevel) => <MinimumCell row={row} />;
+const statusCell = (row: StockLevel) => <StatusCell row={row} />;
+
 export function StockLevelsView() {
   const t = useTranslations('stock.levels');
   const tStates = useTranslations('common.states');
@@ -133,13 +139,13 @@ export function StockLevelsView() {
           <Skeleton className="h-4 w-24" />
         </div>
       ),
-      cell: (row) => <ProductCell row={row} />,
+      cell: productCell,
     },
     {
       key: 'category',
       header: t('columns.category'),
       hideBelow: 'md',
-      cell: (row) => <CategoryCell row={row} />,
+      cell: categoryCell,
     },
     {
       key: 'onHand',
@@ -152,7 +158,7 @@ export function StockLevelsView() {
           <Skeleton className="ml-auto h-4 w-16" />
         </div>
       ),
-      cell: (row) => <OnHandCell row={row} />,
+      cell: onHandCell,
     },
     {
       key: 'minimum',
@@ -160,14 +166,14 @@ export function StockLevelsView() {
       align: 'end',
       hideBelow: 'sm',
       skeleton: <Skeleton className="ml-auto h-5 w-10" />,
-      cell: (row) => <MinimumCell row={row} />,
+      cell: minimumCell,
     },
     {
       key: 'status',
       header: t('columns.status'),
       align: 'end',
       skeleton: <Skeleton className="ml-auto h-6 w-16" />,
-      cell: (row) => <StatusCell row={row} />,
+      cell: statusCell,
     },
   ];
 

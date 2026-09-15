@@ -75,6 +75,12 @@ function BalanceCell({ entry }: Readonly<{ entry: KardexEntry }>) {
   );
 }
 
+const occurredAtCell = (entry: KardexEntry) => <OccurredAtCell entry={entry} />;
+const movementCell = (entry: KardexEntry) => <MovementCell entry={entry} />;
+const capturedCell = (entry: KardexEntry) => <CapturedCell entry={entry} />;
+const changeCell = (entry: KardexEntry) => <ChangeCell entry={entry} />;
+const balanceCell = (entry: KardexEntry) => <BalanceCell entry={entry} />;
+
 export function KardexView({ productId }: Readonly<{ productId: string }>) {
   const t = useTranslations('stock.kardex');
   const tStates = useTranslations('common.states');
@@ -106,7 +112,7 @@ export function KardexView({ productId }: Readonly<{ productId: string }>) {
       // Only from `sm` up: in the detail panel the date has a line of its own
       // and wrapping is what keeps it from running off the edge.
       className: 'sm:whitespace-nowrap',
-      cell: (entry) => <OccurredAtCell entry={entry} />,
+      cell: occurredAtCell,
     },
     {
       key: 'movement',
@@ -114,7 +120,7 @@ export function KardexView({ productId }: Readonly<{ productId: string }>) {
       primary: true,
       // A badge sits in this cell, and it is what sets the row's height.
       skeleton: <Skeleton className="h-6 w-32" />,
-      cell: (entry) => <MovementCell entry={entry} />,
+      cell: movementCell,
     },
     {
       key: 'captured',
@@ -122,7 +128,7 @@ export function KardexView({ productId }: Readonly<{ productId: string }>) {
       align: 'end',
       hideBelow: 'sm',
       skeleton: <Skeleton className="ml-auto h-5 w-20" />,
-      cell: (entry) => <CapturedCell entry={entry} />,
+      cell: capturedCell,
     },
     {
       key: 'change',
@@ -130,14 +136,14 @@ export function KardexView({ productId }: Readonly<{ productId: string }>) {
       align: 'end',
       summary: true,
       skeleton: <Skeleton className="ml-auto h-5 w-12" />,
-      cell: (entry) => <ChangeCell entry={entry} />,
+      cell: changeCell,
     },
     {
       key: 'balance',
       header: t('columns.balance'),
       align: 'end',
       skeleton: <Skeleton className="ml-auto h-5 w-12" />,
-      cell: (entry) => <BalanceCell entry={entry} />,
+      cell: balanceCell,
     },
   ];
 
