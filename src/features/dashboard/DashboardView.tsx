@@ -100,12 +100,12 @@ function SummaryTiles({
   t,
   tStates,
   format,
-}: {
+}: Readonly<{
   summary: ReturnType<typeof useSummaryReport>;
   t: ReturnType<typeof useTranslations<'dashboard'>>;
   tStates: ReturnType<typeof useTranslations<'common.states'>>;
   format: ReturnType<typeof useFormatter>;
-}) {
+}>) {
   if (summary.isPending) {
     // Eight tiles in the same grid the real ones land in, so nothing below
     // jumps when the numbers arrive.
@@ -179,12 +179,12 @@ function ActivitySection({
   activityRows,
   granularity,
   t,
-}: {
+}: Readonly<{
   activity: ReturnType<typeof useActivityReport>;
   activityRows: ActivityRow[];
   granularity: ActivityGranularity;
   t: ReturnType<typeof useTranslations<'dashboard'>>;
-}) {
+}>) {
   let body: ReactNode;
   if (activity.isPending) {
     body = (

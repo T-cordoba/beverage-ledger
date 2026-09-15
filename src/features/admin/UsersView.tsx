@@ -34,7 +34,7 @@ import { UserFormDialog } from './UserFormDialog';
 // while next-intl still checks each translation call at its original call site.
 type Translator = ReturnType<typeof useTranslations>;
 
-function MemberCell({ user, isSelf, t }: { user: User; isSelf: boolean; t: Translator }) {
+function MemberCell({ user, isSelf, t }: Readonly<{ user: User; isSelf: boolean; t: Translator }>) {
   return (
     <div className="min-w-0 space-y-0.5">
       <p className="font-medium text-foreground">
@@ -46,11 +46,11 @@ function MemberCell({ user, isSelf, t }: { user: User; isSelf: boolean; t: Trans
   );
 }
 
-function RoleCell({ user, tRoles }: { user: User; tRoles: Translator }) {
+function RoleCell({ user, tRoles }: Readonly<{ user: User; tRoles: Translator }>) {
   return <span className="text-contrast/70">{tRoles(user.role)}</span>;
 }
 
-function StatusCell({ user, tStatuses }: { user: User; tStatuses: Translator }) {
+function StatusCell({ user, tStatuses }: Readonly<{ user: User; tStatuses: Translator }>) {
   return <Badge tone={STATUS_TONES[user.status]}>{tStatuses(user.status)}</Badge>;
 }
 
@@ -58,11 +58,11 @@ function LastLoginCell({
   user,
   format,
   t,
-}: {
+}: Readonly<{
   user: User;
   format: ReturnType<typeof useFormatter>;
   t: Translator;
-}) {
+}>) {
   return (
     <span className="text-xs text-contrast/60">
       {user.lastLoginAt ? format.dateTime(new Date(user.lastLoginAt), 'full') : t('never')}
@@ -77,14 +77,14 @@ function ActionsCell({
   tActions,
   onEdit,
   onToggleStatus,
-}: {
+}: Readonly<{
   user: User;
   isSelf: boolean;
   t: Translator;
   tActions: Translator;
   onEdit: (user: User) => void;
   onToggleStatus: (user: User) => void;
-}) {
+}>) {
   return (
     <div className="flex justify-end gap-2">
       <Button variant="secondary" size="sm" onClick={() => onEdit(user)}>
