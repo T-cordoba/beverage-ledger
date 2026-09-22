@@ -1,4 +1,5 @@
-import type { Movement } from '@/lib/api/types';
+import type { Session } from '@/lib/api/session';
+import type { Movement, PageMeta, Product, User } from '@/lib/api/types';
 
 /**
  * Stub builders shared by the suites that mock the API client.
@@ -53,5 +54,68 @@ export const movementStub = (overrides: Partial<Movement> = {}): Movement => ({
   cancelledAt: null,
   createdAt: '2026-01-01T00:00:00.000Z',
   items: [],
+  ...overrides,
+});
+
+/**
+ * A complete SessionDto, for the suites that need a token in memory before they
+ * exercise the real client.
+ */
+export const sessionStub = (overrides: Partial<Session> = {}): Session => ({
+  accessToken: 'access-token-de-prueba',
+  expiresIn: 900,
+  user: {
+    id: 'user-1',
+    email: 'admin@beverageledger.local',
+    name: 'Administrador de prueba',
+    avatarUrl: null,
+    role: 'ORG_ADMIN',
+    status: 'ACTIVE',
+  },
+  ...overrides,
+});
+
+/**
+ * A complete ProductDto. Pass only what the assertion looks at.
+ */
+export const productStub = (overrides: Partial<Product> = {}): Product => ({
+  id: 'product-1',
+  name: 'Producto de prueba',
+  category: { id: 'category-1', name: 'Bebidas' },
+  brand: { id: 'brand-1', name: 'Marca de prueba' },
+  subcategory: 'Destilados',
+  abv: 40,
+  origin: 'Escocia',
+  age: null,
+  caseSize: 12,
+  minimumStock: null,
+  isActive: true,
+  ...overrides,
+});
+
+/** The `{ data, meta }` envelope every list endpoint answers with. */
+export const page = <T>(data: T[], overrides: Partial<PageMeta> = {}) => ({
+  data,
+  meta: {
+    page: 1,
+    pageSize: data.length,
+    total: data.length,
+    pageCount: 1,
+    count: data.length,
+    ...overrides,
+  },
+});
+
+/** A complete UserDto. Pass only what the assertion looks at. */
+export const userStub = (overrides: Partial<User> = {}): User => ({
+  id: 'user-1',
+  email: 'operario@beverageledger.local',
+  name: 'Operario de prueba',
+  avatarUrl: null,
+  role: 'OPERATOR',
+  status: 'ACTIVE',
+  emailVerifiedAt: null,
+  lastLoginAt: null,
+  createdAt: '2026-01-01T00:00:00.000Z',
   ...overrides,
 });

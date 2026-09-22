@@ -95,8 +95,8 @@ con `-e`, porque lo que va por `-e` se lee con `docker inspect`. Créalas como
 | `bl-api-direct-url` | `DIRECT_URL` (conexión directa) |
 | `bl-api-jwt-secret` | `JWT_SECRET`, mínimo 32 caracteres |
 
-El front no necesita credenciales: sus cuatro pruebas que exigían una API viva
-quedan fuera del pipeline vía `SKIP_LIVE_API_TESTS`.
+El front no necesita credenciales de ningún tipo: su suite entera corre sin red,
+con el transporte stubbeado.
 
 ## 5. Crear los dos jobs
 

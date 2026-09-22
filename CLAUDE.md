@@ -449,11 +449,20 @@ sola API —cambiar de entorno es reconstruir, no cambiar una variable de runtim
 El valor por defecto es `http://localhost:3001` y no el nombre de servicio,
 porque quien resuelve esa URL es el navegador del host, no el contenedor.
 
-**Las cuatro pruebas que exigen API viva salen del pipeline.** `vitest.config.mts`
-las apaga cuando `SKIP_LIVE_API_TESTS=true`, que es lo que exporta Jenkins; sin la
-variable —en local y en GitHub Actions— la suite sigue corriendo entera. Así el
-pipeline no necesita credenciales ni una API despierta, a cambio de que las dos
-suites diverjan: 29 archivos en Actions, 25 en Jenkins.
+**Ninguna prueba necesita ya una API viva.** Las cuatro que hacían login real se
+reescribieron para **mockear `fetch`, no `@/lib/api`**, y ahí está la diferencia:
+mockear el módulo lo reemplaza entero y no ejecuta nada de `client.ts` —ni el
+middleware que pone el bearer, ni el 401, ni `unwrap`—, mientras que stubbear el
+transporte los deja corriendo todos. `client.ts` pasó de 88.88 % a **100 %** de
+sentencias, y la suite completa de 93.95 % a 95.05 %, sin que salga un paquete a la
+red. `tests/support/` tiene los constructores.
+
+El detalle que hay que respetar al escribir una de estas: `openapi-fetch` lee
+`globalThis.fetch` cuando corre `createClient`, o sea al evaluar el módulo, así que
+el stub tiene que existir **antes** del import — de ahí que `stubbedTransport()`
+importe dinámicamente. Y cada respuesta se construye de nuevo en cada llamada,
+porque un `Response` solo se puede leer una vez y una sola llamada a `api.*` puede
+gastar dos: si no hay token fresco en memoria, el middleware refresca primero.
 
 **Un solo `sonar-project.properties` por repo.** Los proyectos del SonarQube local
 se crean con las mismas claves que SonarCloud (`T-cordoba_beverage-ledger`,

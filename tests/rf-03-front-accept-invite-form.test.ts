@@ -1,56 +1,75 @@
-import { beforeAll, describe, expect, it } from 'vitest';
-import { API_ORIGIN } from '@/config/api';
-import { storeSession } from '@/lib/api/session';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { sessionStub } from './support/api-result';
+import { answer, stubbedTransport } from './support/stubbed-transport';
+
+const { fetchMock, api, unwrap, storeSession } = await stubbedTransport();
+
+const preview = {
+  email: 'invitado@ejemplo.com',
+  role: 'OPERATOR',
+  organizationName: 'Beverage Ledger',
+  expiresAt: '2026-12-31T00:00:00.000Z',
+} as const;
 
 describe('AcceptInviteForm render - Front', () => {
-  beforeAll(async () => {
-    const response = await fetch(`${API_ORIGIN}/api/v1/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: process.env.TEST_USER_EMAIL,
-        password: process.env.TEST_USER_PASSWORD,
-      }),
-    });
-
-    storeSession(await response.json());
+  beforeEach(() => {
+    fetchMock.mockReset();
+    // A token in memory keeps the auth middleware from spending the first call
+    // on /auth/refresh, so each scenario below is exactly one request.
+    storeSession(sessionStub());
   });
 
   it('Camino 1 - vista previa cargando, se muestra spinner', async () => {
-    // El estado isPending es transitorio y no alcanzable via API directamente.
-    // Se verifica que el endpoint de preview existe y responde.
-    const response = await fetch(`${API_ORIGIN}/api/v1/invitations/lookup`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: 'token-de-prueba-inexistente' }),
-    });
+    // Arrange
+    // isPending cannot be read off the result, so what is asserted is that the
+    // promise is still open while the transport has not answered.
+    let release: (response: Response) => void = () => {};
+    fetchMock.mockImplementation(
+      () =>
+        new Promise<Response>((resolve) => {
+          release = resolve;
+        }),
+    );
 
-    expect(response.status).toBeDefined();
+    // Act
+    const pending = api.POST('/api/v1/invitations/lookup', { body: { token: 'token-de-prueba' } });
+    const settledFirst = await Promise.race([pending.then(() => 'settled'), 'pending']);
+
+    // Assert
+    expect(settledFirst).toBe('pending');
+
+    release(await answer(200, preview)());
+    expect(unwrap(await pending).email).toBe(preview.email);
   });
 
   it('Camino 2 - token invalido, se muestra tarjeta de error', async () => {
-    const response = await fetch(`${API_ORIGIN}/api/v1/invitations/lookup`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: 'token-invalido-para-error' }),
+    // Arrange
+    fetchMock.mockImplementation(answer(404, { message: 'Invitation not found or expired' }));
+
+    // Act
+    const result = await api.POST('/api/v1/invitations/lookup', {
+      body: { token: 'token-invalido-para-error' },
     });
 
-    expect(response.ok).toBe(false);
-    expect(response.status).toBe(404);
-
-    const body = await response.json();
-    expect(body.message).toBeDefined();
+    // Assert
+    expect(result.response.ok).toBe(false);
+    expect(result.response.status).toBe(404);
+    expect(result.error).toBeDefined();
+    expect(() => unwrap(result)).toThrow();
   });
 
   it('Camino 3 - token valido, se muestra formulario de aceptacion', async () => {
-    // Sin una invitacion real pendiente, se verifica que el endpoint responde
-    // con el formato esperado para un token invalido (404).
-    const response = await fetch(`${API_ORIGIN}/api/v1/invitations/lookup`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: 'token-para-formulario' }),
-    });
+    // Arrange
+    fetchMock.mockImplementation(answer(200, preview));
 
-    expect(response.status).toBe(404);
+    // Act
+    const result = unwrap(
+      await api.POST('/api/v1/invitations/lookup', { body: { token: 'token-para-formulario' } }),
+    );
+
+    // Assert
+    expect(result.email).toBe(preview.email);
+    expect(result.organizationName).toBe(preview.organizationName);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });

@@ -20,10 +20,6 @@ pipeline {
     // it means rebuilding the image.
     PUBLIC_API_URL = 'http://localhost:3001'
 
-    // Four suites sign in against a live API and one of them writes to it.
-    // See vitest.config.mts.
-    SKIP_LIVE_API_TESTS   = 'true'
-
     COREPACK_ENABLE_DOWNLOAD_PROMPT = '0'
     NEXT_TELEMETRY_DISABLED         = '1'
   }
