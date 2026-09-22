@@ -107,6 +107,11 @@ Uno por repo, tipo **Pipeline**:
 | `beverage-ledger-api` | `beverage-ledger-api` | `ci/jenkins-pipeline` | `Jenkinsfile` |
 | `beverage-ledger-front` | `beverage-ledger` | `ci/jenkins-pipeline` | `Jenkinsfile` |
 
+En cada job, *Additional Behaviours → Advanced clone behaviours*: deja
+**desmarcado** el clon superficial. SonarQube necesita el historial completo para
+atribuir el código y calcular el "new code" sobre el que se evalúa el Quality
+Gate; con un clon superficial lo atribuye todo al último commit.
+
 Conviene lanzar primero el de la API: el front horneado apunta a
 `http://localhost:3001` y sin la API detrás la app se despliega igual y responde
 sana, pero no tiene con quién hablar.
