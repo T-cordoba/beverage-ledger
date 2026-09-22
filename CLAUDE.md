@@ -60,7 +60,7 @@ Ojo con una cosa: el README es lo único que se mantiene **en inglés o en espa�
 
 **La pantalla de perfil se hizo fuera del orden de fases** —entonces todavía en una rama, `feat/profile-screen`— porque el hueco que tapaba era funcional y no de presentación: nadie podía cambiar su propia contraseña.
 
-**Las bodegas y los traspasos también.** Estaban modeladas desde la primera migración y nunca se habían expuesto; ahora tienen CRUD, selector y filtro, y existe un cuarto tipo de movimiento, `TRANSFER`. Eso cerró de paso tres límites del contrato que la UI tenía que enseñar en vez de esconder. Ver §10.
+**Las bodegas y los traspasos también.** Estaban modeladas desde la primera migración y nunca se habían expuesto; ahora tienen CRUD, selector y filtro, y existe un cuarto tipo de movimiento, `TRANSFER`. Eso cerró de paso tres límites del contrato que la UI tenía que enseñar en vez de esconder. Ver §11.
 
 ---
 
@@ -421,7 +421,59 @@ Imports siempre por alias `@/`, nunca relativos que suban de directorio (`../../
 
 ---
 
-## 10. Deuda del código original (contexto histórico)
+## 10. Pipeline de CI: Docker, Jenkins y SonarQube
+
+Aparte del workflow de GitHub Actions que publica en SonarCloud, los dos repos
+tienen un pipeline de Jenkins que corre en local sobre Docker. Puesta en marcha
+completa en `devops/README.md`; aquí solo lo que condiciona cómo se trabaja.
+
+**Topología.** Una red `devops-net` con Jenkins (`:8080`), SonarQube (`:9000`) y
+los dos contenedores que el propio pipeline despliega, `beverage-ledger-api`
+(`:3001`) y `beverage-ledger-front` (`:3000`). Jenkins monta el socket de Docker,
+así que construye y arranca en el daemon del **host**, no dentro de sí mismo. El
+`docker-compose.devops.yml` y la imagen de Jenkins viven en `devops/`.
+
+**Nueve etapas por repo**: verificar herramientas · instalar dependencias ·
+análisis estático · pruebas con cobertura · SonarQube · Quality Gate · construir
+imagen · desplegar · comprobar salud.
+
+**`output: 'standalone'` está detrás de `BUILD_STANDALONE`.** El trazado del
+bundle sigue los symlinks del almacén de pnpm, y Windows los rechaza sin modo
+desarrollador: activarlo sin condición rompe `pnpm build` en local con `EPERM`.
+Solo lo enciende el `Dockerfile`, que es lo único que lee `.next/standalone`.
+
+**`NEXT_PUBLIC_API_URL` se hornea en la imagen**, porque las `NEXT_PUBLIC_*` se
+inlinean al construir y `src/config/api.ts` lanza si está vacía. Dos
+consecuencias: el `docker build` **exige** el build-arg, y una imagen sirve a una
+sola API —cambiar de entorno es reconstruir, no cambiar una variable de runtime—.
+El valor por defecto es `http://localhost:3001` y no el nombre de servicio,
+porque quien resuelve esa URL es el navegador del host, no el contenedor.
+
+**Las cuatro pruebas que exigen API viva salen del pipeline.** `vitest.config.mts`
+las apaga cuando `SKIP_LIVE_API_TESTS=true`, que es lo que exporta Jenkins; sin la
+variable —en local y en GitHub Actions— la suite sigue corriendo entera. Así el
+pipeline no necesita credenciales ni una API despierta, a cambio de que las dos
+suites diverjan: 29 archivos en Actions, 25 en Jenkins.
+
+**Un solo `sonar-project.properties` por repo.** Los proyectos del SonarQube local
+se crean con las mismas claves que SonarCloud (`T-cordoba_beverage-ledger`,
+`T-cordoba_beverage-ledger-api`), de modo que no hace falta ningún override: el
+host y el token los inyecta `withSonarQubeEnv`. Duplicar el archivo habría
+duplicado las listas de `sonar.coverage.exclusions`, que ya tienen que moverse a
+la par con `coverage.include` (§4).
+
+**`--env-file` de Docker no quita las comillas.** Un `.env` con
+`NODE_ENV="development"` entrega el valor *con* comillas y la validación Zod de la
+API rechaza media docena de variables a la vez. Por eso el Jenkinsfile de la API
+escribe su archivo temporal con los valores pelados. Es también el motivo de usar
+un archivo y no `-e`: lo que va por `-e` se lee con `docker inspect`.
+
+**El health check va por nombre de contenedor**, no por `localhost`: el paso corre
+dentro de Jenkins, cuyo `localhost` es el suyo propio.
+
+---
+
+## 11. Deuda del código original (contexto histórico)
 
 Lo que había antes de la reescritura, para que se entienda por qué las convenciones son las que son.
 
