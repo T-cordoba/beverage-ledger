@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useMovementDraft } from '@/features/movements/useMovementDraft';
 import { openDraft } from '@/features/movements/open-draft';
+import { movementStub } from './support/api-result';
 
 vi.mock('@/features/movements/open-draft', () => ({
   openDraft: vi.fn(),
@@ -25,12 +26,9 @@ describe('Registrar traspaso - Front', () => {
 
   it('Camino 1 - se registra un traspaso con ubicaciones diferentes', async () => {
     // Arrange
-    mockedOpenDraft.mockResolvedValue({
-      id: 'movement-1',
-      type: 'TRANSFER',
-      status: 'DRAFT',
-    } as any);
-
+    mockedOpenDraft.mockResolvedValue(
+      movementStub({ id: 'movement-1', type: 'TRANSFER', status: 'DRAFT' }),
+    );
 
     const { result } = renderHook(() => useMovementDraft('TRANSFER'));
 

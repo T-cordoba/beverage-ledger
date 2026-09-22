@@ -1,9 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { API_ORIGIN } from '@/config/api';
+import { jsonResponse } from './support/api-result';
+
+const fetchMock = vi.fn<typeof fetch>();
 
 describe('AcceptInviteForm render - Front', () => {
   beforeEach(() => {
-    vi.stubGlobal('fetch', vi.fn());
+    vi.stubGlobal('fetch', fetchMock);
   });
 
   afterEach(() => {
@@ -15,11 +18,7 @@ describe('AcceptInviteForm render - Front', () => {
     // Arrange
     // El estado isPending es transitorio y no alcanzable via API directamente.
     // Se verifica que el endpoint de preview existe y responde.
-    (fetch as any).mockResolvedValue({
-      ok: false,
-      status: 404,
-      json: async () => ({ message: 'Invitation not found' }),
-    });
+    fetchMock.mockResolvedValue(jsonResponse(404, { message: 'Invitation not found' }));
 
     // Act
     const response = await fetch(`${API_ORIGIN}/api/v1/invitations/lookup`, {
@@ -30,16 +29,11 @@ describe('AcceptInviteForm render - Front', () => {
 
     // Assert
     expect(response.status).toBeDefined();
-
   });
 
   it('Camino 2 - token invalido, se muestra tarjeta de error', async () => {
     // Arrange
-    (fetch as any).mockResolvedValue({
-      ok: false,
-      status: 404,
-      json: async () => ({ message: 'Invitation not found or expired' }),
-    });
+    fetchMock.mockResolvedValue(jsonResponse(404, { message: 'Invitation not found or expired' }));
 
     // Act
     const response = await fetch(`${API_ORIGIN}/api/v1/invitations/lookup`, {
@@ -57,15 +51,12 @@ describe('AcceptInviteForm render - Front', () => {
 
   it('Camino 3 - token valido, se muestra formulario de aceptacion', async () => {
     // Arrange
-    (fetch as any).mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: async () => ({
+    fetchMock.mockResolvedValue(
+      jsonResponse(200, {
         email: 'invitado@ejemplo.com',
         organizationName: 'Beverage Ledger',
-
       }),
-    });
+    );
 
     // Act
     const response = await fetch(`${API_ORIGIN}/api/v1/invitations/lookup`, {

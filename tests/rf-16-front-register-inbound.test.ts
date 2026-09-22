@@ -3,6 +3,7 @@ import { renderHook, act } from '@testing-library/react';
 import { useMovementDraft } from '@/features/movements/useMovementDraft';
 import { openDraft } from '@/features/movements/open-draft';
 import { api, unwrap } from '@/lib/api';
+import { apiResult, movementStub } from './support/api-result';
 
 vi.mock('@/features/movements/open-draft', () => ({
   openDraft: vi.fn(),
@@ -21,6 +22,8 @@ vi.mock('@/lib/api', async (importOriginal) => {
 
 const mockedOpenDraft = vi.mocked(openDraft);
 const mockedApiPost = vi.mocked(api.POST);
+
+type PostResult = Awaited<ReturnType<typeof api.POST>>;
 
 const product = {
   id: 'product-1',
@@ -48,16 +51,13 @@ describe('Registrar entrada - Front', () => {
 
   it('Camino 1 - la entrada falla al confirmar el registro', async () => {
     // Arrange
-    mockedOpenDraft.mockResolvedValue({
-      id: 'movement-1',
-      type: 'INBOUND',
-      status: 'DRAFT',
-    } as any);
+    mockedOpenDraft.mockResolvedValue(
+      movementStub({ id: 'movement-1', type: 'INBOUND', status: 'DRAFT' }),
+    );
 
-    mockedApiPost.mockResolvedValue({
-      error: { message: 'Movimiento no encontrado' },
-      response: { ok: false, status: 404 },
-    } as any);
+    mockedApiPost.mockResolvedValue(
+      apiResult<PostResult>({ status: 404, error: { message: 'Movimiento no encontrado' } }),
+    );
 
     const { result } = renderHook(() => useMovementDraft('INBOUND'));
 
@@ -78,25 +78,20 @@ describe('Registrar entrada - Front', () => {
     // Assert
     expect(movement.status).toBe('DRAFT');
     expect(response.error).toBeDefined();
-    expect(mockedApiPost).toHaveBeenCalledWith(
-      '/api/v1/movements/{id}/confirm',
-      { params: { path: { id: 'id-inexistente' } } },
-    );
+    expect(mockedApiPost).toHaveBeenCalledWith('/api/v1/movements/{id}/confirm', {
+      params: { path: { id: 'id-inexistente' } },
+    });
   });
 
   it('Camino 2 - la entrada se registra correctamente', async () => {
     // Arrange
-    mockedOpenDraft.mockResolvedValue({
-      id: 'movement-2',
-      type: 'INBOUND',
-      status: 'DRAFT',
-    } as any);
+    mockedOpenDraft.mockResolvedValue(
+      movementStub({ id: 'movement-2', type: 'INBOUND', status: 'DRAFT' }),
+    );
 
-    mockedApiPost.mockResolvedValue({
-      data: { id: 'movement-2', status: 'CONFIRMED' },
-      error: undefined,
-      response: { ok: true, status: 200 },
-    } as any);
+    mockedApiPost.mockResolvedValue(
+      apiResult<PostResult>({ status: 200, data: { id: 'movement-2', status: 'CONFIRMED' } }),
+    );
 
     const { result } = renderHook(() => useMovementDraft('INBOUND'));
 
@@ -117,9 +112,7 @@ describe('Registrar entrada - Front', () => {
     expect(result.current.isEmpty).toBe(false);
     expect(result.current.productCount).toBe(1);
     expect(result.current.totalBottles).toBe(1);
-    expect(items).toEqual([
-      { productId: product.id, quantity: 1, unit: 'BOTTLE' },
-    ]);
+    expect(items).toEqual([{ productId: product.id, quantity: 1, unit: 'BOTTLE' }]);
     expect(movement.type).toBe('INBOUND');
     expect(movement.status).toBe('DRAFT');
     expect(confirmed.id).toBe(movement.id);

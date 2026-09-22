@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { api, unwrap } from '@/lib/api';
+import { apiResult } from './support/api-result';
 
 vi.mock('@/lib/api', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/lib/api')>();
@@ -15,6 +16,9 @@ vi.mock('@/lib/api', async (importOriginal) => {
 const mockedApiGet = vi.mocked(api.GET);
 const mockedApiPatch = vi.mocked(api.PATCH);
 
+type GetResult = Awaited<ReturnType<typeof api.GET>>;
+type PatchResult = Awaited<ReturnType<typeof api.PATCH>>;
+
 describe('changeStatus - Front', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -26,26 +30,19 @@ describe('changeStatus - Front', () => {
 
   it('Camino 1 - usuario suspendido se reactiva exitosamente', async () => {
     // Arrange
-    mockedApiGet.mockResolvedValue({
-      data: {
-        data: [
-          {
-            id: 'user-1',
-            name: 'Usuario Suspendido',
-            status: 'SUSPENDED',
-          },
-        ],
-        total: 1,
-      },
-      error: undefined,
-      response: { ok: true, status: 200 },
-    } as any);
+    mockedApiGet.mockResolvedValue(
+      apiResult<GetResult>({
+        status: 200,
+        data: {
+          data: [{ id: 'user-1', name: 'Usuario Suspendido', status: 'SUSPENDED' }],
+          total: 1,
+        },
+      }),
+    );
 
-    mockedApiPatch.mockResolvedValue({
-      data: { id: 'user-1', status: 'ACTIVE' },
-      error: undefined,
-      response: { ok: true, status: 200 },
-    } as any);
+    mockedApiPatch.mockResolvedValue(
+      apiResult<PatchResult>({ status: 200, data: { id: 'user-1', status: 'ACTIVE' } }),
+    );
 
     // Act
     const users = unwrap(
@@ -57,7 +54,7 @@ describe('changeStatus - Front', () => {
     const reactivated = unwrap(
       await api.PATCH('/api/v1/users/{id}', {
         params: { path: { id: 'user-1' } },
-        body: { status: 'ACTIVE' as any },
+        body: { status: 'ACTIVE' },
       }),
     );
 
@@ -70,16 +67,14 @@ describe('changeStatus - Front', () => {
 
   it('Camino 2 - usuario activo se suspende exitosamente', async () => {
     // Arrange
-    mockedApiPatch.mockResolvedValue({
-      data: { id: 'user-2', status: 'SUSPENDED' },
-      error: undefined,
-      response: { ok: true, status: 200 },
-    } as any);
+    mockedApiPatch.mockResolvedValue(
+      apiResult<PatchResult>({ status: 200, data: { id: 'user-2', status: 'SUSPENDED' } }),
+    );
 
     // Act
     const response = await api.PATCH('/api/v1/users/{id}', {
       params: { path: { id: 'user-2' } },
-      body: { status: 'SUSPENDED' as any },
+      body: { status: 'SUSPENDED' },
     });
     const suspended = unwrap(response);
 
@@ -90,16 +85,14 @@ describe('changeStatus - Front', () => {
 
   it('Camino 3 - la mutacion falla y se notifica error', async () => {
     // Arrange
-    mockedApiPatch.mockResolvedValue({
-      error: { message: 'User not found' },
-      response: { ok: false, status: 404 },
-    } as any);
+    mockedApiPatch.mockResolvedValue(
+      apiResult<PatchResult>({ status: 404, error: { message: 'User not found' } }),
+    );
 
     // Act
     const response = await api.PATCH('/api/v1/users/{id}', {
-
       params: { path: { id: '00000000-0000-4000-8000-000000000000' } },
-      body: { status: 'SUSPENDED' as any },
+      body: { status: 'SUSPENDED' },
     });
 
     // Assert

@@ -2,9 +2,10 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { API_ORIGIN } from '@/config/api';
 import { api, unwrap } from '@/lib/api';
 import { storeSession } from '@/lib/api/session';
+import type { Product } from '@/lib/api/types';
 
 describe('submit (ProductFormDialog) - Front', () => {
-  let product: any;
+  let product: Product;
 
   beforeAll(async () => {
     const response = await fetch(`${API_ORIGIN}/api/v1/auth/login`, {
@@ -76,7 +77,8 @@ describe('submit (ProductFormDialog) - Front', () => {
 
   it('Camino 4 - creacion falla por datos invalidos', async () => {
     const response = await api.POST('/api/v1/products', {
-      body: { name: '', categoryId: '', caseSize: 0 } as any,
+      // Shape-valid, value-invalid: that is what the API is expected to reject.
+      body: { name: '', categoryId: '', caseSize: 0 },
     });
 
     expect(response.error).toBeDefined();
