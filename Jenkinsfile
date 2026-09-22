@@ -81,8 +81,14 @@ pipeline {
           // Host and token come from the server configured in Jenkins; every
           // other property stays in sonar-project.properties, which is also
           // what GitHub Actions reads.
+          //
+          // The JS/TS analyzer starts a Node bridge that sizes its heap from
+          // the memory it sees, asking for 2.2GB on an 8GB host. On a small
+          // machine that is what pushes the box into swap, where the analysis
+          // stops being CPU-bound and starts taking tens of minutes. Capping it
+          // costs nothing measurable: the sensor itself takes the same time.
           withSonarQubeEnv('SonarQube') {
-            sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectVersion=${env.BUILD_NUMBER}"
+            sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.javascript.node.maxspace=768"
           }
         }
       }
