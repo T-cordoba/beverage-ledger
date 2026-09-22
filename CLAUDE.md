@@ -441,6 +441,14 @@ y no en el volumen. Dos cosas que muerden ahí y están en `devops/README.md`: l
 imagen de Jenkins deja `$JAVA_HOME/bin` fuera del `PATH` —y el sonar-scanner lo
 necesita—, y Git Bash convierte `/var/run/docker.sock` a una ruta de Windows.
 
+**El análisis del front corre sin información de tipos.** `disableTypeChecking` en
+su etapa de Sonar, más un tope al montón del bridge de Node en los dos repos. No es
+por velocidad —el sensor tarda 43 s con y sin— sino por memoria: construir el
+programa de TypeScript sobre 291 archivos no cabe en una máquina de 8 GB junto a
+SonarQube y Jenkins, y lo que sigue no es lentitud sino swap, con la CPU parada y el
+disco al 100 %. El precio es real: las reglas que necesitan tipos dejan de correr.
+La API conserva el análisis completo, que ahí sí cabe.
+
 **Nueve etapas por repo**: verificar herramientas · instalar dependencias ·
 análisis estático · pruebas con cobertura · SonarQube · Quality Gate · construir
 imagen · desplegar · comprobar salud.

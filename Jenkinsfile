@@ -82,13 +82,20 @@ pipeline {
           // other property stays in sonar-project.properties, which is also
           // what GitHub Actions reads.
           //
-          // The JS/TS analyzer starts a Node bridge that sizes its heap from
-          // the memory it sees, asking for 2.2GB on an 8GB host. On a small
-          // machine that is what pushes the box into swap, where the analysis
-          // stops being CPU-bound and starts taking tens of minutes. Capping it
-          // costs nothing measurable: the sensor itself takes the same time.
+          // Two memory limits, because the analyzer otherwise does not fit on a
+          // small machine and the box starts swapping — at which point the
+          // analysis is no longer CPU-bound and runs for tens of minutes with
+          // the CPU idle and the disk pinned.
+          //
+          // The bridge sizes its Node heap from the memory it sees and asks for
+          // 2.2GB on an 8GB host, hence the cap. Disabling type checking is the
+          // one that matters here: it skips building a TypeScript program over
+          // 291 files, which is the allocation that does not fit. It buys no
+          // time on a healthy machine — the sensor takes 43s either way — and
+          // it does cost analysis depth, since the rules that need type
+          // information stop running. The API keeps the full analysis.
           withSonarQubeEnv('SonarQube') {
-            sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.javascript.node.maxspace=768"
+            sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectVersion=${env.BUILD_NUMBER} -Dsonar.javascript.node.maxspace=768 -Dsonar.javascript.disableTypeChecking=true"
           }
         }
       }
