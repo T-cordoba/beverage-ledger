@@ -430,8 +430,16 @@ completa en `devops/README.md`; aquí solo lo que condiciona cómo se trabaja.
 **Topología.** Una red `devops-net` con Jenkins (`:8080`), SonarQube (`:9000`) y
 los dos contenedores que el propio pipeline despliega, `beverage-ledger-api`
 (`:3001`) y `beverage-ledger-front` (`:3000`). Jenkins monta el socket de Docker,
-así que construye y arranca en el daemon del **host**, no dentro de sí mismo. El
-`docker-compose.devops.yml` y la imagen de Jenkins viven en `devops/`.
+así que construye y arranca en el daemon del **host**, no dentro de sí mismo.
+
+**Los dos servidores se levantan a mano con `docker run`**, sin compose ni imagen
+propia, y las herramientas se instalan dentro del contenedor de Jenkins con un
+`docker exec`. Es deliberado: son dos comandos que se copian del README y así el
+repo no carga con infraestructura que no es el entregable. El coste es que el paso
+de las herramientas hay que repetirlo al recrear el contenedor, porque viven en él
+y no en el volumen. Dos cosas que muerden ahí y están en `devops/README.md`: la
+imagen de Jenkins deja `$JAVA_HOME/bin` fuera del `PATH` —y el sonar-scanner lo
+necesita—, y Git Bash convierte `/var/run/docker.sock` a una ruta de Windows.
 
 **Nueve etapas por repo**: verificar herramientas · instalar dependencias ·
 análisis estático · pruebas con cobertura · SonarQube · Quality Gate · construir

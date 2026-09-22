@@ -16,30 +16,106 @@ devops-net
 Jenkins monta `/var/run/docker.sock`: construye y arranca contenedores en el
 daemon del **host**, no dentro de sí mismo.
 
+> Los comandos son para **PowerShell**. En Git Bash, `/var/run/docker.sock` se
+> convierte a una ruta de Windows y `docker run` falla con "Acceso denegado"; si
+> lo necesitas ahí, dobla la barra inicial: `//var/run/docker.sock`.
+
 ---
 
-## 1. Levantar la infraestructura
+## 1. Red y volúmenes
 
 ```powershell
 docker network create devops-net
-docker compose -f devops/docker-compose.devops.yml up -d --build
+
+docker volume create jenkins_home
+docker volume create sonarqube_data
+docker volume create sonarqube_logs
+docker volume create sonarqube_extensions
 ```
 
-Contraseña inicial de Jenkins:
+## 2. Jenkins
+
+`-u root` porque en Docker Desktop el socket montado queda `root:root` y el
+usuario `jenkins` no puede escribirlo. Es un entorno local de práctica; alinear
+GIDs no es portable entre Windows y Linux.
+
+```powershell
+docker run -d `
+  --name jenkins `
+  --network devops-net `
+  -p 8080:8080 `
+  -p 50000:50000 `
+  -u root `
+  -v jenkins_home:/var/jenkins_home `
+  -v /var/run/docker.sock:/var/run/docker.sock `
+  --restart unless-stopped `
+  jenkins/jenkins:lts
+```
+
+Contraseña inicial:
 
 ```powershell
 docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 ```
 
-SonarQube tarda un par de minutos en el primer arranque. Si se reinicia en bucle,
-la causa casi siempre es Elasticsearch pidiendo más `vm.max_map_count`:
+## 3. SonarQube
+
+```powershell
+docker run -d `
+  --name sonarqube `
+  --network devops-net `
+  -p 9000:9000 `
+  -v sonarqube_data:/opt/sonarqube/data `
+  -v sonarqube_logs:/opt/sonarqube/logs `
+  -v sonarqube_extensions:/opt/sonarqube/extensions `
+  --restart unless-stopped `
+  sonarqube:latest
+```
+
+Tarda un par de minutos en el primer arranque. Si se reinicia en bucle, la causa
+casi siempre es Elasticsearch pidiendo más `vm.max_map_count`:
 
 ```powershell
 docker logs sonarqube
 wsl -d docker-desktop sysctl -w vm.max_map_count=262144
 ```
 
-## 2. Plugins de Jenkins
+## 4. Herramientas dentro de Jenkins
+
+**Este paso no es opcional.** `jenkins/jenkins:lts` trae Java y nada más: sin
+Node no hay `pnpm install`, y sin el cliente de Docker no hay `docker build`.
+
+Se instala en el contenedor, no en el volumen, así que **hay que repetirlo cada
+vez que se recree el contenedor**. Es idempotente: volver a lanzarlo no rompe
+nada.
+
+```powershell
+docker exec -u root jenkins bash -c 'set -e && apt-get update -qq && apt-get install -y -qq --no-install-recommends ca-certificates curl gnupg && install -m 0755 -d /etc/apt/keyrings && curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc && chmod a+r /etc/apt/keyrings/docker.asc && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo $VERSION_CODENAME) stable" > /etc/apt/sources.list.d/docker.list && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && apt-get install -y -qq --no-install-recommends docker-ce-cli nodejs && corepack enable && ln -sf /opt/java/openjdk/bin/java /usr/local/bin/java'
+```
+
+Van comillas **simples** alrededor del script a propósito: PowerShell expande
+`$(...)` dentro de comillas dobles, y se comería el `$(dpkg --print-architecture)`
+antes de que bash lo vea.
+
+El `ln -sf` del final arregla un detalle que muerde: la imagen define `JAVA_HOME`
+pero **deja su `bin` fuera del `PATH`**. Jenkins llama a java por ruta absoluta y
+no se entera, pero el sonar-scanner que invoca la etapa 5 sí, y falla con
+`java: command not found`.
+
+Comprobar, en el mismo tipo de shell que usan los pasos del pipeline:
+
+```powershell
+docker exec jenkins sh -c "node -v; corepack --version; docker -v; java -version; git --version"
+```
+
+Solo se instala el **cliente** de Docker, no el daemon. El pipeline habla con el
+del host por el socket montado; que funcione se ve así:
+
+```powershell
+docker exec jenkins docker ps
+```
+
+## 5. Plugins de Jenkins
 
 *Manage Jenkins → Plugins*:
 
@@ -51,13 +127,13 @@ wsl -d docker-desktop sysctl -w vm.max_map_count=262144
 - Credentials · Credentials Binding
 - JUnit
 
-## 3. SonarQube (`http://localhost:9000`, `admin`/`admin`)
+## 6. SonarQube (`http://localhost:9000`, `admin`/`admin`)
 
 1. **Usuario técnico.** *Administration → Security → Users → Create User*, login
    `jenkins`. En *Administration → Security → Global Permissions* dale **Execute
    Analysis** (y opcionalmente *Browse* y *See Source Code*). No se usa `admin`
    en el pipeline.
-2. **Token.** Genéralo desde ese usuario y guárdalo para el paso 4.
+2. **Token.** Genéralo desde ese usuario y guárdalo para el paso 7.
 3. **Proyectos.** Créalos con **las mismas claves que usa SonarCloud**, que son
    las que ya están en el `sonar-project.properties` de cada repo:
    - `T-cordoba_beverage-ledger`
@@ -74,7 +150,7 @@ wsl -d docker-desktop sysctl -w vm.max_map_count=262144
    Sin el webhook, `waitForQualityGate` se queda esperando hasta agotar el
    timeout de 10 minutos en vez de recibir el resultado.
 
-## 4. Configurar Jenkins
+## 7. Configurar Jenkins
 
 - *Manage Jenkins → Credentials*: token de SonarQube como **Secret text**.
 - *Manage Jenkins → System → SonarQube servers*: nombre **`SonarQube`** (el
@@ -98,7 +174,7 @@ con `-e`, porque lo que va por `-e` se lee con `docker inspect`. Créalas como
 El front no necesita credenciales de ningún tipo: su suite entera corre sin red,
 con el transporte stubbeado.
 
-## 5. Crear los dos jobs
+## 8. Crear los dos jobs
 
 Uno por repo, tipo **Pipeline**:
 
@@ -143,8 +219,10 @@ build queda en rojo **en esa etapa** y no llega a desplegar.
 ## Apagar
 
 ```powershell
-docker compose -f devops/docker-compose.devops.yml down
+docker stop jenkins sonarqube
+docker rm jenkins sonarqube
 ```
 
-Con `-v` además borra los volúmenes, o sea la configuración de Jenkins y el
-histórico de SonarQube.
+Los volúmenes sobreviven, así que la configuración de Jenkins y el histórico de
+SonarQube siguen ahí al volver a crear los contenedores. Las herramientas del
+paso 4, no: viven en el contenedor y hay que reinstalarlas.
