@@ -59,9 +59,7 @@ describe('Registrar traspaso - Front', () => {
     const draft = await openDraft(movement);
 
     // Assert
-    expect(draft.type).toBe('TRANSFER');
-    expect(draft.status).toBe('DRAFT');
-
+    expect(draft).toMatchObject({ type: 'TRANSFER', status: 'DRAFT' });
     expect(mockedOpenDraft).toHaveBeenCalledWith(movement);
   });
 

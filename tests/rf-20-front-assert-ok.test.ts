@@ -12,6 +12,17 @@ describe('assertOk', () => {
     const comprobar = () => assertOk(result);
 
     expect(comprobar).toThrow(ApiError);
+    expect(comprobar).toThrow(/Movement is not confirmed/);
+
+    try {
+      comprobar();
+      expect.unreachable('assertOk debia lanzar');
+    } catch (error) {
+      expect(error).toMatchObject({
+        status: 409,
+        body: expect.objectContaining({ statusCode: 409, message: 'Movement is not confirmed' }),
+      });
+    }
   });
 
   it('Camino 2 - la respuesta es correcta sin cuerpo y no lanza nada', () => {

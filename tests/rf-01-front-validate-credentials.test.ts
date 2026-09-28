@@ -32,7 +32,7 @@ describe('handleSubmit - Front', () => {
     // Assert
     expect(response.ok).toBe(false);
     expect(response.status).toBe(401);
-    expect(body.message).toBeDefined();
+    expect(body).toMatchObject({ message: expect.any(String) });
   });
 
   it('Camino 2 - signIn tiene exito y devuelve datos de sesion', async () => {
@@ -60,8 +60,10 @@ describe('handleSubmit - Front', () => {
     expect(response.ok).toBe(true);
     expect(response.status).toBe(200);
 
-    expect(body.accessToken).toBeDefined();
-    expect(body.user).toBeDefined();
-    expect(body.expiresIn).toBeDefined();
+    expect(body).toMatchObject({
+      accessToken: expect.any(String),
+      user: expect.objectContaining({ id: expect.any(String), email: expect.any(String) }),
+      expiresIn: expect.any(Number),
+    });
   });
 });

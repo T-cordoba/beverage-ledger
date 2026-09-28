@@ -77,7 +77,7 @@ describe('Registrar salida - Front', () => {
 
     // Assert
     expect(movement.status).toBe('DRAFT');
-    expect(response.error).toBeDefined();
+    expect(response.error).toMatchObject({ message: 'Movimiento no encontrado' });
     expect(mockedApiPost).toHaveBeenCalledWith('/api/v1/movements/{id}/confirm', {
       params: { path: { id: 'id-inexistente' } },
     });
@@ -112,9 +112,14 @@ describe('Registrar salida - Front', () => {
     expect(result.current.isEmpty).toBe(false);
     expect(result.current.productCount).toBe(1);
     expect(result.current.totalBottles).toBe(1);
-    expect(items).toEqual([{ productId: product.id, quantity: 1, unit: 'BOTTLE' }]);
+    expect(items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ productId: product.id, quantity: 1, unit: 'BOTTLE' }),
+      ]),
+    );
     expect(movement.type).toBe('OUTBOUND');
     expect(movement.status).toBe('DRAFT');
     expect(confirmed.id).toBe(movement.id);
+    expect(mockedApiPost).toHaveBeenCalledTimes(1);
   });
 });

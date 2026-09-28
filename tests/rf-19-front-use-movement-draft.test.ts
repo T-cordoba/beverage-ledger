@@ -106,6 +106,15 @@ describe('useMovementDraft', () => {
       );
 
       expect(result.current.lines).toHaveLength(1);
+      expect(result.current.lines).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            BOTTLE: 2,
+            CASE: 1,
+            product: expect.objectContaining({ id: PRODUCTO.id, caseSize: 12 }),
+          }),
+        ]),
+      );
       expect(result.current.quantityOf(PRODUCTO.id)).toMatchObject({ BOTTLE: 2, CASE: 1 });
       expect(result.current.occurredAt).toBe('2026-09-01');
       expect(result.current.locationId).toBe('location-1');
