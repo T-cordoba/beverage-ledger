@@ -20,13 +20,15 @@ describe('read', () => {
   });
 
   it('Camino 1 - el almacenamiento esta denegado y devuelve el borrador vacio', () => {
-    vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+    const getItem = vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
       throw new DOMException('The operation is insecure.', 'SecurityError');
     });
 
     const borrador = read('OUTBOUND');
 
-    expect(borrador).toEqual(BORRADOR_VACIO);
+    expect(borrador).toStrictEqual(BORRADOR_VACIO);
+    expect(getItem).toHaveBeenCalledExactlyOnceWith(CLAVE);
+    expect(getItem).not.toHaveReturned();
   });
 
   it('Camino 2 - no hay nada guardado y devuelve el borrador vacio', () => {
@@ -50,6 +52,6 @@ describe('read', () => {
 
     const borrador = read('OUTBOUND');
 
-    expect(borrador).toEqual({ ...BORRADOR_VACIO, reason: 'merma' });
+    expect(borrador).toStrictEqual({ ...BORRADOR_VACIO, reason: 'merma' });
   });
 });

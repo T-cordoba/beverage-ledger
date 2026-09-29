@@ -26,12 +26,13 @@ describe('useDebouncedValue', () => {
 
     rerender({ value: TECLEADO });
     avanzar(300);
-
-    expect(result.current).toBe(INICIAL);
-
+    const antesDelRetardo = result.current;
     avanzar(200);
+    const alCumplirse = result.current;
 
-    expect(result.current).toBe(TECLEADO);
+    expect(antesDelRetardo).toBe(INICIAL);
+    expect(alCumplirse).toBe(TECLEADO);
+    expect(vi.getTimerCount()).toBe(0);
   });
 
   it('Camino 2 - el retardo se omite y el valor se entrega a los 300 ms por defecto', () => {
@@ -41,11 +42,12 @@ describe('useDebouncedValue', () => {
 
     rerender({ value: TECLEADO });
     avanzar(299);
-
-    expect(result.current).toBe(INICIAL);
-
+    const antesDelRetardo = result.current;
     avanzar(1);
+    const alCumplirse = result.current;
 
-    expect(result.current).toBe(TECLEADO);
+    expect(antesDelRetardo).toBe(INICIAL);
+    expect(alCumplirse).toBe(TECLEADO);
+    expect(vi.getTimerCount()).toBe(0);
   });
 });

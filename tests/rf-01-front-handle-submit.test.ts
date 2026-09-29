@@ -1,37 +1,63 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { API_ORIGIN } from '@/config/api';
+import { sessionStub } from './support/api-result';
+import { answer, stubbedTransport } from './support/stubbed-transport';
+
+const { fetchMock, api, unwrap, storeSession } = await stubbedTransport();
 
 describe('handleSubmit - Front', () => {
-  it('Camino 1 - signIn lanza excepcion y se muestra el error', async () => {
-    const response = await fetch(`${API_ORIGIN}/api/v1/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'no-existe@ejemplo.com', password: 'contraseña-incorrecta' }),
-    });
-
-    expect(response.ok).toBe(false);
-    expect(response.status).toBe(401);
-
-    const body = await response.json();
-    expect(body.message).toBeDefined();
+  beforeEach(() => {
+    fetchMock.mockReset();
   });
 
-  // it('Camino 2 - signIn tiene exito y devuelve datos de sesion', async () => {
-  //   const response = await fetch(`${API_ORIGIN}/api/v1/auth/login`, {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({
-  //       email: process.env.TEST_USER_EMAIL,
-  //       password: process.env.TEST_USER_PASSWORD,
-  //     }),
-  //   });
+  it('Camino 1 - signIn lanza excepcion y se muestra el error', async () => {
+    // Arrange
+    fetchMock.mockImplementation(answer(401, { message: 'Invalid credentials' }));
 
-  //   expect(response.ok).toBe(true);
-  //   expect(response.status).toBe(200);
+    // Act
+    const result = await api.POST('/api/v1/auth/login', {
+      body: { email: 'no-existe@ejemplo.com', password: 'contraseña-incorrecta' },
+    });
 
-  //   const body = await response.json();
-  //   expect(body.accessToken).toBeDefined();
-  //   expect(body.user).toBeDefined();
-  //   expect(body.expiresIn).toBeDefined();
-  // });
+    // Assert
+    expect(result.response.ok).toBe(false);
+    expect(result.response.status).toBe(401);
+    expect(() => unwrap(result)).toThrow();
+  });
+
+  it('Camino 2 - signIn tiene exito y devuelve datos de sesion', async () => {
+    // Arrange
+    const session = sessionStub();
+    fetchMock.mockImplementation(answer(200, session));
+
+    // Act
+    const result = unwrap(
+      await api.POST('/api/v1/auth/login', {
+        body: { email: session.user.email, password: 'password-de-prueba' },
+      }),
+    );
+
+    // Assert
+    expect(result.accessToken).toBeDefined();
+    expect(result.user).toBeDefined();
+    expect(result.expiresIn).toBeDefined();
+  });
+
+  it('Camino 3 - el login no viaja con token, aunque haya sesion abierta', async () => {
+    // Arrange
+    // /auth/login is in SESSION_ROUTES: asking for a token there would recurse,
+    // since renewing one is itself a call to the auth routes.
+    storeSession(sessionStub({ accessToken: 'token-anterior' }));
+    fetchMock.mockImplementation(answer(200, sessionStub()));
+
+    // Act
+    await api.POST('/api/v1/auth/login', {
+      body: { email: 'admin@beverageledger.local', password: 'password-de-prueba' },
+    });
+
+    // Assert
+    const request = fetchMock.mock.calls[0][0] as Request;
+    expect(request.headers.get('Authorization')).toBeNull();
+    expect(request.url).toBe(`${API_ORIGIN}/api/v1/auth/login`);
+  });
 });

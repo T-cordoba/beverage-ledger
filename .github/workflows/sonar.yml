@@ -29,10 +29,6 @@ jobs:
 
       - name: Run tests with coverage
         run: pnpm test:coverage
-        env:
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
-          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
 
       - name: SonarCloud scan
         uses: SonarSource/sonarqube-scan-action@v8

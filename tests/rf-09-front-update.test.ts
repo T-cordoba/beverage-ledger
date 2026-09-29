@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { api, unwrap } from '@/lib/api';
+import { apiResult } from './support/api-result';
 
 vi.mock('@/lib/api', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/lib/api')>();
@@ -17,6 +18,10 @@ const mockedApiGet = vi.mocked(api.GET);
 const mockedApiPatch = vi.mocked(api.PATCH);
 const mockedApiPost = vi.mocked(api.POST);
 
+type GetResult = Awaited<ReturnType<typeof api.GET>>;
+type PatchResult = Awaited<ReturnType<typeof api.PATCH>>;
+type PostResult = Awaited<ReturnType<typeof api.POST>>;
+
 const product = {
   id: 'product-1',
   name: 'Producto de prueba',
@@ -30,16 +35,13 @@ describe('submit (ProductFormDialog) - Front', () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
-
   });
 
   it('Camino 1 - producto existente actualizado exitosamente', async () => {
     // Arrange
-    mockedApiPatch.mockResolvedValue({
-      data: { id: product.id, origin: 'Escocia Test' },
-      error: undefined,
-      response: { ok: true, status: 200 },
-    } as any);
+    mockedApiPatch.mockResolvedValue(
+      apiResult<PatchResult>({ status: 200, data: { id: product.id, origin: 'Escocia Test' } }),
+    );
 
     // Act
     const resultado = unwrap(
@@ -55,10 +57,9 @@ describe('submit (ProductFormDialog) - Front', () => {
 
   it('Camino 2 - actualizacion falla con producto inexistente', async () => {
     // Arrange
-    mockedApiPatch.mockResolvedValue({
-      error: { message: 'Product not found' },
-      response: { ok: false, status: 404 },
-    } as any);
+    mockedApiPatch.mockResolvedValue(
+      apiResult<PatchResult>({ status: 404, error: { message: 'Product not found' } }),
+    );
 
     // Act
     const response = await api.PATCH('/api/v1/products/{id}', {
@@ -73,30 +74,26 @@ describe('submit (ProductFormDialog) - Front', () => {
 
   it('Camino 3 - creacion exitosa de un producto nuevo', async () => {
     // Arrange
-    mockedApiGet.mockResolvedValue({
-      data: { data: [{ id: 'category-1', name: 'Bebidas' }] },
-      error: undefined,
-      response: { ok: true, status: 200 },
-    } as any);
+    mockedApiGet.mockResolvedValue(
+      apiResult<GetResult>({
+        status: 200,
+        data: { data: [{ id: 'category-1', name: 'Bebidas' }] },
+      }),
+    );
 
     const nombreNuevo = `Vitest-RF09-Front-${Date.now()}`;
-    mockedApiPost.mockResolvedValue({
-      data: { id: 'product-2', name: nombreNuevo },
-      error: undefined,
-      response: { ok: true, status: 201 },
-    } as any);
+    mockedApiPost.mockResolvedValue(
+      apiResult<PostResult>({ status: 201, data: { id: 'product-2', name: nombreNuevo } }),
+    );
 
-    mockedApiPatch.mockResolvedValue({
-      data: { id: 'product-2', isActive: false },
-      error: undefined,
-      response: { ok: true, status: 200 },
-    } as any);
+    mockedApiPatch.mockResolvedValue(
+      apiResult<PatchResult>({ status: 200, data: { id: 'product-2', isActive: false } }),
+    );
 
     // Act
     const categories = unwrap(
       await api.GET('/api/v1/categories', {
         params: { query: { pageSize: 1 } },
-
       }),
     );
 
@@ -127,15 +124,14 @@ describe('submit (ProductFormDialog) - Front', () => {
 
   it('Camino 4 - creacion falla por datos invalidos', async () => {
     // Arrange
-    mockedApiPost.mockResolvedValue({
-      error: { message: 'Validation failed' },
-
-      response: { ok: false, status: 400 },
-    } as any);
+    mockedApiPost.mockResolvedValue(
+      apiResult<PostResult>({ status: 400, error: { message: 'Validation failed' } }),
+    );
 
     // Act
     const response = await api.POST('/api/v1/products', {
-      body: { name: '', categoryId: '', caseSize: 0 } as any,
+      // Shape-valid, value-invalid: that is what the API is expected to reject.
+      body: { name: '', categoryId: '', caseSize: 0 },
     });
 
     // Assert
