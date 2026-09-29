@@ -66,6 +66,10 @@ pipeline {
 
     stage('Tests and coverage') {
       steps {
+        // The API pipeline stops SonarQube once its gate answers, so this one
+        // cannot assume it is up. Starting it here lets it boot while the
+        // suite runs.
+        sh 'docker start sonarqube || true'
         sh 'pnpm test:coverage --reporter=default --reporter=junit --outputFile.junit=reports/junit.xml'
       }
       post {
@@ -79,6 +83,16 @@ pipeline {
 
     stage('SonarQube analysis') {
       steps {
+        sh '''
+          for attempt in $(seq 1 60); do
+            if curl -fsS http://sonarqube:9000/api/system/status | grep -q '"status":"UP"'; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "SonarQube never came up"
+          exit 1
+        '''
         script {
           def scannerHome = tool 'SonarScanner'
           // Host and token come from the server configured in Jenkins; every
@@ -117,6 +131,8 @@ pipeline {
 
     stage('Docker build') {
       steps {
+        // The gate has answered; the build is the other memory peak.
+        sh 'docker stop sonarqube || true'
         sh '''
           set -e
           docker build \
