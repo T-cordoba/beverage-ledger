@@ -449,9 +449,24 @@ SonarQube y Jenkins, y lo que sigue no es lentitud sino swap, con la CPU parada 
 disco al 100 %. El precio es real: las reglas que necesitan tipos dejan de correr.
 La API conserva el análisis completo, que ahí sí cabe.
 
-**Nueve etapas por repo**: verificar herramientas · instalar dependencias ·
+**Nueve etapas comunes**: verificar herramientas · instalar dependencias ·
 análisis estático · pruebas con cobertura · SonarQube · Quality Gate · construir
-imagen · desplegar · comprobar salud.
+imagen · desplegar · comprobar salud. Después, cada repo despliega a producción:
+el front con `Deploy to Vercel` y la API con `Migrate production database` +
+`Deploy to Render`. El contenedor local hace de smoke test antes de tocar
+producción.
+
+**Vercel no ejecuta contenedores**, así que en el front Docker es el entorno de
+build, no lo que se sirve: la etapa `vercel` del `Dockerfile` trae el CLI y el
+código, y al correrla hace `vercel pull` (las variables de producción salen de
+Vercel, no de los build-args), `vercel build` y `vercel deploy --prebuilt --prod`.
+El código entra por `COPY` y no por bind mount porque el daemon es el del host y
+el workspace vive en el volumen `jenkins_home`. **Render sí construye el
+`Dockerfile` de la API**, con el runtime Docker. Jenkins pide por su API el
+`commitId` que probó, en vez de disparar un hook que desplegaría la punta de la
+rama. Los dos servicios tienen el auto-deploy apagado: si no, un push desplegaría
+sin pasar el quality gate. Pasos de dashboard y credenciales en
+`devops/README.md`.
 
 **`output: 'standalone'` está detrás de `BUILD_STANDALONE`.** El trazado del
 bundle sigue los symlinks del almacén de pnpm, y Windows los rechaza sin modo

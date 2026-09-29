@@ -135,7 +135,26 @@ No se usa `admin` en el pipeline.
 | URL | `http://jenkins:8080/sonarqube-webhook/` |
 | Secret | vacío |
 
-## 15. Credenciales en Jenkins
+## 15. Preparar Render y Vercel
+
+El pipeline despliega a producción después del health check local. Para eso, los dos servicios tienen que dejar de desplegar por su cuenta.
+
+**Render**, servicio `beverage-ledger-api`, en *Settings*:
+
+- *Build & Deploy* → **Language: Docker**, Dockerfile Path `./Dockerfile`, Docker Build Context Directory `.`. Borra Build Command y Start Command.
+- **Auto-Deploy: Off**.
+- **Branch**: la misma que construye el job de Jenkins (paso 19). Si no, el commit que Jenkins pide no existe en ella.
+- *Environment*: `NODE_VERSION` y `COREPACK_ENABLE_DOWNLOAD_PROMPT` sobran (opcional quitarlas).
+- *Account Settings → API Keys* → **Create API Key**. El **Service ID** (`srv-…`) está en la URL del servicio.
+
+**Vercel**, proyecto `beverage-ledger`:
+
+- *Settings → Git* → **Disconnect**, para que un push no despliegue sin pasar el quality gate.
+- *Settings → Environment Variables*: en Production, `NEXT_PUBLIC_API_URL=https://beverage-ledger-api.onrender.com`. El build la lee de ahí.
+- *Account Settings → Tokens* → **Create Token**.
+- *Settings → General* → **Project ID**. *Team Settings → General* → **Team ID** (en una cuenta personal, *Account Settings → General* → **Vercel ID**).
+
+## 16. Credenciales en Jenkins
 
 *Manage Jenkins → Credentials → System → Global credentials → Add Credentials*. Todas **Secret text**.
 
@@ -145,8 +164,14 @@ No se usa `admin` en el pipeline.
 | `bl-api-database-url` | `DATABASE_URL` del `.env` |
 | `bl-api-direct-url` | `DIRECT_URL` del `.env` |
 | `bl-api-jwt-secret` | `JWT_SECRET` del `.env` |
+| `bl-api-prod-direct-url` | `DIRECT_URL` de producción (la que tiene Render) |
+| `render-api-key` | la API key de Render |
+| `render-service-id` | el `srv-…` del servicio |
+| `vercel-token` | el token de Vercel |
+| `vercel-org-id` | Team ID / Vercel ID |
+| `vercel-project-id` | Project ID |
 
-## 16. Servidor SonarQube en Jenkins
+## 17. Servidor SonarQube en Jenkins
 
 *Manage Jenkins → System → SonarQube servers → Add SonarQube*
 
@@ -156,7 +181,7 @@ No se usa `admin` en el pipeline.
 | Server URL | `http://sonarqube:9000` |
 | Server authentication token | `sonarqube-token` |
 
-## 17. Herramienta SonarScanner
+## 18. Herramienta SonarScanner
 
 *Manage Jenkins → Tools → SonarQube Scanner installations → Add SonarQube Scanner*
 
@@ -165,7 +190,7 @@ No se usa `admin` en el pipeline.
 | Name | `SonarScanner` |
 | Install automatically | ✅ |
 
-## 18. Crear los dos jobs
+## 19. Crear los dos jobs
 
 *New Item* → **Pipeline**. Uno por repo.
 
@@ -178,7 +203,7 @@ En la sección *Pipeline*: Definition = **Pipeline script from SCM**, SCM = **Gi
 
 En *Additional Behaviours*, deja **desmarcado** el clon superficial.
 
-## 19. Lanzar
+## 20. Lanzar
 
 **Build Now** en `beverage-ledger-api`, y cuando esté verde, en `beverage-ledger-front`.
 
@@ -188,23 +213,28 @@ curl.exe -s http://localhost:3001/api/v1/health
 curl.exe -s http://localhost:3000/api/health
 ```
 
-App en `http://localhost:3000`.
+App en `http://localhost:3000`. En producción, `https://beverage-ledger.vercel.app`.
 
 ---
 
 ## Etapas del pipeline
 
-| # | Etapa |
-|---|---|
-| 1 | Verify tools |
-| 2 | Install dependencies |
-| 3 | Static analysis |
-| 4 | Tests and coverage |
-| 5 | SonarQube analysis |
-| 6 | Quality gate |
-| 7 | Docker build |
-| 8 | Deploy |
-| 9 | Health check |
+| # | API | Front |
+|---|---|---|
+| 1 | Verify tools | Verify tools |
+| 2 | Install dependencies | Install dependencies |
+| 3 | Static analysis | Static analysis |
+| 4 | Tests and coverage | Tests and coverage |
+| 5 | SonarQube analysis | SonarQube analysis |
+| 6 | Quality gate | Quality gate |
+| 7 | Docker build | Docker build |
+| 8 | Deploy | Deploy |
+| 9 | Health check | Health check |
+| 10 | Migrate production database | Deploy to Vercel |
+| 11 | Deploy to Render | |
+
+- **Render** construye el `Dockerfile` de la API. Jenkins pide por la API de Render el deploy del commit que probó y espera a que quede `live`.
+- **Vercel** no ejecuta contenedores. Jenkins construye la etapa `vercel` del `Dockerfile` del front, y dentro de ese contenedor el CLI hace `pull`, `build` y `deploy --prebuilt`.
 
 ## Notas
 
@@ -212,6 +242,7 @@ App en `http://localhost:3000`.
 - Los nombres `SonarQube` y `SonarScanner`, las claves de proyecto y los IDs de credenciales los busca el `Jenkinsfile` por nombre exacto.
 - En Git Bash, `/var/run/docker.sock` se convierte a ruta de Windows y falla. Usa `//var/run/docker.sock`.
 - Sin los webhooks del paso 14, la etapa 6 espera hasta agotar su timeout de 10 minutos.
+- La migración de producción conecta al 5432 de Supabase desde Jenkins. Si la red lo bloquea, la etapa 10 de la API falla.
 - SonarQube reiniciándose en bucle: `wsl -d docker-desktop sysctl -w vm.max_map_count=262144`.
 
 ## Apagar
