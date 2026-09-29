@@ -1,4 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { expect } from 'chai';
+import { afterEach, beforeEach, describe, it, vi } from 'vitest';
 import { downloadMovementPdf } from '@/features/movements/api';
 
 vi.mock('@/features/movements/api', () => ({
@@ -38,8 +39,12 @@ describe('RF-21 - Descarga del comprobante en PDF - Front', () => {
     await downloadMovementPdf(movementId, movementCode);
 
     // Assert
-    expect(mockedDownloadPdf).toHaveBeenCalledWith(movementId, movementCode);
-    expect(mockedDownloadPdf).toHaveReturned();
+    expect(mockedDownloadPdf.mock.calls, 'download calls').to.deep.include([
+      movementId,
+      movementCode,
+    ]);
+    expect(mockedDownloadPdf.mock.results, 'download results').to.have.lengthOf(1);
+    expect(mockedDownloadPdf.mock.results[0], 'download result').to.have.property('type', 'return');
   });
 
   it('Camino 2 - ocurre un error durante la descarga y se propaga la excepción', async () => {
@@ -48,7 +53,13 @@ describe('RF-21 - Descarga del comprobante en PDF - Front', () => {
     mockedDownloadPdf.mockRejectedValue(new Error(errorMsg));
 
     // Act & Assert
-    await expect(downloadMovementPdf(movementId, movementCode)).rejects.toThrow(errorMsg);
-    expect(mockedDownloadPdf).toHaveBeenCalledWith(movementId, movementCode);
+    const error = await downloadMovementPdf(movementId, movementCode).catch((e) => e);
+    expect(error, 'download error')
+      .to.be.instanceOf(Error)
+      .and.to.have.property('message', errorMsg);
+    expect(mockedDownloadPdf.mock.calls, 'download calls').to.deep.include([
+      movementId,
+      movementCode,
+    ]);
   });
 });

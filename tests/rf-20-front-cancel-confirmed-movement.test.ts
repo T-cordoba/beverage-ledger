@@ -1,4 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { expect } from 'chai';
+import { afterEach, beforeEach, describe, it, vi } from 'vitest';
 import { openDraft } from '@/features/movements/open-draft';
 import { api, unwrap } from '@/lib/api';
 import { apiResult, movementStub } from './support/api-result';
@@ -50,11 +51,14 @@ describe('Anular un movimiento confirmado - Front', () => {
     });
 
     // Assert
-    expect(response.error).toBeDefined();
-    expect(mockedApiPost).toHaveBeenCalledWith('/api/v1/movements/{id}/cancel', {
-      params: { path: { id: 'id-inexistente' } },
-      body: { reason: 'Error en el registro' },
-    });
+    expect(response.error, 'cancel error').to.not.equal(undefined);
+    expect(mockedApiPost.mock.calls, 'cancel calls').to.deep.include([
+      '/api/v1/movements/{id}/cancel',
+      {
+        params: { path: { id: 'id-inexistente' } },
+        body: { reason: 'Error en el registro' },
+      },
+    ]);
   });
 
   it('Camino 2 - la cancelación es exitosa y el movimiento queda cancelado', async () => {
@@ -102,7 +106,7 @@ describe('Anular un movimiento confirmado - Front', () => {
     );
 
     // Assert
-    expect(confirmado.status).toBe('CONFIRMED');
-    expect(cancelado.status).toBe('CANCELLED');
+    expect(confirmado.status, 'confirmed movement status').to.equal('CONFIRMED');
+    expect(cancelado.status, 'cancelled movement status').to.equal('CANCELLED');
   });
 });

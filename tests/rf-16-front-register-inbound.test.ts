@@ -1,4 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { expect } from 'chai';
+import { afterEach, beforeEach, describe, it, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useMovementDraft } from '@/features/movements/useMovementDraft';
 import { openDraft } from '@/features/movements/open-draft';
@@ -76,11 +77,12 @@ describe('Registrar entrada - Front', () => {
     });
 
     // Assert
-    expect(movement.status).toBe('DRAFT');
-    expect(response.error).toMatchObject({ message: 'Movimiento no encontrado' });
-    expect(mockedApiPost).toHaveBeenCalledWith('/api/v1/movements/{id}/confirm', {
-      params: { path: { id: 'id-inexistente' } },
-    });
+    expect(movement.status, 'movement status').to.equal('DRAFT');
+    expect(response.error, 'confirm error').to.include({ message: 'Movimiento no encontrado' });
+    expect(mockedApiPost.mock.calls, 'confirm calls').to.deep.include([
+      '/api/v1/movements/{id}/confirm',
+      { params: { path: { id: 'id-inexistente' } } },
+    ]);
   });
 
   it('Camino 2 - la entrada se registra correctamente', async () => {
@@ -109,17 +111,17 @@ describe('Registrar entrada - Front', () => {
     );
 
     // Assert
-    expect(result.current.isEmpty).toBe(false);
-    expect(result.current.productCount).toBe(1);
-    expect(result.current.totalBottles).toBe(1);
-    expect(items).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ productId: product.id, quantity: 1, unit: 'BOTTLE' }),
-      ]),
-    );
-    expect(movement.type).toBe('INBOUND');
-    expect(movement.status).toBe('DRAFT');
-    expect(confirmed.id).toBe(movement.id);
-    expect(mockedApiPost).toHaveBeenCalledTimes(1);
+    expect(result.current.isEmpty, 'draft is empty').to.equal(false);
+    expect(result.current.productCount, 'product count').to.equal(1);
+    expect(result.current.totalBottles, 'total bottles').to.equal(1);
+    expect(items[0], 'inbound item').to.include({
+      productId: product.id,
+      quantity: 1,
+      unit: 'BOTTLE',
+    });
+    expect(movement.type, 'movement type').to.equal('INBOUND');
+    expect(movement.status, 'movement status').to.equal('DRAFT');
+    expect(confirmed.id, 'confirmed movement id').to.equal(movement.id);
+    expect(mockedApiPost.mock.calls, 'confirm calls').to.have.lengthOf(1);
   });
 });

@@ -1,4 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { expect } from 'chai';
+import { afterEach, beforeEach, describe, it, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useMovementDraft } from '@/features/movements/useMovementDraft';
 import { openDraft } from '@/features/movements/open-draft';
@@ -37,8 +38,10 @@ describe('Registrar traspaso - Front', () => {
       result.current.setDestinationLocationId(destinationLocationId);
     });
 
-    expect(result.current.locationId).toBe(locationId);
-    expect(result.current.destinationLocationId).toBe(destinationLocationId);
+    expect(result.current.locationId, 'origin location').to.equal(locationId);
+    expect(result.current.destinationLocationId, 'destination location').to.equal(
+      destinationLocationId,
+    );
 
     const movement = {
       type: 'TRANSFER' as const,
@@ -59,8 +62,8 @@ describe('Registrar traspaso - Front', () => {
     const draft = await openDraft(movement);
 
     // Assert
-    expect(draft).toMatchObject({ type: 'TRANSFER', status: 'DRAFT' });
-    expect(mockedOpenDraft).toHaveBeenCalledWith(movement);
+    expect(draft, 'transfer draft').to.include({ type: 'TRANSFER', status: 'DRAFT' });
+    expect(mockedOpenDraft.mock.calls, 'open draft calls').to.deep.include([movement]);
   });
 
   it('Camino 2 - se limpia destinationLocationId cuando coincide con locationId', () => {
@@ -74,7 +77,7 @@ describe('Registrar traspaso - Front', () => {
     });
 
     // Assert
-    expect(result.current.locationId).toBe(destinationLocationId);
-    expect(result.current.destinationLocationId).toBe('');
+    expect(result.current.locationId, 'origin location').to.equal(destinationLocationId);
+    expect(result.current.destinationLocationId, 'destination location').to.equal('');
   });
 });

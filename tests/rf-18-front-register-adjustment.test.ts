@@ -1,4 +1,5 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { expect } from 'chai';
+import { beforeEach, describe, it } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useMovementDraft } from '@/features/movements/useMovementDraft';
 
@@ -31,13 +32,13 @@ describe('Registrar ajuste - Front', () => {
     });
 
     // Assert
-    expect(result.current.isEmpty).toBe(false);
-    expect(result.current.productCount).toBe(1);
-    expect(result.current.totalBottles).toBe(1);
+    expect(result.current.isEmpty, 'draft is empty').to.equal(false);
+    expect(result.current.productCount, 'product count').to.equal(1);
+    expect(result.current.totalBottles, 'total bottles').to.equal(1);
 
     const items = result.current.toItems();
 
-    expect(items).toEqual([
+    expect(items, 'adjustment items').to.deep.equal([
       {
         productId: product.id,
         quantity: 1,
@@ -63,8 +64,8 @@ describe('Registrar ajuste - Front', () => {
     };
 
     // Assert
-    expect(next.BOTTLE).toBe(2);
-    expect(next.CASE).toBe(0);
+    expect(next.BOTTLE, 'bottle quantity').to.equal(2);
+    expect(next.CASE, 'case quantity').to.equal(0);
   });
 
   it('Camino 3 - cuando BOTTLE y CASE quedan en cero se elimina la línea', () => {
@@ -85,8 +86,8 @@ describe('Registrar ajuste - Front', () => {
     const lineExists = next.BOTTLE !== 0 || next.CASE !== 0;
 
     // Assert
-    expect(next.BOTTLE).toBe(0);
-    expect(next.CASE).toBe(0);
-    expect(lineExists).toBe(false);
+    expect(next.BOTTLE, 'bottle quantity').to.equal(0);
+    expect(next.CASE, 'case quantity').to.equal(0);
+    expect(lineExists, 'line exists').to.equal(false);
   });
 });
