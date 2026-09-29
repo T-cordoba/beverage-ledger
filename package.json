@@ -12,6 +12,7 @@
     "start": "next start",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "test:regression": "vitest run tests/regression",
     "api:types": "node scripts/generate-api-types.mjs && prettier --write src/lib/api/schema.d.ts",
     "i18n:check": "node scripts/check-messages.mjs",
     "lint": "eslint .",
