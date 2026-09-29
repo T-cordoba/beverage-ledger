@@ -59,6 +59,15 @@ const eslintConfig = [
     },
   },
 
+  // Chai's property assertions (`.to.be.undefined`, `.to.be.empty`) are
+  // getters that throw, which this rule cannot tell from a dead expression.
+  {
+    files: ['tests/**'],
+    rules: {
+      '@typescript-eslint/no-unused-expressions': 'off',
+    },
+  },
+
   // Last: turns off stylistic rules that collide with the formatter.
   ...compat.extends('prettier'),
 ];

@@ -51,7 +51,7 @@ describe('Anular un movimiento confirmado - Front', () => {
     });
 
     // Assert
-    expect(response.error, 'cancel error').to.not.equal(undefined);
+    expect(response.error, 'cancel error').to.not.be.undefined;
     expect(mockedApiPost.mock.calls, 'cancel calls').to.deep.include([
       '/api/v1/movements/{id}/cancel',
       {
