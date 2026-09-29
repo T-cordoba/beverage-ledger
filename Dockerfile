@@ -34,6 +34,19 @@ ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL} \
     BUILD_STANDALONE=true
 RUN pnpm build
 
+# Vercel does not run containers, so this stage does not produce what gets
+# served: it is the environment the Vercel CLI builds and uploads from. `vercel
+# pull` fetches the project's production variables, so the NEXT_PUBLIC_* values
+# come from Vercel and not from the build args above. Only built with
+# `--target vercel`; it sits before `runner` so a plain build still ends there.
+FROM base AS vercel
+# A global CLI in the image, not a repository dependency, hence npm. No install
+# scripts, the same stance pnpm-workspace.yaml takes for the project.
+RUN npm install -g --ignore-scripts vercel@60.1.3 && chown node:node /app
+COPY --chown=node:node . .
+USER node
+CMD ["sh", "-c", "vercel pull --yes --environment=production --token=\"$VERCEL_TOKEN\" && vercel build --prod --token=\"$VERCEL_TOKEN\" && vercel deploy --prebuilt --prod --token=\"$VERCEL_TOKEN\""]
+
 FROM base AS runner
 ENV NODE_ENV=production \
     PORT=3000 \

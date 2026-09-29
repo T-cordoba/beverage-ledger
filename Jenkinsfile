@@ -22,6 +22,9 @@ pipeline {
 
     COREPACK_ENABLE_DOWNLOAD_PROMPT = '0'
     NEXT_TELEMETRY_DISABLED         = '1'
+
+    VERCEL_IMAGE = 'beverage-ledger-front-vercel'
+    VERCEL_URL   = 'https://beverage-ledger.vercel.app'
   }
 
   stages {
@@ -161,15 +164,60 @@ pipeline {
         '''
       }
     }
+
+    stage('Deploy to Vercel') {
+      steps {
+        // Vercel serves functions and static files, not images, so the
+        // container here is the build environment: the CLI inside it builds
+        // and uploads a prebuilt output. The source goes in through COPY
+        // rather than a bind mount because the Docker daemon is the host's,
+        // and the workspace lives in the jenkins_home volume, not on a host path.
+        withCredentials([
+          string(credentialsId: 'vercel-token', variable: 'DEPLOY_VERCEL_TOKEN'),
+          string(credentialsId: 'vercel-org-id', variable: 'DEPLOY_VERCEL_ORG_ID'),
+          string(credentialsId: 'vercel-project-id', variable: 'DEPLOY_VERCEL_PROJECT_ID'),
+        ]) {
+          sh '''
+            set -e
+            docker build --target vercel -t "${VERCEL_IMAGE}:${BUILD_NUMBER}" .
+
+            umask 077
+            cat > .vercel.env <<ENVFILE
+VERCEL_TOKEN=${DEPLOY_VERCEL_TOKEN}
+VERCEL_ORG_ID=${DEPLOY_VERCEL_ORG_ID}
+VERCEL_PROJECT_ID=${DEPLOY_VERCEL_PROJECT_ID}
+ENVFILE
+
+            docker run --rm --env-file .vercel.env "${VERCEL_IMAGE}:${BUILD_NUMBER}"
+          '''
+        }
+        sh '''
+          set -e
+          for attempt in $(seq 1 20); do
+            if curl -fsS "${VERCEL_URL}/api/health"; then
+              echo ""
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "${VERCEL_URL} never answered /api/health"
+          exit 1
+        '''
+      }
+    }
   }
 
   post {
     failure {
       sh 'docker logs --tail 100 "${CONTAINER}" 2>/dev/null || true'
     }
+    always {
+      sh 'rm -f .vercel.env || true'
+    }
     cleanup {
       // Keeps the last two tags reachable and drops what the rebuilds orphaned.
       sh 'docker image prune -f --filter "dangling=true" || true'
+      sh 'docker rmi "${VERCEL_IMAGE}:${BUILD_NUMBER}" 2>/dev/null || true'
     }
   }
 }
