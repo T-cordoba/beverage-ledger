@@ -71,11 +71,15 @@ export const answer = (status: number, body?: unknown) => async () =>
 export const rawAnswer = (status: number, text: string, contentType: string) => async () =>
   new Response(text, { status, headers: { 'Content-Type': contentType } });
 
-/** A canned binary answer, for the PDF route. */
+/**
+ * A canned binary answer, for the PDF route. The bytes go in raw rather than
+ * as a Blob: under jsdom the global Blob is jsdom's, and some Node versions'
+ * Response calls `.stream()` on it and throws.
+ */
 export const blobAnswer =
   (bytes: string, contentType = 'application/pdf') =>
   async () =>
-    new Response(new Blob([bytes], { type: contentType }), {
+    new Response(new TextEncoder().encode(bytes), {
       status: 200,
       headers: { 'Content-Type': contentType },
     });
