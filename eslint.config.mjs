@@ -62,7 +62,7 @@ const eslintConfig = [
   // Chai's property assertions (`.to.be.undefined`, `.to.be.empty`) are
   // getters that throw, which this rule cannot tell from a dead expression.
   {
-    files: ['tests/**'],
+    files: ['tests/**', 'regression-testing/**'],
     rules: {
       '@typescript-eslint/no-unused-expressions': 'off',
     },

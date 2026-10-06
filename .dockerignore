@@ -21,6 +21,7 @@ package-lock.json
 
 docs
 tests
+regression-testing
 *.tsbuildinfo
 next-env.d.ts
 Dockerfile
