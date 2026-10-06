@@ -62,7 +62,7 @@ describe('useLowStock', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.data).toEqual(BAJO_MINIMO);
-    expect(cliente.GET).toHaveBeenCalledWith('/api/v1/stock/low', {
+    expect(cliente.GET).toHaveBeenCalledExactlyOnceWith('/api/v1/stock/low', {
       params: { query: { limit: 8 } },
     });
   });

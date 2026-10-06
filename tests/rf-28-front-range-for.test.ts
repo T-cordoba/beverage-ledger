@@ -21,7 +21,7 @@ describe('rangeFor', () => {
   ])('Camino - el periodo es $period y el rango es $description', ({ period, from }) => {
     const range = rangeFor(period);
 
-    expect(range).toEqual({ from, to: HASTA });
+    expect(range).toStrictEqual({ from, to: HASTA });
   });
 
   it('Camino 4 - el periodo no es ninguno de los tres y el rango queda en cero', () => {
@@ -29,6 +29,6 @@ describe('rangeFor', () => {
 
     const range = rangeFor(period);
 
-    expect(range).toEqual({ from: HASTA, to: HASTA });
+    expect(range).toStrictEqual({ from: HASTA, to: HASTA });
   });
 });
