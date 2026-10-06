@@ -87,15 +87,18 @@ describe('RF-21 Security - Descarga del comprobante en PDF', () => {
 
   it('el blob conserva el Content-Type application/pdf y la URL temporal se revoca tras la descarga', async () => {
     // Arrange
+    const pdfBytes = '%PDF-1.7 comprobante';
     storeSession(session());
-    fetchMock.mockImplementationOnce(blobAnswer('%PDF-1.7 comprobante'));
+    fetchMock.mockImplementationOnce(blobAnswer(pdfBytes));
 
     // Act
     await downloadMovementPdf(MOVEMENT_ID, CODE);
 
     // Assert
+    // Content, not class: Response.blob() returns Node's Blob, while the global
+    // Blob under jsdom is jsdom's, so toBeInstanceOf(Blob) depends on the runtime.
     const [[blob]] = vi.mocked(URL.createObjectURL).mock.calls as [[Blob]];
-    expect(blob).toBeInstanceOf(Blob);
+    expect(await blob.text()).toBe(pdfBytes);
     expect(blob.type).toBe('application/pdf');
     expect(URL.revokeObjectURL).toHaveBeenCalledWith(OBJECT_URL);
   });
