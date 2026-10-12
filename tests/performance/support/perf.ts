@@ -1,7 +1,16 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createElement, type ReactNode } from 'react';
 import { vi } from 'vitest';
-import type { Movement, MovementItem, MovementLineInput, Product, Session } from '@/lib/api';
+import type {
+  ConsumptionRow,
+  KardexEntry,
+  Movement,
+  MovementItem,
+  MovementLineInput,
+  Product,
+  Session,
+  StockLevel,
+} from '@/lib/api';
 
 /**
  * Performance harness: the real client, the real hooks, a fake network.
@@ -22,8 +31,21 @@ export async function loadUnderTest() {
   const lib = await import('@/lib/api');
   const movements = await import('@/features/movements/api');
   const draft = await import('@/features/movements/useMovementDraft');
+  const stock = await import('@/features/stock/api');
+  const lowStock = await import('@/features/stock/low-stock');
+  const reports = await import('@/features/reports/api');
+  const range = await import('@/features/reports/range');
 
-  return { fetchMock, ...lib, ...movements, ...draft };
+  return {
+    fetchMock,
+    ...lib,
+    ...movements,
+    ...draft,
+    ...stock,
+    ...lowStock,
+    ...reports,
+    ...range,
+  };
 }
 
 export type FetchMock = ReturnType<typeof vi.fn<typeof fetch>>;
@@ -231,3 +253,57 @@ export function queryWrapper() {
 
   return { client, wrapper };
 }
+
+/** A page envelope the way every list route wraps its rows. */
+export const pageOf = <T>(data: T[], page = 1, total = data.length) => ({
+  data,
+  meta: {
+    page,
+    pageSize: data.length,
+    total,
+    pageCount: Math.max(1, Math.ceil(total / Math.max(data.length, 1))),
+    count: data.length,
+  },
+});
+
+/** `count` StockLevelDto rows with deterministic ids and quantities. */
+export const stockLevels = (count: number): StockLevel[] =>
+  Array.from({ length: count }, (_, i) => ({
+    productId: uuid(i + 1, 'b'),
+    productName: `Producto ${i + 1}`,
+    brandName: null,
+    categoryName: 'Ron',
+    quantityBase: (i * 7) % 50,
+    caseSize: 12,
+    minimumStock: 10,
+    isBelowMinimum: (i * 7) % 50 < 10,
+  }));
+
+/** `count` KardexEntryDto rows whose running balance adds up line by line. */
+export const kardexEntries = (count: number): KardexEntry[] => {
+  let balance = 0;
+  return Array.from({ length: count }, (_, i) => {
+    const quantityBase = i % 3 === 0 ? 12 : -2;
+    balance += quantityBase;
+    return {
+      id: uuid(i + 1, 'f'),
+      movementId: uuid(i + 1, '1'),
+      movementCode: `MOV-2026-${String(i + 1).padStart(6, '0')}`,
+      type: quantityBase > 0 ? 'INBOUND' : 'OUTBOUND',
+      occurredAt: new Date(Date.UTC(2026, 0, 1) + i * 3_600_000).toISOString(),
+      quantity: Math.abs(quantityBase),
+      unit: 'BOTTLE',
+      quantityBase,
+      balanceAfter: balance,
+    };
+  });
+};
+
+/** `count` ConsumptionRowDto rows, largest first as the API ranks them. */
+export const consumptionRows = (count: number): ConsumptionRow[] =>
+  Array.from({ length: count }, (_, i) => ({
+    id: uuid(i + 1, 'e'),
+    name: `Grupo ${i + 1}`,
+    quantityBase: (count - i) * 10,
+    movementCount: count - i,
+  }));
