@@ -1,7 +1,15 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createElement, type ReactNode } from 'react';
 import { vi } from 'vitest';
-import type { Movement, Session } from '@/lib/api';
+import type {
+  ConsumptionRow,
+  KardexEntry,
+  Movement,
+  PageMeta,
+  Product,
+  Session,
+  StockLevel,
+} from '@/lib/api';
 
 /**
  * API testing harness: the real client, the real hooks, a fake network.
@@ -23,8 +31,22 @@ export async function loadApiUnderTest() {
 
   const lib = await import('@/lib/api');
   const movements = await import('@/features/movements/api');
+  const openDraft = await import('@/features/movements/open-draft');
+  const stock = await import('@/features/stock/api');
+  const lowStock = await import('@/features/stock/low-stock');
+  const reports = await import('@/features/reports/api');
+  const range = await import('@/features/reports/range');
 
-  return { fetchMock, ...lib, ...movements };
+  return {
+    fetchMock,
+    ...lib,
+    ...movements,
+    ...openDraft,
+    ...stock,
+    ...lowStock,
+    ...reports,
+    ...range,
+  };
 }
 
 export type FetchMock = ReturnType<typeof vi.fn<typeof fetch>>;
@@ -104,3 +126,72 @@ export function queryWrapper() {
 
   return { client, wrapper };
 }
+
+/** The query string a request carried, as plain key/value pairs. */
+export const queryOf = (fetchMock: FetchMock, call = 0): Record<string, string> =>
+  Object.fromEntries(new URL(requestOf(fetchMock, call).url).searchParams);
+
+/** A page envelope the way every list route wraps its rows. */
+export const pageOf = <T>(data: T[], meta: Partial<PageMeta> = {}) => ({
+  data,
+  meta: {
+    page: 1,
+    pageSize: 10,
+    total: data.length,
+    pageCount: Math.max(1, Math.ceil(data.length / 10)),
+    count: data.length,
+    ...meta,
+  },
+});
+
+/** A complete StockLevelDto. */
+export const stockLevelDto = (overrides: Partial<StockLevel> = {}): StockLevel => ({
+  productId: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',
+  productName: 'Ron Viejo de Caldas',
+  brandName: 'Viejo de Caldas',
+  categoryName: 'Ron',
+  quantityBase: 30,
+  caseSize: 12,
+  minimumStock: 12,
+  isBelowMinimum: false,
+  ...overrides,
+});
+
+/** A complete KardexEntryDto. */
+export const kardexEntryDto = (overrides: Partial<KardexEntry> = {}): KardexEntry => ({
+  id: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee',
+  movementId: '11111111-1111-4111-8111-111111111111',
+  movementCode: 'MOV-2026-000001',
+  type: 'INBOUND',
+  occurredAt: '2026-01-01T00:00:00.000Z',
+  quantity: 2,
+  unit: 'CASE',
+  quantityBase: 24,
+  balanceAfter: 24,
+  ...overrides,
+});
+
+/** A complete ConsumptionRowDto. */
+export const consumptionRowDto = (overrides: Partial<ConsumptionRow> = {}): ConsumptionRow => ({
+  id: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc',
+  name: 'Ron',
+  quantityBase: 120,
+  movementCount: 8,
+  ...overrides,
+});
+
+/** A complete ProductDto. */
+export const productDto = (overrides: Partial<Product> = {}): Product => ({
+  id: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',
+  name: 'Ron Viejo de Caldas',
+  category: { id: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', name: 'Ron' },
+  brand: null,
+  subcategory: null,
+  abv: 35,
+  origin: null,
+  age: null,
+  caseSize: 12,
+  minimumStock: 12,
+  isActive: true,
+  ...overrides,
+});
