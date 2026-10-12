@@ -87,7 +87,11 @@ Then('el kardex es del producto que eligió', async () => {
 });
 
 Then('el saldo de la línea más reciente coincide con las unidades en existencia', async () => {
+  // The on-hand tile reads 0 until its own stock request answers, independently
+  // of the ledger table, so it is waited on rather than read once. A real
+  // mismatch still fails, just after the timeout instead of at once.
   await actorInTheSpotlight().attemptsTo(
+    waitPatiently().until(KardexQuestions.onHand(), equals(KardexQuestions.latestBalance())),
     Ensure.that(KardexQuestions.latestBalance(), equals(KardexQuestions.onHand())),
   );
 });
