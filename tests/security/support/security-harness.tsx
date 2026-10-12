@@ -5,7 +5,7 @@ import { vi } from 'vitest';
 import { NotificationsProvider } from '@/components/ui';
 import { formats } from '@/i18n/formats';
 import es from '@/i18n/messages/es.json';
-import type { Movement, Session } from '@/lib/api';
+import type { Movement, Session, StockLevel } from '@/lib/api';
 
 /**
  * Security testing harness: the real client, the real hooks, a fake network.
@@ -29,8 +29,23 @@ export async function loadClientUnderTest() {
   const lib = await import('@/lib/api');
   const session = await import('@/lib/api/session');
   const movements = await import('@/features/movements/api');
+  const openDraft = await import('@/features/movements/open-draft');
+  const draft = await import('@/features/movements/useMovementDraft');
+  const stock = await import('@/features/stock/api');
+  const lowStock = await import('@/features/stock/low-stock');
+  const reports = await import('@/features/reports/api');
 
-  return { fetchMock, ...lib, ...session, ...movements };
+  return {
+    fetchMock,
+    ...lib,
+    ...session,
+    ...movements,
+    ...openDraft,
+    ...draft,
+    ...stock,
+    ...lowStock,
+    ...reports,
+  };
 }
 
 export type FetchMock = ReturnType<typeof vi.fn<typeof fetch>>;
@@ -228,3 +243,44 @@ export function AppProviders({
     </QueryClientProvider>
   );
 }
+
+/**
+ * Answers by route instead of by call order, for screens that fire several
+ * queries at once (stock rows, categories, locations) in no fixed sequence.
+ * Anything not listed is a 404, so an unexpected request shows up as an error.
+ */
+export function routeAnswers(
+  fetchMock: FetchMock,
+  routes: Record<string, () => Promise<Response>>,
+) {
+  fetchMock.mockImplementation(async (input, init) => {
+    const request = input instanceof Request ? input : new Request(String(input), init);
+    const route = routes[new URL(request.url).pathname];
+    return route
+      ? route()
+      : answer(404, errorBody(404, 'Not Found', 'No route', new URL(request.url).pathname))();
+  });
+}
+
+/** A page envelope the way every list route wraps its rows. */
+export const pageOf = <T,>(data: T[]) => ({
+  data,
+  meta: { page: 1, pageSize: 10, total: data.length, pageCount: 1, count: data.length },
+});
+
+/** A complete StockLevelDto. */
+export const stockLevelDto = (overrides: Partial<StockLevel> = {}): StockLevel => ({
+  productId: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',
+  productName: 'Ron Viejo de Caldas',
+  brandName: null,
+  categoryName: 'Ron',
+  quantityBase: 3,
+  caseSize: 12,
+  minimumStock: 12,
+  isBelowMinimum: true,
+  ...overrides,
+});
+
+/** Whether the hostile markup was turned into live DOM anywhere in the container. */
+export const injectedMarkup = (container: HTMLElement): boolean =>
+  container.querySelector('img[onerror], script, [onerror]') !== null;
