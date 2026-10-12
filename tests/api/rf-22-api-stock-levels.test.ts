@@ -1,5 +1,5 @@
-import { renderHook, waitFor } from '@testing-library/react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { cleanup, renderHook, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import {
   answer,
   errorBody,
@@ -26,6 +26,8 @@ function levels(query: Parameters<typeof useStockLevels>[0], page = { page: 1, p
 }
 
 describe('RF-22 API - Consultar las existencias actuales', () => {
+  afterEach(cleanup);
+
   beforeEach(() => {
     fetchMock.mockReset();
     storeSession(session());

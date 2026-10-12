@@ -1,5 +1,5 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { act, cleanup, renderHook, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { useDebouncedValue } from '@/lib/hooks/useDebouncedValue';
 import {
   answer,
@@ -31,6 +31,8 @@ function filter(initial: string, categoryId?: string) {
 }
 
 describe('RF-23 API - Filtrar las existencias', () => {
+  afterEach(cleanup);
+
   beforeEach(() => {
     fetchMock.mockReset();
     fetchMock.mockImplementation(answer(200, pageOf([stockLevelDto()])));

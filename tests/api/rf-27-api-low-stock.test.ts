@@ -1,5 +1,5 @@
-import { renderHook, waitFor } from '@testing-library/react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { cleanup, renderHook, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import {
   answer,
   errorBody,
@@ -20,6 +20,8 @@ function lowStock(limit: number, enabled = true) {
 }
 
 describe('RF-27 API - Productos bajo el stock mínimo', () => {
+  afterEach(cleanup);
+
   beforeEach(() => {
     fetchMock.mockReset();
     storeSession(session());

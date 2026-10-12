@@ -1,5 +1,5 @@
-import { renderHook, waitFor } from '@testing-library/react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { cleanup, renderHook, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import {
   answer,
   errorBody,
@@ -29,6 +29,8 @@ function kardex(locationId?: string, page = { page: 1, pageSize: 10 }) {
 }
 
 describe('RF-24 API - Consultar el kardex de un producto', () => {
+  afterEach(cleanup);
+
   beforeEach(() => {
     fetchMock.mockReset();
     storeSession(session());

@@ -1,5 +1,5 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { act, cleanup, renderHook, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import {
   answer,
   bodyOf,
@@ -57,6 +57,8 @@ function resume() {
 }
 
 describe('RF-19 API - Guardar y retomar un borrador de movimiento', () => {
+  afterEach(cleanup);
+
   beforeEach(() => {
     fetchMock.mockReset();
     storeSession(session());

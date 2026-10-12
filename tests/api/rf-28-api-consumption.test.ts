@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import { cleanup, renderHook, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   answer,
@@ -22,6 +22,8 @@ function consumption(groupBy: 'product' | 'category' | 'brand', range = RANGE, l
 }
 
 describe('RF-28 API - Reporte de consumo', () => {
+  afterEach(cleanup);
+
   beforeEach(() => {
     fetchMock.mockReset();
     storeSession(session());
