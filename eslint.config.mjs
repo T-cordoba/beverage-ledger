@@ -68,6 +68,15 @@ const eslintConfig = [
     },
   },
 
+  // The E2E suite is its own CommonJS program run by Cucumber: the @/ alias only
+  // reaches src/, so its layers import each other relatively.
+  {
+    files: ['tests/e2e/**'],
+    rules: {
+      'no-restricted-imports': 'off',
+    },
+  },
+
   // Last: turns off stylistic rules that collide with the formatter.
   ...compat.extends('prettier'),
 ];
