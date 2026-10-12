@@ -5,7 +5,6 @@ import { ReportsPage } from '../ui/ReportsPage';
 import { WaitUntilVisible, waitPatiently } from './Waits';
 
 export const ChangeReport = {
-  /** "Semana", "Mes", "Año", "Por producto", "Por categoría" or "Por marca". */
   to: (option: string) =>
     Task.where(
       `#actor elige "${option}" en el reporte`,

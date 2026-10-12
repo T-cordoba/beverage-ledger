@@ -17,7 +17,6 @@ const PRODUCT_ID = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
 const HISTORY = kardexEntries(2000);
 const PAGE_SIZE = 100;
 
-/** Serves the right slice of a 2000-line history for whichever page is asked. */
 function serveHistory() {
   fetchMock.mockImplementation(async (input) => {
     const page = Number(new URL((input as Request).url).searchParams.get('page'));

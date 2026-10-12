@@ -6,14 +6,12 @@ import { GoTo } from './GoTo';
 import { WaitUntilPresent, WaitUntilVisible } from './Waits';
 
 export const CaptureOutbound = {
-  /** Fills the draft without confirming it: nothing reaches the ledger. */
   withBottles: (count: number) =>
     Task.where(
       `#actor captura una salida de ${count} botellas sin confirmarla`,
       GoTo.section('Panel'),
       WaitUntilVisible(Dashboard.registerOutbound()),
       Click.on(Dashboard.registerOutbound()),
-      // Present, not visible: the picker sits below the fold and Click scrolls to it.
       WaitUntilPresent(MovementCapture.firstAvailableAddBottle()),
       ...Array.from({ length: count }, () => Click.on(MovementCapture.firstAvailableAddBottle())),
       WaitUntilVisible(MovementCapture.draftSummary()),

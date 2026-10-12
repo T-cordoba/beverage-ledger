@@ -254,7 +254,6 @@ export function queryWrapper() {
   return { client, wrapper };
 }
 
-/** A page envelope the way every list route wraps its rows. */
 export const pageOf = <T>(data: T[], page = 1, total = data.length) => ({
   data,
   meta: {
@@ -266,7 +265,6 @@ export const pageOf = <T>(data: T[], page = 1, total = data.length) => ({
   },
 });
 
-/** `count` StockLevelDto rows with deterministic ids and quantities. */
 export const stockLevels = (count: number): StockLevel[] =>
   Array.from({ length: count }, (_, i) => ({
     productId: uuid(i + 1, 'b'),
@@ -279,7 +277,6 @@ export const stockLevels = (count: number): StockLevel[] =>
     isBelowMinimum: (i * 7) % 50 < 10,
   }));
 
-/** `count` KardexEntryDto rows whose running balance adds up line by line. */
 export const kardexEntries = (count: number): KardexEntry[] => {
   let balance = 0;
   return Array.from({ length: count }, (_, i) => {

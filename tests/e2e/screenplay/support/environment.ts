@@ -15,7 +15,6 @@ function required(name: string): string {
 }
 
 export const environment = {
-  /** The front the actor browses. */
   baseUrl: process.env.E2E_BASE_URL || 'http://localhost:3000',
   /** The API the actor calls directly, which has to be the one the front talks to. */
   apiUrl: process.env.E2E_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001',

@@ -21,8 +21,6 @@ import { WaitUntilPresent, WaitUntilVisible, waitPatiently } from '../../screenp
 import { Dashboard } from '../../screenplay/ui/Dashboard';
 import { StockPage } from '../../screenplay/ui/StockPage';
 
-// RF-22
-
 Then('la tabla de existencias tiene las columnas:', async (table: DataTable) => {
   await actorInTheSpotlight().attemptsTo(
     WaitUntilVisible(StockPage.table()),
@@ -53,8 +51,6 @@ Then('el conteo de resultados tiene la forma {string}', async (shape: string) =>
   );
 });
 
-// RF-23
-
 When('{pronoun} busca {string} en las existencias', async (actor: Actor, term: string) => {
   await actor.attemptsTo(SearchStock.for(term));
 });
@@ -74,8 +70,6 @@ Then('{pronoun} ve el aviso de que ningún producto coincide', async (actor: Act
   await actor.attemptsTo(WaitUntilVisible(StockQuestions.emptyState()));
 });
 
-// RF-24
-
 When('{pronoun} abre el kardex del primer producto de la lista', async (actor: Actor) => {
   await actor.attemptsTo(OpenKardex.ofTheFirstListedProduct());
 });
@@ -87,16 +81,12 @@ Then('el kardex es del producto que eligió', async () => {
 });
 
 Then('el saldo de la línea más reciente coincide con las unidades en existencia', async () => {
-  // The on-hand tile reads 0 until its own stock request answers, independently
-  // of the ledger table, so it is waited on rather than read once. A real
-  // mismatch still fails, just after the timeout instead of at once.
+  // The on-hand tile reads 0 until its own request answers, apart from the table's.
   await actorInTheSpotlight().attemptsTo(
     waitPatiently().until(KardexQuestions.onHand(), equals(KardexQuestions.latestBalance())),
     Ensure.that(KardexQuestions.latestBalance(), equals(KardexQuestions.onHand())),
   );
 });
-
-// RF-27
 
 When(
   '{pronoun} consulta directamente en la API los {int} productos más bajo mínimo',

@@ -17,7 +17,6 @@ export const SignIn = {
       Click.on(LoginForm.submit()),
     ),
 
-  /** The account in TEST_USER_EMAIL / TEST_USER_PASSWORD, never written in a feature. */
   asTheTestUser: () => {
     const { email, password } = environment.credentials();
     return Task.where(

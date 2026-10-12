@@ -1,7 +1,6 @@
 import { By, PageElement, PageElements } from '@serenity-js/web';
 
 export const MovementCapture = {
-  /** The first product whose stock still allows one more bottle out. */
   firstAvailableAddBottle: () =>
     PageElements.located(By.role('button', { name: 'Añadir botella', disabled: false }))
       .first()

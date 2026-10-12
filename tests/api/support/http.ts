@@ -127,11 +127,9 @@ export function queryWrapper() {
   return { client, wrapper };
 }
 
-/** The query string a request carried, as plain key/value pairs. */
 export const queryOf = (fetchMock: FetchMock, call = 0): Record<string, string> =>
   Object.fromEntries(new URL(requestOf(fetchMock, call).url).searchParams);
 
-/** A page envelope the way every list route wraps its rows. */
 export const pageOf = <T>(data: T[], meta: Partial<PageMeta> = {}) => ({
   data,
   meta: {
@@ -144,7 +142,6 @@ export const pageOf = <T>(data: T[], meta: Partial<PageMeta> = {}) => ({
   },
 });
 
-/** A complete StockLevelDto. */
 export const stockLevelDto = (overrides: Partial<StockLevel> = {}): StockLevel => ({
   productId: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',
   productName: 'Ron Viejo de Caldas',
@@ -157,7 +154,6 @@ export const stockLevelDto = (overrides: Partial<StockLevel> = {}): StockLevel =
   ...overrides,
 });
 
-/** A complete KardexEntryDto. */
 export const kardexEntryDto = (overrides: Partial<KardexEntry> = {}): KardexEntry => ({
   id: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee',
   movementId: '11111111-1111-4111-8111-111111111111',
@@ -171,7 +167,6 @@ export const kardexEntryDto = (overrides: Partial<KardexEntry> = {}): KardexEntr
   ...overrides,
 });
 
-/** A complete ConsumptionRowDto. */
 export const consumptionRowDto = (overrides: Partial<ConsumptionRow> = {}): ConsumptionRow => ({
   id: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc',
   name: 'Ron',
@@ -180,7 +175,6 @@ export const consumptionRowDto = (overrides: Partial<ConsumptionRow> = {}): Cons
   ...overrides,
 });
 
-/** A complete ProductDto. */
 export const productDto = (overrides: Partial<Product> = {}): Product => ({
   id: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',
   name: 'Ron Viejo de Caldas',

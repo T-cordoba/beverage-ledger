@@ -1,6 +1,5 @@
 import { By, PageElement } from '@serenity-js/web';
 
-/** Sections of the main navigation, by the label the user reads, and where each one lands. */
 export const SECTION_PATHS = {
   Panel: '/dashboard',
   Existencias: '/stock',

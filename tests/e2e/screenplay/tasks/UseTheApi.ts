@@ -27,7 +27,6 @@ const AuthenticateAgainstTheApi = () =>
     notepad.set('accessToken', (response.data as ApiNotes).accessToken);
   });
 
-/** The second ability: the same actor talks to the API with no browser in between. */
 export const UseTheApi = {
   signIn: () =>
     Task.where(

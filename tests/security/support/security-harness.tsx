@@ -262,13 +262,11 @@ export function routeAnswers(
   });
 }
 
-/** A page envelope the way every list route wraps its rows. */
 export const pageOf = <T,>(data: T[]) => ({
   data,
   meta: { page: 1, pageSize: 10, total: data.length, pageCount: 1, count: data.length },
 });
 
-/** A complete StockLevelDto. */
 export const stockLevelDto = (overrides: Partial<StockLevel> = {}): StockLevel => ({
   productId: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',
   productName: 'Ron Viejo de Caldas',
@@ -281,6 +279,5 @@ export const stockLevelDto = (overrides: Partial<StockLevel> = {}): StockLevel =
   ...overrides,
 });
 
-/** Whether the hostile markup was turned into live DOM anywhere in the container. */
 export const injectedMarkup = (container: HTMLElement): boolean =>
   container.querySelector('img[onerror], script, [onerror]') !== null;
