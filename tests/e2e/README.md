@@ -1,6 +1,6 @@
 # Pruebas E2E con Serenity/JS y el patrón Screenplay
 
-Pruebas de extremo a extremo de las funcionalidades RF-19, RF-22, RF-23, RF-24, RF-27 y RF-28, más la autenticación como precondición. Corren sobre la aplicación real: un navegador Chromium manejado por Playwright, el front de Next en `:3000` y la API de verdad. Ninguna respuesta se simula.
+Pruebas de extremo a extremo de las funcionalidades RF-15 a RF-24, RF-27 y RF-28, más la autenticación como precondición. Corren sobre la aplicación real: un navegador Chromium manejado por Playwright, el front de Next en `:3000` y la API de verdad. Ninguna respuesta se simula.
 
 La estructura sigue el proyecto de referencia `serenityjs-e2e-testing`: Cucumber con Gherkin para describir el comportamiento y Serenity/JS para implementarlo con Screenplay.
 
@@ -10,9 +10,9 @@ La estructura sigue el proyecto de referencia `serenityjs-e2e-testing`: Cucumber
 |---|---|---|
 | **Actor** | Camila, la encargada de bodega. Cada escenario la crea de nuevo con `actorCalled('Camila')` | `features/step-definitions/parameter.steps.ts` |
 | **Abilities** | `BrowseTheWebWithPlaywright` (navegar), `CallAnApi` (hablar con la API sin navegador) y `TakeNotes` (recordar datos entre pasos) | `features/support/serenity.config.ts` |
-| **Tasks** | Metas de negocio compuestas de acciones: `SignIn`, `GoTo`, `SearchStock`, `OpenKardex`, `CaptureOutbound`, `ChangeReport`, `UseTheApi` | `screenplay/tasks/` |
-| **Actions (Interactions)** | Lo atómico. Las de Serenity (`Click`, `Enter`, `Navigate`, `Send`, `Wait`) y tres propias: `RespectTheLoginRateLimit`, la autenticación contra la API y las esperas de `Waits.ts` | `screenplay/tasks/` |
-| **Questions** | Lo que el actor pregunta sobre el estado de la app: ruta actual, columnas, saldo del kardex, ranking, respuesta de la API… | `screenplay/questions/AppQuestions.ts` |
+| **Tasks** | Metas de negocio compuestas de acciones: `SignIn`, `GoTo`, `SearchStock`, `OpenKardex`, `CaptureOutbound`, `ChangeReport`, `UseTheApi`, `RegisterMovement`, `CancelMovement`, `OpenMovement`, `RequestTheReceipt`, `NoteTheStock` | `screenplay/tasks/` |
+| **Actions (Interactions)** | Lo atómico. Las de Serenity (`Click`, `Enter`, `Navigate`, `Send`, `Wait`) y propias: `RespectTheLoginRateLimit`, la autenticación contra la API, las esperas de `Waits.ts`, `DownloadTheReceipt` y `PressAnyway` | `screenplay/tasks/` |
+| **Questions** | Lo que el actor pregunta sobre el estado de la app: ruta actual, columnas, saldo del kardex, ranking, estado de un movimiento, comprobante descargado, cambio de existencias según la API… | `screenplay/questions/` |
 | **App** | Los elementos de pantalla como *lean page objects*: solo localizadores, sin lógica | `screenplay/ui/` |
 
 Los steps no tienen selectores ni llamadas a Playwright: piden a la actriz que *intente* tareas (`actor.attemptsTo(...)`) y que *compruebe* respuestas a preguntas (`Ensure.that(pregunta, expectativa)`). Así se cumplen los dos principios que el patrón persigue:
@@ -33,8 +33,20 @@ Los steps no tienen selectores ni llamadas a Playwright: piden a la actriz que *
 | RF-27 | Panel frente a API | La tarjeta «Bajo mínimo» lista los mismos productos, en el mismo orden, que `GET /stock/low?limit=8` |
 | RF-28 | Ranking (3 ejemplos) | Para cada periodo y agrupación, el ranking va numerado 1, 2, 3… y las unidades de mayor a menor |
 | RF-19 | Borrador tras recargar | Una salida capturada sin confirmar sobrevive a la recarga y se puede descartar |
+| RF-15 | Salida confirmada y revertida | Queda «Salida · confirmado» con su línea; al anularla la API devuelve +1 a las existencias del producto |
+| RF-15 | Tope del selector | Al añadir una botella, lo que queda es una unidad menos de lo que hay en existencia |
+| RF-16 | Entrada confirmada y revertida | Queda «Entrada · confirmado»; al anularla la API descuenta las 2 botellas |
+| RF-16 | Volver desde la confirmación | El diálogo se cierra sin registrar y el borrador sigue intacto |
+| RF-17 | Traspaso confirmado y revertido | El detalle tiene 2 líneas (origen y destino) y se puede anular |
+| RF-17 | Traspaso sin bodegas | «Confirmar» se anuncia no disponible y al pulsarlo pide origen y destino |
+| RF-18 | Ajuste con motivo | El dato «Motivo» del detalle es el escrito y el ajuste se puede anular |
+| RF-18 | Motivo vacío o corto (2 ejemplos) | Aparece el aviso que corresponde y no se sale de la captura |
+| RF-20 | Anular | Estado «anulado», «Anulado el» visible, sin botón Anular, mismo código y la API revierte la existencia |
+| RF-20 | Anular sin motivo | El diálogo exige el motivo y «Conservarlo» deja el movimiento confirmado |
+| RF-21 | Comprobante (detalle e historial) | El archivo se llama `<código>.pdf` y empieza por `%PDF-` |
+| RF-21 | Comprobante por API | `GET /movements/:id/pdf` responde 200, `application/pdf` y como adjunto |
 
-Ningún escenario escribe en el ledger. El de RF-19 solo toca el `localStorage` del navegador de la prueba, que se descarta al terminar, y además descarta el borrador al final.
+**Los escenarios `@escribe-en-el-ledger` sí escriben**: registran un movimiento real y lo anulan como último paso, de modo que las existencias vuelven a su valor. Si uno falla antes de anular, el hook de `support/ledger-cleanup.ts` lo anula por la API. Aun así el movimiento anulado queda en el historial, porque el ledger es inmutable: **córrelos contra una base desechable** (ver «Stack local» abajo), no contra la de producción. El resto no escribe: RF-19 y los escenarios de validación solo tocan el `localStorage` del navegador de la prueba y descartan el borrador al final.
 
 ## Cómo correrlas
 
@@ -86,6 +98,16 @@ pnpm typecheck:e2e                                       # solo compilar la suit
 - **La contraseña no llega al informe.** En el navegador se escribe con `Masked.valueOf`. Contra la API el login no usa `Send`, que adjunta el cuerpo de la petición al informe, sino la habilidad `CallAnApi` directamente.
 - **Mayúsculas por CSS.** Los encabezados de la tabla se ven en mayúsculas porque los transforma el CSS, y el texto que reporta el navegador sigue al CSS. La comparación de columnas ignora mayúsculas y minúsculas.
 - **Dependencias de datos.** RF-23 busca «AMARO», que existe en el catálogo sembrado. RF-24 abre el primer producto de la lista, que tiene que tener al menos un movimiento confirmado para que exista una línea de kardex. Si el catálogo cambia, esos dos valores son lo primero que hay que revisar.
+
+## Stack local (recomendado para los escenarios que escriben)
+
+Todo con variables de shell, sin crear `.env` en ningún repo:
+
+1. En `beverage-ledger-api`: `docker compose up -d db`, y con `DATABASE_URL` y `DIRECT_URL` en `postgresql://postgres:postgres@localhost:5434/beverage_ledger`, `pnpm exec prisma migrate deploy` y `SEED_MODE=demo SEED_ADMIN_PASSWORD=... pnpm exec prisma db seed`.
+2. `pnpm build` y `node dist/main` con esas variables más `JWT_SECRET` (32+ caracteres).
+3. **Crear una segunda bodega** (`POST /api/v1/locations` como admin): el seed trae una sola, y RF-17 necesita un destino distinto del origen.
+4. Front: `NEXT_PUBLIC_API_URL=http://localhost:3001 pnpm dev`.
+5. `TEST_USER_EMAIL=admin@beverageledger.local TEST_USER_PASSWORD=<SEED_ADMIN_PASSWORD> E2E_API_URL=http://localhost:3001 pnpm test:e2e`.
 
 ## Por qué no corre en CI
 
