@@ -6,3 +6,5 @@ public
 *.sql
 *.md
 coverage
+# Katalon Recorder reads each cell's raw text: reformatting would put whitespace in the targets.
+tests/katalon
