@@ -38,9 +38,11 @@ describe('openDraft', () => {
 
     const abierto = await openDraft(salida(null));
 
-    expect(abierto).toEqual(nuevo);
+    expect(abierto).toStrictEqual(nuevo);
     expect(cliente.PATCH).not.toHaveBeenCalled();
-    expect(cliente.POST).toHaveBeenCalledTimes(1);
+    expect(cliente.POST).toHaveBeenCalledExactlyOnceWith('/api/v1/movements', {
+      body: { type: 'OUTBOUND', items: [{ productId: PRODUCTO, quantity: 1, unit: 'BOTTLE' }] },
+    });
   });
 
   it('Camino 2 - hay un borrador vivo y se reutiliza el mismo movimiento', async () => {
@@ -49,8 +51,11 @@ describe('openDraft', () => {
 
     const abierto = await openDraft(salida(BORRADOR_VIVO));
 
-    expect(abierto.id).toBe(BORRADOR_VIVO);
-    expect(cliente.PATCH).toHaveBeenCalledTimes(1);
+    expect(abierto).toHaveProperty('id', BORRADOR_VIVO);
+    expect(cliente.PATCH).toHaveBeenCalledExactlyOnceWith(
+      '/api/v1/movements/{id}',
+      expect.objectContaining({ params: { path: { id: BORRADOR_VIVO } } }),
+    );
     expect(cliente.POST).not.toHaveBeenCalled();
   });
 
@@ -61,9 +66,10 @@ describe('openDraft', () => {
 
     const abierto = await openDraft(salida(BORRADOR_VIVO));
 
-    expect(abierto).toEqual(nuevo);
+    expect(abierto).toStrictEqual(nuevo);
     expect(abierto.id).not.toBe(BORRADOR_VIVO);
-    expect(cliente.PATCH).toHaveBeenCalledTimes(1);
-    expect(cliente.POST).toHaveBeenCalledTimes(1);
+    expect(cliente.PATCH).toHaveBeenCalledOnce();
+    expect(cliente.POST).toHaveBeenCalledOnce();
+    expect(cliente.PATCH).toHaveBeenCalledBefore(cliente.POST);
   });
 });

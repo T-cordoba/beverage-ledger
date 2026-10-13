@@ -1,6 +1,8 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { expect } from 'chai';
+import { afterEach, beforeEach, describe, it, vi } from 'vitest';
 import { openDraft } from '@/features/movements/open-draft';
 import { api, unwrap } from '@/lib/api';
+import { apiResult, movementStub } from './support/api-result';
 
 vi.mock('@/features/movements/open-draft', () => ({
   openDraft: vi.fn(),
@@ -20,6 +22,8 @@ vi.mock('@/lib/api', async (importOriginal) => {
 const mockedOpenDraft = vi.mocked(openDraft);
 const mockedApiPost = vi.mocked(api.POST);
 
+type PostResult = Awaited<ReturnType<typeof api.POST>>;
+
 const productId = 'product-1';
 const locationId = 'location-1';
 
@@ -34,10 +38,9 @@ describe('Anular un movimiento confirmado - Front', () => {
 
   it('Camino 1 - la cancelación falla y se obtiene un error', async () => {
     // Arrange
-    mockedApiPost.mockResolvedValue({
-      error: { message: 'Movimiento no encontrado' },
-      response: { ok: false, status: 404 },
-    } as any);
+    mockedApiPost.mockResolvedValue(
+      apiResult<PostResult>({ status: 404, error: { message: 'Movimiento no encontrado' } }),
+    );
 
     // Act
     const response = await api.POST('/api/v1/movements/{id}/cancel', {
@@ -48,35 +51,29 @@ describe('Anular un movimiento confirmado - Front', () => {
     });
 
     // Assert
-    expect(response.error).toBeDefined();
-    expect(mockedApiPost).toHaveBeenCalledWith(
+    expect(response.error, 'cancel error').to.not.be.undefined;
+    expect(mockedApiPost.mock.calls, 'cancel calls').to.deep.include([
       '/api/v1/movements/{id}/cancel',
       {
         params: { path: { id: 'id-inexistente' } },
         body: { reason: 'Error en el registro' },
       },
-    );
+    ]);
   });
 
   it('Camino 2 - la cancelación es exitosa y el movimiento queda cancelado', async () => {
     // Arrange
-    mockedOpenDraft.mockResolvedValue({
-      id: 'movement-1',
-      type: 'OUTBOUND',
-      status: 'DRAFT',
-    } as any);
+    mockedOpenDraft.mockResolvedValue(
+      movementStub({ id: 'movement-1', type: 'OUTBOUND', status: 'DRAFT' }),
+    );
 
     mockedApiPost
-      .mockResolvedValueOnce({
-        data: { id: 'movement-1', status: 'CONFIRMED' },
-        error: undefined,
-        response: { ok: true, status: 200 },
-      } as any)
-      .mockResolvedValueOnce({
-        data: { id: 'movement-1', status: 'CANCELLED' },
-        error: undefined,
-        response: { ok: true, status: 200 },
-      } as any);
+      .mockResolvedValueOnce(
+        apiResult<PostResult>({ status: 200, data: { id: 'movement-1', status: 'CONFIRMED' } }),
+      )
+      .mockResolvedValueOnce(
+        apiResult<PostResult>({ status: 200, data: { id: 'movement-1', status: 'CANCELLED' } }),
+      );
 
     // Act
     const draft = await openDraft({
@@ -109,7 +106,7 @@ describe('Anular un movimiento confirmado - Front', () => {
     );
 
     // Assert
-    expect(confirmado.status).toBe('CONFIRMED');
-    expect(cancelado.status).toBe('CANCELLED');
+    expect(confirmado.status, 'confirmed movement status').to.equal('CONFIRMED');
+    expect(cancelado.status, 'cancelled movement status').to.equal('CANCELLED');
   });
 });

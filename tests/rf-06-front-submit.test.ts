@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { api } from '@/lib/api';
+import { apiResult } from './support/api-result';
 
 vi.mock('@/lib/api', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/lib/api')>();
@@ -13,6 +14,8 @@ vi.mock('@/lib/api', async (importOriginal) => {
 
 const mockedApiPut = vi.mocked(api.PUT);
 
+type PutResult = Awaited<ReturnType<typeof api.PUT>>;
+
 describe('submit (ChangePasswordForm) - Front', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -24,10 +27,12 @@ describe('submit (ChangePasswordForm) - Front', () => {
 
   it('Camino 1 - la mutacion falla y se notifica error', async () => {
     // Arrange
-    mockedApiPut.mockResolvedValue({
-      error: { message: 'The current password is incorrect' },
-      response: { ok: false, status: 401 },
-    } as any);
+    mockedApiPut.mockResolvedValue(
+      apiResult<PutResult>({
+        status: 401,
+        error: { message: 'The current password is incorrect' },
+      }),
+    );
 
     // Act
     const response = await api.PUT('/api/v1/users/me/password', {
@@ -45,11 +50,7 @@ describe('submit (ChangePasswordForm) - Front', () => {
 
   it('Camino 2 - cambio exitoso, responde 204 y se cierra la sesion', async () => {
     // Arrange
-    mockedApiPut.mockResolvedValue({
-      data: undefined,
-      error: undefined,
-      response: { ok: true, status: 204 },
-    } as any);
+    mockedApiPut.mockResolvedValue(apiResult<PutResult>({ status: 204 }));
 
     // Act
     const response = await api.PUT('/api/v1/users/me/password', {
