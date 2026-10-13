@@ -323,13 +323,18 @@
 </tr>
 <tr>
 	<td>storeText</td>
+	<td>xpath=//table[starts-with(normalize-space(caption),'Líneas confirmadas del ledger')]//tbody/tr[1]/td[5]<datalist></datalist></td>
+	<td>saldo</td>
+</tr>
+<tr>
+	<td>waitForText</td>
 	<td>xpath=//p[normalize-space()='En existencia']/preceding-sibling::p[1]<datalist></datalist></td>
-	<td>existencia</td>
+	<td>${saldo}</td>
 </tr>
 <tr>
 	<td>verifyText</td>
-	<td>xpath=//table[starts-with(normalize-space(caption),'Líneas confirmadas del ledger')]//tbody/tr[1]/td[5]<datalist></datalist></td>
-	<td>${existencia}</td>
+	<td>xpath=//p[normalize-space()='En existencia']/preceding-sibling::p[1]<datalist></datalist></td>
+	<td>${saldo}</td>
 </tr>
 </tbody></table>
 <table cellpadding="1" cellspacing="1" border="1">
