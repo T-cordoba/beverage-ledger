@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="https://beverage-ledger.vercel.app/" />
+<title>TC08 RF-18 Ajuste (ADJUSTMENT)</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">TC08 RF-18 Ajuste (ADJUSTMENT)</td></tr>
+</thead><tbody>
+<tr>
+	<td>store</td>
+	<td>https://beverage-ledger.vercel.app</td>
+	<td>BASE_URL</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>Manager@test.com</td>
+	<td>USER_EMAIL</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>SecurePass123!</td>
+	<td>USER_PASSWORD</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>NO</td>
+	<td>ESCRITURA_AISLADA</td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>7000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>${BASE_URL}/login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='email']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='password']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>(function () { var tries = 0; (function check() { var el = document.querySelector('input[type=password]'); var ready = el !== null &amp;&amp; Object.keys(el).some(function (k) { return k.indexOf('__reactProps') === 0; }); if (ready) { document.body.setAttribute('data-kr-hydrated', 'si'); } else if (++tries &lt; 150) { setTimeout(check, 100); } })(); })();</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForAttribute</td>
+	<td>css=body@data-kr-hydrated</td>
+	<td>si</td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>(function () { var set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; var el = document.querySelector('input[type=email]'); set.call(el, '${USER_EMAIL}'); el.dispatchEvent(new Event('input', { bubbles: true })); })();</td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>(function () { var set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; var el = document.querySelector('input[type=password]'); set.call(el, '${USER_PASSWORD}'); el.dispatchEvent(new Event('input', { bubbles: true })); })();</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>css=input[type='email']</td>
+	<td>${USER_EMAIL}</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//button[normalize-space()='Entrar']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//nav[@aria-label='Principal']//a[normalize-space()='Existencias']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyLocation</td>
+	<td>glob:*/dashboard*</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//nav[@aria-label='Principal']//a[normalize-space()='Panel']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//main//h2[normalize-space()='Registrar un movimiento']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyLocation</td>
+	<td>glob:*/dashboard*</td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>localStorage.removeItem('beverage-ledger:movement-draft:ADJUSTMENT');</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//main//a[normalize-space()='Registrar un ajuste']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//main//a[normalize-space()='Registrar un ajuste']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>xpath=//main//h1</td>
+	<td>Registrar un ajuste</td>
+</tr>
+<tr>
+	<td>verifyLocation</td>
+	<td>glob:*/movements/new/adjustment</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//main//h1/following-sibling::p[1]</td>
+	<td>glob:*el motivo queda en el registro.</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>xpath=(//main//li[.//button[@aria-label='Añadir botella' and not(@disabled)]])[1]//h3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>xpath=(//main//li[.//button[@aria-label='Añadir botella' and not(@disabled)]])[1]//h3</td>
+	<td>producto</td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>Producto elegido: ${producto}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//main//li[.//h3[normalize-space()="${producto}"]]//button[@aria-label='Añadir botella']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>xpath=//main//button[contains(normalize-space(),' producto') and contains(normalize-space(),' unidad')]</td>
+	<td>1 producto · +1 unidad</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//main//button[normalize-space()='Confirmar']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=main [role='alert']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=main [role='alert']</td>
+	<td>glob:*Un ajuste necesita un motivo antes de poder confirmarse.*</td>
+</tr>
+<tr>
+	<td>verifyElementNotPresent</td>
+	<td>xpath=//*[@role='dialog']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>(function () { var set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; var el = document.getElementById(Array.prototype.find.call(document.querySelectorAll('main label'), function (l) { return l.textContent.trim() === 'Motivo'; }).htmlFor); set.call(el, 'abc'); el.dispatchEvent(new Event('input', { bubbles: true })); })();</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>xpath=//main//input[@id=//main//label[normalize-space()='Motivo']/@for]</td>
+	<td>abc</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//main//button[normalize-space()='Confirmar']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>css=main [role='alert']</td>
+	<td>glob:*Al menos 4 caracteres.*</td>
+</tr>
+<tr>
+	<td>verifyElementNotPresent</td>
+	<td>xpath=//*[@role='dialog']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyLocation</td>
+	<td>glob:*/movements/new/adjustment</td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>(function () { var set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; var el = document.getElementById(Array.prototype.find.call(document.querySelectorAll('main label'), function (l) { return l.textContent.trim() === 'Motivo'; }).htmlFor); set.call(el, 'Diferencia de conteo Katalon'); el.dispatchEvent(new Event('input', { bubbles: true })); })();</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>xpath=//main//input[@id=//main//label[normalize-space()='Motivo']/@for]</td>
+	<td>Diferencia de conteo Katalon</td>
+</tr>
+<tr>
+	<td>waitForElementNotPresent</td>
+	<td>css=main [role='alert']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//main//button[normalize-space()='Confirmar']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//*[@role='dialog']//h2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//*[@role='dialog']//h2</td>
+	<td>¿Confirmar este ajuste?</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//*[@role='dialog']//button[normalize-space()='Volver']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//*[@role='dialog']//button[normalize-space()='Confirmar']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>'${ESCRITURA_AISLADA}' != 'SI' || '${BASE_URL}'.indexOf('beverage-ledger.vercel.app') != -1</td>
+	<td>SIN_ESCRITURA</td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>Entorno aislado declarado (${BASE_URL}): se ejecuta la fase que escribe en el ledger.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//*[@role='dialog']//button[normalize-space()='Confirmar']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>xpath=//div[@aria-live='polite']//h4[normalize-space()='Movimiento registrado']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//div[@aria-live='polite']//div[h4[normalize-space()='Movimiento registrado']]/p</td>
+	<td>glob:*se confirmó y se aplicó a las existencias.</td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//main//h1/following-sibling::div[1]/span[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyLocation</td>
+	<td>regexp:/movements/[0-9a-f]{8}-[0-9a-f]{4}-</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>xpath=//main//h1</td>
+	<td>codigo</td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>Movimiento registrado: ${codigo}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//main//h1/following-sibling::div[1]/span[1]</td>
+	<td>Ajuste</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//main//h1/following-sibling::div[1]/span[2]</td>
+	<td>confirmado</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//main//dl//dt[normalize-space()='Confirmado el']/following-sibling::dd[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//main//dl//dt[normalize-space()='Motivo']/following-sibling::dd[1]</td>
+	<td>Diferencia de conteo Katalon</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=(//main//ul/li/span[last()])[1]</td>
+	<td>1 botella</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=(//main//ul/li/div/p[1])[1]</td>
+	<td>${producto}</td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//main//button[normalize-space()='Anular']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//main//button[normalize-space()='Anular']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//*[@role='dialog']//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//*[@role='dialog']//h2</td>
+	<td>¿Anular ${codigo}?</td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>(function () { var set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; var el = document.querySelector('[role=dialog] input'); set.call(el, 'Limpieza de la prueba Katalon TC08'); el.dispatchEvent(new Event('input', { bubbles: true })); })();</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>xpath=//*[@role='dialog']//input</td>
+	<td>Limpieza de la prueba Katalon TC08</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//*[@role='dialog']//button[normalize-space()='Anular']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>xpath=//div[@aria-live='polite']//h4[normalize-space()='Movimiento anulado']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//div[@aria-live='polite']//div[h4[normalize-space()='Movimiento anulado']]/p</td>
+	<td>${codigo} se revirtió y las existencias volvieron.</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>xpath=//main//h1/following-sibling::div[1]/span[2]</td>
+	<td>anulado</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//main//h1/following-sibling::div[1]/span[1]</td>
+	<td>Ajuste</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//main//dl//dt[normalize-space()='Anulado el']/following-sibling::dd[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementNotPresent</td>
+	<td>xpath=//main//button[normalize-space()='Anular']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//main//h1</td>
+	<td>${codigo}</td>
+</tr>
+<tr>
+	<td>gotoLabel</td>
+	<td>FIN</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>SIN_ESCRITURA</td>
+	<td></td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>Entorno no aislado (${BASE_URL}): se valida sin confirmar. No se escribe en el ledger.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//*[@role='dialog']//button[normalize-space()='Volver']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementNotPresent</td>
+	<td>xpath=//*[@role='dialog']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyLocation</td>
+	<td>glob:*/movements/new/adjustment</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//main//button[contains(normalize-space(),' producto') and contains(normalize-space(),' unidad')]</td>
+	<td>1 producto · +1 unidad</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//main//button[normalize-space()='Descartar']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//*[@role='dialog']//button[normalize-space()='Descartar']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//*[@role='dialog']//h2</td>
+	<td>¿Descartar lo que capturaste?</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//*[@role='dialog']//button[normalize-space()='Descartar']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>xpath=//div[@aria-live='polite']//h4[normalize-space()='Borrador descartado']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//div[@aria-live='polite']//div[h4[normalize-space()='Borrador descartado']]/p</td>
+	<td>No se envió nada al ledger.</td>
+</tr>
+<tr>
+	<td>waitForElementNotPresent</td>
+	<td>xpath=//main//button[contains(normalize-space(),' producto') and contains(normalize-space(),' unidad')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>FIN</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

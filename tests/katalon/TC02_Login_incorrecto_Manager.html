@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="https://beverage-ledger.vercel.app/" />
+<title>TC02 Login incorrecto Manager</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">TC02 Login incorrecto Manager</td></tr>
+</thead><tbody>
+<tr>
+	<td>store</td>
+	<td>https://beverage-ledger.vercel.app</td>
+	<td>BASE_URL</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>Manager@test.com</td>
+	<td>USER_EMAIL</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>SecurePass123!</td>
+	<td>USER_PASSWORD</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>Clave-Incorrecta-Katalon-0</td>
+	<td>WRONG_PASSWORD</td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>7000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>${BASE_URL}/login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='email']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='password']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>(function () { var tries = 0; (function check() { var el = document.querySelector('input[type=password]'); var ready = el !== null &amp;&amp; Object.keys(el).some(function (k) { return k.indexOf('__reactProps') === 0; }); if (ready) { document.body.setAttribute('data-kr-hydrated', 'si'); } else if (++tries &lt; 150) { setTimeout(check, 100); } })(); })();</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForAttribute</td>
+	<td>css=body@data-kr-hydrated</td>
+	<td>si</td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>(function () { var set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; var el = document.querySelector('input[type=email]'); set.call(el, '${USER_EMAIL}'); el.dispatchEvent(new Event('input', { bubbles: true })); })();</td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>(function () { var set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; var el = document.querySelector('input[type=password]'); set.call(el, '${WRONG_PASSWORD}'); el.dispatchEvent(new Event('input', { bubbles: true })); })();</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>css=input[type='email']</td>
+	<td>${USER_EMAIL}</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//button[normalize-space()='Entrar']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=form [role='alert']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=form [role='alert']</td>
+	<td>glob:*Invalid email or password*</td>
+</tr>
+<tr>
+	<td>verifyLocation</td>
+	<td>glob:*/login*</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementNotPresent</td>
+	<td>xpath=//nav[@aria-label='Principal']//a[normalize-space()='Existencias']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>css=input[type='email']</td>
+	<td>${USER_EMAIL}</td>
+</tr>
+<tr>
+	<td>verifyVisible</td>
+	<td>xpath=//button[normalize-space()='Entrar']</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
