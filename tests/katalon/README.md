@@ -1,24 +1,25 @@
 # Pruebas Katalon Recorder (Selenium IDE HTML)
 
-Diez casos de prueba de interfaz para Beverage Ledger, en el formato HTML clásico de Selenium IDE que importa **Katalon Recorder** (la extensión de Chrome/Firefox). No son un proyecto de Katalon Studio ni scripts Groovy.
+Diez casos de prueba de interfaz para Beverage Ledger, reunidos en una sola suite (`e2e-juliana.html`), en el formato HTML clásico de Selenium IDE que importa **Katalon Recorder** (la extensión de Chrome/Firefox). No son un proyecto de Katalon Studio ni scripts Groovy.
 
 Los casos se apoyan en los escenarios E2E de `tests/e2e/` (Serenity/JS + Screenplay) y en las pruebas E2E de la API (`beverage-ledger-api/test/e2e/`): los mismos flujos, los mismos textos y las mismas reglas de negocio, pero con selectores que Katalon Recorder entiende.
 
 ## Archivos
 
-| Archivo | Qué comprueba | ¿Escribe en el ledger? |
+El archivo `e2e-juliana.html` contiene los diez casos, uno por tabla:
+
+| Caso | Qué comprueba | ¿Escribe en el ledger? |
 |---|---|---|
-| `TC01_Login_correcto_Manager.html` | Login con la cuenta Manager: llega a `/dashboard`, ve el menú, el panel «Registrar un movimiento» y el menú de la cuenta. Ve «Reportes» y **no** ve «Administración» (rol MANAGER) | No |
-| `TC02_Login_incorrecto_Manager.html` | Mismo correo con una contraseña equivocada: aparece «Invalid email or password», sigue en `/login`, no hay menú y el correo escrito se conserva | No (ver «Bloqueo de cuenta») |
-| `TC03_Confirmar_mensaje.html` | Captura una entrada sin confirmarla y la descarta: comprueba el texto del diálogo («¿Descartar lo que capturaste?» y su descripción) y la notificación «Borrador descartado» / «No se envió nada al ledger.» | No (solo `localStorage`) |
-| `TC04_Encontrar_objeto.html` | Presencia y visibilidad de los elementos: campos y botón del login, menú principal, los cuatro accesos de registro, la tarjeta «Bajo mínimo» y los controles de la captura de ajuste (bodega, motivo, nota, fecha, búsqueda, botones `+`/`−`) | No |
-| `TC05_RF15_Salida.html` | RF-15. Elige la bodega por defecto, añade una botella y comprueba que el selector la descuenta («N en existencia · quedan N-1»), el resumen y el diálogo de confirmación. **Rama de escritura:** confirma, comprueba «Salida · confirmado», la línea «1 botella» y el producto; verifica que la existencia bajó exactamente 1; anula y verifica que volvió al valor inicial | Solo en entorno aislado |
-| `TC06_RF16_Entrada.html` | RF-16. Una entrada no tiene tope (no muestra existencias); dos botellas dan «1 producto · 2 unidades». **Escritura:** «Entrada · confirmado», «2 botellas», y se anula | Solo en entorno aislado |
-| `TC07_RF17_Transferencia.html` | RF-17. Sin origen ni destino, «Confirmar» se anuncia no disponible (`aria-disabled`) y al pulsarlo pide «Un traspaso necesita un origen.» y «… un destino.». Con ambos elegidos, el destino no ofrece la bodega de origen y se abre la confirmación. **Escritura:** el detalle tiene «Líneas (2)» (las dos puntas) y se anula | Solo en entorno aislado |
-| `TC08_RF18_Ajuste.html` | RF-18. Motivo vacío → «Un ajuste necesita un motivo antes de poder confirmarse.»; «abc» → «Al menos 4 caracteres.»; un motivo válido quita el aviso. **Escritura:** el dato «Motivo» del detalle es el escrito y se anula | Solo en entorno aislado |
-| `TC09_RF20_Anulacion.html` | RF-20. **Escritura:** registra una entrada de 1 botella (la existencia sube 1), intenta anular sin motivo («Este campo no puede quedar vacío.» y «Falta un campo por revisar.»), «Conservarlo» la deja confirmada, la anula con motivo y comprueba «anulado», «Anulado el», que ya no hay botón «Anular», que el código no cambió y que la existencia volvió. **Sin escritura:** filtra el historial por «confirmado», abre uno, prueba la anulación sin motivo y pulsa «Conservarlo»; nada se anula | Solo en entorno aislado |
-| `TC10_RF21_Comprobante.html` | RF-21. Descarga el PDF desde el detalle y desde la tarjeta del historial: el archivo se llama `<código>.pdf`, es `application/pdf` y empieza por `%PDF-`; no aparece «No se pudo descargar el PDF» | No |
-| `Suite_Beverage_Ledger.html` | Los diez casos anteriores en un solo archivo, uno por tabla | Igual que cada caso |
+| TC01 Login correcto Manager | Login con la cuenta Manager: llega a `/dashboard`, ve el menú, el panel «Registrar un movimiento» y el menú de la cuenta. Ve «Reportes» y **no** ve «Administración» (rol MANAGER) | No |
+| TC02 Login incorrecto Manager | Mismo correo con una contraseña equivocada: aparece «Invalid email or password», sigue en `/login`, no hay menú y el correo escrito se conserva | No (ver «Bloqueo de cuenta») |
+| TC03 Confirmar mensaje | Captura una entrada sin confirmarla y la descarta: comprueba el texto del diálogo («¿Descartar lo que capturaste?» y su descripción) y la notificación «Borrador descartado» / «No se envió nada al ledger.» | No (solo `localStorage`) |
+| TC04 Encontrar objeto | Presencia y visibilidad de los elementos: campos y botón del login, menú principal, los cuatro accesos de registro, la tarjeta «Bajo mínimo» y los controles de la captura de ajuste (bodega, motivo, nota, fecha, búsqueda, botones `+`/`−`) | No |
+| TC05 RF15 Salida | RF-15. Elige la bodega por defecto, añade una botella y comprueba que el selector la descuenta («N en existencia · quedan N-1»), el resumen y el diálogo de confirmación. **Rama de escritura:** confirma, comprueba «Salida · confirmado», la línea «1 botella» y el producto; verifica que la existencia bajó exactamente 1; anula y verifica que volvió al valor inicial | Solo en entorno aislado |
+| TC06 RF16 Entrada | RF-16. Una entrada no tiene tope (no muestra existencias); dos botellas dan «1 producto · 2 unidades». **Escritura:** «Entrada · confirmado», «2 botellas», y se anula | Solo en entorno aislado |
+| TC07 RF17 Transferencia | RF-17. Sin origen ni destino, «Confirmar» se anuncia no disponible (`aria-disabled`) y al pulsarlo pide «Un traspaso necesita un origen.» y «… un destino.». Con ambos elegidos, el destino no ofrece la bodega de origen y se abre la confirmación. **Escritura:** el detalle tiene «Líneas (2)» (las dos puntas) y se anula | Solo en entorno aislado |
+| TC08 RF18 Ajuste | RF-18. Motivo vacío → «Un ajuste necesita un motivo antes de poder confirmarse.»; «abc» → «Al menos 4 caracteres.»; un motivo válido quita el aviso. **Escritura:** el dato «Motivo» del detalle es el escrito y se anula | Solo en entorno aislado |
+| TC09 RF20 Anulacion | RF-20. **Escritura:** registra una entrada de 1 botella (la existencia sube 1), intenta anular sin motivo («Este campo no puede quedar vacío.» y «Falta un campo por revisar.»), «Conservarlo» la deja confirmada, la anula con motivo y comprueba «anulado», «Anulado el», que ya no hay botón «Anular», que el código no cambió y que la existencia volvió. **Sin escritura:** filtra el historial por «confirmado», abre uno, prueba la anulación sin motivo y pulsa «Conservarlo»; nada se anula | Solo en entorno aislado |
+| TC10 RF21 Comprobante | RF-21. Descarga el PDF desde el detalle y desde la tarjeta del historial: el archivo se llama `<código>.pdf`, es `application/pdf` y empieza por `%PDF-`; no aparece «No se pudo descargar el PDF» | No |
 
 `login.html` y `e2e-tomas.html` ya estaban en la carpeta y no se modificaron (usan otra cuenta).
 
@@ -50,9 +51,8 @@ El caso deja en el log un `echo` que dice qué rama tomó.
 ## Cómo importar en Katalon Recorder
 
 1. Instala Katalon Recorder en Chrome o Firefox y ábrelo desde su icono.
-2. Para la suite completa: **Open** (icono de carpeta junto a «Test Suites») → `Suite_Beverage_Ledger.html`. Aparece la suite «Suite Beverage Ledger» con los diez casos (una tabla = un caso).
-3. Para un caso suelto: **Open** → `TCxx_….html`. Se importa como una suite de un solo caso.
-4. Antes de correr TC05–TC09 contra un entorno aislado, cambia en sus primeras filas `BASE_URL` y `ESCRITURA_AISLADA` (o búscalos y reemplázalos en los archivos antes de importarlos).
+2. **Open** (icono de carpeta junto a «Test Suites») → `e2e-juliana.html`. Aparece la suite «E2E Juliana» con los diez casos (una tabla = un caso).
+3. Antes de correr TC05–TC09 contra un entorno aislado, cambia en sus primeras filas `BASE_URL` y `ESCRITURA_AISLADA` (o búscalos y reemplázalos en los archivos antes de importarlos).
 
 ## Cómo ejecutar
 
