@@ -1,6 +1,6 @@
 import { Then } from '@badeball/cypress-cucumber-preprocessor';
 
-Then('ve la tarjeta {string}', (title: string) => {
+Then('ella ve la tarjeta {string}', (title: string) => {
   cy.contains('h2', title).should('be.visible');
 });
 
