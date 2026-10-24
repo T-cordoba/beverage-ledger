@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button, Card, Field, FormAlert, Input, PasswordInput, Spinner } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
-import { describeError, storeSession } from '@/lib/api';
+import { useDescribeError, storeSession } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
 import { useAcceptInvitation, useInvitationPreview } from './api';
 
@@ -20,6 +20,7 @@ export function AcceptInviteForm({ token }: Readonly<{ token: string }>) {
   const t = useTranslations('invite');
   const tCommon = useTranslations('common');
   const tRoles = useTranslations('admin.roles');
+  const describeError = useDescribeError();
   const router = useRouter();
 
   const preview = useInvitationPreview(token);

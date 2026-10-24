@@ -15,7 +15,7 @@ import {
   Select,
   useNotify,
 } from '@/components/ui';
-import { describeError, type Product } from '@/lib/api';
+import { useDescribeError, type Product } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
 import { useBrands, useCategories, useCreateProduct, useUpdateProduct } from './api';
 
@@ -71,6 +71,7 @@ export function ProductFormDialog({
   const t = useTranslations('catalog.form');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
+  const describeError = useDescribeError();
 
   const [form, setForm] = useState<ProductForm>(() => formOf(product));
   const { data: categories = [] } = useCategories();

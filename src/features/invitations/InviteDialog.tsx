@@ -16,7 +16,7 @@ import {
   useNotify,
 } from '@/components/ui';
 import { ASSIGNABLE_ROLES } from '@/features/admin';
-import { describeError, type UserRole } from '@/lib/api';
+import { useDescribeError, type UserRole } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
 import { useCreateInvitation } from './api';
 
@@ -39,6 +39,7 @@ export function InviteDialog({
   const tRoleDescriptions = useTranslations('admin.roleDescriptions');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
+  const describeError = useDescribeError();
 
   const [email, setEmail] = useState('');
   const [role, setRole] = useState<UserRole>('OPERATOR');

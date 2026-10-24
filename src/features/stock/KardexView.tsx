@@ -28,9 +28,7 @@ import { useDescribeCases } from './quantity';
 function OccurredAtCell({ entry }: Readonly<{ entry: KardexEntry }>) {
   const format = useFormatter();
   return (
-    <span className="text-contrast/70">
-      {format.dateTime(new Date(entry.occurredAt), 'full')}
-    </span>
+    <span className="text-contrast/70">{format.dateTime(new Date(entry.occurredAt), 'full')}</span>
   );
 }
 
@@ -70,9 +68,7 @@ function ChangeCell({ entry }: Readonly<{ entry: KardexEntry }>) {
 
 function BalanceCell({ entry }: Readonly<{ entry: KardexEntry }>) {
   const format = useFormatter();
-  return (
-    <span className="font-medium text-accent">{format.number(entry.balanceAfter)}</span>
-  );
+  return <span className="font-medium text-accent">{format.number(entry.balanceAfter)}</span>;
 }
 
 const occurredAtCell = (entry: KardexEntry) => <OccurredAtCell entry={entry} />;

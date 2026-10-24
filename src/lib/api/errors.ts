@@ -2,6 +2,9 @@
 export interface ApiErrorBody {
   statusCode: number;
   error: string;
+  /** Stable key the client translates; absent when only the status is known. */
+  code?: string;
+  params?: Record<string, string | number>;
   message: string | string[];
   path: string;
   timestamp: string;

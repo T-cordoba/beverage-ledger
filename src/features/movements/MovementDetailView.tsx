@@ -20,7 +20,7 @@ import {
 } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
-import { describeError, type Movement } from '@/lib/api';
+import { useDescribeError, type Movement } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
 import { useCancelMovement, useConfirmMovement, useMovement } from './api';
 import { MIN_REASON_LENGTH, MOVEMENT_TYPES } from './movement-types';
@@ -43,6 +43,7 @@ function Detail({ label, children }: Readonly<{ label: string; children: ReactNo
 function CancelMovementDialog({ movement }: Readonly<{ movement: Movement }>) {
   const t = useTranslations('movements.detail.cancel');
   const tStates = useTranslations('common.states');
+  const describeError = useDescribeError();
   const [isOpen, setIsOpen] = useState(false);
   const [reason, setReason] = useState('');
   const cancel = useCancelMovement();
@@ -134,6 +135,7 @@ function CancelMovementDialog({ movement }: Readonly<{ movement: Movement }>) {
 function ConfirmDraftButton({ movement }: Readonly<{ movement: Movement }>) {
   const t = useTranslations('movements.detail');
   const tStates = useTranslations('common.states');
+  const describeError = useDescribeError();
   const confirm = useConfirmMovement();
   const notify = useNotify();
 

@@ -23,7 +23,7 @@ import {
   useNotify,
   type DataTableColumn,
 } from '@/components/ui';
-import { describeError, type Location } from '@/lib/api';
+import { useDescribeError, type Location } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
 import { useManualRefresh } from '@/lib/hooks';
 import { useCreateLocation, useDeleteLocation, useLocations, useUpdateLocation } from './api';
@@ -258,6 +258,7 @@ export function LocationsView() {
   const t = useTranslations('locations');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
+  const describeError = useDescribeError();
 
   const { data, isPending, isError, refetch } = useLocations();
   const { refresh, isRefreshing } = useManualRefresh(refetch);

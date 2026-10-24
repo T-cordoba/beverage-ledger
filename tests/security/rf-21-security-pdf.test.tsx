@@ -196,7 +196,7 @@ describe('RF-21 Security - Descarga del comprobante en PDF', () => {
     expect(URL.createObjectURL).not.toHaveBeenCalled();
   });
 
-  it('el botón PDF ante un 403 avisa con el mensaje de la API y no expone path ni timestamp', async () => {
+  it('el botón PDF ante un 403 avisa en el idioma del usuario y no expone path ni timestamp', async () => {
     // Arrange
     storeSession(session());
     fetchMock.mockImplementationOnce(
@@ -223,7 +223,8 @@ describe('RF-21 Security - Descarga del comprobante en PDF', () => {
 
     // Assert
     expect(await screen.findByText('No se pudo descargar el PDF')).toBeTruthy();
-    expect(screen.getByText('Insufficient permissions')).toBeTruthy();
+    expect(screen.getByText('No tienes permiso para hacer esto.')).toBeTruthy();
+    expect(document.body.textContent).not.toContain('Insufficient permissions');
     expect(document.body.textContent).not.toContain(`/api/v1/movements/${MOVEMENT_ID}/pdf`);
     expect(document.body.textContent).not.toContain('2026-01-01T00:00:00.000Z');
     expect(clickedLinks).toHaveLength(0);

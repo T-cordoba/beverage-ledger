@@ -358,11 +358,6 @@
       "pickedUpDescription": "Lo que se había capturado está de vuelta. Al confirmar se reutiliza.",
       "pickUpFailed": "No se pudo recuperar el borrador",
       "fields": {
-        "occurredAt": {
-          "label": "Ocurrió el",
-          "hint": "Déjalo vacío para registrarlo como ahora.",
-          "placeholder": "Ahora"
-        },
         "location": {
           "label": "Bodega",
           "hint": "En qué bodega cae este movimiento."
@@ -411,7 +406,8 @@
       "keep": "Conservarlo",
       "discardedTitle": "Borrador descartado",
       "discardedNothingSent": "No se envió nada al ledger.",
-      "discardedDraftKept": "Lo que capturaste se limpió. El borrador abierto queda en el historial para que un encargado lo anule."
+      "discardedDraftKept": "Lo que capturaste se limpió. El borrador abierto queda en el historial para que un encargado lo anule.",
+      "stampedNow": "Se registrará con la fecha y hora actuales."
     }
   },
   "stock": {
@@ -999,6 +995,78 @@
       "description": "No pudimos mostrar esta pantalla. Vuelve a intentarlo; si sigue igual, avísale a quien administre el sistema.",
       "retry": "Reintentar",
       "backHome": "Volver al inicio"
+    },
+    "api": {
+      "network": "No pudimos comunicarnos con el servidor. Revisa tu conexión e inténtalo de nuevo.",
+      "status": {
+        "badRequest": "Algunos datos no son válidos. Revísalos e inténtalo de nuevo.",
+        "unauthorized": "Tu sesión terminó. Vuelve a iniciar sesión.",
+        "forbidden": "No tienes permiso para hacer esto.",
+        "notFound": "Lo que buscas ya no existe.",
+        "conflict": "Alguien cambió estos datos mientras trabajabas. Recarga e inténtalo de nuevo.",
+        "tooLarge": "Lo que intentas enviar es demasiado grande.",
+        "tooManyRequests": "Demasiados intentos seguidos. Espera un momento e inténtalo de nuevo.",
+        "server": "El servidor tuvo un problema. Inténtalo de nuevo en unos minutos."
+      },
+      "codes": {
+        "INSUFFICIENT_PERMISSIONS": "No tienes permiso para hacer esto.",
+        "INVALID_SESSION": "Tu sesión terminó. Vuelve a iniciar sesión.",
+        "INVALID_CREDENTIALS": "El correo o la contraseña no son correctos.",
+        "ACCOUNT_SUSPENDED": "Esta cuenta está suspendida. Pide a quien administre el sistema que la reactive.",
+        "ACCOUNT_INVITED": "Esta invitación todavía no se ha aceptado. Usa el enlace que te enviaron.",
+        "ACCOUNT_NOT_FOUND": "Ninguna cuenta usa ese correo. Pide a quien administre el sistema que te invite.",
+        "GOOGLE_SIGN_IN_DISABLED": "El inicio de sesión con Google no está disponible en este servidor.",
+        "INVALID_SIGN_IN_REQUEST": "No pudimos completar el inicio de sesión. Vuelve a intentarlo.",
+        "GOOGLE_EMAIL_MISSING": "Google no nos dio un correo para tu cuenta.",
+        "BRAND_NOT_FOUND": "Esa marca ya no existe.",
+        "BRAND_NAME_TAKEN": "Ya hay una marca con ese nombre.",
+        "BRAND_IN_USE": "La marca todavía tiene {count, plural, one {# producto} other {# productos}}. Muévelos a otra antes de eliminarla.",
+        "CATEGORY_NOT_FOUND": "Esa categoría ya no existe.",
+        "CATEGORY_NAME_TAKEN": "Ya hay una categoría con ese nombre.",
+        "CATEGORY_IN_USE": "La categoría todavía tiene {count, plural, one {# producto} other {# productos}}. Muévelos a otra antes de eliminarla.",
+        "PRODUCT_NOT_FOUND": "Uno de los productos ya no existe. Recarga la lista.",
+        "PRODUCT_NAME_TAKEN": "Ya hay un producto con ese nombre.",
+        "PRODUCTS_INACTIVE": "Estos productos están desactivados: {products}.",
+        "LOCATION_NOT_FOUND": "Esa bodega ya no existe.",
+        "NO_DEFAULT_LOCATION": "La organización no tiene una bodega principal. Marca una en Bodegas.",
+        "LOCATION_DEFAULT_REQUIRED": "Para dejar de ser la principal, marca otra bodega como principal.",
+        "LOCATION_DEFAULT_UNDELETABLE": "La bodega principal no se puede eliminar.",
+        "LOCATION_IN_USE": "Esta bodega tiene movimientos o existencias, así que no se puede eliminar.",
+        "LOCATION_NAME_TAKEN": "Ya hay una bodega con ese nombre.",
+        "MOVEMENT_NOT_FOUND": "Ese movimiento ya no existe.",
+        "MOVEMENT_ALREADY_CONFIRMED": "Este movimiento ya se había registrado.",
+        "MOVEMENT_ALREADY_CANCELLED": "Este movimiento ya estaba anulado.",
+        "MOVEMENT_CHANGED": "El movimiento cambió mientras lo anulabas. Recarga e inténtalo de nuevo.",
+        "MOVEMENT_NOT_EDITABLE": "Este movimiento ya no es un borrador, así que no se puede editar.",
+        "MOVEMENT_TYPE_FORBIDDEN": "Tu rol no puede registrar este tipo de movimiento.",
+        "MOVEMENT_FUTURE_DATE": "Un movimiento no puede tener una fecha futura.",
+        "NOT_ENOUGH_STOCK": "No hay existencias suficientes para {count, plural, one {# producto} other {# productos}}. Revisa las cantidades.",
+        "STOCK_CHANGED": "Las existencias cambiaron mientras se registraba el movimiento. Inténtalo de nuevo.",
+        "TRANSFER_DESTINATION_REQUIRED": "Un traspaso necesita una bodega de destino.",
+        "TRANSFER_SAME_LOCATION": "El origen y el destino del traspaso tienen que ser bodegas distintas.",
+        "DESTINATION_NOT_ALLOWED": "Solo un traspaso lleva bodega de destino.",
+        "ADJUSTMENT_REASON_REQUIRED": "Un ajuste necesita un motivo.",
+        "ADJUSTMENT_LINE_ZERO": "Una línea de ajuste no puede quedar en cero.",
+        "LINE_NOT_POSITIVE": "Las cantidades tienen que ser mayores que cero.",
+        "ROLE_NOT_ASSIGNABLE": "Ese rol no se puede asignar.",
+        "EMAIL_TAKEN": "Ese correo ya pertenece a alguien de la organización.",
+        "INVITATION_PENDING": "Ese correo ya tiene una invitación pendiente.",
+        "INVITATION_NOT_FOUND": "Esa invitación ya no existe.",
+        "INVITATION_UNUSABLE": "Este enlace de invitación ya no es válido. Pide uno nuevo.",
+        "ORGANIZATION_NOT_FOUND": "No encontramos tu organización.",
+        "INVALID_RANGE": "La fecha de inicio es posterior a la de fin.",
+        "USER_NOT_FOUND": "Esa persona ya no existe.",
+        "CURRENT_PASSWORD_REQUIRED": "Escribe tu contraseña actual.",
+        "CURRENT_PASSWORD_INCORRECT": "La contraseña actual no es correcta.",
+        "SELF_ROLE_CHANGE": "No puedes cambiar tu propio rol ni tu estado.",
+        "LAST_ADMIN": "La organización tiene que conservar al menos un administrador activo.",
+        "VALIDATION_FAILED": "Algunos datos no son válidos. Revísalos e inténtalo de nuevo.",
+        "RECORD_CONFLICT": "Ya existe un registro con esos datos.",
+        "RECORD_REFERENCE": "Se hace referencia a algo que ya no existe. Recarga e inténtalo de nuevo.",
+        "NOT_FOUND": "Lo que buscas ya no existe.",
+        "PAYLOAD_TOO_LARGE": "Lo que intentas enviar es demasiado grande.",
+        "INTERNAL": "El servidor tuvo un problema. Inténtalo de nuevo en unos minutos."
+      }
     }
   },
   "invite": {

@@ -12,7 +12,7 @@ import {
   Spinner,
   useNotify,
 } from '@/components/ui';
-import { describeError } from '@/lib/api';
+import { useDescribeError } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
 import { useOrganization, useUpdateOrganization } from './api';
 
@@ -27,6 +27,7 @@ export function OrganizationView() {
   const t = useTranslations('admin.organization');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
+  const describeError = useDescribeError();
   const format = useFormatter();
 
   const { data: organization, error, isPending } = useOrganization();

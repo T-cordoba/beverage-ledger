@@ -358,11 +358,6 @@
       "pickedUpDescription": "What was captured is back. Confirming reuses it.",
       "pickUpFailed": "Could not pick up the draft",
       "fields": {
-        "occurredAt": {
-          "label": "Occurred at",
-          "hint": "Leave it empty to record it as happening now.",
-          "placeholder": "Now"
-        },
         "location": {
           "label": "Location",
           "hint": "Which warehouse this movement lands on."
@@ -411,7 +406,8 @@
       "keep": "Keep it",
       "discardedTitle": "Draft discarded",
       "discardedNothingSent": "Nothing was sent to the ledger.",
-      "discardedDraftKept": "What you captured is cleared. The open draft stays in the history for a manager to void."
+      "discardedDraftKept": "What you captured is cleared. The open draft stays in the history for a manager to void.",
+      "stampedNow": "It will be recorded with the current date and time."
     }
   },
   "stock": {
@@ -999,6 +995,78 @@
       "description": "We could not render this screen. Try again; if it keeps happening, tell whoever administers the system.",
       "retry": "Try again",
       "backHome": "Back to the home page"
+    },
+    "api": {
+      "network": "We couldn't reach the server. Check your connection and try again.",
+      "status": {
+        "badRequest": "Some of the data isn't valid. Check it and try again.",
+        "unauthorized": "Your session ended. Sign in again.",
+        "forbidden": "You don't have permission to do this.",
+        "notFound": "What you're looking for no longer exists.",
+        "conflict": "Someone changed this data while you were working. Reload and try again.",
+        "tooLarge": "What you're sending is too large.",
+        "tooManyRequests": "Too many attempts in a row. Wait a moment and try again.",
+        "server": "The server ran into a problem. Try again in a few minutes."
+      },
+      "codes": {
+        "INSUFFICIENT_PERMISSIONS": "You don't have permission to do this.",
+        "INVALID_SESSION": "Your session ended. Sign in again.",
+        "INVALID_CREDENTIALS": "The email or password is incorrect.",
+        "ACCOUNT_SUSPENDED": "This account is suspended. Ask an administrator to restore it.",
+        "ACCOUNT_INVITED": "This invitation hasn't been accepted yet. Use the link you were sent.",
+        "ACCOUNT_NOT_FOUND": "No account uses that email. Ask an administrator to invite you.",
+        "GOOGLE_SIGN_IN_DISABLED": "Google sign-in isn't available on this server.",
+        "INVALID_SIGN_IN_REQUEST": "We couldn't complete the sign-in. Try again.",
+        "GOOGLE_EMAIL_MISSING": "Google didn't give us an email for your account.",
+        "BRAND_NOT_FOUND": "That brand no longer exists.",
+        "BRAND_NAME_TAKEN": "There's already a brand with that name.",
+        "BRAND_IN_USE": "The brand still has {count, plural, one {# product} other {# products}}. Move them to another before deleting it.",
+        "CATEGORY_NOT_FOUND": "That category no longer exists.",
+        "CATEGORY_NAME_TAKEN": "There's already a category with that name.",
+        "CATEGORY_IN_USE": "The category still has {count, plural, one {# product} other {# products}}. Move them to another before deleting it.",
+        "PRODUCT_NOT_FOUND": "One of the products no longer exists. Reload the list.",
+        "PRODUCT_NAME_TAKEN": "There's already a product with that name.",
+        "PRODUCTS_INACTIVE": "These products are deactivated: {products}.",
+        "LOCATION_NOT_FOUND": "That location no longer exists.",
+        "NO_DEFAULT_LOCATION": "The organization has no main location. Mark one in Locations.",
+        "LOCATION_DEFAULT_REQUIRED": "To stop being the main location, mark another one as main.",
+        "LOCATION_DEFAULT_UNDELETABLE": "The main location can't be deleted.",
+        "LOCATION_IN_USE": "This location has movements or stock, so it can't be deleted.",
+        "LOCATION_NAME_TAKEN": "There's already a location with that name.",
+        "MOVEMENT_NOT_FOUND": "That movement no longer exists.",
+        "MOVEMENT_ALREADY_CONFIRMED": "This movement had already been recorded.",
+        "MOVEMENT_ALREADY_CANCELLED": "This movement was already voided.",
+        "MOVEMENT_CHANGED": "The movement changed while you were voiding it. Reload and try again.",
+        "MOVEMENT_NOT_EDITABLE": "This movement is no longer a draft, so it can't be edited.",
+        "MOVEMENT_TYPE_FORBIDDEN": "Your role can't record this type of movement.",
+        "MOVEMENT_FUTURE_DATE": "A movement can't be dated in the future.",
+        "NOT_ENOUGH_STOCK": "There isn't enough stock for {count, plural, one {# product} other {# products}}. Check the quantities.",
+        "STOCK_CHANGED": "Stock changed while the movement was being recorded. Try again.",
+        "TRANSFER_DESTINATION_REQUIRED": "A transfer needs a destination location.",
+        "TRANSFER_SAME_LOCATION": "A transfer's origin and destination must be different locations.",
+        "DESTINATION_NOT_ALLOWED": "Only a transfer has a destination location.",
+        "ADJUSTMENT_REASON_REQUIRED": "An adjustment needs a reason.",
+        "ADJUSTMENT_LINE_ZERO": "An adjustment line can't be zero.",
+        "LINE_NOT_POSITIVE": "Quantities must be greater than zero.",
+        "ROLE_NOT_ASSIGNABLE": "That role can't be assigned.",
+        "EMAIL_TAKEN": "That email already belongs to someone in the organization.",
+        "INVITATION_PENDING": "That email already has a pending invitation.",
+        "INVITATION_NOT_FOUND": "That invitation no longer exists.",
+        "INVITATION_UNUSABLE": "This invitation link is no longer valid. Ask for a new one.",
+        "ORGANIZATION_NOT_FOUND": "We couldn't find your organization.",
+        "INVALID_RANGE": "The start date is after the end date.",
+        "USER_NOT_FOUND": "That person no longer exists.",
+        "CURRENT_PASSWORD_REQUIRED": "Enter your current password.",
+        "CURRENT_PASSWORD_INCORRECT": "The current password is incorrect.",
+        "SELF_ROLE_CHANGE": "You can't change your own role or status.",
+        "LAST_ADMIN": "The organization must keep at least one active administrator.",
+        "VALIDATION_FAILED": "Some of the data isn't valid. Check it and try again.",
+        "RECORD_CONFLICT": "A record with that data already exists.",
+        "RECORD_REFERENCE": "Something referenced no longer exists. Reload and try again.",
+        "NOT_FOUND": "What you're looking for no longer exists.",
+        "PAYLOAD_TOO_LARGE": "What you're sending is too large.",
+        "INTERNAL": "The server ran into a problem. Try again in a few minutes."
+      }
     }
   },
   "invite": {

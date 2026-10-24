@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { Button, Field, FormAlert, Input, PasswordInput } from '@/components/ui';
 import { GOOGLE_SIGN_IN_URL, IS_GOOGLE_SIGN_IN_ENABLED } from '@/config/api';
 import { RETURN_TO_PARAM, safeReturnTo } from '@/config/navigation';
-import { describeError } from '@/lib/api';
+import { useDescribeError } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
 import { useAuth } from './auth-context';
 
@@ -32,6 +32,7 @@ function GoogleButton({ label }: Readonly<{ label: string }>) {
 
 export function LoginForm() {
   const t = useTranslations('auth');
+  const describeError = useDescribeError();
   const { signIn } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();

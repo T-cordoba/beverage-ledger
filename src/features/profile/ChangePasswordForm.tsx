@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Button, Card, Field, FormAlert, PasswordInput, useNotify } from '@/components/ui';
 import { useAuth } from '@/features/auth';
-import { describeError } from '@/lib/api';
+import { useDescribeError } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
 import { useChangePassword } from './api';
 
@@ -20,6 +20,7 @@ const EMPTY = { currentPassword: '', newPassword: '', confirmation: '' };
 export function ChangePasswordForm() {
   const t = useTranslations('profile.password');
   const tCommon = useTranslations('common');
+  const describeError = useDescribeError();
 
   const { signOut } = useAuth();
   const change = useChangePassword();

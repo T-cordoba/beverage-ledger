@@ -14,7 +14,10 @@ export const EMPTY_LINE = { BOTTLE: 0, CASE: 0 } as const;
 
 interface DraftState {
   lines: Record<string, DraftLine>;
-  /** `YYYY-MM-DD`, or empty for "now". */
+  /**
+   * No longer captured: the API stamps every movement with its own clock. Kept
+   * in the stored shape so drafts saved by earlier releases still read back.
+   */
   occurredAt: string;
   /** Empty means the default location, which the API resolves. */
   locationId: string;

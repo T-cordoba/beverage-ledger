@@ -15,7 +15,7 @@ import {
   Select,
   useNotify,
 } from '@/components/ui';
-import { describeError, type User, type UserRole, type UserStatus } from '@/lib/api';
+import { useDescribeError, type User, type UserRole, type UserStatus } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
 import { useUpdateUser } from './api';
 import { ASSIGNABLE_ROLES, ASSIGNABLE_STATUSES } from './roles';
@@ -46,6 +46,7 @@ export function UserFormDialog({
   const tStatuses = useTranslations('admin.statuses');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
+  const describeError = useDescribeError();
 
   const [name, setName] = useState(user.name);
   const [role, setRole] = useState<UserRole>(user.role);

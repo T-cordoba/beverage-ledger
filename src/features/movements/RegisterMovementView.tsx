@@ -8,7 +8,6 @@ import {
   Button,
   Card,
   ConfirmDialog,
-  DatePicker,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -24,9 +23,8 @@ import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
 import { useCatalogFilters } from '@/features/catalog';
 import { LocationSelect } from '@/features/locations';
-import { describeError, type MovementType } from '@/lib/api';
+import { useDescribeError, type MovementType } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
-import { parseDateKey } from '@/lib/utils';
 import { useCancelMovement, useOpenDraft, useRegisterMovement, useResumeDraft } from './api';
 import { MIN_REASON_LENGTH, MOVEMENT_TYPES } from './movement-types';
 import { ProductPicker } from './ProductPicker';
@@ -121,6 +119,7 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
   const t = useTranslations('movements.register');
   const tTypes = useTranslations('movements.types');
   const tStates = useTranslations('common.states');
+  const describeError = useDescribeError();
   const format = useFormatter();
 
   const meta = MOVEMENT_TYPES[type];
@@ -194,9 +193,6 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
         destinationLocationId: meta.needsDestination
           ? draft.destinationLocationId || undefined
           : undefined,
-        // A date key is a calendar day; the API takes an instant. Omitted means
-        // now, which is what an empty picker stands for.
-        occurredAt: draft.occurredAt ? parseDateKey(draft.occurredAt).toISOString() : undefined,
         reason: trimmedReason || undefined,
         note: draft.note.trim() || undefined,
         draftId: draft.pendingMovementId,
@@ -286,19 +282,7 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
       )}
 
       <Card className="grid gap-4 bg-contrast/5 sm:grid-cols-2">
-        <Field
-          label={t('fields.occurredAt.label')}
-          hint={t('fields.occurredAt.hint')}
-          className="sm:col-span-1"
-        >
-          {() => (
-            <DatePicker
-              value={draft.occurredAt}
-              onChange={draft.setOccurredAt}
-              placeholder={t('fields.occurredAt.placeholder')}
-            />
-          )}
-        </Field>
+        <p className="text-sm text-contrast/60 sm:col-span-2">{t('stampedNow')}</p>
 
         <Field
           label={meta.needsDestination ? t('fields.origin.label') : t('fields.location.label')}

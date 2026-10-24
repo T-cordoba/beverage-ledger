@@ -8,13 +8,14 @@ import {
   useDeleteCategory,
   useUpdateCategory,
 } from '@/features/catalog';
-import { describeError } from '@/lib/api';
+import { useDescribeError } from '@/lib/api';
 import { useManualRefresh } from '@/lib/hooks';
 import { TaxonomyView, type TaxonomyItem, type TaxonomyValues } from './TaxonomyView';
 
 export function CategoriesView() {
   const t = useTranslations('admin.categories');
   const tStates = useTranslations('common.states');
+  const describeError = useDescribeError();
 
   const { data: categories = [], isPending, isError, refetch } = useCategories();
   const { refresh, isRefreshing } = useManualRefresh(refetch);

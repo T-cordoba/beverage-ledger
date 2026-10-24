@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Button, Card, Field, FormAlert, Input, useNotify } from '@/components/ui';
 import { useAuth } from '@/features/auth';
-import { describeError } from '@/lib/api';
+import { useDescribeError } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
 import { useUpdateProfile } from './api';
 
@@ -18,6 +18,7 @@ export function ProfileDetailsForm() {
   const tRoles = useTranslations('admin.roles');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
+  const describeError = useDescribeError();
 
   const { user } = useAuth();
   const update = useUpdateProfile();
