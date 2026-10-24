@@ -344,13 +344,28 @@
       "loadFailed": "The catalogue could not be loaded.",
       "empty": "No products match those filters.",
       "loadMore": "Load more products",
-      "onHand": "{count} on hand",
+      "onHand": "<strong>{count}</strong> on hand",
       "left": "{count} left",
-      "atLimit": "Only {count} left at this location",
       "add": "Add {unit}",
       "remove": "Remove {unit}",
       "unitsPerCase": "{count, plural, one {× # unit} other {× # units}}",
-      "takenTotal": "{count, plural, one {# unit in total} other {# units in total}}"
+      "takenTotal": "{count, plural, one {# unit in total} other {# units in total}}",
+      "state": {
+        "none": "Out of stock",
+        "low": "Below minimum"
+      },
+      "labels": {
+        "category": "Category",
+        "subcategory": "Type",
+        "age": "Age",
+        "abv": "ABV",
+        "origin": "Origin"
+      },
+      "limit": {
+        "noneAtOrigin": "There's no stock at the origin location, so nothing can be taken.",
+        "allTaken": "You've taken all {count} units at the origin location.",
+        "noFullCase": "{count, plural, one {# unit is} other {# units are}} left: not enough for another case, but enough for single bottles."
+      }
     },
     "register": {
       "pendingDraft": "A draft is already open from an attempt that could not be confirmed. Fixing the quantities and confirming again reuses it, so no second movement is created.",

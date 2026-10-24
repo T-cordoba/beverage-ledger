@@ -344,13 +344,28 @@
       "loadFailed": "No se pudo cargar el catálogo.",
       "empty": "Ningún producto coincide con esos filtros.",
       "loadMore": "Cargar más productos",
-      "onHand": "{count} en existencia",
+      "onHand": "<strong>{count}</strong> en existencia",
       "left": "quedan {count}",
-      "atLimit": "Solo quedan {count} en esta bodega",
       "add": "Añadir {unit}",
       "remove": "Quitar {unit}",
       "unitsPerCase": "{count, plural, one {× # unidad} other {× # unidades}}",
-      "takenTotal": "{count, plural, one {# unidad en total} other {# unidades en total}}"
+      "takenTotal": "{count, plural, one {# unidad en total} other {# unidades en total}}",
+      "state": {
+        "none": "Sin existencias",
+        "low": "Bajo mínimo"
+      },
+      "labels": {
+        "category": "Categoría",
+        "subcategory": "Tipo",
+        "age": "Añejamiento",
+        "abv": "Graduación",
+        "origin": "Origen"
+      },
+      "limit": {
+        "noneAtOrigin": "No hay existencias en la bodega de origen, así que no se puede sacar nada.",
+        "allTaken": "Ya tomaste las {count} unidades que hay en la bodega de origen.",
+        "noFullCase": "{count, plural, one {Queda # unidad} other {Quedan # unidades}}: no alcanza para otra caja, pero sí para botellas sueltas."
+      }
     },
     "register": {
       "pendingDraft": "Ya hay un borrador abierto de un intento que no se pudo confirmar. Si corriges las cantidades y confirmas otra vez, se reutiliza y no se crea un segundo movimiento.",
