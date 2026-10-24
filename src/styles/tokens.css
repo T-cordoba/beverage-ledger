@@ -4,9 +4,13 @@
  * Colours are stored as space-separated RGB channels, not hex, so Tailwind can
  * apply its alpha modifier: `rgb(var(--color-accent) / <alpha-value>)` turns
  * `bg-accent/20` into a real value. A hex token would make `/20` impossible.
+ *
+ * Themes match on the attribute alone, not on :root, so a subtree can carry its
+ * own: the theme previews in Settings show both palettes side by side.
  */
 
-:root {
+:root,
+[data-theme='dark'] {
   /* Surfaces */
   --color-bg: 18 0 6;
   --color-surface: 26 26 26;
@@ -127,4 +131,77 @@
   /* Elevation */
   --shadow-panel: 0 2px 8px rgb(0 0 0 / 0.3);
   --shadow-overlay: 0 16px 48px rgb(0 0 0 / 0.5);
+}
+
+/**
+ * Light theme. Every step is re-picked for a near-white surface rather than
+ * inverted: the gold that reads on black is 2:1 on white, so the accent here is
+ * a darker step of the same hue that clears 4.5:1 as text.
+ */
+[data-theme='light'] {
+  --color-bg: 250 247 240;
+  --color-surface: 255 255 255;
+  --color-surface-raised: 242 237 226;
+
+  --color-text: 45 32 14;
+  --color-text-contrast: 20 15 8;
+  --color-text-placeholder: 118 106 88;
+
+  --color-accent: 138 102 0;
+  --color-accent-hover: 112 82 0;
+
+  --color-border: 222 213 196;
+
+  --color-chart-1: 176 141 42;
+  --color-chart-2: 59 110 196;
+
+  --color-success: 21 128 61;
+  --color-warning: 161 98 7;
+  --color-danger: 185 28 28;
+  --color-danger-strong: 153 27 27;
+  --color-info: 29 78 216;
+
+  --shadow-panel: 0 2px 8px rgb(60 40 10 / 0.08);
+  --shadow-overlay: 0 16px 48px rgb(60 40 10 / 0.16);
+}
+
+/* High contrast: pure ends of the scale and borders that are seen, not sensed. */
+:root[data-contrast='high'] {
+  --color-bg: 0 0 0;
+  --color-surface: 8 8 8;
+  --color-surface-raised: 24 24 24;
+  --color-text: 255 255 255;
+  --color-text-contrast: 255 255 255;
+  --color-text-placeholder: 200 200 200;
+  --color-accent: 255 210 40;
+  --color-accent-hover: 255 226 110;
+  --color-border: 170 170 170;
+}
+
+:root[data-theme='light'][data-contrast='high'] {
+  --color-bg: 255 255 255;
+  --color-surface: 255 255 255;
+  --color-surface-raised: 240 240 240;
+  --color-text: 0 0 0;
+  --color-text-contrast: 0 0 0;
+  --color-text-placeholder: 60 60 60;
+  --color-accent: 100 70 0;
+  --color-accent-hover: 70 48 0;
+  --color-border: 70 70 70;
+}
+
+/**
+ * Text size. Tailwind sizes everything in rem, so scaling the root scales type,
+ * spacing and controls together: the layout grows instead of overflowing.
+ */
+:root[data-text-scale='sm'] {
+  font-size: 87.5%;
+}
+
+:root[data-text-scale='lg'] {
+  font-size: 112.5%;
+}
+
+:root[data-text-scale='xl'] {
+  font-size: 125%;
 }

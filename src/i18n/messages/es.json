@@ -197,7 +197,8 @@
       "menuFor": "Menú de la cuenta de {name}",
       "profile": "Tu perfil",
       "signOut": "Cerrar sesión",
-      "landing": "Ir al sitio público"
+      "landing": "Ir al sitio público",
+      "settings": "Ajustes"
     }
   },
   "auth": {
@@ -1109,5 +1110,38 @@
     "invalidTitle": "Esta invitación ya no sirve",
     "invalidDescription": "Puede que la hayan cancelado, que ya se haya usado o que se le haya pasado el plazo. Pide una nueva.",
     "backToSignIn": "Ir a iniciar sesión"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "subtitle": "Cómo se ve y se lee la aplicación en este dispositivo. Se guarda aquí, no en tu cuenta.",
+    "theme": {
+      "title": "Apariencia",
+      "description": "Tema de color de toda la aplicación.",
+      "options": {
+        "light": "Claro",
+        "dark": "Oscuro",
+        "system": "Como el dispositivo"
+      }
+    },
+    "contrast": {
+      "title": "Contraste",
+      "description": "El contraste alto usa blanco y negro puros, bordes más visibles y texto secundario a plena intensidad.",
+      "options": {
+        "normal": "Normal",
+        "high": "Alto"
+      }
+    },
+    "textScale": {
+      "title": "Tamaño de texto",
+      "description": "Escala el texto y la interfaz completa: los menús, las tablas y los botones crecen con él sin desbordarse.",
+      "options": {
+        "sm": "Pequeño",
+        "md": "Normal",
+        "lg": "Grande",
+        "xl": "Muy grande"
+      },
+      "preview": "Vista previa · {percent} %",
+      "sample": "Salida de bodega a barra: 2 cajas y 3 botellas."
+    }
   }
 }

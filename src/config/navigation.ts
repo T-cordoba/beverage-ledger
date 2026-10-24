@@ -21,6 +21,7 @@ export const ROUTES = {
   catalogLocations: '/catalog/locations',
   /** Out of MAIN_NAVIGATION on purpose: it hangs off the account menu. */
   profile: '/profile',
+  settings: '/settings',
   admin: '/admin',
   adminUsers: '/admin/users',
   adminOrganization: '/admin/organization',

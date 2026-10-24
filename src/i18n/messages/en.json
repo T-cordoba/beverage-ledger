@@ -197,7 +197,8 @@
       "menuFor": "Account menu for {name}",
       "profile": "Your profile",
       "signOut": "Sign out",
-      "landing": "Go to the public site"
+      "landing": "Go to the public site",
+      "settings": "Settings"
     }
   },
   "auth": {
@@ -1109,5 +1110,38 @@
     "invalidTitle": "This invitation no longer works",
     "invalidDescription": "It may have been cancelled, already used, or left too long. Ask for a new one.",
     "backToSignIn": "Go to sign in"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "How the app looks and reads on this device. Saved here, not on your account.",
+    "theme": {
+      "title": "Appearance",
+      "description": "Colour theme for the whole app.",
+      "options": {
+        "light": "Light",
+        "dark": "Dark",
+        "system": "Match device"
+      }
+    },
+    "contrast": {
+      "title": "Contrast",
+      "description": "High contrast uses pure black and white, more visible borders and secondary text at full strength.",
+      "options": {
+        "normal": "Normal",
+        "high": "High"
+      }
+    },
+    "textScale": {
+      "title": "Text size",
+      "description": "Scales the text and the whole interface: menus, tables and buttons grow with it without overflowing.",
+      "options": {
+        "sm": "Small",
+        "md": "Normal",
+        "lg": "Large",
+        "xl": "Extra large"
+      },
+      "preview": "Preview · {percent}%",
+      "sample": "Storeroom to bar: 2 cases and 3 bottles."
+    }
   }
 }

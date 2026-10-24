@@ -37,6 +37,11 @@ export function AccountActions({ onNavigate }: Readonly<{ onNavigate: () => void
             {t('profile')}
           </Link>
         </Button>
+        <Button variant="ghost" size="sm" className="w-full justify-start" asChild>
+          <Link href={ROUTES.settings} onClick={onNavigate}>
+            {t('settings')}
+          </Link>
+        </Button>
         {/* The logo goes to the dashboard, as it should inside a product, which
             left the public site with no way back to it. */}
         <Button variant="ghost" size="sm" className="w-full justify-start" asChild>
