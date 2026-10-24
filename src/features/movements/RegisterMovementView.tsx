@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, type ReactNode } from 'react';
 import {
+  BackLink,
   Button,
   Card,
   ConfirmDialog,
@@ -16,6 +17,7 @@ import {
   Field,
   FormAlert,
   Input,
+  RequiredLegend,
   Textarea,
   useNotify,
 } from '@/components/ui';
@@ -239,6 +241,7 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
   return (
     <div ref={validation.ref} className="space-y-6">
       <header className="space-y-1">
+        <BackLink href={ROUTES.movements} />
         <h1 className="text-2xl font-light text-foreground sm:text-3xl">
           {tTypes(`${type}.action`)}
         </h1>
@@ -284,7 +287,12 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
       <Card className="grid gap-4 bg-contrast/5 sm:grid-cols-2">
         <p className="text-sm text-contrast/60 sm:col-span-2">{t('stampedNow')}</p>
 
+        {(meta.needsDestination || meta.requiresReason) && (
+          <RequiredLegend className="sm:col-span-2" />
+        )}
+
         <Field
+          required={meta.needsDestination}
           label={meta.needsDestination ? t('fields.origin.label') : t('fields.location.label')}
           hint={meta.needsDestination ? t('fields.origin.hint') : t('fields.location.hint')}
           error={validation.errorFor('origin')}
@@ -309,6 +317,7 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
 
         {meta.needsDestination && (
           <Field
+            required
             label={t('fields.destination.label')}
             hint={t('fields.destination.hint')}
             error={validation.errorFor('destination')}
@@ -332,6 +341,7 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
 
         {meta.requiresReason && (
           <Field
+            required
             label={t('fields.reason.label')}
             hint={t('fields.reason.hint')}
             error={validation.errorFor('reason')}

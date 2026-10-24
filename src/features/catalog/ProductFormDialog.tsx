@@ -12,6 +12,7 @@ import {
   Field,
   FormAlert,
   Input,
+  RequiredLegend,
   Select,
   useNotify,
 } from '@/components/ui';
@@ -154,6 +155,7 @@ export function ProductFormDialog({
           onSubmit={validation.onSubmit(() => void submit())}
           className="space-y-4"
         >
+          <RequiredLegend />
           <DialogTitle>
             {isEditing ? t('editTitle', { name: product.name }) : t('createTitle')}
           </DialogTitle>
@@ -162,7 +164,12 @@ export function ProductFormDialog({
           {validation.alert && <FormAlert title={validation.alert} />}
 
           <div className="grid gap-4 text-left sm:grid-cols-2">
-            <Field label={t('name')} className="sm:col-span-2" error={validation.errorFor('name')}>
+            <Field
+              required
+              label={t('name')}
+              className="sm:col-span-2"
+              error={validation.errorFor('name')}
+            >
               {({ id, describedBy, invalid }) => (
                 <Input
                   id={id}
@@ -177,7 +184,7 @@ export function ProductFormDialog({
               )}
             </Field>
 
-            <Field label={t('category')} error={validation.errorFor('categoryId')}>
+            <Field required label={t('category')} error={validation.errorFor('categoryId')}>
               {({ id, describedBy, invalid }) => (
                 <Select
                   id={id}
@@ -270,6 +277,7 @@ export function ProductFormDialog({
             </Field>
 
             <Field
+              required
               label={t('caseSize')}
               hint={isEditing ? t('caseSizeHintEdit') : t('caseSizeHintNew')}
               error={validation.errorFor('caseSize')}

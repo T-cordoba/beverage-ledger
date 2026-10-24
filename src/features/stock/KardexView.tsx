@@ -4,17 +4,18 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import {
+  BackLink,
   Badge,
   Button,
   Card,
   DataTable,
+  type DataTableColumn,
   EmptyState,
   Pagination,
   RefreshButton,
   Skeleton,
   Spinner,
   StatTile,
-  type DataTableColumn,
 } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { useProduct } from '@/features/catalog';
@@ -176,9 +177,7 @@ export function KardexView({ productId }: Readonly<{ productId: string }>) {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <Link href={ROUTES.stock} className="text-sm text-contrast/60 hover:text-accent">
-          ← {t('backToStock')}
-        </Link>
+        <BackLink href={ROUTES.stock} />
         <div className="flex items-start justify-between gap-3">
           <h1 className="text-2xl font-light text-foreground sm:text-3xl">{product.data.name}</h1>
           <RefreshButton onRefresh={refresh} isRefreshing={isRefreshing} />

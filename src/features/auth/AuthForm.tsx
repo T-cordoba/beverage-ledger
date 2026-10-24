@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
-import { Button, Field, FormAlert, Input, PasswordInput } from '@/components/ui';
+import { Button, Field, FormAlert, Input, PasswordInput, RequiredLegend } from '@/components/ui';
 import { GOOGLE_SIGN_IN_URL, IS_GOOGLE_SIGN_IN_ENABLED } from '@/config/api';
 import { RETURN_TO_PARAM, safeReturnTo } from '@/config/navigation';
 import { useDescribeError } from '@/lib/api';
@@ -67,10 +67,11 @@ export function LoginForm() {
       onSubmit={form.onSubmit(() => void handleSubmit())}
       className="space-y-5"
     >
+      <RequiredLegend />
       {error && <FormAlert title={error} />}
       {form.alert && <FormAlert title={form.alert} />}
 
-      <Field label={t('fields.email')} error={form.errorFor('email')}>
+      <Field required label={t('fields.email')} error={form.errorFor('email')}>
         {({ id, describedBy, invalid }) => (
           <Input
             id={id}
@@ -86,7 +87,7 @@ export function LoginForm() {
         )}
       </Field>
 
-      <Field label={t('fields.password')} error={form.errorFor('password')}>
+      <Field required label={t('fields.password')} error={form.errorFor('password')}>
         {({ id, describedBy, invalid }) => (
           <PasswordInput
             id={id}

@@ -2,7 +2,15 @@
 
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { Button, Card, Field, FormAlert, PasswordInput, useNotify } from '@/components/ui';
+import {
+  Button,
+  Card,
+  Field,
+  FormAlert,
+  PasswordInput,
+  RequiredLegend,
+  useNotify,
+} from '@/components/ui';
 import { useAuth } from '@/features/auth';
 import { useDescribeError } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
@@ -61,9 +69,10 @@ export function ChangePasswordForm() {
         onSubmit={validation.onSubmit(() => void submit())}
         className="space-y-4"
       >
+        <RequiredLegend />
         {validation.alert && <FormAlert title={validation.alert} />}
 
-        <Field label={t('current')} error={validation.errorFor('currentPassword')}>
+        <Field required label={t('current')} error={validation.errorFor('currentPassword')}>
           {({ id, describedBy, invalid }) => (
             <PasswordInput
               id={id}
@@ -79,6 +88,7 @@ export function ChangePasswordForm() {
         </Field>
 
         <Field
+          required
           label={t('new')}
           hint={tCommon('passwordPolicy')}
           error={validation.errorFor('newPassword')}
@@ -97,7 +107,7 @@ export function ChangePasswordForm() {
           )}
         </Field>
 
-        <Field label={t('repeat')} error={validation.errorFor('confirmation')}>
+        <Field required label={t('repeat')} error={validation.errorFor('confirmation')}>
           {({ id, describedBy, invalid }) => (
             <PasswordInput
               id={id}

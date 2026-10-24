@@ -1,3 +1,4 @@
+export { BackLink } from './BackLink';
 export { Badge, type BadgeProps } from './Badge';
 export { Button, type ButtonProps } from './Button';
 export { Card } from './Card';
@@ -14,7 +15,7 @@ export {
   DialogTrigger,
 } from './Dialog';
 export { EmptyState } from './EmptyState';
-export { Field, type FieldControlProps } from './Field';
+export { Field, RequiredLegend, type FieldControlProps } from './Field';
 export { FloatingAction, type FloatingActionItem } from './FloatingAction';
 export { FormAlert } from './FormAlert';
 export { Input, PasswordInput, type InputProps } from './Input';

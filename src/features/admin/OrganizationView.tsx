@@ -9,6 +9,7 @@ import {
   Field,
   FormAlert,
   Input,
+  RequiredLegend,
   Spinner,
   useNotify,
 } from '@/components/ui';
@@ -94,9 +95,15 @@ export function OrganizationView() {
           onSubmit={validation.onSubmit(() => void submit())}
           className="space-y-4"
         >
+          <RequiredLegend />
           {validation.alert && <FormAlert title={validation.alert} />}
 
-          <Field label={t('name')} hint={t('nameHint')} error={validation.errorFor('name')}>
+          <Field
+            required
+            label={t('name')}
+            hint={t('nameHint')}
+            error={validation.errorFor('name')}
+          >
             {({ id, describedBy, invalid }) => (
               <Input
                 id={id}
@@ -141,6 +148,7 @@ export function OrganizationView() {
           </Field>
 
           <Field
+            required
             label={t('timezone')}
             hint={t('timezoneHint')}
             error={validation.errorFor('timezone')}

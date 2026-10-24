@@ -12,6 +12,7 @@ import {
   Field,
   FormAlert,
   Input,
+  RequiredLegend,
   Select,
   useNotify,
 } from '@/components/ui';
@@ -86,12 +87,13 @@ export function UserFormDialog({
           onSubmit={form.onSubmit(() => void submit())}
           className="space-y-4 text-left"
         >
+          <RequiredLegend />
           <DialogTitle>{t('editTitle', { name: user.name })}</DialogTitle>
           <DialogDescription>{t('description')}</DialogDescription>
 
           {form.alert && <FormAlert title={form.alert} />}
 
-          <Field label={t('name')} error={form.errorFor('name')}>
+          <Field required label={t('name')} error={form.errorFor('name')}>
             {({ id, describedBy, invalid }) => (
               <Input
                 id={id}

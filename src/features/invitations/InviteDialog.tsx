@@ -12,6 +12,7 @@ import {
   Field,
   FormAlert,
   Input,
+  RequiredLegend,
   Select,
   useNotify,
 } from '@/components/ui';
@@ -49,6 +50,8 @@ export function InviteDialog({
   const invite = useCreateInvitation();
   const notify = useNotify();
 
+  const form = useFormValidation({ email: rules.email(email) });
+
   const close = () => {
     onOpenChange(false);
     // Cleared on the way out rather than on the way in, so the link does not
@@ -58,10 +61,9 @@ export function InviteDialog({
       setRole('OPERATOR');
       setIssuedUrl(null);
       setHasCopied(false);
+      form.reset();
     }, 200);
   };
-
-  const form = useFormValidation({ email: rules.email(email) });
 
   const submit = async () => {
     try {
@@ -140,12 +142,13 @@ export function InviteDialog({
           onSubmit={form.onSubmit(() => void submit())}
           className="space-y-4 text-left"
         >
+          <RequiredLegend />
           <DialogTitle>{t('title')}</DialogTitle>
           <DialogDescription>{t('description')}</DialogDescription>
 
           {form.alert && <FormAlert title={form.alert} />}
 
-          <Field label={t('email')} error={form.errorFor('email')}>
+          <Field required label={t('email')} error={form.errorFor('email')}>
             {({ id, describedBy, invalid }) => (
               <Input
                 id={id}

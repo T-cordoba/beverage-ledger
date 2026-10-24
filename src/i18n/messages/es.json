@@ -21,7 +21,8 @@
       "save": "Guardar",
       "search": "Buscar",
       "showDetails": "Ver el detalle",
-      "newMovement": "Registrar movimiento"
+      "newMovement": "Registrar movimiento",
+      "back": "Volver"
     },
     "states": {
       "loading": "Cargando…",
@@ -49,7 +50,9 @@
       "min": "Tiene que ser {min} o más.",
       "max": "Tiene que ser {max} o menos.",
       "mismatch": "No coincide con lo que escribiste arriba.",
-      "summary": "{count, plural, one {Falta un campo por revisar.} other {Faltan # campos por revisar.}}"
+      "summary": "{count, plural, one {Falta un campo por revisar.} other {Faltan # campos por revisar.}}",
+      "requiredMark": "obligatorio",
+      "requiredLegend": "Campo obligatorio"
     },
     "datePicker": {
       "placeholder": "Elegir fecha",

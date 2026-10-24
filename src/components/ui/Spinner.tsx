@@ -14,18 +14,24 @@ interface SpinnerProps {
 }
 
 export function Spinner({ size = 'md', className, label }: Readonly<SpinnerProps>) {
-  return (
-    <output
-      aria-label={label}
-      aria-hidden={label ? undefined : true}
+  const ring = (
+    <span
+      aria-hidden
       className={cn(
         'inline-block animate-spin rounded-full border-2 border-accent/30 border-t-accent',
         sizeStyles[size],
         className,
       )}
-    >
-      {/* Si hay label, lo mostramos como contenido accesible */}
-      {label}
+    />
+  );
+
+  if (!label) return ring;
+
+  // The label sits outside the spinning element; inside it, it rotated with the ring.
+  return (
+    <output className="inline-flex">
+      {ring}
+      <span className="sr-only">{label}</span>
     </output>
   );
 }

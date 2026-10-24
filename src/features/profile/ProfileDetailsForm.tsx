@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { Button, Card, Field, FormAlert, Input, useNotify } from '@/components/ui';
+import { Button, Card, Field, FormAlert, Input, RequiredLegend, useNotify } from '@/components/ui';
 import { useAuth } from '@/features/auth';
 import { useDescribeError } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
@@ -70,9 +70,10 @@ export function ProfileDetailsForm() {
         onSubmit={validation.onSubmit(() => void submit())}
         className="space-y-4"
       >
+        <RequiredLegend />
         {validation.alert && <FormAlert title={validation.alert} />}
 
-        <Field label={t('name')} hint={t('nameHint')} error={validation.errorFor('name')}>
+        <Field required label={t('name')} hint={t('nameHint')} error={validation.errorFor('name')}>
           {({ id, describedBy, invalid }) => (
             <Input
               id={id}

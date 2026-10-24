@@ -21,7 +21,8 @@
       "save": "Save",
       "search": "Search",
       "showDetails": "Show the detail",
-      "newMovement": "Record a movement"
+      "newMovement": "Record a movement",
+      "back": "Back"
     },
     "states": {
       "loading": "Loading…",
@@ -49,7 +50,9 @@
       "min": "It has to be {min} or more.",
       "max": "It has to be {max} or less.",
       "mismatch": "It does not match what you wrote above.",
-      "summary": "{count, plural, one {One field needs a look.} other {# fields need a look.}}"
+      "summary": "{count, plural, one {One field needs a look.} other {# fields need a look.}}",
+      "requiredMark": "required",
+      "requiredLegend": "Required field"
     },
     "datePicker": {
       "placeholder": "Pick a date",

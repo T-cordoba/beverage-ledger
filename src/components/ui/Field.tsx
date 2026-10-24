@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useId, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -15,6 +16,8 @@ interface FieldProps {
   label: ReactNode;
   hint?: ReactNode;
   error?: ReactNode;
+  /** Marks the label with an asterisk; pair the form with a `RequiredLegend`. */
+  required?: boolean;
   children: (control: FieldControlProps) => ReactNode;
   className?: string;
 }
@@ -26,7 +29,8 @@ interface FieldProps {
  * the association is the whole point of the wrapper, and handing the caller the
  * ids is the only way to guarantee it without cloning elements.
  */
-export function Field({ label, hint, error, children, className }: Readonly<FieldProps>) {
+export function Field({ label, hint, error, required, children, className }: Readonly<FieldProps>) {
+  const t = useTranslations('common.validation');
   const id = useId();
   const hintId = hint ? `${id}-hint` : undefined;
   const errorId = error ? `${id}-error` : undefined;
@@ -42,6 +46,14 @@ export function Field({ label, hint, error, children, className }: Readonly<Fiel
         className="block text-xs font-medium uppercase tracking-wider text-contrast/70"
       >
         {label}
+        {required && (
+          <>
+            <span aria-hidden className="ml-0.5 text-danger">
+              *
+            </span>
+            <span className="sr-only"> ({t('requiredMark')})</span>
+          </>
+        )}
       </label>
 
       {children({ id, describedBy, invalid: Boolean(error) })}
@@ -57,5 +69,19 @@ export function Field({ label, hint, error, children, className }: Readonly<Fiel
         </p>
       )}
     </div>
+  );
+}
+
+/** Explains the asterisk once per form, above its first field. */
+export function RequiredLegend({ className }: Readonly<{ className?: string }>) {
+  const t = useTranslations('common.validation');
+
+  return (
+    <p className={cn('text-xs text-contrast/50', className)}>
+      <span aria-hidden className="text-danger">
+        *
+      </span>{' '}
+      {t('requiredLegend')}
+    </p>
   );
 }

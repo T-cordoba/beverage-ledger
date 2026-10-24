@@ -4,6 +4,7 @@ import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useState, type ReactNode } from 'react';
 import {
+  BackLink,
   Button,
   Card,
   Dialog,
@@ -15,6 +16,7 @@ import {
   Field,
   FormAlert,
   Input,
+  RequiredLegend,
   Spinner,
   useNotify,
 } from '@/components/ui';
@@ -84,12 +86,18 @@ function CancelMovementDialog({ movement }: Readonly<{ movement: Movement }>) {
             onSubmit={validation.onSubmit(() => void submit())}
             className="space-y-4"
           >
+            <RequiredLegend />
             <DialogTitle>{t(`${variant}.title`, { code: movement.code })}</DialogTitle>
             <DialogDescription>{t(`${variant}.description`)}</DialogDescription>
 
             {validation.alert && <FormAlert title={validation.alert} />}
 
-            <Field label={t('reason')} className="text-left" error={validation.errorFor('reason')}>
+            <Field
+              required
+              label={t('reason')}
+              className="text-left"
+              error={validation.errorFor('reason')}
+            >
               {({ id, describedBy, invalid }) => (
                 <Input
                   id={id}
@@ -192,9 +200,7 @@ export function MovementDetailView({ id }: Readonly<{ id: string }>) {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-2">
-          <Link href={ROUTES.movements} className="text-sm text-contrast/60 hover:text-accent">
-            ← {t('backToHistory')}
-          </Link>
+          <BackLink href={ROUTES.movements} />
           <h1 className="font-mono text-2xl text-accent sm:text-3xl">{movement.code}</h1>
           <div className="flex flex-wrap items-center gap-2">
             <MovementTypeBadge type={movement.type} />

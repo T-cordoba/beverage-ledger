@@ -4,7 +4,16 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Button, Card, Field, FormAlert, Input, PasswordInput, Spinner } from '@/components/ui';
+import {
+  Button,
+  Card,
+  Field,
+  FormAlert,
+  Input,
+  PasswordInput,
+  RequiredLegend,
+  Spinner,
+} from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { useDescribeError, storeSession } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
@@ -87,10 +96,11 @@ export function AcceptInviteForm({ token }: Readonly<{ token: string }>) {
         onSubmit={form.onSubmit(() => void submit())}
         className="space-y-5"
       >
+        <RequiredLegend />
         {error && <FormAlert title={error} />}
         {form.alert && <FormAlert title={form.alert} />}
 
-        <Field label={t('name')} error={form.errorFor('name')}>
+        <Field required label={t('name')} error={form.errorFor('name')}>
           {({ id, describedBy, invalid }) => (
             <Input
               id={id}
@@ -106,6 +116,7 @@ export function AcceptInviteForm({ token }: Readonly<{ token: string }>) {
         </Field>
 
         <Field
+          required
           label={t('password')}
           hint={tCommon('passwordPolicy')}
           error={form.errorFor('password')}
