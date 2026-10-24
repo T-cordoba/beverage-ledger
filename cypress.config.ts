@@ -3,15 +3,13 @@ import { createEsbuildPlugin } from '@badeball/cypress-cucumber-preprocessor/esb
 import createBundler from '@bahmutov/cypress-esbuild-preprocessor';
 import { defineConfig } from 'cypress';
 
-// Cypress does not read .env; TEST_USER_* come from the same file Vitest and Serenity use.
 try {
   process.loadEnvFile();
 } catch {
-  // No .env: the variables may already be in the shell, as in CI.
+  // No .env: the variables may come from the shell.
 }
 
-// The API throttles /auth/login and /auth/refresh to 10 requests a minute per IP, and
-// every scenario spends one of each. Lives in the Node process so it spans every spec.
+// The API allows 10 sign-ins a minute; kept in Node so the gap spans every spec.
 const SIGN_IN_GAP_MS = 7_000;
 let nextSignInAt = 0;
 

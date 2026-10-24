@@ -17,7 +17,6 @@ When('busca {string} en las existencias', (term: string) => {
   cy.get('main input[type="search"]').type(term);
 });
 
-// Retries until the debounced search has replaced the unfiltered page.
 Then('todos los productos listados contienen {string}', (term: string) => {
   productLinks().should(($links) => {
     expect($links).to.have.length.greaterThan(0);
