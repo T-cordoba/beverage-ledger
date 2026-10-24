@@ -79,6 +79,10 @@
       "next": "Next page",
       "goToPage": "Go to page {page}",
       "current": "Page {page} of {pageCount}"
+    },
+    "select": {
+      "search": "Type to search…",
+      "noMatches": "Nothing matches what you typed."
     }
   },
   "marketing": {

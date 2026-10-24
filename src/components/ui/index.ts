@@ -2,6 +2,7 @@ export { BackLink } from './BackLink';
 export { Badge, type BadgeProps } from './Badge';
 export { Button, type ButtonProps } from './Button';
 export { Card } from './Card';
+export { Combobox } from './Combobox';
 export { ConfirmDialog } from './ConfirmDialog';
 export { DataTable, type DataTableColumn } from './DataTable';
 export { DatePicker } from './DatePicker';

@@ -79,6 +79,10 @@
       "next": "Página siguiente",
       "goToPage": "Ir a la página {page}",
       "current": "Página {page} de {pageCount}"
+    },
+    "select": {
+      "search": "Escribe para buscar…",
+      "noMatches": "Nada coincide con lo que escribiste."
     }
   },
   "marketing": {
