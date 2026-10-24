@@ -27,6 +27,7 @@ import { useCatalogFilters } from '@/features/catalog';
 import { LocationSelect } from '@/features/locations';
 import { useDescribeError, type MovementType } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
+import { useShortcut } from '@/lib/hooks';
 import { useCancelMovement, useOpenDraft, useRegisterMovement, useResumeDraft } from './api';
 import { MIN_REASON_LENGTH, MOVEMENT_TYPES } from './movement-types';
 import { ProductPicker } from './ProductPicker';
@@ -39,6 +40,69 @@ const strong = (chunks: ReactNode) => <span className="font-medium text-accent">
 const strongForeground = (chunks: ReactNode) => (
   <span className="font-medium text-foreground">{chunks}</span>
 );
+
+const UNDO_ICON = 'M9 14 4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11';
+const REDO_ICON = 'm15 14 5-5-5-5M20 9H9.5a5.5 5.5 0 0 0 0 11H13';
+
+function HistoryButton({
+  icon,
+  label,
+  shortcut,
+  disabled,
+  onClick,
+}: Readonly<{
+  icon: string;
+  label: string;
+  shortcut: string;
+  disabled: boolean;
+  onClick: () => void;
+}>) {
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={onClick}
+      disabled={disabled}
+      title={`${label} (${shortcut})`}
+      aria-keyshortcuts={shortcut.replace('Ctrl', 'Control')}
+    >
+      <svg aria-hidden className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icon} />
+      </svg>
+      {label}
+    </Button>
+  );
+}
+
+/** Where the draft stands, so leaving the page does not feel like losing it. */
+function DraftStatus({ draft }: Readonly<{ draft: MovementDraft }>) {
+  const t = useTranslations('movements.register.history');
+  const format = useFormatter();
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <p aria-live="polite" className="text-xs text-contrast/50">
+        {!draft.isEmpty &&
+          draft.savedAt &&
+          t('savedAt', { time: format.dateTime(draft.savedAt, 'time') })}
+      </p>
+      <HistoryButton
+        icon={UNDO_ICON}
+        label={t('undo')}
+        shortcut="Ctrl+Z"
+        disabled={!draft.canUndo}
+        onClick={draft.undo}
+      />
+      <HistoryButton
+        icon={REDO_ICON}
+        label={t('redo')}
+        shortcut="Ctrl+Y"
+        disabled={!draft.canRedo}
+        onClick={draft.redo}
+      />
+    </div>
+  );
+}
 
 /**
  * Every captured line, on demand.
@@ -186,6 +250,9 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
     ? format.number(draft.totalBaseUnits, 'signed')
     : String(draft.totalBaseUnits);
 
+  useShortcut('mod+z', draft.undo, { enabled: draft.canUndo });
+  useShortcut(['mod+y', 'mod+shift+z'], draft.redo, { enabled: draft.canRedo });
+
   const submit = async () => {
     try {
       const movement = await register.mutateAsync({
@@ -242,10 +309,15 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
     <div ref={validation.ref} className="space-y-6">
       <header className="space-y-1">
         <BackLink href={ROUTES.movements} />
-        <h1 className="text-2xl font-light text-foreground sm:text-3xl">
-          {tTypes(`${type}.action`)}
-        </h1>
-        <p className="text-sm text-contrast/60">{tTypes(`${type}.effect`)}</p>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div className="space-y-1">
+            <h1 className="text-2xl font-light text-foreground sm:text-3xl">
+              {tTypes(`${type}.action`)}
+            </h1>
+            <p className="text-sm text-contrast/60">{tTypes(`${type}.effect`)}</p>
+          </div>
+          <DraftStatus draft={draft} />
+        </div>
       </header>
 
       {draft.pendingMovementId && (

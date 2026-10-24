@@ -1,7 +1,7 @@
 import type { Formats } from 'next-intl';
 
 /**
- * The four date shapes and the signed number the product uses, named once so a
+ * The date shapes and the signed number the product uses, named once so a
  * kardex row and a movement card cannot drift apart. `useFormatter` reads them
  * by name: `format.dateTime(date, 'full')`.
  */
@@ -17,6 +17,7 @@ export const formats = {
       minute: '2-digit',
     },
     monthYear: { month: 'long', year: 'numeric' },
+    time: { hour: '2-digit', minute: '2-digit' },
   },
   number: {
     /**

@@ -410,7 +410,12 @@
       "discardedTitle": "Borrador descartado",
       "discardedNothingSent": "No se envió nada al ledger.",
       "discardedDraftKept": "Lo que capturaste se limpió. El borrador abierto queda en el historial para que un encargado lo anule.",
-      "stampedNow": "Se registrará con la fecha y hora actuales."
+      "stampedNow": "Se registrará con la fecha y hora actuales.",
+      "history": {
+        "undo": "Deshacer",
+        "redo": "Rehacer",
+        "savedAt": "Borrador guardado en este dispositivo · {time}"
+      }
     }
   },
   "stock": {

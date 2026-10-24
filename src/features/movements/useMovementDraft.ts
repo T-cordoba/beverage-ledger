@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { MovementLineInput, MovementType, MovementUnit, Product } from '@/lib/api';
 import { MOVEMENT_TYPES } from './movement-types';
 
@@ -73,6 +73,12 @@ export interface MovementDraft {
   /** Replaces the whole draft with one the API already holds. */
   restore: (state: RestoredDraft) => void;
   clear: () => void;
+  undo: () => void;
+  redo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
+  /** When this device last wrote the draft to storage; null until it has. */
+  savedAt: Date | null;
   isEmpty: boolean;
   productCount: number;
   totalBottles: number;
@@ -84,6 +90,17 @@ export interface MovementDraft {
 }
 
 const storageKeyFor = (type: MovementType) => `beverage-ledger:movement-draft:${type}`;
+
+/** Enough to walk back a capture; past that the oldest steps are dropped. */
+const HISTORY_LIMIT = 50;
+
+interface History {
+  past: DraftState[];
+  present: DraftState;
+  future: DraftState[];
+}
+
+const fresh = (present: DraftState): History => ({ past: [], present, future: [] });
 
 export function read(type: MovementType): DraftState {
   try {
@@ -106,17 +123,75 @@ export function read(type: MovementType): DraftState {
  *
  * State survives a reload through localStorage, one entry per movement type, so
  * a half-captured dispatch is not lost to a misplaced refresh.
+ *
+ * Every edit is a step that can be undone, except `pendingMovementId`: that is
+ * the API's draft, and undoing past it would orphan it. Keystrokes in the same
+ * text field fold into one step, or undoing a reason would take a letter at a time.
  */
 export function useMovementDraft(type: MovementType): MovementDraft {
-  const [state, setState] = useState<DraftState>(EMPTY_STATE);
+  const [history, setHistory] = useState<History>(() => fresh(EMPTY_STATE));
   const [isRestored, setIsRestored] = useState(false);
+  const [savedAt, setSavedAt] = useState<Date | null>(null);
+  const lastEdit = useRef<string | null>(null);
+  const state = history.present;
+
+  /** `field` folds consecutive edits of the same text field into one step. */
+  const setState = useCallback((update: (current: DraftState) => DraftState, field?: string) => {
+    // Decided outside the updater, which React may run twice.
+    const folds = field !== undefined && field === lastEdit.current;
+    lastEdit.current = field ?? null;
+
+    setHistory((current) => {
+      const next = update(current.present);
+      if (next === current.present) return current;
+
+      return {
+        past: folds ? current.past : [...current.past, current.present].slice(-HISTORY_LIMIT),
+        present: next,
+        future: [],
+      };
+    });
+  }, []);
+
+  const replace = useCallback((present: DraftState) => {
+    lastEdit.current = null;
+    setHistory(fresh(present));
+  }, []);
+
+  const undo = useCallback(() => {
+    lastEdit.current = null;
+    setHistory(({ past, present, future }) => {
+      const previous = past.at(-1);
+      if (!previous) return { past, present, future };
+
+      return {
+        past: past.slice(0, -1),
+        present: { ...previous, pendingMovementId: present.pendingMovementId },
+        future: [present, ...future],
+      };
+    });
+  }, []);
+
+  const redo = useCallback(() => {
+    lastEdit.current = null;
+    setHistory(({ past, present, future }) => {
+      const [next, ...rest] = future;
+      if (!next) return { past, present, future };
+
+      return {
+        past: [...past, present],
+        present: { ...next, pendingMovementId: present.pendingMovementId },
+        future: rest,
+      };
+    });
+  }, []);
 
   // Restored after mount rather than in the initializer: the server has no
   // localStorage, and hydrating from it there would mismatch the markup.
   useEffect(() => {
-    setState(read(type));
+    replace(read(type));
     setIsRestored(true);
-  }, [type]);
+  }, [replace, type]);
 
   useEffect(() => {
     if (!isRestored) return;
@@ -124,8 +199,10 @@ export function useMovementDraft(type: MovementType): MovementDraft {
     try {
       if (state === EMPTY_STATE) {
         window.localStorage.removeItem(storageKeyFor(type));
+        setSavedAt(null);
       } else {
         window.localStorage.setItem(storageKeyFor(type), JSON.stringify(state));
+        setSavedAt(new Date());
       }
     } catch {
       // Storage full or blocked. The draft still works for this session.
@@ -151,14 +228,14 @@ export function useMovementDraft(type: MovementType): MovementDraft {
         return { ...current, lines: { ...current.lines, [product.id]: next } };
       });
     },
-    [isSigned],
+    [isSigned, setState],
   );
 
-  const clear = useCallback(() => setState(EMPTY_STATE), []);
+  const clear = useCallback(() => replace(EMPTY_STATE), [replace]);
 
   const setOccurredAt = useCallback(
     (occurredAt: string) => setState((current) => ({ ...current, occurredAt })),
-    [],
+    [setState],
   );
   const setLocationId = useCallback(
     (locationId: string) =>
@@ -170,34 +247,44 @@ export function useMovementDraft(type: MovementType): MovementDraft {
         destinationLocationId:
           current.destinationLocationId === locationId ? '' : current.destinationLocationId,
       })),
-    [],
+    [setState],
   );
   const setDestinationLocationId = useCallback(
     (destinationLocationId: string) =>
       setState((current) => ({ ...current, destinationLocationId })),
-    [],
+    [setState],
   );
   const setReason = useCallback(
-    (reason: string) => setState((current) => ({ ...current, reason })),
-    [],
+    (reason: string) => setState((current) => ({ ...current, reason }), 'reason'),
+    [setState],
   );
-  const setNote = useCallback((note: string) => setState((current) => ({ ...current, note })), []);
+  const setNote = useCallback(
+    (note: string) => setState((current) => ({ ...current, note }), 'note'),
+    [setState],
+  );
+  // Not a step: it records what the API holds, which no undo can take back.
   const rememberPending = useCallback(
-    (pendingMovementId: string) => setState((current) => ({ ...current, pendingMovementId })),
+    (pendingMovementId: string) =>
+      setHistory((current) => ({
+        ...current,
+        present: { ...current.present, pendingMovementId },
+      })),
     [],
   );
 
-  const restore = useCallback((restored: RestoredDraft) => {
-    setState({
-      lines: Object.fromEntries(restored.lines.map((line) => [line.product.id, line])),
-      occurredAt: restored.occurredAt,
-      locationId: restored.locationId,
-      destinationLocationId: restored.destinationLocationId,
-      reason: restored.reason,
-      note: restored.note,
-      pendingMovementId: restored.movementId,
-    });
-  }, []);
+  const restore = useCallback(
+    (restored: RestoredDraft) =>
+      replace({
+        lines: Object.fromEntries(restored.lines.map((line) => [line.product.id, line])),
+        occurredAt: restored.occurredAt,
+        locationId: restored.locationId,
+        destinationLocationId: restored.destinationLocationId,
+        reason: restored.reason,
+        note: restored.note,
+        pendingMovementId: restored.movementId,
+      }),
+    [replace],
+  );
 
   return useMemo(() => {
     const lines = Object.values(state.lines);
@@ -222,6 +309,11 @@ export function useMovementDraft(type: MovementType): MovementDraft {
       rememberPending,
       restore,
       clear,
+      undo,
+      redo,
+      canUndo: history.past.length > 0,
+      canRedo: history.future.length > 0,
+      savedAt,
       isEmpty: lines.length === 0,
       productCount: lines.length,
       totalBottles: counts('BOTTLE'),
@@ -240,8 +332,11 @@ export function useMovementDraft(type: MovementType): MovementDraft {
   }, [
     adjust,
     clear,
+    history,
+    redo,
     rememberPending,
     restore,
+    savedAt,
     setDestinationLocationId,
     setLocationId,
     setNote,
@@ -249,5 +344,6 @@ export function useMovementDraft(type: MovementType): MovementDraft {
     setReason,
     state,
     type,
+    undo,
   ]);
 }

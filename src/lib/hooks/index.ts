@@ -8,3 +8,4 @@ export {
   type PageParams,
 } from './pagination';
 export { usePagination, type PaginationState } from './usePagination';
+export { useShortcut } from './useShortcut';

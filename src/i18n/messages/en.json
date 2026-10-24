@@ -410,7 +410,12 @@
       "discardedTitle": "Draft discarded",
       "discardedNothingSent": "Nothing was sent to the ledger.",
       "discardedDraftKept": "What you captured is cleared. The open draft stays in the history for a manager to void.",
-      "stampedNow": "It will be recorded with the current date and time."
+      "stampedNow": "It will be recorded with the current date and time.",
+      "history": {
+        "undo": "Undo",
+        "redo": "Redo",
+        "savedAt": "Draft saved on this device · {time}"
+      }
     }
   },
   "stock": {
