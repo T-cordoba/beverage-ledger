@@ -2,6 +2,7 @@ import { addCucumberPreprocessorPlugin } from '@badeball/cypress-cucumber-prepro
 import { createEsbuildPlugin } from '@badeball/cypress-cucumber-preprocessor/esbuild';
 import createBundler from '@bahmutov/cypress-esbuild-preprocessor';
 import { defineConfig } from 'cypress';
+import { rmSync } from 'node:fs';
 
 try {
   process.loadEnvFile();
@@ -20,11 +21,15 @@ export default defineConfig({
     supportFile: 'tests/cypress/support/e2e.ts',
     fixturesFolder: false,
     screenshotsFolder: 'reports/cypress/screenshots',
+    downloadsFolder: 'reports/cypress/downloads',
     videosFolder: 'reports/cypress/videos',
     viewportWidth: 1280,
     viewportHeight: 800,
     // The API sleeps on Render's free tier; its first response can take ~30s.
     defaultCommandTimeout: 30_000,
+    expose: {
+      apiUrl: 'https://beverage-ledger-api.onrender.com',
+    },
     env: {
       TEST_USER_EMAIL: process.env.TEST_USER_EMAIL,
       TEST_USER_PASSWORD: process.env.TEST_USER_PASSWORD,
@@ -37,6 +42,10 @@ export default defineConfig({
           const wait = Math.max(0, nextSignInAt - Date.now());
           nextSignInAt = Date.now() + wait + SIGN_IN_GAP_MS;
           return wait;
+        },
+        clearDownloads() {
+          rmSync(config.downloadsFolder, { recursive: true, force: true });
+          return null;
         },
       });
       return config;

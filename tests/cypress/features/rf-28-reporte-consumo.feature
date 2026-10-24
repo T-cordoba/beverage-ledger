@@ -1,13 +1,14 @@
+# language: es
 @rf-28
-Feature: RF-28 Consultar el reporte de consumo
+Característica: RF-28 Consultar el reporte de consumo
   Como gerente
   Quiero ver qué se consume más en un periodo
   Para decidir qué comprar
 
-  Scenario: Ranking anual por categoría
-    Given el usuario ingresó a la aplicación
-    When abre la sección "Reportes"
-    And elige la opción "Año"
-    And elige la opción "Por categoría"
-    Then la opción "Por categoría" queda marcada
-    And el ranking empieza en la posición 1
+  Escenario: Ranking anual por categoría
+    Dado Camila ingresó a la aplicación
+    Cuando ella abre la sección "Reportes"
+    Y ella elige la opción "Año"
+    Y ella elige la opción "Por categoría"
+    Entonces la opción "Por categoría" queda marcada
+    Y el ranking empieza en la posición 1

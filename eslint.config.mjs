@@ -71,7 +71,7 @@ const eslintConfig = [
   // The E2E suite is its own CommonJS program run by Cucumber: the @/ alias only
   // reaches src/, so its layers import each other relatively.
   {
-    files: ['tests/e2e/**'],
+    files: ['tests/e2e/**', 'tests/cypress/**'],
     rules: {
       'no-restricted-imports': 'off',
     },

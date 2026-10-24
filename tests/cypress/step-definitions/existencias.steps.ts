@@ -12,7 +12,7 @@ Then('el conteo de resultados tiene la forma {string}', (shape: string) => {
   cy.get('nav[aria-label="Paginación"] p').invoke('text').should('match', pattern);
 });
 
-When('busca {string} en las existencias', (term: string) => {
+When('ella busca {string} en las existencias', (term: string) => {
   productLinks().should('have.length.greaterThan', 0);
   cy.get('main input[type="search"]').type(term);
 });
@@ -26,7 +26,7 @@ Then('todos los productos listados contienen {string}', (term: string) => {
   });
 });
 
-When('abre el kardex del primer producto listado', () => {
+When('ella abre el kardex del primer producto listado', () => {
   productLinks()
     .first()
     .then(($link) => {
