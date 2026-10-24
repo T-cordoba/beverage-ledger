@@ -4,21 +4,30 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui';
-import { ADMIN_NAVIGATION, visibleNavigation } from '@/config/navigation';
-import { useAuth } from '@/features/auth';
+import { visibleNavigation, type NavigationItem, type NavigationLabel } from '@/config/navigation';
+import { useAuth } from './auth-context';
 import { cn } from '@/lib/utils';
 
-/** Sub-navigation for the admin area. Each page is behind its own permission. */
-export function AdminNav() {
+/**
+ * Tabs across the pages of one section, each shown only to a session that can
+ * open it. A single visible tab is no choice at all, so then it renders nothing.
+ */
+export function SectionNav({
+  items: all,
+  label,
+}: Readonly<{ items: NavigationItem[]; label: NavigationLabel }>) {
   const t = useTranslations('nav');
   const { can } = useAuth();
   const pathname = usePathname();
-  const items = visibleNavigation(ADMIN_NAVIGATION, can);
+  const items = visibleNavigation(all, can);
 
   if (items.length <= 1) return null;
 
   return (
-    <nav aria-label={t('items.admin')} className="flex flex-wrap gap-1 border-b border-border pb-3">
+    <nav
+      aria-label={t(`items.${label}`)}
+      className="flex flex-wrap gap-1 border-b border-border pb-3"
+    >
       {items.map((item) => {
         const isActive = pathname === item.href;
 

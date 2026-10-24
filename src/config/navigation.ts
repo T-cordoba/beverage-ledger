@@ -16,13 +16,13 @@ export const ROUTES = {
   movement: (id: string) => `/movements/${id}`,
   reports: '/reports',
   catalog: '/catalog',
+  catalogCategories: '/catalog/categories',
+  catalogBrands: '/catalog/brands',
+  catalogLocations: '/catalog/locations',
   /** Out of MAIN_NAVIGATION on purpose: it hangs off the account menu. */
   profile: '/profile',
   admin: '/admin',
   adminUsers: '/admin/users',
-  adminCategories: '/admin/categories',
-  adminBrands: '/admin/brands',
-  adminLocations: '/admin/locations',
   adminOrganization: '/admin/organization',
   adminAudit: '/admin/audit',
 } as const;
@@ -79,15 +79,20 @@ export const MAIN_NAVIGATION: NavigationItem<MainNavigationLabel>[] = [
   {
     href: ROUTES.admin,
     label: 'admin',
-    permissions: ['user:manage', 'catalog:manage', 'organization:manage', 'audit:read'],
+    permissions: ['user:manage', 'organization:manage', 'audit:read'],
   },
+];
+
+/** Everything the catalogue is made of, together: where people look for it. */
+export const CATALOG_NAVIGATION: NavigationItem[] = [
+  { href: ROUTES.catalog, label: 'catalogProducts' },
+  { href: ROUTES.catalogCategories, label: 'catalogCategories', permissions: ['catalog:manage'] },
+  { href: ROUTES.catalogBrands, label: 'catalogBrands', permissions: ['catalog:manage'] },
+  { href: ROUTES.catalogLocations, label: 'catalogLocations', permissions: ['catalog:manage'] },
 ];
 
 export const ADMIN_NAVIGATION: NavigationItem[] = [
   { href: ROUTES.adminUsers, label: 'adminUsers', permissions: ['user:manage'] },
-  { href: ROUTES.adminCategories, label: 'adminCategories', permissions: ['catalog:manage'] },
-  { href: ROUTES.adminBrands, label: 'adminBrands', permissions: ['catalog:manage'] },
-  { href: ROUTES.adminLocations, label: 'adminLocations', permissions: ['catalog:manage'] },
   {
     href: ROUTES.adminOrganization,
     label: 'adminOrganization',

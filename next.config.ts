@@ -8,6 +8,13 @@ const nextConfig: NextConfig = {
   // fail with EPERM on the machine this repo is developed on, and nothing
   // outside the container build reads `.next/standalone` anyway.
   output: process.env.BUILD_STANDALONE === 'true' ? 'standalone' : undefined,
+  // The catalogue's taxonomy lived under admin until it moved next to the products.
+  redirects: async () =>
+    ['categories', 'brands', 'locations'].map((section) => ({
+      source: `/admin/${section}`,
+      destination: `/catalog/${section}`,
+      permanent: true,
+    })),
 };
 
 export default createNextIntlPlugin()(nextConfig);

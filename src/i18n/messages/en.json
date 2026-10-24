@@ -185,11 +185,12 @@
       "reports": "Reports",
       "admin": "Admin",
       "adminUsers": "Users",
-      "adminCategories": "Categories",
-      "adminBrands": "Brands",
-      "adminLocations": "Locations",
       "adminOrganization": "Organization",
-      "adminAudit": "Audit log"
+      "adminAudit": "Audit log",
+      "catalogProducts": "Products",
+      "catalogCategories": "Categories",
+      "catalogBrands": "Brands",
+      "catalogLocations": "Locations"
     },
     "account": {
       "menu": "Account menu",

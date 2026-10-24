@@ -185,11 +185,12 @@
       "reports": "Reportes",
       "admin": "Administración",
       "adminUsers": "Usuarios",
-      "adminCategories": "Categorías",
-      "adminBrands": "Marcas",
-      "adminLocations": "Bodegas",
       "adminOrganization": "Organización",
-      "adminAudit": "Auditoría"
+      "adminAudit": "Auditoría",
+      "catalogProducts": "Productos",
+      "catalogCategories": "Categorías",
+      "catalogBrands": "Marcas",
+      "catalogLocations": "Bodegas"
     },
     "account": {
       "menu": "Menú de la cuenta",

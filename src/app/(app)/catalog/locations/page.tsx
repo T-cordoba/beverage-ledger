@@ -1,17 +1,17 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { CategoriesView } from '@/features/admin';
 import { PermissionGate } from '@/features/auth';
+import { LocationsView } from '@/features/locations';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('admin.categories');
+  const t = await getTranslations('locations');
   return { title: t('title') };
 }
 
-export default function AdminCategoriesPage() {
+export default function CatalogLocationsPage() {
   return (
     <PermissionGate permission="catalog:manage">
-      <CategoriesView />
+      <LocationsView />
     </PermissionGate>
   );
 }
