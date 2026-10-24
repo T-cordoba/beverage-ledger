@@ -4,6 +4,8 @@ Pruebas de extremo a extremo de las funcionalidades RF-15 a RF-24, RF-27 y RF-28
 
 La estructura sigue el proyecto de referencia `serenityjs-e2e-testing`: Cucumber con Gherkin para describir el comportamiento y Serenity/JS para implementarlo con Screenplay.
 
+Los features de RF-15, RF-16, RF-17, RF-18, RF-20 y RF-21 usan Gherkin en español, como la rama `clase-gherkin-es` de la referencia: empiezan con `# language: es` y usan `Característica`, `Antecedentes`, `Escenario`, `Esquema del escenario`, `Ejemplos`, `Dado`, `Cuando`, `Entonces` e `Y`. Cucumber empareja los pasos sin mirar la palabra clave, así que comparten los mismos step definitions que los features que siguen en inglés.
+
 ## El patrón, pieza por pieza
 
 | Elemento del diagrama | Qué es aquí | Dónde vive |
