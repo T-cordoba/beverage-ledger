@@ -1166,5 +1166,25 @@
       "preview": "Vista previa · {percent} %",
       "sample": "Salida de bodega a barra: 2 cajas y 3 botellas."
     }
+  },
+  "help": {
+    "menu": {
+      "open": "Ayuda y atajos de teclado",
+      "title": "Atajos de teclado",
+      "description": "Funcionan en cualquier pantalla, salvo los de registro, que actúan en la captura de un movimiento.",
+      "guide": "Abrir la guía de uso",
+      "shortcuts": {
+        "search": "Ir a la búsqueda de la pantalla",
+        "help": "Abrir esta ayuda",
+        "undo": "Deshacer el último cambio del borrador",
+        "redo": "Rehacer lo deshecho",
+        "register": "Registrar el movimiento",
+        "submit": "Enviar el formulario",
+        "close": "Cerrar un diálogo o un menú",
+        "jump": "Saltar a la opción que empieza por esa letra en un desplegable",
+        "navigate": "Moverse por las opciones de un desplegable",
+        "focus": "Pasar al siguiente control"
+      }
+    }
   }
 }

@@ -253,6 +253,12 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
   useShortcut('mod+z', draft.undo, { enabled: draft.canUndo });
   useShortcut(['mod+y', 'mod+shift+z'], draft.redo, { enabled: draft.canRedo });
 
+  const requestConfirm = () => {
+    if (validation.attempt()) setIsConfirmOpen(true);
+  };
+  // From inside the note too: finishing the note is the moment to register.
+  useShortcut('mod+enter', requestConfirm, { enabled: !draft.isEmpty, inFields: true });
+
   const submit = async () => {
     try {
       const movement = await register.mutateAsync({
@@ -493,9 +499,8 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
                 <Button
                   size="lg"
                   className="flex-1 aria-disabled:opacity-50 sm:flex-initial"
-                  onClick={() => {
-                    if (validation.attempt()) setIsConfirmOpen(true);
-                  }}
+                  onClick={requestConfirm}
+                  aria-keyshortcuts="Control+Enter"
                   aria-disabled={!validation.isValid}
                   isLoading={register.isPending}
                 >

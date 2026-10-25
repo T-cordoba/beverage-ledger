@@ -22,6 +22,8 @@ export const ROUTES = {
   /** Out of MAIN_NAVIGATION on purpose: it hangs off the account menu. */
   profile: '/profile',
   settings: '/settings',
+  /** Public: the guide has to be readable before an account exists. */
+  help: '/help',
   admin: '/admin',
   adminUsers: '/admin/users',
   adminOrganization: '/admin/organization',

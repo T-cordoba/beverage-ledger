@@ -1166,5 +1166,25 @@
       "preview": "Preview · {percent}%",
       "sample": "Storeroom to bar: 2 cases and 3 bottles."
     }
+  },
+  "help": {
+    "menu": {
+      "open": "Help and keyboard shortcuts",
+      "title": "Keyboard shortcuts",
+      "description": "They work on any screen, except the recording ones, which act while capturing a movement.",
+      "guide": "Open the user guide",
+      "shortcuts": {
+        "search": "Go to the page's search box",
+        "help": "Open this help",
+        "undo": "Undo the last draft change",
+        "redo": "Redo what was undone",
+        "register": "Record the movement",
+        "submit": "Submit the form",
+        "close": "Close a dialog or menu",
+        "jump": "Jump to the option starting with that letter in a dropdown",
+        "navigate": "Move through a dropdown's options",
+        "focus": "Move to the next control"
+      }
+    }
   }
 }
