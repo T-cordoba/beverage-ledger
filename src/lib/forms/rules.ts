@@ -13,7 +13,8 @@ export type FieldIssue =
   | { kind: 'min'; min: number }
   | { kind: 'max'; max: number }
   | { kind: 'integer' }
-  | { kind: 'mismatch' };
+  | { kind: 'mismatch' }
+  | { kind: 'color' };
 
 const REQUIRED: FieldIssue = { kind: 'required' };
 
@@ -100,4 +101,11 @@ export function chosen(value: string): FieldIssue | undefined {
 export function matches(value: string, expected: string): FieldIssue | undefined {
   if (value === '') return REQUIRED;
   return value === expected ? undefined : { kind: 'mismatch' };
+}
+
+/** An optional `#rrggbb`, which is what `<input type="color">` produces. */
+export function color(value: string): FieldIssue | undefined {
+  const trimmed = value.trim();
+  if (trimmed === '') return undefined;
+  return /^#[0-9a-f]{6}$/i.test(trimmed) ? undefined : { kind: 'color' };
 }

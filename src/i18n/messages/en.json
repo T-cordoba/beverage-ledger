@@ -52,7 +52,8 @@
       "mismatch": "It does not match what you wrote above.",
       "summary": "{count, plural, one {One field needs a look.} other {# fields need a look.}}",
       "requiredMark": "required",
-      "requiredLegend": "Required field"
+      "requiredLegend": "Required field",
+      "color": "Enter a colour in the form #rrggbb, for example #d4af37."
     },
     "datePicker": {
       "placeholder": "Pick a date",
@@ -652,7 +653,13 @@
       "reset": "Reset",
       "savedTitle": "Organization saved",
       "savedDescription": "The branding is updated everywhere it is read from.",
-      "saveFailed": "Could not save the organization"
+      "saveFailed": "Could not save the organization",
+      "brandColor": "Brand colour",
+      "brandColorHint": "Replaces the product's gold on buttons, links and highlights. Empty uses the default.",
+      "brandColorLowContrast": "This colour reads poorly on the light or dark background. Try a stronger shade so buttons and links stay legible.",
+      "brandColorPicker": "Pick the brand colour",
+      "brandColorDefault": "Default colour",
+      "brandColorReset": "Use the default"
     },
     "audit": {
       "title": "Audit log",
@@ -838,6 +845,22 @@
       "pointLabel": "{period}: {unitsIn} received, {unitsOut} dispatched",
       "caption": "Units received and dispatched per period",
       "period": "Period"
+    },
+    "customize": {
+      "open": "Customize",
+      "title": "Customize the dashboard",
+      "description": "Choose which cards to see and in what order. Saved on this device.",
+      "moveUp": "Move {widget} up",
+      "moveDown": "Move {widget} down",
+      "reset": "Reset",
+      "done": "Done",
+      "widgets": {
+        "actions": "Record a movement",
+        "summary": "Period summary",
+        "activity": "Activity",
+        "lowStock": "Below minimum",
+        "recent": "Latest movements"
+      }
     }
   },
   "reports": {

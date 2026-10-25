@@ -52,7 +52,8 @@
       "mismatch": "No coincide con lo que escribiste arriba.",
       "summary": "{count, plural, one {Falta un campo por revisar.} other {Faltan # campos por revisar.}}",
       "requiredMark": "obligatorio",
-      "requiredLegend": "Campo obligatorio"
+      "requiredLegend": "Campo obligatorio",
+      "color": "Escribe un color con la forma #rrggbb, por ejemplo #d4af37."
     },
     "datePicker": {
       "placeholder": "Elegir fecha",
@@ -652,7 +653,13 @@
       "reset": "Restablecer",
       "savedTitle": "Organización guardada",
       "savedDescription": "La marca queda actualizada en todos los sitios que la leen.",
-      "saveFailed": "No se pudo guardar la organización"
+      "saveFailed": "No se pudo guardar la organización",
+      "brandColor": "Color de marca",
+      "brandColorHint": "Reemplaza el dorado del producto en botones, enlaces y resaltados. Vacío usa el color por defecto.",
+      "brandColorLowContrast": "Este color se lee mal sobre el fondo claro u oscuro. Prueba un tono más intenso para que botones y enlaces sigan siendo legibles.",
+      "brandColorPicker": "Elegir el color de marca",
+      "brandColorDefault": "Color por defecto",
+      "brandColorReset": "Usar el de defecto"
     },
     "audit": {
       "title": "Log de auditoría",
@@ -838,6 +845,22 @@
       "pointLabel": "{period}: {unitsIn} recibidas, {unitsOut} despachadas",
       "caption": "Unidades recibidas y despachadas por periodo",
       "period": "Periodo"
+    },
+    "customize": {
+      "open": "Personalizar",
+      "title": "Personalizar el panel",
+      "description": "Elige qué tarjetas ver y en qué orden. Se guarda en este dispositivo.",
+      "moveUp": "Subir {widget}",
+      "moveDown": "Bajar {widget}",
+      "reset": "Restablecer",
+      "done": "Listo",
+      "widgets": {
+        "actions": "Registrar movimiento",
+        "summary": "Resumen del periodo",
+        "activity": "Actividad",
+        "lowStock": "Bajo mínimo",
+        "recent": "Últimos movimientos"
+      }
     }
   },
   "reports": {
