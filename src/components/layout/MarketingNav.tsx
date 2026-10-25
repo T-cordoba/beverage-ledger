@@ -27,9 +27,12 @@ export function MarketingNav() {
         <nav aria-label={t('label')} className="hidden flex-1 items-center gap-1 md:flex">
           {MARKETING_SECTIONS.map((section) => (
             <Button key={section} variant="ghost" size="sm" asChild className="rounded-lg">
-              <a href={`#${section}`}>{t(section)}</a>
+              <a href={`${ROUTES.home}#${section}`}>{t(section)}</a>
             </Button>
           ))}
+          <Button variant="ghost" size="sm" asChild className="rounded-lg">
+            <Link href={ROUTES.help}>{t('help')}</Link>
+          </Button>
         </nav>
 
         <div className="ml-auto flex items-center gap-2 md:ml-0">

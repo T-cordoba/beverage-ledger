@@ -23,13 +23,22 @@ export function Footer() {
             {t('footer.sections')}
           </h2>
           <ul className="space-y-2 text-sm">
+            {/* Absolute, so the anchors still land on the landing from /help. */}
             {MARKETING_SECTIONS.map((section) => (
               <li key={section}>
-                <a href={`#${section}`} className="text-contrast/70 hover:text-accent">
+                <a
+                  href={`${ROUTES.home}#${section}`}
+                  className="text-contrast/70 hover:text-accent"
+                >
                   {t(`nav.${section}`)}
                 </a>
               </li>
             ))}
+            <li>
+              <Link href={ROUTES.help} className="text-contrast/70 hover:text-accent">
+                {t('footer.help')}
+              </Link>
+            </li>
           </ul>
         </div>
 

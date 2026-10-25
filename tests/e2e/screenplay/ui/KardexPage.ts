@@ -1,7 +1,7 @@
 import { By, PageElement, PageElements } from '@serenity-js/web';
 
 const ledger = () =>
-  PageElement.located(By.role('table', { name: /^Líneas confirmadas del ledger/ })).describedAs(
+  PageElement.located(By.role('table', { name: /^Movimientos confirmados de/ })).describedAs(
     'la tabla del kardex',
   );
 

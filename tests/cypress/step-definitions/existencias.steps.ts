@@ -41,7 +41,7 @@ Then('el kardex es del producto elegido', () => {
 
 // Newest line first, so its balance (fifth column) is what is on hand now.
 Then('el saldo más reciente coincide con lo que hay en existencia', () => {
-  cy.contains('caption', /^Líneas confirmadas del ledger/)
+  cy.contains('caption', /^Movimientos confirmados de/)
     .parent()
     .find('tbody tr:first-child td:nth-child(5)')
     .invoke('text')

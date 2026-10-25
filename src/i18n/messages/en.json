@@ -93,7 +93,8 @@
       "how": "How it works",
       "faq": "Questions",
       "signIn": "Sign in",
-      "dashboard": "Go to the dashboard"
+      "dashboard": "Go to the dashboard",
+      "help": "Help"
     },
     "hero": {
       "eyebrow": "Liquor inventory",
@@ -173,7 +174,8 @@
       "tagline": "Liquor inventory for hospitality operations.",
       "rights": "© {year} {brand}",
       "sections": "Sections",
-      "account": "Account"
+      "account": "Account",
+      "help": "Help"
     }
   },
   "nav": {
@@ -337,7 +339,7 @@
         "confirmed": {
           "verb": "Void",
           "title": "Void {code}?",
-          "description": "Whatever this movement took from stock goes back. The movement is kept, marked as cancelled — the ledger is never rewritten.",
+          "description": "Whatever this movement took from stock goes back. The movement is kept, marked as cancelled — the history is never rewritten.",
           "placeholder": "Why is it being voided?",
           "successTitle": "Movement voided",
           "successDescription": "{code} was reverted and stock returned.",
@@ -420,7 +422,7 @@
       },
       "reasonRequired": "An adjustment needs a reason before it can be confirmed.",
       "confirm": "Confirm",
-      "confirmDescription": "This writes <strong>{products} {products, plural, one {product} other {products}}</strong> to the ledger and moves <strong>{units} {unitsAbs, plural, one {unit} other {units}}</strong> — cases counted by their case size.",
+      "confirmDescription": "This records <strong>{products} {products, plural, one {product} other {products}}</strong> in the movement history and moves <strong>{units} {unitsAbs, plural, one {unit} other {units}}</strong> — cases counted by their case size.",
       "goBack": "Go back",
       "registeredTitle": "Movement registered",
       "registeredDescription": "{code} was confirmed and applied to stock.",
@@ -430,7 +432,7 @@
       "discardDescription": "Every line, the date and the note are cleared. No movement is created.",
       "keep": "Keep it",
       "discardedTitle": "Draft discarded",
-      "discardedNothingSent": "Nothing was sent to the ledger.",
+      "discardedNothingSent": "Nothing was recorded.",
       "discardedDraftKept": "What you captured is cleared. The open draft stays in the history for a manager to void.",
       "stampedNow": "It will be recorded with the current date and time.",
       "history": {
@@ -444,7 +446,7 @@
     "denied": "You cannot see stock levels.",
     "levels": {
       "title": "Stock on hand",
-      "subtitle": "What the ledger says is in the cellar right now. A product that has never moved sits at zero.",
+      "subtitle": "What is in the cellar right now, according to the recorded movements. A product that has never moved sits at zero.",
       "searchPlaceholder": "Search by product…",
       "searchLabel": "Search stock by product",
       "filterCategory": "Filter by category",
@@ -485,8 +487,8 @@
       "minimum": "Minimum",
       "caseSize": "Case size",
       "loadFailed": "The kardex could not be loaded.",
-      "title": "Ledger lines",
-      "caption": "Confirmed ledger lines for {product}",
+      "title": "Movement history",
+      "caption": "Confirmed movements for {product}",
       "loading": "Loading the kardex",
       "empty": "This product has never moved.",
       "emptyDescription": "Its stock stays at zero until a movement is confirmed.",
@@ -497,7 +499,7 @@
         "change": "Change",
         "balance": "Balance"
       },
-      "lines": "Ledger lines"
+      "lines": "Movements"
     }
   },
   "admin": {
@@ -925,7 +927,7 @@
       "activateTitle": "Activate {name}?",
       "activateDescription": "It becomes available for new movements again.",
       "deactivateTitle": "Deactivate {name}?",
-      "deactivateDescription": "It stays in the ledger and in every past movement, but stops being offered for new ones.",
+      "deactivateDescription": "It stays in the history and in every past movement, but stops being offered for new ones.",
       "activatedTitle": "Product activated",
       "activatedDescription": "{name} is available again.",
       "deactivatedTitle": "Product deactivated",
@@ -959,7 +961,7 @@
     "form": {
       "createTitle": "New product",
       "editTitle": "Edit {name}",
-      "description": "Products are never deleted, only deactivated: the ledger references them.",
+      "description": "Products are never deleted, only deactivated: past movements still name them.",
       "name": "Name",
       "namePlaceholder": "Havana Club 7 Años",
       "category": "Category",
@@ -993,7 +995,7 @@
       "isDefault": "{name} (default)"
     },
     "title": "Locations",
-    "subtitle": "Where stock lives. Every level and every ledger line belongs to one, and a transfer moves units between two without changing the total.",
+    "subtitle": "Where stock lives. Every level and every movement belongs to one, and a transfer moves units between two without changing the total.",
     "new": "New location",
     "loadFailed": "The locations could not be loaded.",
     "loading": "Loading locations",
@@ -1001,7 +1003,7 @@
     "empty": "No locations yet.",
     "columns": {
       "name": "Name",
-      "movementCount": "Ledger lines",
+      "movementCount": "Movements",
       "actions": "Actions"
     },
     "default": "Default",
@@ -1030,9 +1032,9 @@
     },
     "delete": {
       "title": "Delete {name}?",
-      "description": "No ledger line references it, so it can go without leaving a gap in the history.",
+      "description": "No movement uses it, so it can go without leaving a gap in the history.",
       "blockedDefault": "The default cannot be deleted: promote another one first",
-      "blockedInUse": "{count} ledger {count, plural, one {line references} other {lines reference}} it"
+      "blockedInUse": "{count} {count, plural, one {movement uses} other {movements use}} it"
     }
   },
   "errors": {
@@ -1184,6 +1186,100 @@
         "jump": "Jump to the option starting with that letter in a dropdown",
         "navigate": "Move through a dropdown's options",
         "focus": "Move to the next control"
+      }
+    },
+    "guide": {
+      "title": "User guide",
+      "subtitle": "How to use and set up the app: the workflow, the roles and what each term means.",
+      "contents": "In this guide",
+      "sections": {
+        "start": {
+          "title": "Getting started",
+          "intro": "The app keeps your operation's liquor inventory: what is in each location, what came in, what went out and why.",
+          "steps": {
+            "signIn": "Sign in with the invitation link your organization's administrator sent you and choose your password. There is no open sign-up: invitation is the only way in.",
+            "dashboard": "The dashboard sums up the period: activity, products below minimum and the latest movements. «Customize» chooses which cards to show and in what order.",
+            "record": "To move stock, use «Record a movement» and pick the type.",
+            "check": "Stock shows how much there is of each product, and its history."
+          }
+        },
+        "roles": {
+          "title": "Roles and permissions",
+          "intro": "Everyone has a role, and the role decides what they can do. Whoever moves the goods cannot change the numbers that account for them, so adjustments and cancellations belong to managers and administrators. If you lack a permission, the option simply isn't there.",
+          "action": "Action",
+          "actions": {
+            "outbound": "Record outbound movements",
+            "inbound": "Record inbound movements",
+            "adjustment": "Record adjustments (with a reason)",
+            "transfer": "Record transfers",
+            "cancel": "Cancel a confirmed movement",
+            "stock": "See stock and history",
+            "reports": "See reports",
+            "catalog": "Manage the catalogue and locations",
+            "users": "Manage users and the organization",
+            "audit": "See the audit log"
+          },
+          "allowed": "Yes",
+          "denied": "No"
+        },
+        "movements": {
+          "title": "Recording movements",
+          "intro": "Every change in stock is a movement. There are four types:",
+          "types": {
+            "outbound": "Outbound: stock leaving a location, for example from the cellar to the bar.",
+            "inbound": "Inbound: stock arriving from a supplier.",
+            "adjustment": "Adjustment: corrects the recorded number up or down, for shrinkage, breakage or a physical count. It always needs a reason.",
+            "transfer": "Transfer: moves stock between two locations without changing the total."
+          },
+          "flow": "Pick the location, find the products and add bottles or cases with the + and − buttons. On confirming, the movement is recorded with the current date and time and stock changes at once.",
+          "limit": "When taking stock out, the counters stop at what the origin location holds; the message under the product card says why it won't go further.",
+          "fix": "A confirmed movement is never edited. If there was a mistake, cancel it (stock goes back) or correct it with an adjustment."
+        },
+        "drafts": {
+          "title": "Drafts",
+          "body": "While you capture, the draft is saved on this device and you'll see «Draft saved» with the time. If you close the tab or reload, it comes back when you return. Undo and Redo (Ctrl+Z and Ctrl+Y) step through your changes. If recording fails, the draft stays saved on the server: the next attempt reuses it, and you can also pick it up from another device."
+        },
+        "stock": {
+          "title": "Stock and history",
+          "body": "Stock shows how much there is of each product, per location. Opening a product shows its history: every confirmed movement with the balance it left. The dashboard's «Below minimum» card flags products at or under their minimum stock."
+        },
+        "reports": {
+          "title": "Reports and receipts",
+          "body": "Reports shows consumption by product, category or brand over a period. Every movement can be downloaded as a PDF receipt from its detail page."
+        },
+        "setup": {
+          "title": "Setup (administrators)",
+          "items": {
+            "organization": "Organization: name, legal name, time zone and the interface's brand colour.",
+            "users": "Users: invite with a single-use link, change roles or suspend accounts.",
+            "catalog": "Catalogue: products, categories, brands and locations, all in the Catalogue section. Products are never deleted, only deactivated.",
+            "audit": "Audit log: who did what, when and from where."
+          }
+        },
+        "settings": {
+          "title": "Preferences and accessibility",
+          "body": "In Settings, from your account menu, choose a light or dark theme, high contrast and text size. They are saved on the device. The language is changed from the same menu."
+        },
+        "shortcuts": {
+          "title": "Keyboard shortcuts",
+          "body": "Press ? on any screen to see this list."
+        },
+        "glossary": {
+          "title": "Glossary",
+          "terms": {
+            "movement": "Movement: any change in stock — an outbound, an inbound, an adjustment or a transfer.",
+            "draft": "Draft: a movement captured but not yet confirmed. It doesn't change stock.",
+            "history": "Movement history (the «ledger»): the list of confirmed movements. It is never edited or deleted, and stock is calculated from it.",
+            "kardex": "Kardex: the history of a single product, with the balance after each movement.",
+            "minimum": "Minimum stock: the quantity at which a product shows as «below minimum».",
+            "case": "Case: the purchasing unit. Its size says how many bottles it holds, which is how cases become units.",
+            "location": "Location: the physical place where stock lives."
+          }
+        },
+        "contact": {
+          "title": "Something not working?",
+          "body": "If you see an error you don't understand or you're missing a permission, talk to your organization's administrator: they can change your role, reactivate your account or send you a new invitation. Error messages say what happened and, almost always, what to do."
+        }
       }
     }
   }

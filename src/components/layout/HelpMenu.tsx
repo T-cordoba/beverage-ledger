@@ -3,38 +3,17 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useState } from 'react';
-import { Button, Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  Keys,
+} from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
+import { SHORTCUTS } from '@/config/shortcuts';
 import { useShortcut } from '@/lib/hooks';
-
-/** Shortcuts this app defines, then the ones the browser and the controls give for free. */
-const SHORTCUTS = [
-  { keys: ['/'], action: 'search' },
-  { keys: ['?'], action: 'help' },
-  { keys: ['Ctrl', 'Z'], action: 'undo' },
-  { keys: ['Ctrl', 'Y'], action: 'redo' },
-  { keys: ['Ctrl', 'Enter'], action: 'register' },
-  { keys: ['Enter'], action: 'submit' },
-  { keys: ['Esc'], action: 'close' },
-  { keys: ['A–Z'], action: 'jump' },
-  { keys: ['↑', '↓'], action: 'navigate' },
-  { keys: ['Tab'], action: 'focus' },
-] as const;
-
-function Keys({ keys }: Readonly<{ keys: readonly string[] }>) {
-  return (
-    <span className="flex shrink-0 items-center gap-1">
-      {keys.map((key) => (
-        <kbd
-          key={key}
-          className="min-w-7 rounded-md border border-border bg-background px-1.5 py-0.5 text-center font-mono text-xs text-foreground"
-        >
-          {key}
-        </kbd>
-      ))}
-    </span>
-  );
-}
 
 /**
  * The "?" in the header: keyboard shortcuts on the spot, and the way to the full

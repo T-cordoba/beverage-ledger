@@ -20,6 +20,7 @@ export { Field, RequiredLegend, type FieldControlProps } from './Field';
 export { FloatingAction, type FloatingActionItem } from './FloatingAction';
 export { FormAlert } from './FormAlert';
 export { Input, PasswordInput, type InputProps } from './Input';
+export { Keys } from './Keys';
 export { NotificationsProvider, useNotify, type NotificationTone } from './Notifications';
 export { Pagination } from './Pagination';
 export { Popover, PopoverClose, PopoverContent, PopoverTrigger } from './Popover';

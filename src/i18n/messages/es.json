@@ -93,7 +93,8 @@
       "how": "Cómo funciona",
       "faq": "Preguntas",
       "signIn": "Iniciar sesión",
-      "dashboard": "Ir al panel"
+      "dashboard": "Ir al panel",
+      "help": "Ayuda"
     },
     "hero": {
       "eyebrow": "Inventario de licores",
@@ -173,7 +174,8 @@
       "tagline": "Inventario de licores para operaciones de hostelería.",
       "rights": "© {year} {brand}",
       "sections": "Secciones",
-      "account": "Cuenta"
+      "account": "Cuenta",
+      "help": "Ayuda"
     }
   },
   "nav": {
@@ -337,7 +339,7 @@
         "confirmed": {
           "verb": "Anular",
           "title": "¿Anular {code}?",
-          "description": "Lo que este movimiento tomó de las existencias vuelve. El movimiento se conserva, marcado como anulado: el ledger no se reescribe.",
+          "description": "Lo que este movimiento tomó de las existencias vuelve. El movimiento se conserva, marcado como anulado: el historial nunca se reescribe.",
           "placeholder": "¿Por qué se anula?",
           "successTitle": "Movimiento anulado",
           "successDescription": "{code} se revirtió y las existencias volvieron.",
@@ -420,7 +422,7 @@
       },
       "reasonRequired": "Un ajuste necesita un motivo antes de poder confirmarse.",
       "confirm": "Confirmar",
-      "confirmDescription": "Esto escribe <strong>{products} {products, plural, one {producto} other {productos}}</strong> en el ledger y mueve <strong>{units} {unitsAbs, plural, one {unidad} other {unidades}}</strong> — las cajas cuentan según su tamaño.",
+      "confirmDescription": "Esto registra <strong>{products} {products, plural, one {producto} other {productos}}</strong> en el historial de movimientos y mueve <strong>{units} {unitsAbs, plural, one {unidad} other {unidades}}</strong> — las cajas cuentan según su tamaño.",
       "goBack": "Volver",
       "registeredTitle": "Movimiento registrado",
       "registeredDescription": "{code} se confirmó y se aplicó a las existencias.",
@@ -430,7 +432,7 @@
       "discardDescription": "Se limpian todas las líneas, la fecha y la nota. No se crea ningún movimiento.",
       "keep": "Conservarlo",
       "discardedTitle": "Borrador descartado",
-      "discardedNothingSent": "No se envió nada al ledger.",
+      "discardedNothingSent": "No se registró nada.",
       "discardedDraftKept": "Lo que capturaste se limpió. El borrador abierto queda en el historial para que un encargado lo anule.",
       "stampedNow": "Se registrará con la fecha y hora actuales.",
       "history": {
@@ -444,7 +446,7 @@
     "denied": "No puedes ver las existencias.",
     "levels": {
       "title": "Existencias",
-      "subtitle": "Lo que el ledger dice que hay en bodega ahora mismo. Un producto que nunca se ha movido está en cero.",
+      "subtitle": "Lo que hay en bodega ahora mismo, según los movimientos registrados. Un producto que nunca se ha movido está en cero.",
       "searchPlaceholder": "Buscar por producto…",
       "searchLabel": "Buscar existencias por producto",
       "filterCategory": "Filtrar por categoría",
@@ -485,8 +487,8 @@
       "minimum": "Mínimo",
       "caseSize": "Tamaño de caja",
       "loadFailed": "No se pudo cargar el kardex.",
-      "title": "Líneas del ledger",
-      "caption": "Líneas confirmadas del ledger de {product}",
+      "title": "Historial de movimientos",
+      "caption": "Movimientos confirmados de {product}",
       "loading": "Cargando el kardex",
       "empty": "Este producto nunca se ha movido.",
       "emptyDescription": "Sus existencias quedan en cero hasta que se confirme un movimiento.",
@@ -497,7 +499,7 @@
         "change": "Cambio",
         "balance": "Saldo"
       },
-      "lines": "Líneas del ledger"
+      "lines": "Movimientos"
     }
   },
   "admin": {
@@ -925,7 +927,7 @@
       "activateTitle": "¿Activar {name}?",
       "activateDescription": "Vuelve a estar disponible para nuevos movimientos.",
       "deactivateTitle": "¿Desactivar {name}?",
-      "deactivateDescription": "Se conserva en el ledger y en todos los movimientos pasados, pero deja de ofrecerse para los nuevos.",
+      "deactivateDescription": "Se conserva en el historial y en todos los movimientos pasados, pero deja de ofrecerse para los nuevos.",
       "activatedTitle": "Producto activado",
       "activatedDescription": "{name} vuelve a estar disponible.",
       "deactivatedTitle": "Producto desactivado",
@@ -959,7 +961,7 @@
     "form": {
       "createTitle": "Nuevo producto",
       "editTitle": "Editar {name}",
-      "description": "Los productos no se eliminan, solo se desactivan: el ledger los referencia.",
+      "description": "Los productos no se eliminan, solo se desactivan: los movimientos pasados los siguen nombrando.",
       "name": "Nombre",
       "namePlaceholder": "Havana Club 7 Años",
       "category": "Categoría",
@@ -993,7 +995,7 @@
       "isDefault": "{name} (por defecto)"
     },
     "title": "Bodegas",
-    "subtitle": "Dónde vive la mercancía. Cada existencia y cada línea del ledger pertenece a una, y un traspaso mueve unidades entre dos sin cambiar el total.",
+    "subtitle": "Dónde vive la mercancía. Cada existencia y cada movimiento pertenece a una, y un traspaso mueve unidades entre dos sin cambiar el total.",
     "new": "Nueva bodega",
     "loadFailed": "No se pudieron cargar las bodegas.",
     "loading": "Cargando bodegas",
@@ -1001,7 +1003,7 @@
     "empty": "Todavía no hay bodegas.",
     "columns": {
       "name": "Nombre",
-      "movementCount": "Líneas del ledger",
+      "movementCount": "Movimientos",
       "actions": "Acciones"
     },
     "default": "Por defecto",
@@ -1030,9 +1032,9 @@
     },
     "delete": {
       "title": "¿Eliminar {name}?",
-      "description": "Ninguna línea del ledger la referencia, así que puede irse sin dejar un hueco en el historial.",
+      "description": "Ningún movimiento la usa, así que puede irse sin dejar un hueco en el historial.",
       "blockedDefault": "La bodega por defecto no se puede eliminar: promueve otra primero",
-      "blockedInUse": "{count} {count, plural, one {línea del ledger la referencia} other {líneas del ledger la referencian}}"
+      "blockedInUse": "{count} {count, plural, one {movimiento la usa} other {movimientos la usan}}"
     }
   },
   "errors": {
@@ -1184,6 +1186,100 @@
         "jump": "Saltar a la opción que empieza por esa letra en un desplegable",
         "navigate": "Moverse por las opciones de un desplegable",
         "focus": "Pasar al siguiente control"
+      }
+    },
+    "guide": {
+      "title": "Guía de uso",
+      "subtitle": "Cómo se usa y se configura la aplicación: el flujo de trabajo, los roles y lo que significa cada término.",
+      "contents": "En esta guía",
+      "sections": {
+        "start": {
+          "title": "Primeros pasos",
+          "intro": "La aplicación lleva el inventario de licores de tu operación: qué hay en cada bodega, qué entró, qué salió y por qué.",
+          "steps": {
+            "signIn": "Entra con el enlace de invitación que te envió quien administra tu organización y elige tu contraseña. No hay registro abierto: solo se entra por invitación.",
+            "dashboard": "El panel resume el periodo: actividad, productos bajo mínimo y últimos movimientos. Con «Personalizar» eliges qué tarjetas ver y en qué orden.",
+            "record": "Para mover mercancía, usa «Registrar movimiento» y elige el tipo.",
+            "check": "En Existencias consultas cuánto hay de cada producto y su historial."
+          }
+        },
+        "roles": {
+          "title": "Roles y permisos",
+          "intro": "Cada persona tiene un rol, y el rol decide qué puede hacer. Quien mueve la mercancía no puede alterar los números que la justifican: por eso los ajustes y las anulaciones son de encargados y administradores. Si te falta un permiso, la opción simplemente no aparece.",
+          "action": "Acción",
+          "actions": {
+            "outbound": "Registrar salidas",
+            "inbound": "Registrar entradas",
+            "adjustment": "Registrar ajustes (con motivo)",
+            "transfer": "Registrar traspasos",
+            "cancel": "Anular un movimiento confirmado",
+            "stock": "Ver existencias e historial",
+            "reports": "Ver reportes",
+            "catalog": "Gestionar el catálogo y las bodegas",
+            "users": "Gestionar usuarios y la organización",
+            "audit": "Ver la auditoría"
+          },
+          "allowed": "Sí",
+          "denied": "No"
+        },
+        "movements": {
+          "title": "Registrar movimientos",
+          "intro": "Cada cambio de existencias es un movimiento. Hay cuatro tipos:",
+          "types": {
+            "outbound": "Salida: mercancía que sale de una bodega, por ejemplo de bodega a barra.",
+            "inbound": "Entrada: mercancía que llega de un proveedor.",
+            "adjustment": "Ajuste: corrige el número registrado hacia arriba o hacia abajo, por merma, rotura o un conteo físico. Siempre exige un motivo.",
+            "transfer": "Traspaso: mueve mercancía entre dos bodegas sin cambiar el total."
+          },
+          "flow": "Elige la bodega, busca los productos y suma botellas o cajas con los botones + y −. Al confirmar, el movimiento se registra con la fecha y hora actuales y las existencias cambian al instante.",
+          "limit": "Al sacar mercancía, los contadores se detienen en lo que hay en la bodega de origen; el mensaje bajo la tarjeta del producto explica por qué no deja seguir.",
+          "fix": "Un movimiento confirmado no se edita. Si hubo un error, se anula (las existencias vuelven) o se corrige con un ajuste."
+        },
+        "drafts": {
+          "title": "Borradores",
+          "body": "Mientras capturas, el borrador se guarda en este dispositivo y verás «Borrador guardado» con la hora. Si cierras la pestaña o recargas, lo recuperas al volver. Deshacer y Rehacer (Ctrl+Z y Ctrl+Y) recorren tus cambios. Si un registro falla, el borrador queda guardado en el servidor: el siguiente intento lo reutiliza, y también puedes retomarlo desde otro dispositivo."
+        },
+        "stock": {
+          "title": "Existencias e historial",
+          "body": "Existencias muestra cuánto hay de cada producto, por bodega. Al abrir un producto ves su historial: cada movimiento confirmado con el saldo que dejó. La tarjeta «Bajo mínimo» del panel avisa de los productos que están en su stock mínimo o por debajo."
+        },
+        "reports": {
+          "title": "Reportes y comprobantes",
+          "body": "Reportes muestra el consumo por producto, categoría o marca en un periodo. Cada movimiento se puede descargar como comprobante en PDF desde su detalle."
+        },
+        "setup": {
+          "title": "Configuración (administradores)",
+          "items": {
+            "organization": "Organización: nombre, razón social, zona horaria y color de marca de la interfaz.",
+            "users": "Usuarios: invita con un enlace de un solo uso, cambia roles o suspende cuentas.",
+            "catalog": "Catálogo: productos, categorías, marcas y bodegas, todo en la sección Catálogo. Los productos no se borran, se desactivan.",
+            "audit": "Auditoría: quién hizo qué, cuándo y desde dónde."
+          }
+        },
+        "settings": {
+          "title": "Preferencias y accesibilidad",
+          "body": "En Ajustes, desde el menú de tu cuenta, eliges tema claro u oscuro, contraste alto y tamaño de texto. Se guardan en el dispositivo. El idioma se cambia desde ese mismo menú."
+        },
+        "shortcuts": {
+          "title": "Atajos de teclado",
+          "body": "Pulsa ? en cualquier pantalla para ver esta lista."
+        },
+        "glossary": {
+          "title": "Glosario",
+          "terms": {
+            "movement": "Movimiento: cualquier cambio de existencias — una salida, una entrada, un ajuste o un traspaso.",
+            "draft": "Borrador: un movimiento capturado pero sin confirmar. No cambia las existencias.",
+            "history": "Historial de movimientos (en inglés, «ledger»): la lista de movimientos confirmados. Nunca se edita ni se borra, y las existencias se calculan a partir de ella.",
+            "kardex": "Kardex: el historial de un solo producto, con el saldo tras cada movimiento.",
+            "minimum": "Stock mínimo: la cantidad a partir de la cual un producto aparece como «bajo mínimo».",
+            "case": "Caja: unidad de compra. Su tamaño dice cuántas botellas trae, y así se convierten cajas en unidades.",
+            "location": "Bodega: el lugar físico donde vive la mercancía."
+          }
+        },
+        "contact": {
+          "title": "¿Algo no funciona?",
+          "body": "Si ves un error que no entiendes o te falta un permiso, habla con quien administre tu organización: puede cambiar tu rol, reactivar tu cuenta o enviarte una invitación nueva. Los mensajes de error dicen qué pasó y, casi siempre, qué hacer."
+        }
       }
     }
   }
