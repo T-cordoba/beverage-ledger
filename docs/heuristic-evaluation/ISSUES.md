@@ -6,26 +6,26 @@ Estados: **Pendiente** · **En curso** · **Corregido** · **Fuera de alcance**.
 
 | Id | Issue | Estado |
 |---|---|---|
-| [H-01](#h-01) | El texto del spinner gira con él | Pendiente |
-| [H-02](#h-02) | No hay personalización visual de la organización | Pendiente |
-| [H-03](#h-03) | El empleado no puede personalizar nada; no hay opciones de accesibilidad | Pendiente |
-| [H-04](#h-04) | No hay deshacer/rehacer al capturar un movimiento | Pendiente |
-| [H-05](#h-05) | No hay botón de volver al registrar un movimiento | Pendiente |
-| [H-06](#h-06) | Los campos obligatorios no se marcan | Pendiente |
-| [H-07](#h-07) | La búsqueda no tolera errores tipográficos, desorden ni acentos | Pendiente |
-| [H-08](#h-08) | Categorías, marcas y bodegas están escondidas en Administración | Pendiente |
-| [H-09](#h-09) | Las cards de licores no se escanean | Pendiente |
-| [H-10](#h-10) | Errores en inglés o crudos del backend | Pendiente |
-| [H-11](#h-11) | Validaciones solo en el backend; la fecha manual del movimiento sobra | Pendiente |
-| [H-12](#h-12) | No hay documentación de uso | Pendiente |
-| [H-13](#h-13) | No se entiende por qué el contador no deja aumentar la cantidad | Pendiente |
-| [H-14](#h-14) | No hay opción de ayuda | Pendiente |
-| [H-15](#h-15) | Atajos de teclado escasos y no documentados | Pendiente |
-| [H-16](#h-16) | Los desplegables largos no tienen búsqueda | Pendiente |
-| [H-17](#h-17) | Los errores de formulario solo aparecen al salir del campo | Pendiente |
-| [H-18](#h-18) | No hay indicador de que el borrador se está guardando | Pendiente |
-| [H-19](#h-19) | "Ledger" es jerga para usuarios nuevos | Pendiente |
-| [H-20](#h-20) | Tema claro, alto contraste y tamaño de texto (alias de H-03) | Pendiente |
+| [H-01](#h-01) | El texto del spinner gira con él | Corregido |
+| [H-02](#h-02) | No hay personalización visual de la organización | Corregido (logo fuera de alcance) |
+| [H-03](#h-03) | El empleado no puede personalizar nada; no hay opciones de accesibilidad | Corregido |
+| [H-04](#h-04) | No hay deshacer/rehacer al capturar un movimiento | Corregido |
+| [H-05](#h-05) | No hay botón de volver al registrar un movimiento | Corregido |
+| [H-06](#h-06) | Los campos obligatorios no se marcan | Corregido |
+| [H-07](#h-07) | La búsqueda no tolera errores tipográficos, desorden ni acentos | Corregido |
+| [H-08](#h-08) | Categorías, marcas y bodegas están escondidas en Administración | Corregido |
+| [H-09](#h-09) | Las cards de licores no se escanean | Corregido |
+| [H-10](#h-10) | Errores en inglés o crudos del backend | Corregido |
+| [H-11](#h-11) | Validaciones solo en el backend; la fecha manual del movimiento sobra | Corregido |
+| [H-12](#h-12) | No hay documentación de uso | Corregido |
+| [H-13](#h-13) | No se entiende por qué el contador no deja aumentar la cantidad | Corregido |
+| [H-14](#h-14) | No hay opción de ayuda | Corregido |
+| [H-15](#h-15) | Atajos de teclado escasos y no documentados | Corregido |
+| [H-16](#h-16) | Los desplegables largos no tienen búsqueda | Corregido |
+| [H-17](#h-17) | Los errores de formulario solo aparecen al salir del campo | Corregido |
+| [H-18](#h-18) | No hay indicador de que el borrador se está guardando | Corregido |
+| [H-19](#h-19) | "Ledger" es jerga para usuarios nuevos | Corregido |
+| [H-20](#h-20) | Tema claro, alto contraste y tamaño de texto (alias de H-03) | Corregido |
 
 ---
 
@@ -78,7 +78,7 @@ Estados: **Pendiente** · **En curso** · **Corregido** · **Fuera de alcance**.
 
 - **Pregunta del instrumento:** ¿Queda claro qué hay que introducir en cada campo de un formulario?
 - **Observado:** "A simple vista no se puede ver si algo es obligatorio; la única forma es dejarlo en blanco y que se resalte. No se tiene el estándar del asterisco para campos obligatorios."
-- **Corrección:** asterisco en la etiqueta de todo campo obligatorio, anunciado como "(obligatorio)" a lectores de pantalla, y una leyenda "* obligatorio" en cada formulario.
+- **Corrección:** asterisco en la etiqueta de todo campo obligatorio, anunciado como "(obligatorio)" a lectores de pantalla, y una leyenda "* Campo obligatorio" en cada formulario.
 
 ## H-07
 **La búsqueda no tolera errores tipográficos, desorden ni acentos**
@@ -87,7 +87,9 @@ Estados: **Pendiente** · **En curso** · **Corregido** · **Fuera de alcance**.
 - **Observado:**
   - "absinthe no aparece con absenta."
   - "No acepta errores tipográficos medios/altos, como escribir un nombre en desorden."
-- **Corrección (API):** la búsqueda de productos y existencias ignora acentos y mayúsculas, compara cada palabra por separado (el orden ya no importa) y usa similitud por trigramas para tolerar errores, ordenando por parecido. Marcas, categorías y bodegas ignoran acentos y mayúsculas.
+- **Corrección (API):** la búsqueda de productos y existencias ignora acentos y mayúsculas, compara cada palabra por separado (el orden ya no importa) y busca también en la marca y la categoría. Solo si nada coincide así, recurre a la similitud por trigramas y devuelve los 10 más parecidos.
+- **Medido contra el catálogo real:** «absenta» → ABSINTHE ST. GEORGE; «jhonie walker» y «walker johnnie» → JOHNNIE WALKER; «blak label» → BLACK LABEL; «anejo» → los AÑEJO. El umbral es 0,25: con 0,3 «jhonie» no encontraba nada.
+- **Límite:** la tolerancia es ortográfica, no semántica. Funciona entre «absenta» y «absinthe» porque se escriben parecido; un sinónimo que se escriba distinto no se encuentra. Marcas, categorías y bodegas siguen con la búsqueda anterior, pero sus desplegables filtran sin acentos (H-16).
 
 ## H-08
 **Categorías, marcas y bodegas están escondidas en Administración**
@@ -108,7 +110,7 @@ Estados: **Pendiente** · **En curso** · **Corregido** · **Fuera de alcance**.
 
 - **Pregunta del instrumento:** ¿El mensaje de error que aparece es fácilmente interpretable?
 - **Observado:** "Hay errores que solo muestran su descripción en inglés o que muestran mensajes directamente de la base de datos."
-- **Corrección:** la API devuelve un `code` estable en cada error y el front lo traduce. Un error sin traducción cae a un mensaje genérico traducido según su tipo; el texto crudo del backend no se muestra nunca.
+- **Corrección:** la API devuelve un `code` estable en cada error y el front lo traduce. Un error sin traducción cae a un mensaje genérico traducido según su tipo; el texto crudo del backend no se muestra nunca. Hasta que se despliegue la API nueva, el front ya traduce por el código de estado HTTP.
 
 ## H-11
 **Validaciones solo en el backend; la fecha manual del movimiento sobra**
@@ -116,7 +118,7 @@ Estados: **Pendiente** · **En curso** · **Corregido** · **Fuera de alcance**.
 - **Observado:** hay reglas que solo valida la API, como "A movement cannot be dated in the future". Eso dejó ver que la fecha de un movimiento no debería elegirse a mano: siempre debe ser la fecha y hora actuales.
 - **Corrección:**
   - Se elimina el selector de fecha: la API sella cada movimiento con su fecha y hora.
-  - El front valida antes de enviar las reglas que hasta ahora solo comprobaba la API.
+  - Del resto de reglas de la API, el front ya validaba antes de enviar el motivo del ajuste, las dos bodegas del traspaso y el tope de existencias. Una línea en cero tampoco llega a enviarse, porque se quita del borrador. La única regla que faltaba era la fecha futura, y desaparece con el selector.
 
 ## H-12
 **No hay documentación de uso**
