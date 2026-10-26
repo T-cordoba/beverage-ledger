@@ -526,7 +526,13 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
         open={isConfirmOpen}
         onOpenChange={setIsConfirmOpen}
         icon={
-          <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            aria-hidden="true"
+            className="h-8 w-8"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"

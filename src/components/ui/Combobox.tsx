@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useId, useState, type KeyboardEvent } from 'react';
+import { useId, useRef, useState, type KeyboardEvent } from 'react';
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from './Popover';
 import {
@@ -44,6 +44,7 @@ export function Combobox({
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [active, setActive] = useState(0);
+  const searchRef = useRef<HTMLInputElement>(null);
 
   const needle = normalize(query.trim());
   const visible = options.filter((option) => normalize(option.label).includes(needle));
@@ -104,11 +105,17 @@ export function Combobox({
         </button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[var(--radix-popover-trigger-width)] min-w-56 overflow-hidden bg-surface p-0 backdrop-blur-none">
+      <PopoverContent
+        className="w-[var(--radix-popover-trigger-width)] min-w-56 overflow-hidden bg-surface p-0 backdrop-blur-none"
+        // The list is the whole point of opening it; the filter is a shortcut into it.
+        onOpenAutoFocus={(event) => {
+          event.preventDefault();
+          searchRef.current?.focus();
+        }}
+      >
         <input
+          ref={searchRef}
           type="search"
-          // The list is the whole point of opening it; the filter is a shortcut into it.
-          autoFocus
           value={query}
           onChange={(event) => {
             setQuery(event.target.value);
@@ -132,6 +139,13 @@ export function Combobox({
                 role="option"
                 aria-selected={isSelected}
                 onClick={() => choose(option)}
+                // Focus stays in the filter, whose own Enter picks the active option, so
+                // this only answers a key that lands on the option itself and never doubles it.
+                onKeyDown={(event) => {
+                  if (event.key !== 'Enter' && event.key !== ' ') return;
+                  event.preventDefault();
+                  choose(option);
+                }}
                 onMouseMove={() => setActive(index)}
                 className={cn(
                   'flex cursor-pointer select-none items-center justify-between gap-2 border-b border-border/40 px-4 py-3 text-sm text-foreground last:border-b-0',

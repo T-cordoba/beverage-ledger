@@ -133,4 +133,74 @@ describe('useMovementDraft', () => {
       });
     });
   });
+
+  describe('undo y redo', () => {
+    it('Camino 1 - sin historial deshacer y rehacer no cambian nada', () => {
+      const { result } = borrador();
+      const antes = result.current;
+
+      act(() => result.current.undo());
+      act(() => result.current.redo());
+
+      expect(result.current.canUndo).toBe(false);
+      expect(result.current.canRedo).toBe(false);
+      expect(result.current.lines).toEqual(antes.lines);
+    });
+
+    it('Camino 2 - deshacer quita el ultimo paso y rehacer lo devuelve', () => {
+      const { result } = borrador();
+      act(() => result.current.adjust(PRODUCTO, 'BOTTLE', 2));
+      act(() => result.current.adjust(PRODUCTO, 'CASE', 1));
+
+      act(() => result.current.undo());
+
+      expect(result.current.quantityOf(PRODUCTO.id)).toMatchObject({ BOTTLE: 2, CASE: 0 });
+      expect(result.current.canUndo).toBe(true);
+      expect(result.current.canRedo).toBe(true);
+
+      act(() => result.current.redo());
+
+      expect(result.current.quantityOf(PRODUCTO.id)).toMatchObject({ BOTTLE: 2, CASE: 1 });
+      expect(result.current.canRedo).toBe(false);
+    });
+
+    it('Camino 3 - deshacer y rehacer conservan el borrador pendiente de la API', () => {
+      const { result } = borrador();
+      act(() => result.current.adjust(PRODUCTO, 'BOTTLE', 1));
+      act(() => result.current.adjust(PRODUCTO, 'BOTTLE', 1));
+      act(() => result.current.rememberPending('movement-9'));
+
+      act(() => result.current.undo());
+      expect(result.current.pendingMovementId).toBe('movement-9');
+      expect(result.current.quantityOf(PRODUCTO.id)).toMatchObject({ BOTTLE: 1 });
+
+      act(() => result.current.redo());
+      expect(result.current.pendingMovementId).toBe('movement-9');
+      expect(result.current.quantityOf(PRODUCTO.id)).toMatchObject({ BOTTLE: 2 });
+    });
+
+    it('Camino 4 - las teclas seguidas en el mismo campo se deshacen de una vez', () => {
+      const { result } = borrador();
+      act(() => result.current.setLocationId('location-1'));
+      act(() => result.current.setReason('C'));
+      act(() => result.current.setReason('Co'));
+      act(() => result.current.setReason('Conteo'));
+
+      act(() => result.current.undo());
+
+      expect(result.current.reason).toBe('');
+      expect(result.current.locationId).toBe('location-1');
+    });
+
+    it('Camino 5 - un cambio nuevo despues de deshacer descarta lo que se podia rehacer', () => {
+      const { result } = borrador();
+      act(() => result.current.adjust(PRODUCTO, 'BOTTLE', 1));
+      act(() => result.current.undo());
+
+      act(() => result.current.setNote('Otra nota'));
+
+      expect(result.current.canRedo).toBe(false);
+      expect(result.current.note).toBe('Otra nota');
+    });
+  });
 });

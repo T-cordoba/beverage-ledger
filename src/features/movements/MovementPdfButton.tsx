@@ -33,7 +33,13 @@ export function MovementPdfButton({ id, code }: Readonly<{ id: string; code: str
       title={t('pdfTitle', { code })}
     >
       {!isDownloading && (
-        <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          aria-hidden="true"
+          className="h-4 w-4 shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
