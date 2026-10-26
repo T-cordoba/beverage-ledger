@@ -1,0 +1,90 @@
+import { WRITES_ALLOWED, WRITES_SKIPPED_REASON } from './support/env';
+import { expect, test } from './support/fixtures';
+
+test.describe('RF-16 Entrada', () => {
+  test('Registrar una entrada y verla en detalle e historial', async ({ page, ledger }) => {
+    test.skip(!WRITES_ALLOWED, WRITES_SKIPPED_REASON);
+
+    await page.goto('/stock');
+    const firstStockRow = page.getByRole('row').filter({ has: page.getByRole('link') }).first();
+    const productName = (await firstStockRow.getByRole('link').first().innerText()).trim();
+    const beforeText = await firstStockRow.getByText(/^\d+ unidades?$/).innerText();
+    const before = Number(/^(\d+)/.exec(beforeText)![1]);
+
+    await page.goto('/movements/new/inbound');
+    const card = page
+      .getByRole('listitem')
+      .filter({ has: page.getByRole('button', { name: 'Añadir caja' }) })
+      .first();
+    await expect(card.getByRole('heading', { level: 3, name: productName })).toBeVisible();
+    await card.getByRole('button', { name: 'Añadir caja' }).click();
+    await expect(card.getByText('12 unidades en total')).toBeVisible();
+
+    await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
+    const dialog = page.getByRole('dialog');
+    await expect(dialog.getByRole('heading', { name: '¿Confirmar esta entrada?' })).toBeVisible();
+    await dialog.getByRole('button', { name: 'Confirmar' }).click();
+
+    await expect(page).toHaveURL(/\/movements\/[0-9a-f-]{36}$/);
+    ledger.track(page.url().split('/').pop()!);
+    await expect(page.getByText('Movimiento registrado')).toBeVisible();
+    await expect(
+      page.getByText(/MOV-\d{4}-\d+ se confirmó y se aplicó a las existencias\./),
+    ).toBeVisible();
+
+    const code = (await page.getByRole('heading', { level: 1 }).innerText()).trim();
+    expect(code).toMatch(/^MOV-\d{4}-\d+$/);
+
+    await page.goto('/stock');
+    const stockRow = page.getByRole('row').filter({ hasText: productName }).first();
+    await expect(stockRow.getByText(`${before + 12} unidades`)).toBeVisible();
+
+    await page.goto('/movements');
+    await page.getByRole('searchbox', { name: 'Buscar movimientos por código' }).fill(code);
+    const entry = page.getByRole('article').filter({ hasText: code }).first();
+    await expect(entry.getByText('Entrada', { exact: true })).toBeVisible();
+    await expect(entry.getByText('confirmado', { exact: true })).toBeVisible();
+    await entry.getByRole('link', { name: 'Detalle' }).click();
+
+    await expect(page).toHaveURL(/\/movements\/[0-9a-f-]{36}$/);
+    await expect(page.getByRole('heading', { level: 1, name: code })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Líneas (1)' })).toBeVisible();
+    await expect(page.getByText('Manager Katalon (local)')).toBeVisible();
+    await expect(page.getByText('confirmado', { exact: true })).toBeVisible();
+  });
+
+  test('Validación de la entrada: sin líneas y diálogo con Volver', async ({ page }) => {
+    const movementCode = page.getByRole('link', { name: /^MOV-\d{4}-\d+$/ }).first();
+
+    await page.goto('/movements');
+    await expect(movementCode).toBeVisible();
+    const lastCode = await movementCode.textContent();
+
+    await page.goto('/movements/new/inbound');
+    await expect(page.getByRole('heading', { name: 'Registrar una entrada' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Confirmar', exact: true })).toHaveCount(0);
+
+    const card = page
+      .getByRole('listitem')
+      .filter({ has: page.getByRole('button', { name: 'Añadir botella' }) })
+      .first();
+    await card.getByRole('button', { name: 'Añadir botella' }).click();
+    await expect(card.getByText('1 unidad en total')).toBeVisible();
+
+    await expect(page.getByRole('button', { name: 'Ahora' })).toBeVisible();
+    await expect(page.getByText('Déjalo vacío para registrarlo como ahora.')).toBeVisible();
+    await page.getByRole('textbox', { name: 'Nota' }).fill('Entrada E2E');
+
+    await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
+    const dialog = page.getByRole('dialog');
+    await expect(dialog.getByRole('heading', { name: '¿Confirmar esta entrada?' })).toBeVisible();
+    await dialog.getByRole('button', { name: 'Volver' }).click();
+
+    await expect(dialog).toBeHidden();
+    await expect(card.getByText('1 unidad en total')).toBeVisible();
+    await expect(page.getByText('Movimiento registrado')).toHaveCount(0);
+
+    await page.goto('/movements');
+    await expect(movementCode).toHaveText(lastCode!);
+  });
+});

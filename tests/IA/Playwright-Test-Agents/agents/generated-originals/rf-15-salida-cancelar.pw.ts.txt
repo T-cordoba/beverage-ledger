@@ -1,0 +1,54 @@
+// spec: planner/beverage-ledger-movimientos.plan.md
+// seed: generator/seed.pw.ts
+
+import { expect, test } from './support/fixtures';
+
+test.describe('RF-15 Salida', () => {
+  test('Volver del diálogo y Descartar no escriben en el ledger', async ({ page }) => {
+    const movementCode = page.getByRole('link', { name: /^MOV-\d{4}-\d+$/ }).first();
+
+    await page.goto('/movements');
+    await expect(movementCode).toBeVisible();
+    const lastCode = await movementCode.textContent();
+
+    await page.goto('/movements/new/outbound');
+    const card = page.getByRole('listitem').filter({ hasText: 'en existencia' }).first();
+
+    // 1. Añadir 1 botella, pulsar 'Confirmar' y en el diálogo pulsar 'Volver'.
+    await card.getByRole('button', { name: 'Añadir botella' }).click();
+    await expect(card.getByText('1 unidad en total')).toBeVisible();
+
+    await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
+    const confirmDialog = page.getByRole('dialog');
+    await expect(confirmDialog.getByRole('heading', { name: '¿Confirmar esta salida?' })).toBeVisible();
+    await confirmDialog.getByRole('button', { name: 'Volver' }).click();
+
+    await expect(confirmDialog).toBeHidden();
+    await expect(card.getByText('1 unidad en total')).toBeVisible();
+    await expect(page.getByText('Movimiento registrado')).toHaveCount(0);
+
+    // El historial no ha cambiado.
+    await page.goto('/movements');
+    await expect(movementCode).toHaveText(lastCode!);
+
+    // 2. Pulsar 'Descartar' y elegir 'Conservarlo', luego repetir y confirmar el descarte.
+    await page.goto('/movements/new/outbound');
+    await expect(card.getByText('1 unidad en total')).toBeVisible();
+
+    await page.getByRole('button', { name: 'Descartar', exact: true }).click();
+    const discardDialog = page.getByRole('dialog');
+    await expect(discardDialog.getByRole('heading', { name: '¿Descartar lo que capturaste?' })).toBeVisible();
+    await discardDialog.getByRole('button', { name: 'Conservarlo' }).click();
+
+    await expect(discardDialog).toBeHidden();
+    await expect(card.getByText('1 unidad en total')).toBeVisible();
+
+    await page.getByRole('button', { name: 'Descartar', exact: true }).click();
+    await discardDialog.getByRole('button', { name: 'Descartar' }).click();
+
+    await expect(page.getByRole('heading', { name: 'Borrador descartado' })).toBeVisible();
+    await expect(page.getByText('No se envió nada al ledger.')).toBeVisible();
+    await expect(card.getByText('0 unidades en total')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Confirmar', exact: true })).toHaveCount(0);
+  });
+});

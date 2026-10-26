@@ -1,0 +1,8 @@
+
+Running 3 tests using 1 worker
+
+  ✓  1 [chromium] › IA\Playwright-Test-Agents\tests\RF21-receipt.spec.ts:39:7 › RF-21 Comprobante › Descargar el PDF desde el historial (4.6s)
+  ✓  2 [chromium] › IA\Playwright-Test-Agents\tests\RF21-receipt.spec.ts:56:7 › RF-21 Comprobante › Descargar el PDF desde el detalle (21.5s)
+  ✓  3 [chromium] › IA\Playwright-Test-Agents\tests\RF21-receipt.spec.ts:74:7 › RF-21 Comprobante › Descargar el PDF de un movimiento anulado (17.8s)
+
+  3 passed (49.1s)

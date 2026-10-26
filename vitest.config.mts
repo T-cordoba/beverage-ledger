@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url';
 import react from '@vitejs/plugin-react';
 import { loadEnv } from 'vite';
-import { defineConfig } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 
 process.env = { ...process.env, ...loadEnv('test', process.cwd(), '') };
 
@@ -13,6 +13,9 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     fileParallelism: false,
+    // Playwright Test Agent specs live under tests/ for repository organization,
+    // but they must only be collected by Playwright, never by Vitest.
+    exclude: [...configDefaults.exclude, 'tests/IA/Playwright-Test-Agents/**'],
     env: {
       NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001',
     },

@@ -1,0 +1,8 @@
+Ejecución: 06-RF18-adjustment
+Inicio: 2026-10-26T08:40:10.122Z  Fin: 2026-10-26T08:40:29.670Z
+Cypress 16.2.0 · chrome 155.0.8059.86 · front http://localhost:3000 · API http://localhost:3001
+Total: 2 · aprobadas 2 · fallidas 0 · pendientes 0 · omitidas 0
+
+RF18-adjustment.cy.ts: 2/2 aprobadas
+  [passed] RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres (7932 ms)
+  [passed] RF-18 Ajuste › Registrar un ajuste con motivo válido (11577 ms)

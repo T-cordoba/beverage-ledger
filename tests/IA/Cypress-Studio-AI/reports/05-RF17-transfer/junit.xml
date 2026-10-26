@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Cypress Studio AI" tests="4" failures="0" time="69.347">
+  <testsuite name="RF17-transfer.cy.ts" tests="4" failures="0" skipped="0" time="69.347" timestamp="2026-10-26T08:38:47.564Z">
+    <testcase classname="RF17-transfer.cy.ts" name="RF-17 Traspaso › Origen y destino obligatorios" time="7.086"></testcase>
+    <testcase classname="RF17-transfer.cy.ts" name="RF-17 Traspaso › El destino excluye al origen" time="2.799"></testcase>
+    <testcase classname="RF17-transfer.cy.ts" name="RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas" time="39.242"></testcase>
+    <testcase classname="RF17-transfer.cy.ts" name="RF-17 Traspaso › Cantidades del traspaso topadas por el origen" time="20.164"></testcase>
+  </testsuite>
+</testsuites>

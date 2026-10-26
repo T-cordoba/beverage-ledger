@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Cypress Studio AI" tests="2" failures="0" time="19.548">
+  <testsuite name="RF18-adjustment.cy.ts" tests="2" failures="0" skipped="0" time="19.548" timestamp="2026-10-26T08:40:10.122Z">
+    <testcase classname="RF18-adjustment.cy.ts" name="RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres" time="7.932"></testcase>
+    <testcase classname="RF18-adjustment.cy.ts" name="RF-18 Ajuste › Registrar un ajuste con motivo válido" time="11.577"></testcase>
+  </testsuite>
+</testsuites>

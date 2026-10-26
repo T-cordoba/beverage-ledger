@@ -1,0 +1,219 @@
+﻿
+Warning: The forceHttp1 option is deprecated and will be removed in a future version of Cypress.
+
+Remove it from your configuration to use the default network path.
+
+Read the documentation for the forceHttp1 configuration option: https://docs.cypress.io/app/references/configuration#forceHttp1
+
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        16.2.0                                                                         │
+  │ Browser:        Chrome 155 (headless)                                                          │
+  │ Node Version:   v24.22.1 (C:\Program Files\nodejs\node.exe)                                    │
+  │ Specs:          6 found (RF15-outbound.cy.ts, RF16-inbound.cy.ts, RF17-transfer.cy.ts, RF18-ad │
+  │                 justment.cy.ts, RF20-cancellation.cy.ts, RF21-receipt.cy.ts)                   │
+  │ Searched:       C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/te │
+  │                 sts/IA/Cypress-Studio-AI/*.cy.ts                                               │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  RF15-outbound.cy.ts                                                             (1 of 6)
+
+
+  RF-15 Salida
+    √ Registrar una salida correcta (11779ms)
+    √ Sin productos no aparece la barra Confirmar (2083ms)
+    √ Cantidades incorrectas: quitar por debajo de cero y tope del stepper (16527ms)
+    √ Inventario insuficiente por tope compartido botellas/cajas (3445ms)
+    √ Volver del diálogo y Descartar no escriben en el ledger (38872ms)
+
+
+  5 passing (1m)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        5                                                                                │
+  │ Passing:      5                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 minute, 13 seconds                                                             │
+  │ Spec Ran:     RF15-outbound.cy.ts                                                              │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  RF16-inbound.cy.ts                                                              (2 of 6)
+
+
+  RF-16 Entrada
+    √ Registrar una entrada y verla en detalle e historial (27598ms)
+    √ Validación de la entrada: sin líneas y diálogo con Volver (30227ms)
+
+
+  2 passing (58s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     58 seconds                                                                       │
+  │ Spec Ran:     RF16-inbound.cy.ts                                                               │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  RF17-transfer.cy.ts                                                             (3 of 6)
+
+
+  RF-17 Traspaso
+    √ Origen y destino obligatorios (8770ms)
+    √ El destino excluye al origen (7758ms)
+    √ Registrar un traspaso y verificar las dos puntas (45123ms)
+    √ Cantidades del traspaso topadas por el origen (7000ms)
+
+
+  4 passing (1m)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        4                                                                                │
+  │ Passing:      4                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 minute, 9 seconds                                                              │
+  │ Spec Ran:     RF17-transfer.cy.ts                                                              │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  RF18-adjustment.cy.ts                                                           (4 of 6)
+
+
+  RF-18 Ajuste
+    √ Motivo obligatorio de al menos 4 caracteres (9567ms)
+    √ Registrar un ajuste con motivo válido (32182ms)
+
+
+  2 passing (42s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     41 seconds                                                                       │
+  │ Spec Ran:     RF18-adjustment.cy.ts                                                            │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  RF20-cancellation.cy.ts                                                         (5 of 6)
+
+
+  RF-20 Anulación
+    √ Conservarlo cancela la anulación (9249ms)
+    √ Motivo obligatorio al anular (4238ms)
+    √ Anular con motivo válido (51598ms)
+
+
+  3 passing (1m)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        3                                                                                │
+  │ Passing:      3                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 minute, 5 seconds                                                              │
+  │ Spec Ran:     RF20-cancellation.cy.ts                                                          │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  RF21-receipt.cy.ts                                                              (6 of 6)
+
+
+  RF-21 Comprobante
+    √ Descargar el PDF desde el historial (5900ms)
+    √ Descargar el PDF desde el detalle (8110ms)
+    √ Descargar el PDF de un movimiento anulado (9317ms)
+
+
+  3 passing (23s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        3                                                                                │
+  │ Passing:      3                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     23 seconds                                                                       │
+  │ Spec Ran:     RF21-receipt.cy.ts                                                               │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ √  RF15-outbound.cy.ts                      01:13        5        5        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ √  RF16-inbound.cy.ts                       00:58        2        2        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ √  RF17-transfer.cy.ts                      01:09        4        4        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ √  RF18-adjustment.cy.ts                    00:41        2        2        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ √  RF20-cancellation.cy.ts                  01:05        3        3        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ √  RF21-receipt.cy.ts                       00:23        3        3        -        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    √  All specs passed!                        05:30       19       19        -        -        -  
+

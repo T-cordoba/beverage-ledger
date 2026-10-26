@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Cypress Studio AI" tests="2" failures="0" time="46.524">
+  <testsuite name="RF16-inbound.cy.ts" tests="2" failures="0" skipped="0" time="46.524" timestamp="2026-10-26T08:37:47.305Z">
+    <testcase classname="RF16-inbound.cy.ts" name="RF-16 Entrada › Registrar una entrada y verla en detalle e historial" time="11.636"></testcase>
+    <testcase classname="RF16-inbound.cy.ts" name="RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver" time="34.857"></testcase>
+  </testsuite>
+</testsuites>

@@ -1,0 +1,191 @@
+<testsuites id="" name="" tests="19" failures="0" skipped="0" errors="0" time="374.61770800000005">
+<testsuite name="RF15-outbound.spec.ts" timestamp="2026-10-26T04:17:41.100Z" hostname="chromium" tests="5" failures="0" skipped="0" time="68.249" errors="0">
+<testcase name="RF-15 Salida › Registrar una salida correcta" classname="RF15-outbound.spec.ts" time="7.629">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-15 Salida › Sin productos no aparece la barra Confirmar" classname="RF15-outbound.spec.ts" time="2.868">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper" classname="RF15-outbound.spec.ts" time="6.136">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas" classname="RF15-outbound.spec.ts" time="4.375">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger" classname="RF15-outbound.spec.ts" time="47.241">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="RF16-inbound.spec.ts" timestamp="2026-10-26T04:17:41.100Z" hostname="chromium" tests="2" failures="0" skipped="0" time="59.815" errors="0">
+<testcase name="RF-16 Entrada › Registrar una entrada y verla en detalle e historial" classname="RF16-inbound.spec.ts" time="50.245">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver" classname="RF16-inbound.spec.ts" time="9.57">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="RF17-transfer.spec.ts" timestamp="2026-10-26T04:17:41.100Z" hostname="chromium" tests="4" failures="0" skipped="0" time="55.981" errors="0">
+<testcase name="RF-17 Traspaso › Origen y destino obligatorios" classname="RF17-transfer.spec.ts" time="4.664">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-Origen-y-destino-obligatorios-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-Origen-y-destino-obligatorios-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-17 Traspaso › El destino excluye al origen" classname="RF17-transfer.spec.ts" time="4.416">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-El-destino-excluye-al-origen-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-El-destino-excluye-al-origen-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas" classname="RF17-transfer.spec.ts" time="38.424">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-17 Traspaso › Cantidades del traspaso topadas por el origen" classname="RF17-transfer.spec.ts" time="8.477">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="RF18-adjustment.spec.ts" timestamp="2026-10-26T04:17:41.100Z" hostname="chromium" tests="2" failures="0" skipped="0" time="12.666" errors="0">
+<testcase name="RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres" classname="RF18-adjustment.spec.ts" time="3.792">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-18 Ajuste › Registrar un ajuste con motivo válido" classname="RF18-adjustment.spec.ts" time="8.874">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="RF20-cancellation.spec.ts" timestamp="2026-10-26T04:17:41.100Z" hostname="chromium" tests="3" failures="0" skipped="0" time="115.34" errors="0">
+<testcase name="RF-20 Anulación › Conservarlo cancela la anulación" classname="RF20-cancellation.spec.ts" time="39.318">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-63df8-rvarlo-cancela-la-anulación-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-63df8-rvarlo-cancela-la-anulación-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-20 Anulación › Motivo obligatorio al anular" classname="RF20-cancellation.spec.ts" time="15.94">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-7414c-otivo-obligatorio-al-anular-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-7414c-otivo-obligatorio-al-anular-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-20 Anulación › Anular con motivo válido" classname="RF20-cancellation.spec.ts" time="60.082">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="RF21-receipt.spec.ts" timestamp="2026-10-26T04:17:41.100Z" hostname="chromium" tests="3" failures="0" skipped="0" time="37.692" errors="0">
+<testcase name="RF-21 Comprobante › Descargar el PDF desde el historial" classname="RF21-receipt.spec.ts" time="2.53">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\attachments\MOV-2026-000757-pdf-9bf652cbd958bca2300dd7a6839b0c92d3fc1c38.pdf]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-21 Comprobante › Descargar el PDF desde el detalle" classname="RF21-receipt.spec.ts" time="3.439">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\attachments\MOV-2026-000757-pdf-11269eb5767b308c5c9f0cb07d72e22f2ca2fab1.pdf]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-21 Comprobante › Descargar el PDF de un movimiento anulado" classname="RF21-receipt.spec.ts" time="31.723">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\attachments\MOV-2026-000758-pdf-c0bb3524758a2b7402510eec3865e7a466f25ff8.pdf]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

@@ -1,0 +1,30 @@
+Ejecución: 10-suite-completa
+Inicio: 2026-10-26T09:02:06.014Z  Fin: 2026-10-26T09:07:47.150Z
+Cypress 16.2.0 · chrome 155.0.8059.86 · front http://localhost:3000 · API http://localhost:3001
+Total: 19 · aprobadas 19 · fallidas 0 · pendientes 0 · omitidas 0
+
+tests\IA\Cypress-Studio-AI\RF15-outbound.cy.ts: 5/5 aprobadas
+  [passed] RF-15 Salida › Registrar una salida correcta (13101 ms)
+  [passed] RF-15 Salida › Sin productos no aparece la barra Confirmar (1999 ms)
+  [passed] RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper (13591 ms)
+  [passed] RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas (3801 ms)
+  [passed] RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger (42025 ms)
+tests\IA\Cypress-Studio-AI\RF16-inbound.cy.ts: 2/2 aprobadas
+  [passed] RF-16 Entrada › Registrar una entrada y verla en detalle e historial (19967 ms)
+  [passed] RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver (37052 ms)
+tests\IA\Cypress-Studio-AI\RF17-transfer.cy.ts: 4/4 aprobadas
+  [passed] RF-17 Traspaso › Origen y destino obligatorios (7952 ms)
+  [passed] RF-17 Traspaso › El destino excluye al origen (3440 ms)
+  [passed] RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas (47366 ms)
+  [passed] RF-17 Traspaso › Cantidades del traspaso topadas por el origen (8464 ms)
+tests\IA\Cypress-Studio-AI\RF18-adjustment.cy.ts: 2/2 aprobadas
+  [passed] RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres (7771 ms)
+  [passed] RF-18 Ajuste › Registrar un ajuste con motivo válido (31884 ms)
+tests\IA\Cypress-Studio-AI\RF20-cancellation.cy.ts: 3/3 aprobadas
+  [passed] RF-20 Anulación › Conservarlo cancela la anulación (9684 ms)
+  [passed] RF-20 Anulación › Motivo obligatorio al anular (6725 ms)
+  [passed] RF-20 Anulación › Anular con motivo válido (48674 ms)
+tests\IA\Cypress-Studio-AI\RF21-receipt.cy.ts: 3/3 aprobadas
+  [passed] RF-21 Comprobante › Descargar el PDF desde el historial (8531 ms)
+  [passed] RF-21 Comprobante › Descargar el PDF desde el detalle (7614 ms)
+  [passed] RF-21 Comprobante › Descargar el PDF de un movimiento anulado (8596 ms)

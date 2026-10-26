@@ -1,0 +1,32 @@
+﻿
+Running 19 tests using 1 worker
+
+node.exe : (node:25800) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+En línea: 1 Carácter: 1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ((node:25800) Wa... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › IA\Playwright-Test-Agents\tests\RF15-outbound.spec.ts:10:7 › RF-15 Salida › Registrar una salida correcta (6.7s)
+  ✓   2 [chromium] › IA\Playwright-Test-Agents\tests\RF15-outbound.spec.ts:63:7 › RF-15 Salida › Sin productos no aparece la barra Confirmar (2.8s)
+  ✓   3 [chromium] › IA\Playwright-Test-Agents\tests\RF15-outbound.spec.ts:87:7 › RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper (5.3s)
+  ✓   4 [chromium] › IA\Playwright-Test-Agents\tests\RF15-outbound.spec.ts:125:7 › RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas (4.2s)
+  ✓   5 [chromium] › IA\Playwright-Test-Agents\tests\RF15-outbound.spec.ts:163:7 › RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger (48.8s)
+  ✓   6 [chromium] › IA\Playwright-Test-Agents\tests\RF16-inbound.spec.ts:10:7 › RF-16 Entrada › Registrar una entrada y verla en detalle e historial (51.3s)
+  ✓   7 [chromium] › IA\Playwright-Test-Agents\tests\RF16-inbound.spec.ts:65:7 › RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver (8.3s)
+  ✓   8 [chromium] › IA\Playwright-Test-Agents\tests\RF17-transfer.spec.ts:12:7 › RF-17 Traspaso › Origen y destino obligatorios (4.2s)
+  ✓   9 [chromium] › IA\Playwright-Test-Agents\tests\RF17-transfer.spec.ts:42:7 › RF-17 Traspaso › El destino excluye al origen (4.2s)
+  ✓  10 [chromium] › IA\Playwright-Test-Agents\tests\RF17-transfer.spec.ts:77:7 › RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas (42.5s)
+  ✓  11 [chromium] › IA\Playwright-Test-Agents\tests\RF17-transfer.spec.ts:141:7 › RF-17 Traspaso › Cantidades del traspaso topadas por el origen (6.2s)
+  ✓  12 [chromium] › IA\Playwright-Test-Agents\tests\RF18-adjustment.spec.ts:9:7 › RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres (4.8s)
+  ✓  13 [chromium] › IA\Playwright-Test-Agents\tests\RF18-adjustment.spec.ts:56:7 › RF-18 Ajuste › Registrar un ajuste con motivo válido (6.2s)
+  ✓  14 [chromium] › IA\Playwright-Test-Agents\tests\RF20-cancellation.spec.ts:54:7 › RF-20 Anulación › Conservarlo cancela la anulación (43.3s)
+  ✓  15 [chromium] › IA\Playwright-Test-Agents\tests\RF20-cancellation.spec.ts:81:7 › RF-20 Anulación › Motivo obligatorio al anular (14.2s)
+  ✓  16 [chromium] › IA\Playwright-Test-Agents\tests\RF20-cancellation.spec.ts:120:7 › RF-20 Anulación › Anular con motivo válido (1.0m)
+  ✓  17 [chromium] › IA\Playwright-Test-Agents\tests\RF21-receipt.spec.ts:36:7 › RF-21 Comprobante › Descargar el PDF desde el historial (3.3s)
+  ✓  18 [chromium] › IA\Playwright-Test-Agents\tests\RF21-receipt.spec.ts:53:7 › RF-21 Comprobante › Descargar el PDF desde el detalle (2.7s)
+  ✓  19 [chromium] › IA\Playwright-Test-Agents\tests\RF21-receipt.spec.ts:71:7 › RF-21 Comprobante › Descargar el PDF de un movimiento anulado (32.2s)
+
+  19 passed (6.2m)

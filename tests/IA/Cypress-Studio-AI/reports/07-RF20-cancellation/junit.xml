@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Cypress Studio AI" tests="3" failures="0" time="63.528">
+  <testsuite name="RF20-cancellation.cy.ts" tests="3" failures="0" skipped="0" time="63.528" timestamp="2026-10-26T08:40:43.161Z">
+    <testcase classname="RF20-cancellation.cy.ts" name="RF-20 Anulación › Conservarlo cancela la anulación" time="7.359"></testcase>
+    <testcase classname="RF20-cancellation.cy.ts" name="RF-20 Anulación › Motivo obligatorio al anular" time="8.840"></testcase>
+    <testcase classname="RF20-cancellation.cy.ts" name="RF-20 Anulación › Anular con motivo válido" time="47.283"></testcase>
+  </testsuite>
+</testsuites>

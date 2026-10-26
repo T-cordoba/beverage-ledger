@@ -1,0 +1,6 @@
+# Per-run Playwright output (traces, loose PDFs) and the rate-limit bookkeeping of
+# support/auth-budget.ts, rewritten on every run.
+reports/artifacts/
+reports/.refresh-log.json
+# The HTML report records every fill step's text, the test user's password included.
+reports/html/

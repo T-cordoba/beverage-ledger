@@ -1,0 +1,20 @@
+{
+  "locations": {
+    "source": "Bodega principal (por defecto)",
+    "destination": "Barra E2E"
+  },
+  "managerName": "Manager Katalon (local)",
+  "caseSize": 12,
+  "reasons": {
+    "adjustment": "Rotura de botella",
+    "cancellation": "Error de captura",
+    "tooShort": "ab",
+    "blank": "    ",
+    "cleanup": "Limpieza de la suite Cypress Studio AI"
+  },
+  "minReasonLength": 4,
+  "receipt": {
+    "fileName": "^MOV-\\d{4}-\\d{6}\\.pdf$",
+    "types": ["OUTBOUND", "INBOUND", "TRANSFER", "ADJUSTMENT"]
+  }
+}

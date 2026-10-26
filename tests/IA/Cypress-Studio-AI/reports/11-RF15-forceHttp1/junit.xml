@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Cypress Studio AI" tests="5" failures="0" time="76.891">
+  <testsuite name="tests\IA\Cypress-Studio-AI\RF15-outbound.cy.ts" tests="5" failures="0" skipped="0" time="76.891" timestamp="2026-10-26T12:39:27.886Z">
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF15-outbound.cy.ts" name="RF-15 Salida › Registrar una salida correcta" time="17.203"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF15-outbound.cy.ts" name="RF-15 Salida › Sin productos no aparece la barra Confirmar" time="1.936"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF15-outbound.cy.ts" name="RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper" time="4.660"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF15-outbound.cy.ts" name="RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas" time="3.489"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF15-outbound.cy.ts" name="RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger" time="49.550"></testcase>
+  </testsuite>
+</testsuites>

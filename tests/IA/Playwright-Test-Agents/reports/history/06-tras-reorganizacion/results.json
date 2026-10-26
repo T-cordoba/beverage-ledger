@@ -1,0 +1,1065 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\node_modules\\.pnpm\\playwright@1.63.0\\node_modules\\playwright\\cli.js",
+      "test",
+      "--config=IA/Playwright-Test-Agents/playwright.config.ts"
+    ],
+    "configFile": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\playwright.config.ts",
+    "rootDir": "C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/IA/Playwright-Test-Agents/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/IA/Playwright-Test-Agents/reports/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/IA/Playwright-Test-Agents/tests",
+        "testIgnore": [
+          "**/seed.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "./reports/html",
+          "open": "never"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "./reports/junit.xml"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "./reports/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "RF15-outbound.spec.ts",
+      "file": "RF15-outbound.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "RF-15 Salida",
+          "file": "RF15-outbound.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Registrar una salida correcta",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90001,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6708,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:01:21.116Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bd7661edfdd723f70ea3-e51d532f946b51d30557",
+              "file": "RF15-outbound.spec.ts",
+              "line": 10,
+              "column": 7
+            },
+            {
+              "title": "Sin productos no aparece la barra Confirmar",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2847,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:01:31.570Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bd7661edfdd723f70ea3-498ec0650971100e2536",
+              "file": "RF15-outbound.spec.ts",
+              "line": 63,
+              "column": 7
+            },
+            {
+              "title": "Cantidades incorrectas: quitar por debajo de cero y tope del stepper",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6053,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:01:34.822Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bd7661edfdd723f70ea3-dd74980414c0c636b247",
+              "file": "RF15-outbound.spec.ts",
+              "line": 87,
+              "column": 7
+            },
+            {
+              "title": "Inventario insuficiente por tope compartido botellas/cajas",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4209,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:01:41.509Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bd7661edfdd723f70ea3-2c0352f7f8017ce6c50d",
+              "file": "RF15-outbound.spec.ts",
+              "line": 125,
+              "column": 7
+            },
+            {
+              "title": "Volver del diálogo y Descartar no escriben en el ledger",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 129865,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 47969,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:01:46.236Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bd7661edfdd723f70ea3-2aad5aafeff4a01e34d1",
+              "file": "RF15-outbound.spec.ts",
+              "line": 163,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "RF16-inbound.spec.ts",
+      "file": "RF16-inbound.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "RF-16 Entrada",
+          "file": "RF16-inbound.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Registrar una entrada y verla en detalle e historial",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 93091,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 51347,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:02:35.155Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fc8c1dedc5a08c937126-ccd93e3b2f6b316e7718",
+              "file": "RF16-inbound.spec.ts",
+              "line": 10,
+              "column": 7
+            },
+            {
+              "title": "Validación de la entrada: sin líneas y diálogo con Volver",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11277,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:03:27.625Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fc8c1dedc5a08c937126-85e93a88609b4e289b34",
+              "file": "RF16-inbound.spec.ts",
+              "line": 65,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "RF17-transfer.spec.ts",
+      "file": "RF17-transfer.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "RF-17 Traspaso",
+          "file": "RF17-transfer.spec.ts",
+          "line": 11,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Origen y destino obligatorios",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4201,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:03:39.705Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF17-transfer-RF-17-Traspaso-Origen-y-destino-obligatorios-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF17-transfer-RF-17-Traspaso-Origen-y-destino-obligatorios-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b8ccc993e3c011665fce-b2c96792ccaa77679981",
+              "file": "RF17-transfer.spec.ts",
+              "line": 12,
+              "column": 7
+            },
+            {
+              "title": "El destino excluye al origen",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90001,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4684,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:03:44.554Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF17-transfer-RF-17-Traspaso-El-destino-excluye-al-origen-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF17-transfer-RF-17-Traspaso-El-destino-excluye-al-origen-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b8ccc993e3c011665fce-f85f2e4af13cf3987146",
+              "file": "RF17-transfer.spec.ts",
+              "line": 42,
+              "column": 7
+            },
+            {
+              "title": "Registrar un traspaso y verificar las dos puntas",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 37815,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:03:49.990Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b8ccc993e3c011665fce-7b064cf52b12e571fe4d",
+              "file": "RF17-transfer.spec.ts",
+              "line": 77,
+              "column": 7
+            },
+            {
+              "title": "Cantidades del traspaso topadas por el origen",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 95722,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 12138,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:04:28.900Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b8ccc993e3c011665fce-89dd695579bdfb264a2a",
+              "file": "RF17-transfer.spec.ts",
+              "line": 141,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "RF18-adjustment.spec.ts",
+      "file": "RF18-adjustment.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "RF-18 Ajuste",
+          "file": "RF18-adjustment.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Motivo obligatorio de al menos 4 caracteres",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90001,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5159,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:04:41.997Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "add7776ff927bcfe2186-778e547741d0f4160b4d",
+              "file": "RF18-adjustment.spec.ts",
+              "line": 9,
+              "column": 7
+            },
+            {
+              "title": "Registrar un ajuste con motivo válido",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6337,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:04:48.093Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "add7776ff927bcfe2186-3af12949e4f65ef52c5b",
+              "file": "RF18-adjustment.spec.ts",
+              "line": 56,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "RF20-cancellation.spec.ts",
+      "file": "RF20-cancellation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "RF-20 Anulación",
+          "file": "RF20-cancellation.spec.ts",
+          "line": 53,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Conservarlo cancela la anulación",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120282,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 41570,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:04:55.397Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF20-cancellation-RF-20-An-63df8-rvarlo-cancela-la-anulación-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF20-cancellation-RF-20-An-63df8-rvarlo-cancela-la-anulación-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bc796356794c631a3edb-afae7ca42583fa00d71b",
+              "file": "RF20-cancellation.spec.ts",
+              "line": 54,
+              "column": 7
+            },
+            {
+              "title": "Motivo obligatorio al anular",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 98247,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 16663,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:05:37.984Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF20-cancellation-RF-20-An-7414c-otivo-obligatorio-al-anular-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF20-cancellation-RF-20-An-7414c-otivo-obligatorio-al-anular-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bc796356794c631a3edb-66f61ca966381be2e964",
+              "file": "RF20-cancellation.spec.ts",
+              "line": 81,
+              "column": 7
+            },
+            {
+              "title": "Anular con motivo válido",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 133803,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 59701,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:05:56.248Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bc796356794c631a3edb-40e72259d14241ba44c0",
+              "file": "RF20-cancellation.spec.ts",
+              "line": 120,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "RF21-receipt.spec.ts",
+      "file": "RF21-receipt.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "RF-21 Comprobante",
+          "file": "RF21-receipt.spec.ts",
+          "line": 35,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Descargar el PDF desde el historial",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90359,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3246,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:06:57.933Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "MOV-2026-000749.pdf",
+                          "contentType": "application/pdf",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\\attachments\\MOV-2026-000749-pdf-b83f4d1f17810a20d563a71002e42d77974ebfd3.pdf"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fcdaa19fcfd3b68ba20c-c60bf1554616d9317498",
+              "file": "RF21-receipt.spec.ts",
+              "line": 36,
+              "column": 7
+            },
+            {
+              "title": "Descargar el PDF desde el detalle",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90001,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3188,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:07:02.324Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "MOV-2026-000749.pdf",
+                          "contentType": "application/pdf",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\\attachments\\MOV-2026-000749-pdf-4fcd6fe7e667490096a8d738c084ae906bba0114.pdf"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fcdaa19fcfd3b68ba20c-d3fd3d4ae3609f59fab1",
+              "file": "RF21-receipt.spec.ts",
+              "line": 53,
+              "column": 7
+            },
+            {
+              "title": "Descargar el PDF de un movimiento anulado",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90001,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 26159,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T04:07:06.616Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "MOV-2026-000750.pdf",
+                          "contentType": "application/pdf",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\\attachments\\MOV-2026-000750-pdf-ccccb6fb7ef5e9384c77e33d54687bec96495350.pdf"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fcdaa19fcfd3b68ba20c-10726a6370e15ae9fed5",
+              "file": "RF21-receipt.spec.ts",
+              "line": 71,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-26T04:01:20.317Z",
+    "duration": 374406.235,
+    "expected": 19,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

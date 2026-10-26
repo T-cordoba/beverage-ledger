@@ -1,0 +1,274 @@
+<testsuites id="" name="" tests="7" failures="5" skipped="0" errors="0" time="124.84318900000001">
+<testsuite name="RF15-outbound.spec.ts" timestamp="2026-10-26T02:38:18.643Z" hostname="chromium" tests="5" failures="4" skipped="0" time="77.667" errors="0">
+<testcase name="RF-15 Salida › Registrar una salida correcta" classname="RF15-outbound.spec.ts" time="21.1">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<![CDATA[  [chromium] › RF15-outbound.spec.ts:10:7 › RF-15 Salida › Registrar una salida correcta ───────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('listitem').filter({ hasText: 'Salida' }).first().getByText('Salida', { exact: true })
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('listitem').filter({ hasText: 'Salida' }).first().getByText('Salida', { exact: true }) with timeout 15000ms
+      - waiting for getByRole('listitem').filter({ hasText: 'Salida' }).first().getByText('Salida', { exact: true })
+
+
+      54 |     await page.goto('/movements');
+      55 |     const latest = page.getByRole('listitem').filter({ hasText: 'Salida' }).first();
+    > 56 |     await expect(latest.getByText('Salida', { exact: true })).toBeVisible();
+         |                                                               ^
+      57 |     await expect(latest.getByText('confirmado')).toBeVisible();
+      58 |   });
+      59 |
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\IA\Playwright-Test-Agents\tests\RF15-outbound.spec.ts:56:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\reports\artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\reports\artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\reports\artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\reports\artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+<testcase name="RF-15 Salida › Sin productos no aparece la barra Confirmar" classname="RF15-outbound.spec.ts" time="16.102">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<![CDATA[  [chromium] › RF15-outbound.spec.ts:60:7 › RF-15 Salida › Sin productos no aparece la barra Confirmar 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('searchbox', { name: 'Buscar productos' })
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('searchbox', { name: 'Buscar productos' }) with timeout 15000ms
+      - waiting for getByRole('searchbox', { name: 'Buscar productos' })
+
+
+      61 |     // 1. Ir a /movements/new/outbound sin añadir nada (localStorage limpio).
+      62 |     await page.goto('/movements/new/outbound');
+    > 63 |     await expect(page.getByRole('searchbox', { name: 'Buscar productos' })).toBeVisible();
+         |                                                                             ^
+      64 |     await expect(page.getByRole('button', { name: 'Añadir botella' }).first()).toBeEnabled();
+      65 |     await expect(page.getByRole('button', { name: 'Confirmar' })).toHaveCount(0);
+      66 |     await expect(page.getByRole('button', { name: 'Descartar' })).toHaveCount(0);
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\IA\Playwright-Test-Agents\tests\RF15-outbound.spec.ts:63:77
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\reports\artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\reports\artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\reports\artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\reports\artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+<testcase name="RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper" classname="RF15-outbound.spec.ts" time="16.117">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<![CDATA[  [chromium] › RF15-outbound.spec.ts:84:7 › RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/^\d+ en existencia$/).first()
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText(/^\d+ en existencia$/).first() with timeout 15000ms
+      - waiting for getByText(/^\d+ en existencia$/).first()
+
+
+      86 |
+      87 |     const stockLabels = page.getByText(/^\d+ en existencia$/);
+    > 88 |     await expect(stockLabels.first()).toBeVisible();
+         |                                       ^
+      89 |
+      90 |     // Poca existencia: el producto con menos unidades entre los que muestra la página.
+      91 |     const cards = page.getByRole('listitem').filter({ hasText: 'en existencia' });
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\IA\Playwright-Test-Agents\tests\RF15-outbound.spec.ts:88:39
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\reports\artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\reports\artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\reports\artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\reports\artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+<testcase name="RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas" classname="RF15-outbound.spec.ts" time="16.109">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<![CDATA[  [chromium] › RF15-outbound.spec.ts:122:7 › RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/^\d+ en existencia$/).first()
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText(/^\d+ en existencia$/).first() with timeout 15000ms
+      - waiting for getByText(/^\d+ en existencia$/).first()
+
+
+      124 |
+      125 |     const stockLabels = page.getByText(/^\d+ en existencia$/);
+    > 126 |     await expect(stockLabels.first()).toBeVisible();
+          |                                       ^
+      127 |
+      128 |     // Poca existencia: el producto con menos unidades entre los que muestra la página.
+      129 |     const cards = page.getByRole('listitem').filter({ hasText: 'en existencia' });
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\IA\Playwright-Test-Agents\tests\RF15-outbound.spec.ts:126:39
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\reports\artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\reports\artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\reports\artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\reports\artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+<testcase name="RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger" classname="RF15-outbound.spec.ts" time="8.239">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="RF16-inbound.spec.ts" timestamp="2026-10-26T02:38:18.643Z" hostname="chromium" tests="2" failures="1" skipped="0" time="24.021" errors="0">
+<testcase name="RF-16 Entrada › Registrar una entrada y verla en detalle e historial" classname="RF16-inbound.spec.ts" time="7.986">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver" classname="RF16-inbound.spec.ts" time="16.035">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<![CDATA[  [chromium] › RF16-inbound.spec.ts:65:7 › RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('link', { name: /^MOV-\d{4}-\d+$/ }).first()
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('link', { name: /^MOV-\d{4}-\d+$/ }).first() with timeout 15000ms
+      - waiting for getByRole('link', { name: /^MOV-\d{4}-\d+$/ }).first()
+
+
+      67 |
+      68 |     await page.goto('/movements');
+    > 69 |     await expect(movementCode).toBeVisible();
+         |                                ^
+      70 |     const lastCode = await movementCode.textContent();
+      71 |
+      72 |     // 1. Abrir /movements/new/inbound sin productos.
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\IA\Playwright-Test-Agents\tests\RF16-inbound.spec.ts:69:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\reports\artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\reports\artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\reports\artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\reports\artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+</testsuite>
+</testsuites>

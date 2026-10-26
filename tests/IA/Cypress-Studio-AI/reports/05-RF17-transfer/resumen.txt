@@ -1,0 +1,10 @@
+Ejecución: 05-RF17-transfer
+Inicio: 2026-10-26T08:38:47.564Z  Fin: 2026-10-26T08:39:56.911Z
+Cypress 16.2.0 · chrome 155.0.8059.86 · front http://localhost:3000 · API http://localhost:3001
+Total: 4 · aprobadas 4 · fallidas 0 · pendientes 0 · omitidas 0
+
+RF17-transfer.cy.ts: 4/4 aprobadas
+  [passed] RF-17 Traspaso › Origen y destino obligatorios (7086 ms)
+  [passed] RF-17 Traspaso › El destino excluye al origen (2799 ms)
+  [passed] RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas (39242 ms)
+  [passed] RF-17 Traspaso › Cantidades del traspaso topadas por el origen (20164 ms)

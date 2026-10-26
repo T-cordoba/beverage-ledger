@@ -1,0 +1,28 @@
+{
+  "servers": {
+    "playwright": {
+      "type": "stdio",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@playwright/mcp@0.0.83",
+        "--browser",
+        "chrome",
+        "--isolated",
+        "--caps",
+        "testing",
+        "--secrets",
+        ".env",
+        "--output-dir",
+        "evidencias/mcp",
+        "--save-session",
+        "--timeout-action",
+        "15000",
+        "--viewport-size",
+        "1280x900"
+      ]
+    }
+  }
+}

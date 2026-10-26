@@ -1,0 +1,49 @@
+<testsuites id="" name="" tests="5" failures="0" skipped="0" errors="0" time="109.356352">
+<testsuite name="RF15-outbound.spec.ts" timestamp="2026-10-26T03:25:16.305Z" hostname="chromium" tests="5" failures="0" skipped="0" time="102.488" errors="0">
+<testcase name="RF-15 Salida › Registrar una salida correcta" classname="RF15-outbound.spec.ts" time="41.906">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-15 Salida › Sin productos no aparece la barra Confirmar" classname="RF15-outbound.spec.ts" time="6.04">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper" classname="RF15-outbound.spec.ts" time="5.196">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas" classname="RF15-outbound.spec.ts" time="4.589">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger" classname="RF15-outbound.spec.ts" time="44.757">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

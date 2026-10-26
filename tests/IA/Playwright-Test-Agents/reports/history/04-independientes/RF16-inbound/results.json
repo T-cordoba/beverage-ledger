@@ -1,0 +1,201 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\node_modules\\.pnpm\\playwright@1.63.0\\node_modules\\playwright\\cli.js",
+      "test",
+      "--config=IA/Playwright-Test-Agents/playwright.config.ts",
+      "RF16"
+    ],
+    "configFile": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\playwright.config.ts",
+    "rootDir": "C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/IA/Playwright-Test-Agents/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/IA/Playwright-Test-Agents/reports/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/IA/Playwright-Test-Agents/tests",
+        "testIgnore": [
+          "**/seed.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "./reports/html",
+          "open": "never"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "./reports/junit.xml"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "./reports/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "RF16-inbound.spec.ts",
+      "file": "RF16-inbound.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "RF-16 Entrada",
+          "file": "RF16-inbound.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Registrar una entrada y verla en detalle e historial",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 93610,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 17761,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T03:27:10.170Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fc8c1dedc5a08c937126-ccd93e3b2f6b316e7718",
+              "file": "RF16-inbound.spec.ts",
+              "line": 10,
+              "column": 7
+            },
+            {
+              "title": "Validación de la entrada: sin líneas y diálogo con Volver",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 127620,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 43002,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T03:27:31.243Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fc8c1dedc5a08c937126-85e93a88609b4e289b34",
+              "file": "RF16-inbound.spec.ts",
+              "line": 65,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-26T03:27:09.334Z",
+    "duration": 65836.318,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,4 @@
+.playwright-mcp/
+reports/artifacts/
+# Rate-limit bookkeeping of support/auth-budget.ts, rewritten on every run.
+reports/.refresh-log.json

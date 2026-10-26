@@ -1,0 +1,9 @@
+Ejecución: 07-RF20-cancellation
+Inicio: 2026-10-26T08:40:43.161Z  Fin: 2026-10-26T08:41:46.689Z
+Cypress 16.2.0 · chrome 155.0.8059.86 · front http://localhost:3000 · API http://localhost:3001
+Total: 3 · aprobadas 3 · fallidas 0 · pendientes 0 · omitidas 0
+
+RF20-cancellation.cy.ts: 3/3 aprobadas
+  [passed] RF-20 Anulación › Conservarlo cancela la anulación (7359 ms)
+  [passed] RF-20 Anulación › Motivo obligatorio al anular (8840 ms)
+  [passed] RF-20 Anulación › Anular con motivo válido (47283 ms)

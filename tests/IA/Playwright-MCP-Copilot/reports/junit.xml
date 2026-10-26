@@ -1,0 +1,67 @@
+<testsuites id="" name="" tests="19" failures="0" skipped="0" errors="0" time="392.013682">
+<testsuite name="RF15-outbound.pw.ts" timestamp="2026-10-26T20:12:26.054Z" hostname="chromium" tests="5" failures="0" skipped="0" time="69.548" errors="0">
+<testcase name="RF-15 Salida › Registrar una salida correcta" classname="RF15-outbound.pw.ts" time="6.04">
+</testcase>
+<testcase name="RF-15 Salida › Sin productos no aparece la barra Confirmar" classname="RF15-outbound.pw.ts" time="2.102">
+</testcase>
+<testcase name="RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper" classname="RF15-outbound.pw.ts" time="16.227">
+</testcase>
+<testcase name="RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas" classname="RF15-outbound.pw.ts" time="3.709">
+</testcase>
+<testcase name="RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger" classname="RF15-outbound.pw.ts" time="41.47">
+</testcase>
+</testsuite>
+<testsuite name="RF16-inbound.pw.ts" timestamp="2026-10-26T20:12:26.054Z" hostname="chromium" tests="2" failures="0" skipped="0" time="62.053" errors="0">
+<testcase name="RF-16 Entrada › Registrar una entrada y verla en detalle e historial" classname="RF16-inbound.pw.ts" time="52.527">
+</testcase>
+<testcase name="RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver" classname="RF16-inbound.pw.ts" time="9.526">
+</testcase>
+</testsuite>
+<testsuite name="RF17-transfer.pw.ts" timestamp="2026-10-26T20:12:26.054Z" hostname="chromium" tests="4" failures="0" skipped="0" time="70.588" errors="0">
+<testcase name="RF-17 Traspaso › Origen y destino obligatorios" classname="RF17-transfer.pw.ts" time="3.293">
+</testcase>
+<testcase name="RF-17 Traspaso › El destino excluye al origen" classname="RF17-transfer.pw.ts" time="3.38">
+</testcase>
+<testcase name="RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas" classname="RF17-transfer.pw.ts" time="56.349">
+</testcase>
+<testcase name="RF-17 Traspaso › Cantidades del traspaso topadas por el origen" classname="RF17-transfer.pw.ts" time="7.566">
+</testcase>
+</testsuite>
+<testsuite name="RF18-adjustment.pw.ts" timestamp="2026-10-26T20:12:26.054Z" hostname="chromium" tests="2" failures="0" skipped="0" time="49.844" errors="0">
+<testcase name="RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres" classname="RF18-adjustment.pw.ts" time="6.853">
+</testcase>
+<testcase name="RF-18 Ajuste › Registrar un ajuste con motivo válido" classname="RF18-adjustment.pw.ts" time="42.991">
+</testcase>
+</testsuite>
+<testsuite name="RF20-cancellation.pw.ts" timestamp="2026-10-26T20:12:26.054Z" hostname="chromium" tests="3" failures="0" skipped="0" time="116.007" errors="0">
+<testcase name="RF-20 Anulación › Conservarlo cancela la anulación" classname="RF20-cancellation.pw.ts" time="8.823">
+</testcase>
+<testcase name="RF-20 Anulación › Motivo obligatorio al anular" classname="RF20-cancellation.pw.ts" time="45.996">
+</testcase>
+<testcase name="RF-20 Anulación › Anular con motivo válido" classname="RF20-cancellation.pw.ts" time="61.188">
+</testcase>
+</testsuite>
+<testsuite name="RF21-receipt.pw.ts" timestamp="2026-10-26T20:12:26.054Z" hostname="chromium" tests="3" failures="0" skipped="0" time="18.449" errors="0">
+<testcase name="RF-21 Comprobante › Descargar el PDF desde el historial" classname="RF21-receipt.pw.ts" time="5.818">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt.pw.ts-RF-21-C-f1e8e-r-el-PDF-desde-el-historial-chromium\attachments\MOV-2026-000890-pdf-54395673ba70c4beeebc9fdce416d77139380611.pdf]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-21 Comprobante › Descargar el PDF desde el detalle" classname="RF21-receipt.pw.ts" time="3.264">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt.pw.ts-RF-21-C-a9f26-gar-el-PDF-desde-el-detalle-chromium\attachments\MOV-2026-000890-pdf-9ea9c2b962bfd4edd11cb6ae3b01cb022719303b.pdf]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-21 Comprobante › Descargar el PDF de un movimiento anulado" classname="RF21-receipt.pw.ts" time="9.367">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt.pw.ts-RF-21-C-89952-DF-de-un-movimiento-anulado-chromium\attachments\MOV-2026-000891-pdf-14d78e9c14f70122b45139609c4550bf3c2f3d58.pdf]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

@@ -1,0 +1,55 @@
+
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        16.2.0                                                                         │
+  │ Browser:        Chrome 155 (headless)                                                          │
+  │ Node Version:   v24.22.1 (C:\Program Files\nodejs\node.exe)                                    │
+  │ Specs:          1 found (RF18-adjustment.cy.ts)                                                │
+  │ Searched:       C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\te │
+  │                 sts\IA\Cypress-Studio-AI\RF18-adjustment.cy.ts                                 │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  RF18-adjustment.cy.ts                                                           (1 of 1)
+
+
+  RF-18 Ajuste
+    √ Motivo obligatorio de al menos 4 caracteres (7841ms)
+    √ Registrar un ajuste con motivo válido (11468ms)
+
+
+  2 passing (20s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     19 seconds                                                                       │
+  │ Spec Ran:     RF18-adjustment.cy.ts                                                            │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✔  RF18-adjustment.cy.ts                    00:19        2        2        -        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✔  All specs passed!                        00:19        2        2        -        -        -  
+

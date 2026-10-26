@@ -1,0 +1,201 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\node_modules\\.pnpm\\playwright@1.63.0\\node_modules\\playwright\\cli.js",
+      "test",
+      "--config=IA/Playwright-Test-Agents/playwright.config.ts",
+      "RF18"
+    ],
+    "configFile": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\playwright.config.ts",
+    "rootDir": "C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/IA/Playwright-Test-Agents/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/IA/Playwright-Test-Agents/reports/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/IA/Playwright-Test-Agents/tests",
+        "testIgnore": [
+          "**/seed.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "./reports/html",
+          "open": "never"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "./reports/junit.xml"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "./reports/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "RF18-adjustment.spec.ts",
+      "file": "RF18-adjustment.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "RF-18 Ajuste",
+          "file": "RF18-adjustment.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Motivo obligatorio de al menos 4 caracteres",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 93648,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7540,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T03:29:16.471Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "add7776ff927bcfe2186-778e547741d0f4160b4d",
+              "file": "RF18-adjustment.spec.ts",
+              "line": 9,
+              "column": 7
+            },
+            {
+              "title": "Registrar un ajuste con motivo válido",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 92391,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11737,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T03:29:27.108Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "add7776ff927bcfe2186-3af12949e4f65ef52c5b",
+              "file": "RF18-adjustment.spec.ts",
+              "line": 56,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-26T03:29:15.715Z",
+    "duration": 23998.009000000002,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

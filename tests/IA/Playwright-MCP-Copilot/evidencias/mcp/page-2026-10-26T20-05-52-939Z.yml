@@ -1,0 +1,215 @@
+- generic:
+  - generic:
+    - generic:
+      - banner [aria-hidden]:
+        - generic:
+          - link:
+            - /url: /dashboard
+            - generic: Beverage Ledger Demo
+          - navigation:
+            - link:
+              - /url: /dashboard
+              - text: Panel
+            - link:
+              - /url: /stock
+              - text: Existencias
+            - link:
+              - /url: /movements
+              - text: Movimientos
+            - link:
+              - /url: /catalog
+              - text: Catálogo
+            - link:
+              - /url: /reports
+              - text: Reportes
+          - button:
+            - generic: MK
+      - main:
+        - generic:
+          - generic [aria-hidden]:
+            - generic:
+              - heading [level=1]: Existencias
+              - paragraph: Lo que el ledger dice que hay en bodega ahora mismo. Un producto que nunca se ha movido está en cero.
+            - button
+          - generic [aria-hidden]:
+            - searchbox
+            - combobox:
+              - generic: Todas las categorías
+            - combobox [expanded]:
+              - generic: Bodega por defecto
+          - generic [aria-hidden]:
+            - generic:
+              - table:
+                - caption: Existencias por producto
+                - rowgroup:
+                  - row:
+                    - columnheader: Producto
+                    - columnheader: Categoría
+                    - columnheader: En existencia
+                    - columnheader: Mínimo
+                    - columnheader: Estado
+                - rowgroup:
+                  - row:
+                    - cell:
+                      - generic:
+                        - link:
+                          - /url: /stock/308bcffa-4566-4f1e-823a-280a636bfecb
+                          - text: "1942"
+                        - paragraph: DON JULIO
+                    - cell: TEQUILA & OTHER AGAVE SPIRITS
+                    - cell:
+                      - generic:
+                        - paragraph: 189 unidades
+                        - paragraph: 15 cajas + 9 botellas
+                    - cell: —
+                    - cell: OK
+                  - row:
+                    - cell:
+                      - generic:
+                        - link:
+                          - /url: /stock/4c1be094-c69f-4bc2-b2ea-86483e45a188
+                          - text: ABSINTHE ST. GEORGE
+                        - paragraph: ST. GEORGE
+                    - cell: APÉRITIFS & VERMOUTHS
+                    - cell:
+                      - generic:
+                        - paragraph: 93 unidades
+                        - paragraph: 7 cajas + 9 botellas
+                    - cell: —
+                    - cell: OK
+                  - row:
+                    - cell:
+                      - generic:
+                        - link:
+                          - /url: /stock/9986a056-9bff-42fc-b63f-66cf6fd06c70
+                          - text: ABSOLUTE ELYX
+                        - paragraph: ABSOLUT
+                    - cell: VODKA & AQUAVIT
+                    - cell:
+                      - generic:
+                        - paragraph: 20 unidades
+                        - paragraph: 1 caja + 8 botellas
+                    - cell: —
+                    - cell: OK
+                  - row:
+                    - cell:
+                      - generic:
+                        - link:
+                          - /url: /stock/7c29cc5a-8bb9-4082-b9f9-5f266347d525
+                          - text: AMARO DEL CAPO
+                        - paragraph: AMARO DEL CAPO
+                    - cell: AMARI & LIQUEURS
+                    - cell:
+                      - generic:
+                        - paragraph: 96 unidades
+                        - paragraph: 8 cajas
+                    - cell: —
+                    - cell: OK
+                  - row:
+                    - cell:
+                      - generic:
+                        - link:
+                          - /url: /stock/6f34f606-7603-4f5e-a2c7-33e4eda7757e
+                          - text: AMARO SIBILLA
+                        - paragraph: AMARO SIBILLA
+                    - cell: AMARI & LIQUEURS
+                    - cell:
+                      - generic:
+                        - paragraph: 60 unidades
+                        - paragraph: 5 cajas
+                    - cell: —
+                    - cell: OK
+                  - row:
+                    - cell:
+                      - generic:
+                        - link:
+                          - /url: /stock/4f75c947-0bdf-4504-b16c-d6cb80c36bd9
+                          - text: AMARO TOSOLINI
+                        - paragraph: AMARO TOSOLINI
+                    - cell: AMARI & LIQUEURS
+                    - cell:
+                      - generic:
+                        - paragraph: 45 unidades
+                        - paragraph: 3 cajas + 9 botellas
+                    - cell: —
+                    - cell: OK
+                  - row:
+                    - cell:
+                      - generic:
+                        - link:
+                          - /url: /stock/4c4c20ab-88ef-4fba-bd71-06ca0596e0f5
+                          - text: AMERICAN HARVEST
+                        - paragraph: AMERICAN HARVEST
+                    - cell: VODKA & AQUAVIT
+                    - cell:
+                      - generic:
+                        - paragraph: 24 unidades
+                        - paragraph: 2 cajas
+                    - cell: —
+                    - cell: OK
+                  - row:
+                    - cell:
+                      - generic:
+                        - link:
+                          - /url: /stock/f160599b-d9b8-4179-9bb3-1a535df2d0fd
+                          - text: ANGELS ENVY FINISHED IN PORT WINE BARREL
+                        - paragraph: ANGELS ENVY
+                    - cell: STRAIGHT BOURBON WHISKEY
+                    - cell:
+                      - generic:
+                        - paragraph: 72 unidades
+                        - paragraph: 6 cajas
+                    - cell: —
+                    - cell: OK
+                  - row:
+                    - cell:
+                      - generic:
+                        - link:
+                          - /url: /stock/ec35a68a-d01e-4c6b-a850-98f26fef3a0e
+                          - text: ANGELS ENVY RYE CARIBBEAN CASK FINISHED
+                        - paragraph: ANGELS ENVY
+                    - cell: STRAIGHT RYE WHISKEY
+                    - cell:
+                      - generic:
+                        - paragraph: 91 unidades
+                        - paragraph: 7 cajas + 7 botellas
+                    - cell: —
+                    - cell: OK
+                  - row:
+                    - cell:
+                      - generic:
+                        - link:
+                          - /url: /stock/f3dfe270-33d6-4954-8eef-36a467f0e9c0
+                          - text: APEROL
+                        - paragraph: APEROL
+                    - cell: APÉRITIFS & VERMOUTHS
+                    - cell:
+                      - generic:
+                        - paragraph: 72 unidades
+                        - paragraph: 6 cajas
+                    - cell: —
+                    - cell: OK
+          - navigation "Paginación":
+            - paragraph: 1–10 de 215 resultados
+            - generic [aria-hidden]:
+              - generic:
+                - text: Por página
+                - combobox:
+                  - generic: "10"
+              - generic:
+                - button [disabled]
+                - list:
+                  - listitem:
+                    - button: "1"
+                  - listitem:
+                    - button: "2"
+                  - listitem [aria-hidden]: …
+                  - listitem:
+                    - button: "22"
+                - button
+  - button "Open Next.js Dev Tools" [ref=e39] [cursor=pointer]
+  - alert: Existencias · Beverage Ledger
+  - listbox [ref=e399]:
+    - option "Bodega por defecto" [active] [selected] [ref=e400] [cursor=pointer]
+    - option "Bodega principal (por defecto)" [ref=e405] [cursor=pointer]
+    - option "Barra E2E" [ref=e407] [cursor=pointer]

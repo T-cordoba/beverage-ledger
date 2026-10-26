@@ -49,6 +49,7 @@
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8",
     "@cucumber/cucumber": "13.3.0",
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "1.63.0",
     "@serenity-js/assertions": "3.48.0",
     "@serenity-js/console-reporter": "3.48.0",
     "@serenity-js/core": "3.48.0",

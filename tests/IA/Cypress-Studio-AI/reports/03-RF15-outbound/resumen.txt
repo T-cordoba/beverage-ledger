@@ -1,0 +1,11 @@
+Ejecución: 03-RF15-outbound
+Inicio: 2026-10-26T08:36:16.851Z  Fin: 2026-10-26T08:37:33.579Z
+Cypress 16.2.0 · chrome 155.0.8059.86 · front http://localhost:3000 · API http://localhost:3001
+Total: 5 · aprobadas 5 · fallidas 0 · pendientes 0 · omitidas 0
+
+RF15-outbound.cy.ts: 5/5 aprobadas
+  [passed] RF-15 Salida › Registrar una salida correcta (16878 ms)
+  [passed] RF-15 Salida › Sin productos no aparece la barra Confirmar (2035 ms)
+  [passed] RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper (5096 ms)
+  [passed] RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas (3785 ms)
+  [passed] RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger (48882 ms)

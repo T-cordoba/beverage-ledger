@@ -1,0 +1,174 @@
+- generic [ref=e1]:
+  - generic [ref=e44]:
+    - banner [ref=e45]:
+      - generic [ref=e46]:
+        - link "Beverage Ledger Demo" [ref=e47] [cursor=pointer]:
+          - /url: /dashboard
+        - navigation "Principal" [ref=e50]:
+          - link "Panel" [ref=e51] [cursor=pointer]:
+            - /url: /dashboard
+          - link "Existencias" [ref=e52] [cursor=pointer]:
+            - /url: /stock
+          - link "Movimientos" [ref=e53] [cursor=pointer]:
+            - /url: /movements
+          - link "Catálogo" [ref=e54] [cursor=pointer]:
+            - /url: /catalog
+          - link "Reportes" [ref=e55] [cursor=pointer]:
+            - /url: /reports
+        - button "Menú de la cuenta de Manager Katalon (local)" [ref=e56] [cursor=pointer]:
+          - generic [ref=e57]: MK
+    - main [ref=e228]:
+      - generic [ref=e229]:
+        - generic [ref=e230]:
+          - generic [ref=e231]:
+            - heading "Existencias" [level=1] [ref=e232]
+            - paragraph [ref=e233]: Lo que el ledger dice que hay en bodega ahora mismo. Un producto que nunca se ha movido está en cero.
+          - button "Actualizar" [ref=e234] [cursor=pointer]
+        - generic [ref=e240]:
+          - searchbox "Buscar existencias por producto" [ref=e241]
+          - combobox "Filtrar por categoría" [ref=e242] [cursor=pointer]:
+            - generic: Todas las categorías
+          - combobox "Filtrar por bodega" [active] [ref=e245] [cursor=pointer]:
+            - generic: Barra E2E
+        - table [ref=e410]:
+          - caption [ref=e411]: Existencias por producto
+          - rowgroup [ref=e412]:
+            - row [ref=e413]:
+              - columnheader "Producto" [ref=e414]
+              - columnheader "Categoría" [ref=e415]
+              - columnheader "En existencia" [ref=e416]
+              - columnheader "Mínimo" [ref=e417]
+              - columnheader "Estado" [ref=e418]
+          - rowgroup [ref=e419]:
+            - row [ref=e420]:
+              - cell [ref=e421]:
+                - generic [ref=e422]:
+                  - link "1942" [ref=e423] [cursor=pointer]:
+                    - /url: /stock/308bcffa-4566-4f1e-823a-280a636bfecb
+                  - paragraph [ref=e424]: DON JULIO
+              - cell "TEQUILA & OTHER AGAVE SPIRITS" [ref=e425]
+              - cell [ref=e426]:
+                - generic [ref=e427]:
+                  - paragraph [ref=e428]: 15 unidades
+                  - paragraph [ref=e429]: 1 caja + 3 botellas
+              - cell "—" [ref=e430]
+              - cell "OK" [ref=e431]
+            - row [ref=e432]:
+              - cell [ref=e433]:
+                - generic [ref=e434]:
+                  - link "ABSINTHE ST. GEORGE" [ref=e435] [cursor=pointer]:
+                    - /url: /stock/4c1be094-c69f-4bc2-b2ea-86483e45a188
+                  - paragraph [ref=e436]: ST. GEORGE
+              - cell "APÉRITIFS & VERMOUTHS" [ref=e437]
+              - cell [ref=e438]:
+                - paragraph [ref=e440]: 0 unidades
+              - cell "—" [ref=e441]
+              - cell "OK" [ref=e442]
+            - row [ref=e443]:
+              - cell [ref=e444]:
+                - generic [ref=e445]:
+                  - link "ABSOLUTE ELYX" [ref=e446] [cursor=pointer]:
+                    - /url: /stock/9986a056-9bff-42fc-b63f-66cf6fd06c70
+                  - paragraph [ref=e447]: ABSOLUT
+              - cell "VODKA & AQUAVIT" [ref=e448]
+              - cell [ref=e449]:
+                - paragraph [ref=e451]: 0 unidades
+              - cell "—" [ref=e452]
+              - cell "OK" [ref=e453]
+            - row [ref=e454]:
+              - cell [ref=e455]:
+                - generic [ref=e456]:
+                  - link "AMARO DEL CAPO" [ref=e457] [cursor=pointer]:
+                    - /url: /stock/7c29cc5a-8bb9-4082-b9f9-5f266347d525
+                  - paragraph [ref=e458]: AMARO DEL CAPO
+              - cell "AMARI & LIQUEURS" [ref=e459]
+              - cell [ref=e460]:
+                - paragraph [ref=e462]: 0 unidades
+              - cell "—" [ref=e463]
+              - cell "OK" [ref=e464]
+            - row [ref=e465]:
+              - cell [ref=e466]:
+                - generic [ref=e467]:
+                  - link "AMARO SIBILLA" [ref=e468] [cursor=pointer]:
+                    - /url: /stock/6f34f606-7603-4f5e-a2c7-33e4eda7757e
+                  - paragraph [ref=e469]: AMARO SIBILLA
+              - cell "AMARI & LIQUEURS" [ref=e470]
+              - cell [ref=e471]:
+                - paragraph [ref=e473]: 0 unidades
+              - cell "—" [ref=e474]
+              - cell "OK" [ref=e475]
+            - row [ref=e476]:
+              - cell [ref=e477]:
+                - generic [ref=e478]:
+                  - link "AMARO TOSOLINI" [ref=e479] [cursor=pointer]:
+                    - /url: /stock/4f75c947-0bdf-4504-b16c-d6cb80c36bd9
+                  - paragraph [ref=e480]: AMARO TOSOLINI
+              - cell "AMARI & LIQUEURS" [ref=e481]
+              - cell [ref=e482]:
+                - paragraph [ref=e484]: 0 unidades
+              - cell "—" [ref=e485]
+              - cell "OK" [ref=e486]
+            - row [ref=e487]:
+              - cell [ref=e488]:
+                - generic [ref=e489]:
+                  - link "AMERICAN HARVEST" [ref=e490] [cursor=pointer]:
+                    - /url: /stock/4c4c20ab-88ef-4fba-bd71-06ca0596e0f5
+                  - paragraph [ref=e491]: AMERICAN HARVEST
+              - cell "VODKA & AQUAVIT" [ref=e492]
+              - cell [ref=e493]:
+                - paragraph [ref=e495]: 0 unidades
+              - cell "—" [ref=e496]
+              - cell "OK" [ref=e497]
+            - row [ref=e498]:
+              - cell [ref=e499]:
+                - generic [ref=e500]:
+                  - link "ANGELS ENVY FINISHED IN PORT WINE BARREL" [ref=e501] [cursor=pointer]:
+                    - /url: /stock/f160599b-d9b8-4179-9bb3-1a535df2d0fd
+                  - paragraph [ref=e502]: ANGELS ENVY
+              - cell "STRAIGHT BOURBON WHISKEY" [ref=e503]
+              - cell [ref=e504]:
+                - paragraph [ref=e506]: 0 unidades
+              - cell "—" [ref=e507]
+              - cell "OK" [ref=e508]
+            - row [ref=e509]:
+              - cell [ref=e510]:
+                - generic [ref=e511]:
+                  - link "ANGELS ENVY RYE CARIBBEAN CASK FINISHED" [ref=e512] [cursor=pointer]:
+                    - /url: /stock/ec35a68a-d01e-4c6b-a850-98f26fef3a0e
+                  - paragraph [ref=e513]: ANGELS ENVY
+              - cell "STRAIGHT RYE WHISKEY" [ref=e514]
+              - cell [ref=e515]:
+                - paragraph [ref=e517]: 0 unidades
+              - cell "—" [ref=e518]
+              - cell "OK" [ref=e519]
+            - row [ref=e520]:
+              - cell [ref=e521]:
+                - generic [ref=e522]:
+                  - link "APEROL" [ref=e523] [cursor=pointer]:
+                    - /url: /stock/f3dfe270-33d6-4954-8eef-36a467f0e9c0
+                  - paragraph [ref=e524]: APEROL
+              - cell "APÉRITIFS & VERMOUTHS" [ref=e525]
+              - cell [ref=e526]:
+                - paragraph [ref=e528]: 0 unidades
+              - cell "—" [ref=e529]
+              - cell "OK" [ref=e530]
+        - navigation "Paginación" [ref=e380]:
+          - paragraph [ref=e381]: 1–10 de 215 resultados
+          - generic [ref=e382]:
+            - generic [ref=e383]:
+              - text: Por página
+              - combobox "Por página" [ref=e384] [cursor=pointer]:
+                - generic: "10"
+            - generic [ref=e387]:
+              - button "Página anterior" [disabled]
+              - list [ref=e388]:
+                - listitem [ref=e389]:
+                  - button "Ir a la página 1" [ref=e390] [cursor=pointer]: "1"
+                - listitem [ref=e391]:
+                  - button "Ir a la página 2" [ref=e392] [cursor=pointer]: "2"
+                - listitem [aria-hidden] [ref=e393]: …
+                - listitem [ref=e394]:
+                  - button "Ir a la página 22" [ref=e395] [cursor=pointer]: "22"
+              - button "Página siguiente" [ref=e396] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e39] [cursor=pointer]
+  - alert [ref=e43]: Existencias · Beverage Ledger

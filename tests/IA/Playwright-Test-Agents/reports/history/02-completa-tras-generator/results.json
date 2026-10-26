@@ -1,0 +1,587 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\node_modules\\.pnpm\\playwright@1.63.0\\node_modules\\playwright\\cli.js",
+      "test",
+      "--config=IA/Playwright-Test-Agents/playwright.config.ts"
+    ],
+    "configFile": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\playwright.config.ts",
+    "rootDir": "C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/IA/Playwright-Test-Agents/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/IA/Playwright-Test-Agents/reports/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/IA/Playwright-Test-Agents/tests",
+        "testIgnore": [
+          "**/seed.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "./reports/html",
+          "open": "never"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "./reports/junit.xml"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "./reports/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "RF15-outbound.spec.ts",
+      "file": "RF15-outbound.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "RF-15 Salida",
+          "file": "RF15-outbound.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Registrar una salida correcta",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 21100,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('listitem').filter({ hasText: 'Salida' }).first().getByText('Salida', { exact: true })\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('listitem').filter({ hasText: 'Salida' }).first().getByText('Salida', { exact: true }) with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('listitem').filter({ hasText: 'Salida' }).first().getByText('Salida', { exact: true })\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('listitem').filter({ hasText: 'Salida' }).first().getByText('Salida', { exact: true })\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('listitem').filter({ hasText: 'Salida' }).first().getByText('Salida', { exact: true }) with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('listitem').filter({ hasText: 'Salida' }).first().getByText('Salida', { exact: true })\u001b[22m\n\n    at C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts:56:63",
+                        "location": {
+                          "file": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts",
+                          "column": 63,
+                          "line": 56
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 54 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/movements'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 55 |\u001b[39m     \u001b[36mconst\u001b[39m latest \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'listitem'\u001b[39m)\u001b[33m.\u001b[39mfilter({ hasText\u001b[33m:\u001b[39m \u001b[32m'Salida'\u001b[39m })\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 56 |\u001b[39m     \u001b[36mawait\u001b[39m expect(latest\u001b[33m.\u001b[39mgetByText(\u001b[32m'Salida'\u001b[39m\u001b[33m,\u001b[39m { exact\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 57 |\u001b[39m     \u001b[36mawait\u001b[39m expect(latest\u001b[33m.\u001b[39mgetByText(\u001b[32m'confirmado'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 58 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 59 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts",
+                            "column": 63,
+                            "line": 56
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('listitem').filter({ hasText: 'Salida' }).first().getByText('Salida', { exact: true })\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('listitem').filter({ hasText: 'Salida' }).first().getByText('Salida', { exact: true }) with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('listitem').filter({ hasText: 'Salida' }).first().getByText('Salida', { exact: true })\u001b[22m\n\n\n  54 |     await page.goto('/movements');\n  55 |     const latest = page.getByRole('listitem').filter({ hasText: 'Salida' }).first();\n> 56 |     await expect(latest.getByText('Salida', { exact: true })).toBeVisible();\n     |                                                               ^\n  57 |     await expect(latest.getByText('confirmado')).toBeVisible();\n  58 |   });\n  59 |\n    at C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts:56:63"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T02:38:19.422Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts",
+                        "column": 63,
+                        "line": 56
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "bd7661edfdd723f70ea3-e51d532f946b51d30557",
+              "file": "RF15-outbound.spec.ts",
+              "line": 10,
+              "column": 7
+            },
+            {
+              "title": "Sin productos no aparece la barra Confirmar",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 16102,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('searchbox', { name: 'Buscar productos' })\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('searchbox', { name: 'Buscar productos' }) with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('searchbox', { name: 'Buscar productos' })\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('searchbox', { name: 'Buscar productos' })\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('searchbox', { name: 'Buscar productos' }) with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('searchbox', { name: 'Buscar productos' })\u001b[22m\n\n    at C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts:63:77",
+                        "location": {
+                          "file": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts",
+                          "column": 77,
+                          "line": 63
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 61 |\u001b[39m     \u001b[90m// 1. Ir a /movements/new/outbound sin añadir nada (localStorage limpio).\u001b[39m\n \u001b[90m 62 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/movements/new/outbound'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 63 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'searchbox'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m'Buscar productos'\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 64 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'button'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m'Añadir botella'\u001b[39m })\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeEnabled()\u001b[33m;\u001b[39m\n \u001b[90m 65 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'button'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m'Confirmar'\u001b[39m }))\u001b[33m.\u001b[39mtoHaveCount(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 66 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'button'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m'Descartar'\u001b[39m }))\u001b[33m.\u001b[39mtoHaveCount(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts",
+                            "column": 77,
+                            "line": 63
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('searchbox', { name: 'Buscar productos' })\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('searchbox', { name: 'Buscar productos' }) with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('searchbox', { name: 'Buscar productos' })\u001b[22m\n\n\n  61 |     // 1. Ir a /movements/new/outbound sin añadir nada (localStorage limpio).\n  62 |     await page.goto('/movements/new/outbound');\n> 63 |     await expect(page.getByRole('searchbox', { name: 'Buscar productos' })).toBeVisible();\n     |                                                                             ^\n  64 |     await expect(page.getByRole('button', { name: 'Añadir botella' }).first()).toBeEnabled();\n  65 |     await expect(page.getByRole('button', { name: 'Confirmar' })).toHaveCount(0);\n  66 |     await expect(page.getByRole('button', { name: 'Descartar' })).toHaveCount(0);\n    at C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts:63:77"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T02:38:45.603Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts",
+                        "column": 77,
+                        "line": 63
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "bd7661edfdd723f70ea3-498ec0650971100e2536",
+              "file": "RF15-outbound.spec.ts",
+              "line": 60,
+              "column": 7
+            },
+            {
+              "title": "Cantidades incorrectas: quitar por debajo de cero y tope del stepper",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 16117,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/^\\d+ en existencia$/).first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByText(/^\\d+ en existencia$/).first() with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/^\\d+ en existencia$/).first()\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/^\\d+ en existencia$/).first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByText(/^\\d+ en existencia$/).first() with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/^\\d+ en existencia$/).first()\u001b[22m\n\n    at C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts:88:39",
+                        "location": {
+                          "file": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts",
+                          "column": 39,
+                          "line": 88
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 86 |\u001b[39m\n \u001b[90m 87 |\u001b[39m     \u001b[36mconst\u001b[39m stockLabels \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByText(\u001b[35m/^\\d+ en existencia$/\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 88 |\u001b[39m     \u001b[36mawait\u001b[39m expect(stockLabels\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 89 |\u001b[39m\n \u001b[90m 90 |\u001b[39m     \u001b[90m// Poca existencia: el producto con menos unidades entre los que muestra la página.\u001b[39m\n \u001b[90m 91 |\u001b[39m     \u001b[36mconst\u001b[39m cards \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'listitem'\u001b[39m)\u001b[33m.\u001b[39mfilter({ hasText\u001b[33m:\u001b[39m \u001b[32m'en existencia'\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts",
+                            "column": 39,
+                            "line": 88
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/^\\d+ en existencia$/).first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByText(/^\\d+ en existencia$/).first() with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/^\\d+ en existencia$/).first()\u001b[22m\n\n\n  86 |\n  87 |     const stockLabels = page.getByText(/^\\d+ en existencia$/);\n> 88 |     await expect(stockLabels.first()).toBeVisible();\n     |                                       ^\n  89 |\n  90 |     // Poca existencia: el producto con menos unidades entre los que muestra la página.\n  91 |     const cards = page.getByRole('listitem').filter({ hasText: 'en existencia' });\n    at C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts:88:39"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T02:39:05.927Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts",
+                        "column": 39,
+                        "line": 88
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "bd7661edfdd723f70ea3-dd74980414c0c636b247",
+              "file": "RF15-outbound.spec.ts",
+              "line": 84,
+              "column": 7
+            },
+            {
+              "title": "Inventario insuficiente por tope compartido botellas/cajas",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 16109,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/^\\d+ en existencia$/).first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByText(/^\\d+ en existencia$/).first() with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/^\\d+ en existencia$/).first()\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/^\\d+ en existencia$/).first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByText(/^\\d+ en existencia$/).first() with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/^\\d+ en existencia$/).first()\u001b[22m\n\n    at C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts:126:39",
+                        "location": {
+                          "file": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts",
+                          "column": 39,
+                          "line": 126
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 124 |\u001b[39m\n \u001b[90m 125 |\u001b[39m     \u001b[36mconst\u001b[39m stockLabels \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByText(\u001b[35m/^\\d+ en existencia$/\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 126 |\u001b[39m     \u001b[36mawait\u001b[39m expect(stockLabels\u001b[33m.\u001b[39mfirst())\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 127 |\u001b[39m\n \u001b[90m 128 |\u001b[39m     \u001b[90m// Poca existencia: el producto con menos unidades entre los que muestra la página.\u001b[39m\n \u001b[90m 129 |\u001b[39m     \u001b[36mconst\u001b[39m cards \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'listitem'\u001b[39m)\u001b[33m.\u001b[39mfilter({ hasText\u001b[33m:\u001b[39m \u001b[32m'en existencia'\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts",
+                            "column": 39,
+                            "line": 126
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/^\\d+ en existencia$/).first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByText(/^\\d+ en existencia$/).first() with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/^\\d+ en existencia$/).first()\u001b[22m\n\n\n  124 |\n  125 |     const stockLabels = page.getByText(/^\\d+ en existencia$/);\n> 126 |     await expect(stockLabels.first()).toBeVisible();\n      |                                       ^\n  127 |\n  128 |     // Poca existencia: el producto con menos unidades entre los que muestra la página.\n  129 |     const cards = page.getByRole('listitem').filter({ hasText: 'en existencia' });\n    at C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts:126:39"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T02:39:25.912Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF15-outbound.spec.ts",
+                        "column": 39,
+                        "line": 126
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "bd7661edfdd723f70ea3-2c0352f7f8017ce6c50d",
+              "file": "RF15-outbound.spec.ts",
+              "line": 122,
+              "column": 7
+            },
+            {
+              "title": "Volver del diálogo y Descartar no escriben en el ledger",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8239,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T02:39:45.962Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bd7661edfdd723f70ea3-2aad5aafeff4a01e34d1",
+              "file": "RF15-outbound.spec.ts",
+              "line": 160,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "RF16-inbound.spec.ts",
+      "file": "RF16-inbound.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "RF-16 Entrada",
+          "file": "RF16-inbound.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Registrar una entrada y verla en detalle e historial",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7986,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T02:39:57.754Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fc8c1dedc5a08c937126-ccd93e3b2f6b316e7718",
+              "file": "RF16-inbound.spec.ts",
+              "line": 10,
+              "column": 7
+            },
+            {
+              "title": "Validación de la entrada: sin líneas y diálogo con Volver",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 16035,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: /^MOV-\\d{4}-\\d+$/ }).first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: /^MOV-\\d{4}-\\d+$/ }).first() with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: /^MOV-\\d{4}-\\d+$/ }).first()\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: /^MOV-\\d{4}-\\d+$/ }).first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: /^MOV-\\d{4}-\\d+$/ }).first() with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: /^MOV-\\d{4}-\\d+$/ }).first()\u001b[22m\n\n    at C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF16-inbound.spec.ts:69:32",
+                        "location": {
+                          "file": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF16-inbound.spec.ts",
+                          "column": 32,
+                          "line": 69
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 67 |\u001b[39m\n \u001b[90m 68 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/movements'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 69 |\u001b[39m     \u001b[36mawait\u001b[39m expect(movementCode)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 70 |\u001b[39m     \u001b[36mconst\u001b[39m lastCode \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m movementCode\u001b[33m.\u001b[39mtextContent()\u001b[33m;\u001b[39m\n \u001b[90m 71 |\u001b[39m\n \u001b[90m 72 |\u001b[39m     \u001b[90m// 1. Abrir /movements/new/inbound sin productos.\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF16-inbound.spec.ts",
+                            "column": 32,
+                            "line": 69
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('link', { name: /^MOV-\\d{4}-\\d+$/ }).first()\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('link', { name: /^MOV-\\d{4}-\\d+$/ }).first() with timeout 15000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('link', { name: /^MOV-\\d{4}-\\d+$/ }).first()\u001b[22m\n\n\n  67 |\n  68 |     await page.goto('/movements');\n> 69 |     await expect(movementCode).toBeVisible();\n     |                                ^\n  70 |     const lastCode = await movementCode.textContent();\n  71 |\n  72 |     // 1. Abrir /movements/new/inbound sin productos.\n    at C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF16-inbound.spec.ts:69:32"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T02:40:06.681Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\tests\\RF16-inbound.spec.ts",
+                        "column": 32,
+                        "line": 69
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "fc8c1dedc5a08c937126-85e93a88609b4e289b34",
+              "file": "RF16-inbound.spec.ts",
+              "line": 65,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-26T02:38:18.535Z",
+    "duration": 124843.18900000001,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 5,
+    "flaky": 0
+  }
+}

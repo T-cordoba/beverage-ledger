@@ -1,0 +1,7 @@
+
+Running 2 tests using 1 worker
+
+  ✓  1 [chromium] › IA\Playwright-Test-Agents\tests\RF16-inbound.spec.ts:10:7 › RF-16 Entrada › Registrar una entrada y verla en detalle e historial (17.8s)
+  ✓  2 [chromium] › IA\Playwright-Test-Agents\tests\RF16-inbound.spec.ts:65:7 › RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver (43.0s)
+
+  2 passed (1.1m)

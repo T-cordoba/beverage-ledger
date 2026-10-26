@@ -1,0 +1,261 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\node_modules\\.pnpm\\playwright@1.63.0\\node_modules\\playwright\\cli.js",
+      "test",
+      "--config=IA/Playwright-Test-Agents/playwright.config.ts",
+      "RF21"
+    ],
+    "configFile": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\playwright.config.ts",
+    "rootDir": "C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/IA/Playwright-Test-Agents/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/IA/Playwright-Test-Agents/reports/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/IA/Playwright-Test-Agents/tests",
+        "testIgnore": [
+          "**/seed.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "./reports/html",
+          "open": "never"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "./reports/junit.xml"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "./reports/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "RF21-receipt.spec.ts",
+      "file": "RF21-receipt.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "RF-21 Comprobante",
+          "file": "RF21-receipt.spec.ts",
+          "line": 38,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Descargar el PDF desde el historial",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 91928,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4645,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T03:31:43.867Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "MOV-2026-000725.pdf",
+                          "contentType": "application/pdf",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\\attachments\\MOV-2026-000725-pdf-b4d03f122978e8abd6a493d0b1be63c53082c7ec.pdf"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fcdaa19fcfd3b68ba20c-c60bf1554616d9317498",
+              "file": "RF21-receipt.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "Descargar el PDF desde el detalle",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 108764,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 21545,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T03:31:51.638Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "MOV-2026-000725.pdf",
+                          "contentType": "application/pdf",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\\attachments\\MOV-2026-000725-pdf-038e5a7a540561c2a9aec2a13f77d5e9ef6ac5ff.pdf"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fcdaa19fcfd3b68ba20c-d3fd3d4ae3609f59fab1",
+              "file": "RF21-receipt.spec.ts",
+              "line": 56,
+              "column": 7
+            },
+            {
+              "title": "Descargar el PDF de un movimiento anulado",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 99068,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 17792,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T03:32:13.571Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "MOV-2026-000726.pdf",
+                          "contentType": "application/pdf",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\\attachments\\MOV-2026-000726-pdf-039385b4f3d7e327b81e3fabba5b6ebf8ce4389c.pdf"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\admin\\Desktop\\University\\Validacion y verificacion\\beverage-ledger\\IA\\Playwright-Test-Agents\\reports\\artifacts\\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fcdaa19fcfd3b68ba20c-10726a6370e15ae9fed5",
+              "file": "RF21-receipt.spec.ts",
+              "line": 74,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-26T03:31:43.047Z",
+    "duration": 49105.587,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
