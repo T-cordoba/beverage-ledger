@@ -144,6 +144,36 @@ const api = {
     return !!bar;
   },
   hydrated: (label) => { const c = field(label); return !!c && Object.keys(c).some((k) => k.startsWith('__reactProps')); },
+  headers: () => [...document.querySelectorAll('th')].filter(visible).map((th) => norm(th.textContent)),
+  cells: () => [...document.querySelectorAll('tbody tr')].filter(visible).filter((tr) => tr.querySelector('a')).map((tr) => [...tr.querySelectorAll('td, th')].map((td) => norm(td.innerText))),
+  tagRow: (name, tag) => {
+    document.querySelectorAll('[data-sh-row="' + tag + '"]').forEach((el) => el.removeAttribute('data-sh-row'));
+    const tr = [...document.querySelectorAll('tr')].filter(visible).find((x) => norm(x.querySelector('a')?.textContent) === name);
+    if (tr) tr.setAttribute('data-sh-row', tag);
+    return !!tr;
+  },
+  statTile: (label) => {
+    const p = [...document.querySelectorAll('p')].filter(visible).find((x) => norm(x.textContent) === label && x.previousElementSibling?.tagName === 'P');
+    return p ? norm(p.previousElementSibling.textContent) : null;
+  },
+  segmented: (label) => {
+    const f = [...document.querySelectorAll('fieldset')].find((x) => x.getAttribute('aria-label') === label);
+    return f ? [...f.querySelectorAll('button')].map((b) => ({ name: labelOf(b), pressed: b.getAttribute('aria-pressed') === 'true' })) : null;
+  },
+  section: (heading, tag) => {
+    document.querySelectorAll('[data-sh-section="' + tag + '"]').forEach((el) => el.removeAttribute('data-sh-section'));
+    const h = [...document.querySelectorAll('h2')].filter(visible).find((x) => norm(x.textContent) === heading);
+    if (!h) return null;
+    // Card is the only component with rounded-2xl.
+    const card = h.closest('.rounded-2xl');
+    if (!card) return null;
+    card.setAttribute('data-sh-section', tag);
+    return {
+      loading: !!card.querySelector('output'),
+      text: norm(card.innerText),
+      items: [...card.querySelectorAll('li')].map((li) => ({ name: norm(li.querySelector('a, span.truncate')?.textContent), value: norm(li.querySelector('span.text-sm.font-bold')?.textContent), text: norm(li.innerText) })),
+    };
+  },
   clearDrafts: () => { localStorage.clear(); return true; },
 };
 `;
@@ -166,6 +196,7 @@ export type Field = { label: string; value: string; invalid: boolean; placeholde
 export type Combobox = { text: string; disabled: boolean; expanded: boolean };
 export type Article = { code: string; text: string; pdf: { description: string } | null };
 export type StockRow = { name: string; units: number | null; text: string };
+export type Section = { loading: boolean; text: string; items: { name: string; value: string; text: string }[] };
 
 type Library = {
   text: () => string;
@@ -192,6 +223,12 @@ type Library = {
   tagBar: () => boolean;
   hydrated: (label: string) => boolean;
   clearDrafts: () => boolean;
+  headers: () => string[];
+  cells: () => string[][];
+  tagRow: (name: string, tag: string) => boolean;
+  statTile: (label: string) => string | null;
+  segmented: (label: string) => { name: string; pressed: boolean }[] | null;
+  section: (heading: string, tag: string) => Section | null;
 };
 
 /** Runs one function of the library in the page and returns its JSON result. */

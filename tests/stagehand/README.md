@@ -14,7 +14,11 @@ compatible con OpenAI de Ollama (`src/ollama-client.ts` del profesor →
 `support/ollama-client.mts` aquí), el proveedor elegido con `AI_PROVIDER` y
 aserciones determinísticas sobre el resultado. No usa Playwright ni claves de nube.
 
-Cubre **solo** seis requisitos funcionales, 19 escenarios:
+La suite tiene dos partes con el mismo arnés: los seis requisitos de movimientos (19
+escenarios) y, más abajo, los seis de consulta y borrador (RF-19, 22, 23, 24, 27 y 28;
+12 escenarios, ver [Segunda parte](#segunda-parte-rf-19-rf-22-rf-23-rf-24-rf-27-y-rf-28)).
+
+Primera parte, seis requisitos funcionales y 19 escenarios:
 
 | Requisito | Funcionalidad | Archivo | Escenarios |
 |---|---|---|---|
@@ -106,11 +110,71 @@ enmascarado). Cada corrección de la sección siguiente cita la ejecución donde
 observó el fallo. Las capturas de las ejecuciones intermedias (03–05, 08, 10, 11,
 14, 17) no se versionan por tamaño; el resto de su evidencia sí.
 
+## Segunda parte: RF-19, RF-22, RF-23, RF-24, RF-27 y RF-28
+
+Mismo arnés (`defineSuite`, `ai.click`/`ai.fill`/`ai.extractChecked` validados contra el
+DOM), dos escenarios por requisito —uno exitoso y uno no exitoso—, alineados con
+`docs/black-box/` y el plan de BugBug (`docs/bugbug/plans/`).
+
+| Requisito | Funcionalidad | Archivo | Escenarios |
+|---|---|---|---|
+| RF-19 | Guardar y retomar un borrador de movimiento | `RF19-draft.e2e.mts` | 2 |
+| RF-22 | Consultar las existencias actuales | `RF22-stock-levels.e2e.mts` | 2 |
+| RF-23 | Filtrar las existencias | `RF23-stock-filters.e2e.mts` | 2 |
+| RF-24 | Consultar el kardex de un producto | `RF24-kardex.e2e.mts` | 2 |
+| RF-27 | Productos bajo el stock mínimo | `RF27-low-stock.e2e.mts` | 2 |
+| RF-28 | Reporte de consumo | `RF28-consumption.e2e.mts` | 2 |
+
+| Id | Escenario | Lo que verifica el código |
+|---|---|---|
+| RF19-01 | El borrador sobrevive a salir de la vista y a recargar, y es propio de su tipo | Línea y nota recuperadas tras ir a `/stock` y tras una carga en frío; la entrada empieza vacía |
+| RF19-02 | Un borrador vacío no se confirma, Volver no lo pierde y Descartar sí lo borra | Sin barra Confirmar en vacío; tras Volver y recargar sigue la línea; tras Descartar no vuelve; el historial no cambia |
+| RF22-01 | El listado de existencias muestra sus columnas y filas | Título, las cinco columnas, existencia y estado por fila; la IA lee la primera fila y se compara con el DOM |
+| RF22-02 | Sin sesión, `/stock` redirige al login y no muestra existencias | Cierra sesión desde el menú de la cuenta; `/stock` acaba en `/login?next=%2Fstock` sin filas |
+| RF23-01 | Buscar un producto y filtrar por su categoría acota el listado | Cada fila contiene todas las palabras buscadas (sin tildes, como la API); con la categoría, todas las filas son de ella |
+| RF23-02 | Una búsqueda con comodín no devuelve nada y Limpiar filtros restaura el listado | `%` da *Ningún producto coincide…* (era DEF-01); Limpiar filtros vacía el buscador y repone las filas |
+| RF24-01 | Abrir el kardex desde existencias y recorrer el saldo corrido | Título = producto; *En existencia* = el listado; cada saldo = saldo anterior + cambio |
+| RF24-02 | El kardex de un producto inexistente avisa y deja volver a existencias | *Ese producto no está disponible.* y el enlace lleva a `/stock` |
+| RF27-01 | La tarjeta Bajo mínimo lista los productos y lleva al kardex y a existencias | La IA lee la lista igual que el DOM; cada fila con existencia ≤ mínimo; enlaces al kardex y a `/stock` |
+| RF27-02 | La lista no trae de más | La cifra del resumen ≥ la lista; cada producto listado tiene mínimo y está *Bajo mínimo* en `/stock` |
+| RF28-01 | Cambiar el periodo y la agrupación actualiza resumen y ranking con cifras coherentes | *Año* cambia el rango; *Por categoría* da un ranking ordenado que no suma más que *Unidades despachadas* |
+| RF28-02 | El periodo elegido se conserva al volver con el botón atrás (DEF-03) | **Se espera que falle** mientras exista DEF-03: el periodo no vive en la URL |
+
+### Resultados reales (segunda parte)
+
+**`22-rf19-rf28-completa`: 11 de 12 en una sola ejecución con el código actual** (9 min,
+`qwen2.5` 7B, headless). El único fallo es RF28-02, que falla por DEF-03 como se esperaba:
+al volver con el botón atrás el periodo marcado es *Mes* y no *Año*.
+
+| Ejecución | Resultado | Qué pasó |
+|---|---|---|
+| `20-rf19-rf28` | 9 ✔ · 3 ✖ | RF28-02 por DEF-03. RF24-01 leyó *En existencia* mientras el kardex cargaba (la tarjeta pinta 0 hasta que llega la consulta); RF24-02 esperaba un `h1` que el aviso de producto no disponible no tiene. Los dos eran fallos de la prueba, no de la app |
+| `21-rf24-validacion` | 2 ✔ | RF-24 tras esperar a que la tarjeta y las líneas carguen y abrir el producto inexistente sin `goto()` |
+| `22-rf19-rf28-completa` | **11 ✔ · 1 ✖** | Completa. Solo falla RF28-02 (DEF-03) |
+
+Diferencias con la primera parte:
+
+- **Solo lectura.** Ninguno confirma ni anula movimientos: RF-19 guarda el borrador en
+  `localStorage` y lo descarta. Por eso se ejecutó con el front y la API locales y la API
+  apuntando a la base de Supabase, que tiene datos reales de bajo mínimo y consumo.
+  `assertLocalStack()` sigue exigiendo `localhost` en las dos URLs.
+- **RF22-02 cierra la sesión**, así que va último en su archivo.
+- **DEF-01 ya está corregido** en la API (la búsqueda usa `strpos`, no `LIKE`): RF23-02
+  verifica el comportamiento correcto.
+- Helpers añadidos, sin cambiar los existentes: `headers`, `cells`, `tagRow`, `statTile`,
+  `segmented` y `section` en `support/dom.mts`; `toNumber`, `stockTable`, `settledRows` y
+  `fold` en `support/flows.mts`.
+
+```powershell
+npm run test:rf19   # rf19, rf22, rf23, rf24, rf27, rf28
+$env:STAGEHAND_RUN = "20-rf19-rf28"; node scripts/run.mjs RF19 RF22 RF23 RF24 RF27 RF28
+```
+
 ## Estructura
 
 ```text
 tests/stagehand/
-├── RF15-outbound.e2e.mts … RF21-receipt.e2e.mts   un archivo por requisito
+├── RF15-outbound.e2e.mts … RF28-consumption.e2e.mts   un archivo por requisito
 ├── support/
 │   ├── env.mts            configuración por variables de entorno (.env de esta carpeta)
 │   ├── ollama-client.mts  ClientLLM para Ollama (enfoque del profesor + ajustes medidos)
@@ -222,7 +286,7 @@ Copy-Item .env.example .env              # y completa TEST_USER_EMAIL / TEST_USE
 powershell -ExecutionPolicy Bypass -File scripts\ollama-serve.ps1   # Ollama con contexto de 16k
 npm run check:model                      # Ollama responde y qwen2.5:7b devuelve JSON con esquema
 npm test                                 # los 19 escenarios
-npm run test:rf15                        # solo un requisito (rf15, rf16, rf17, rf18, rf20, rf21)
+npm run test:rf15                        # solo un requisito (rf15 … rf28)
 $env:STAGEHAND_RUN = "19-mi-ejecucion"; npm test   # nombra la carpeta de evidencia
 npm run typecheck
 npm run scan:secrets                     # busca contraseñas, JWT, cookies y claves en reports/

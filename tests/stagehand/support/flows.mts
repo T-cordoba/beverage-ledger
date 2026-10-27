@@ -194,3 +194,34 @@ export async function openFromHistory(ctx: Ctx, code: string) {
   await waitFor('el detalle del movimiento', () => currentPath(ctx.session), (p) => DETAIL_PATH.test(p), 20_000);
   await waitFor(`el título ${code}`, () => read(ctx.session.page, 'h1'), (h) => h === code);
 }
+
+/** A number as next-intl prints it in Spanish: "12.345", "+3", "−2". */
+export function toNumber(text: string | null | undefined): number {
+  const value = Number((text ?? '').replace(/[.\s]/g, '').replace('−', '-').replace(/^\+/, ''));
+  assert.ok(Number.isFinite(value), `«${text}» no es un número`);
+  return value;
+}
+
+/** Opens /stock and waits for its first rows. */
+export async function stockTable(ctx: Ctx) {
+  await goto(ctx.session, '/stock');
+  return waitFor('la tabla de existencias', () => read(ctx.session.page, 'stockRows'), (rows) => rows.length > 0, 30_000);
+}
+
+/** Rows once a debounced filter settles: the same names four reads in a row. */
+export async function settledRows(ctx: Ctx, what: string, ok: (names: string[]) => boolean = () => true) {
+  const readings: string[] = [];
+  await waitFor(
+    what,
+    async () => {
+      readings.push(JSON.stringify((await read(ctx.session.page, 'stockRows')).map((r) => r.name)));
+      return readings.slice(-4);
+    },
+    (last) => last.length === 4 && last.every((r) => r === last[0]) && ok(JSON.parse(last[0]!)),
+    20_000,
+  );
+  return read(ctx.session.page, 'stockRows');
+}
+
+/** Lower case without accents, as the API compares search words. */
+export const fold = (text: string) => text.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
