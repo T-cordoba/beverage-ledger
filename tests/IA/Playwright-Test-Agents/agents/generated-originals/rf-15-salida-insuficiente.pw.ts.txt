@@ -1,0 +1,44 @@
+// spec: planner/beverage-ledger-movimientos.plan.md
+// seed: generator/seed.pw.ts
+
+import { expect, test } from './support/fixtures';
+
+test.describe('RF-15 Salida', () => {
+  test('Inventario insuficiente por tope compartido botellas/cajas', async ({ page }) => {
+    await page.goto('/movements/new/outbound');
+
+    const stockLabels = page.getByText(/^\d+ en existencia$/);
+    await expect(stockLabels.first()).toBeVisible();
+
+    // Poca existencia: el producto con menos unidades entre los que muestra la página.
+    const cards = page.getByRole('listitem').filter({ hasText: 'en existencia' });
+    const names = await cards.getByRole('heading', { level: 3 }).allTextContents();
+    const stocks = (await stockLabels.allTextContents()).map((text) => Number.parseInt(text, 10));
+    const lowest = stocks.indexOf(Math.min(...stocks));
+    const name = names[lowest];
+    const stock = stocks[lowest];
+
+    const card = cards.filter({ has: page.getByRole('heading', { name, exact: true }) });
+    const addBottle = card.getByRole('button', { name: 'Añadir botella' });
+    const addCase = card.getByRole('button', { name: 'Añadir caja' });
+
+    // 1. Añadir botellas hasta que queden menos de 12 unidades y probar 'Añadir caja'.
+    // Botellas y cajas gastan la misma existencia: el tope va sobre unidades base.
+    const leftover = Math.min(stock, 11);
+    for (let i = 0; i < stock - leftover; i++) {
+      await addBottle.click();
+    }
+
+    await expect(card.getByText(`${stock} en existencia · quedan ${leftover}`)).toBeVisible();
+    await expect(addCase).toBeDisabled();
+    await expect(addCase).toHaveAttribute('title', `Solo quedan ${leftover} en esta bodega`);
+
+    // 2. Cambiar la bodega a 'Barra E2E' y observar la existencia mostrada.
+    await page.getByRole('combobox', { name: 'Bodega' }).click();
+    await page.getByRole('option', { name: 'Barra E2E' }).click();
+
+    await expect(page.getByRole('combobox', { name: 'Bodega' })).toHaveText('Barra E2E');
+    await expect(card.getByText(/^\d+ en existencia/)).toBeVisible();
+    await expect(card.getByText(`${stock} en existencia · quedan`)).toHaveCount(0);
+  });
+});

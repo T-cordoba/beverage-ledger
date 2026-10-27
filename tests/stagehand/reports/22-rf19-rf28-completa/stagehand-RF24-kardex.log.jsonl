@@ -1,0 +1,16 @@
+{"level":"info","message":"stagehand.init","data":{}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1435,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1870,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3302,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"1942\" de esta fila"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":533,"completionTokens":45,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1737,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae onHand = el número grande de la tarjeta \"En existencia\" del producto"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":3836,"completionTokens":38,"inferenceTimeMs":22626}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae onHand = el número grande de la tarjeta \"En existencia\" del producto. Tu respuesta anterior era incorrecta: la tarjeta dice 3, no 1942. Léelo de nuevo en la página."}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":3893,"completionTokens":35,"inferenceTimeMs":22805}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Existencias\" que acompaña al aviso de producto no disponible"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":727,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2292,"resultCount":1}}
+{"level":"info","message":"stagehand.close","data":{}}

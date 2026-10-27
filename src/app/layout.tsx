@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { BRAND } from '@/config/branding';
+import { PREFERENCES_SCRIPT } from '@/features/preferences';
 import { TIMEZONE_COOKIE, TimeZoneSync } from '@/i18n';
 import { Providers } from './providers';
 
@@ -23,7 +24,12 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const timeZone = (await cookies()).get(TIMEZONE_COOKIE)?.value ?? null;
 
   return (
-    <html lang={locale}>
+    // The preferences script sets data attributes on <html> before React hydrates.
+    <html lang={locale} suppressHydrationWarning>
+      <head>
+        {/* A constant of ours, never user input. */}
+        <script dangerouslySetInnerHTML={{ __html: PREFERENCES_SCRIPT }} />
+      </head>
       <body>
         {/* Messages and formats come off the server config, so no props here. */}
         <NextIntlClientProvider>

@@ -3,13 +3,14 @@
 import { useTranslations } from 'next-intl';
 import { useNotify } from '@/components/ui';
 import { useBrands, useCreateBrand, useDeleteBrand, useUpdateBrand } from '@/features/catalog';
-import { describeError } from '@/lib/api';
+import { useDescribeError } from '@/lib/api';
 import { useManualRefresh } from '@/lib/hooks';
 import { TaxonomyView, type TaxonomyItem, type TaxonomyValues } from './TaxonomyView';
 
 export function BrandsView() {
   const t = useTranslations('admin.brands');
   const tStates = useTranslations('common.states');
+  const describeError = useDescribeError();
 
   const { data: brands = [], isPending, isError, refetch } = useBrands();
   const { refresh, isRefreshing } = useManualRefresh(refetch);

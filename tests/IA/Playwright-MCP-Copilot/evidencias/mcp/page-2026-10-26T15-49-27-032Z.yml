@@ -1,0 +1,322 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e44]:
+    - banner [ref=e45]:
+      - generic [ref=e46]:
+        - link "Beverage Ledger Demo" [ref=e47] [cursor=pointer]:
+          - /url: /dashboard
+        - navigation "Principal" [ref=e50]:
+          - link "Panel" [ref=e51] [cursor=pointer]:
+            - /url: /dashboard
+          - link "Existencias" [ref=e52] [cursor=pointer]:
+            - /url: /stock
+          - link "Movimientos" [ref=e53] [cursor=pointer]:
+            - /url: /movements
+          - link "Catálogo" [ref=e54] [cursor=pointer]:
+            - /url: /catalog
+          - link "Reportes" [ref=e55] [cursor=pointer]:
+            - /url: /reports
+        - button "Menú de la cuenta de Manager Katalon (local)" [ref=e56] [cursor=pointer]:
+          - generic [ref=e57]: MK
+    - main [ref=e430]:
+      - generic [ref=e431]:
+        - generic [ref=e432]:
+          - heading "Registrar una salida" [level=1] [ref=e433]
+          - paragraph [ref=e434]: La mercancía sale de la bodega al confirmar. Antes de eso no se mueve nada.
+        - generic [ref=e435]:
+          - generic [ref=e436]:
+            - generic [ref=e437]: Ocurrió el
+            - button "Ahora" [ref=e439] [cursor=pointer]
+            - paragraph [ref=e443]: Déjalo vacío para registrarlo como ahora.
+          - generic [ref=e444]:
+            - generic [ref=e445]: Bodega
+            - combobox "Bodega" [ref=e446] [cursor=pointer]:
+              - generic: Bodega por defecto
+            - paragraph [ref=e449]: En qué bodega cae este movimiento.
+          - generic [ref=e450]:
+            - generic [ref=e451]: Nota
+            - textbox "Nota" [ref=e452]:
+              - /placeholder: Número de remisión, turno, barra que lo pidió…
+            - paragraph [ref=e453]: Contexto opcional para quien lea esto más adelante.
+        - generic [ref=e454]:
+          - generic [ref=e456]:
+            - searchbox "Buscar productos" [ref=e459]
+            - combobox "Filtrar por categoría" [ref=e464] [cursor=pointer]:
+              - generic: Todas las categorías
+            - button "Avanzado" [ref=e467] [cursor=pointer]
+          - generic [ref=e473]:
+            - heading "Selecciona los productos" [level=2] [ref=e475]
+            - list [ref=e476]:
+              - listitem [ref=e477]:
+                - generic [ref=e478]:
+                  - heading "1942" [level=3] [ref=e479]
+                  - generic [ref=e480]:
+                    - generic [ref=e481]: TEQUILA & OTHER AGAVE SPIRITS
+                    - generic [ref=e482]: DON JULIO
+                    - generic [ref=e483]: Añejo
+                  - generic [ref=e484]:
+                    - generic [ref=e485]: 40% ABV
+                    - generic [ref=e489]: Mexico
+                - generic [ref=e494]:
+                  - generic [ref=e495]:
+                    - generic [ref=e496]: botellas
+                    - generic [ref=e497]:
+                      - button "Quitar botella" [ref=e498] [cursor=pointer]: −
+                      - generic [ref=e499]: "0"
+                      - button "Añadir botella" [ref=e500] [cursor=pointer]: +
+                  - generic [ref=e501]:
+                    - generic [ref=e502]:
+                      - text: cajas
+                      - generic [ref=e503]: × 12 unidades
+                    - generic [ref=e504]:
+                      - button "Quitar caja" [ref=e505] [cursor=pointer]: −
+                      - generic [ref=e506]: "0"
+                      - button "Añadir caja" [ref=e507] [cursor=pointer]: +
+                - paragraph [ref=e508]: 0 unidades en total
+              - listitem [ref=e509]:
+                - generic [ref=e510]:
+                  - heading "ABSINTHE ST. GEORGE" [level=3] [ref=e511]
+                  - generic [ref=e512]:
+                    - generic [ref=e513]: APÉRITIFS & VERMOUTHS
+                    - generic [ref=e514]: ST. GEORGE
+                    - generic [ref=e515]: Absinthe
+                  - generic [ref=e516]:
+                    - generic [ref=e517]: 60% ABV
+                    - generic [ref=e521]: USA
+                - generic [ref=e526]:
+                  - generic [ref=e527]:
+                    - generic [ref=e528]: botellas
+                    - generic [ref=e529]:
+                      - button "Quitar botella" [ref=e530] [cursor=pointer]: −
+                      - generic [ref=e531]: "0"
+                      - button "Añadir botella" [ref=e532] [cursor=pointer]: +
+                  - generic [ref=e533]:
+                    - generic [ref=e534]:
+                      - text: cajas
+                      - generic [ref=e535]: × 12 unidades
+                    - generic [ref=e536]:
+                      - button "Quitar caja" [ref=e537] [cursor=pointer]: −
+                      - generic [ref=e538]: "0"
+                      - button "Añadir caja" [ref=e539] [cursor=pointer]: +
+                - paragraph [ref=e540]: 0 unidades en total
+              - listitem [ref=e541]:
+                - generic [ref=e542]:
+                  - heading "ABSOLUTE ELYX" [level=3] [ref=e543]
+                  - generic [ref=e544]:
+                    - generic [ref=e545]: VODKA & AQUAVIT
+                    - generic [ref=e546]: ABSOLUT
+                    - generic [ref=e547]: Premium Vodka
+                  - generic [ref=e548]:
+                    - generic [ref=e549]: 42.3% ABV
+                    - generic [ref=e553]: Sweden
+                - generic [ref=e558]:
+                  - generic [ref=e559]:
+                    - generic [ref=e560]: botellas
+                    - generic [ref=e561]:
+                      - button "Quitar botella" [ref=e562] [cursor=pointer]: −
+                      - generic [ref=e563]: "0"
+                      - button "Añadir botella" [ref=e564] [cursor=pointer]: +
+                  - generic [ref=e565]:
+                    - generic [ref=e566]:
+                      - text: cajas
+                      - generic [ref=e567]: × 12 unidades
+                    - generic [ref=e568]:
+                      - button "Quitar caja" [ref=e569] [cursor=pointer]: −
+                      - generic [ref=e570]: "0"
+                      - button "Añadir caja" [ref=e571] [cursor=pointer]: +
+                - paragraph [ref=e572]: 0 unidades en total
+              - listitem [ref=e573]:
+                - generic [ref=e574]:
+                  - heading "AMARO DEL CAPO" [level=3] [ref=e575]
+                  - generic [ref=e576]:
+                    - generic [ref=e577]: AMARI & LIQUEURS
+                    - generic [ref=e578]: AMARO DEL CAPO
+                    - generic [ref=e579]: Amaro
+                  - generic [ref=e580]: Italy
+                - generic [ref=e586]:
+                  - generic [ref=e587]:
+                    - generic [ref=e588]: botellas
+                    - generic [ref=e589]:
+                      - button "Quitar botella" [ref=e590] [cursor=pointer]: −
+                      - generic [ref=e591]: "0"
+                      - button "Añadir botella" [ref=e592] [cursor=pointer]: +
+                  - generic [ref=e593]:
+                    - generic [ref=e594]:
+                      - text: cajas
+                      - generic [ref=e595]: × 12 unidades
+                    - generic [ref=e596]:
+                      - button "Quitar caja" [ref=e597] [cursor=pointer]: −
+                      - generic [ref=e598]: "0"
+                      - button "Añadir caja" [ref=e599] [cursor=pointer]: +
+                - paragraph [ref=e600]: 0 unidades en total
+              - listitem [ref=e601]:
+                - generic [ref=e602]:
+                  - heading "AMARO SIBILLA" [level=3] [ref=e603]
+                  - generic [ref=e604]:
+                    - generic [ref=e605]: AMARI & LIQUEURS
+                    - generic [ref=e606]: AMARO SIBILLA
+                    - generic [ref=e607]: Amaro
+                  - generic [ref=e608]: Italy
+                - generic [ref=e614]:
+                  - generic [ref=e615]:
+                    - generic [ref=e616]: botellas
+                    - generic [ref=e617]:
+                      - button "Quitar botella" [ref=e618] [cursor=pointer]: −
+                      - generic [ref=e619]: "0"
+                      - button "Añadir botella" [ref=e620] [cursor=pointer]: +
+                  - generic [ref=e621]:
+                    - generic [ref=e622]:
+                      - text: cajas
+                      - generic [ref=e623]: × 12 unidades
+                    - generic [ref=e624]:
+                      - button "Quitar caja" [ref=e625] [cursor=pointer]: −
+                      - generic [ref=e626]: "0"
+                      - button "Añadir caja" [ref=e627] [cursor=pointer]: +
+                - paragraph [ref=e628]: 0 unidades en total
+              - listitem [ref=e629]:
+                - generic [ref=e630]:
+                  - heading "AMARO TOSOLINI" [level=3] [ref=e631]
+                  - generic [ref=e632]:
+                    - generic [ref=e633]: AMARI & LIQUEURS
+                    - generic [ref=e634]: AMARO TOSOLINI
+                    - generic [ref=e635]: Amaro
+                  - generic [ref=e636]: Italy
+                - generic [ref=e642]:
+                  - generic [ref=e643]:
+                    - generic [ref=e644]: botellas
+                    - generic [ref=e645]:
+                      - button "Quitar botella" [ref=e646] [cursor=pointer]: −
+                      - generic [ref=e647]: "0"
+                      - button "Añadir botella" [ref=e648] [cursor=pointer]: +
+                  - generic [ref=e649]:
+                    - generic [ref=e650]:
+                      - text: cajas
+                      - generic [ref=e651]: × 12 unidades
+                    - generic [ref=e652]:
+                      - button "Quitar caja" [ref=e653] [cursor=pointer]: −
+                      - generic [ref=e654]: "0"
+                      - button "Añadir caja" [ref=e655] [cursor=pointer]: +
+                - paragraph [ref=e656]: 0 unidades en total
+              - listitem [ref=e657]:
+                - generic [ref=e658]:
+                  - heading "AMERICAN HARVEST" [level=3] [ref=e659]
+                  - generic [ref=e660]:
+                    - generic [ref=e661]: VODKA & AQUAVIT
+                    - generic [ref=e662]: AMERICAN HARVEST
+                    - generic [ref=e663]: Organic Vodka
+                  - generic [ref=e664]:
+                    - generic [ref=e665]: 40% ABV
+                    - generic [ref=e669]: USA
+                - generic [ref=e674]:
+                  - generic [ref=e675]:
+                    - generic [ref=e676]: botellas
+                    - generic [ref=e677]:
+                      - button "Quitar botella" [ref=e678] [cursor=pointer]: −
+                      - generic [ref=e679]: "0"
+                      - button "Añadir botella" [ref=e680] [cursor=pointer]: +
+                  - generic [ref=e681]:
+                    - generic [ref=e682]:
+                      - text: cajas
+                      - generic [ref=e683]: × 12 unidades
+                    - generic [ref=e684]:
+                      - button "Quitar caja" [ref=e685] [cursor=pointer]: −
+                      - generic [ref=e686]: "0"
+                      - button "Añadir caja" [ref=e687] [cursor=pointer]: +
+                - paragraph [ref=e688]: 0 unidades en total
+              - listitem [ref=e689]:
+                - generic [ref=e690]:
+                  - heading "ANGELS ENVY FINISHED IN PORT WINE BARREL" [level=3] [ref=e691]
+                  - generic [ref=e692]:
+                    - generic [ref=e693]: STRAIGHT BOURBON WHISKEY
+                    - generic [ref=e694]: ANGELS ENVY
+                    - generic [ref=e695]: Finished Bourbon
+                  - generic [ref=e696]:
+                    - generic [ref=e697]: 43.3% ABV
+                    - generic [ref=e701]: KY
+                - generic [ref=e706]:
+                  - generic [ref=e707]:
+                    - generic [ref=e708]: botellas
+                    - generic [ref=e709]:
+                      - button "Quitar botella" [ref=e710] [cursor=pointer]: −
+                      - generic [ref=e711]: "0"
+                      - button "Añadir botella" [ref=e712] [cursor=pointer]: +
+                  - generic [ref=e713]:
+                    - generic [ref=e714]:
+                      - text: cajas
+                      - generic [ref=e715]: × 12 unidades
+                    - generic [ref=e716]:
+                      - button "Quitar caja" [ref=e717] [cursor=pointer]: −
+                      - generic [ref=e718]: "0"
+                      - button "Añadir caja" [ref=e719] [cursor=pointer]: +
+                - paragraph [ref=e720]: 0 unidades en total
+              - listitem [ref=e721]:
+                - generic [ref=e722]:
+                  - heading "ANGELS ENVY RYE CARIBBEAN CASK FINISHED" [level=3] [ref=e723]
+                  - generic [ref=e724]:
+                    - generic [ref=e725]: STRAIGHT RYE WHISKEY
+                    - generic [ref=e726]: ANGELS ENVY
+                    - generic [ref=e727]: Finished Rye
+                  - generic [ref=e728]:
+                    - generic [ref=e729]: 50% ABV
+                    - generic [ref=e733]: KY
+                - generic [ref=e738]:
+                  - generic [ref=e739]:
+                    - generic [ref=e740]: botellas
+                    - generic [ref=e741]:
+                      - button "Quitar botella" [ref=e742] [cursor=pointer]: −
+                      - generic [ref=e743]: "0"
+                      - button "Añadir botella" [ref=e744] [cursor=pointer]: +
+                  - generic [ref=e745]:
+                    - generic [ref=e746]:
+                      - text: cajas
+                      - generic [ref=e747]: × 12 unidades
+                    - generic [ref=e748]:
+                      - button "Quitar caja" [ref=e749] [cursor=pointer]: −
+                      - generic [ref=e750]: "0"
+                      - button "Añadir caja" [ref=e751] [cursor=pointer]: +
+                - paragraph [ref=e752]: 0 unidades en total
+              - listitem [ref=e753]:
+                - generic [ref=e754]:
+                  - heading "APEROL" [level=3] [ref=e755]
+                  - generic [ref=e756]:
+                    - generic [ref=e757]: APÉRITIFS & VERMOUTHS
+                    - generic [ref=e758]: APEROL
+                    - generic [ref=e759]: Aperitif
+                  - generic [ref=e760]:
+                    - generic [ref=e761]: 11% ABV
+                    - generic [ref=e765]: Italy
+                - generic [ref=e770]:
+                  - generic [ref=e771]:
+                    - generic [ref=e772]: botellas
+                    - generic [ref=e773]:
+                      - button "Quitar botella" [ref=e774] [cursor=pointer]: −
+                      - generic [ref=e775]: "0"
+                      - button "Añadir botella" [ref=e776] [cursor=pointer]: +
+                  - generic [ref=e777]:
+                    - generic [ref=e778]:
+                      - text: cajas
+                      - generic [ref=e779]: × 12 unidades
+                    - generic [ref=e780]:
+                      - button "Quitar caja" [ref=e781] [cursor=pointer]: −
+                      - generic [ref=e782]: "0"
+                      - button "Añadir caja" [ref=e783] [cursor=pointer]: +
+                - paragraph [ref=e784]: 0 unidades en total
+            - navigation "Paginación" [ref=e785]:
+              - paragraph [ref=e786]: 1–10 de 215 resultados
+              - generic [ref=e787]:
+                - generic [ref=e788]:
+                  - text: Por página
+                  - combobox "Por página" [ref=e789] [cursor=pointer]:
+                    - generic: "10"
+                - generic [ref=e792]:
+                  - button "Página anterior" [disabled]
+                  - list [ref=e793]:
+                    - listitem [ref=e794]:
+                      - button "Ir a la página 1" [ref=e795] [cursor=pointer]: "1"
+                    - listitem [ref=e796]:
+                      - button "Ir a la página 2" [ref=e797] [cursor=pointer]: "2"
+                    - listitem [aria-hidden] [ref=e798]: …
+                    - listitem [ref=e799]:
+                      - button "Ir a la página 22" [ref=e800] [cursor=pointer]: "22"
+                  - button "Página siguiente" [ref=e801] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e39] [cursor=pointer]
+  - alert [ref=e43]: Registrar una salida · Beverage Ledger

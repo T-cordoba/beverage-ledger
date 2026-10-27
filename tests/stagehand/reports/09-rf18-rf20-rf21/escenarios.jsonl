@@ -1,0 +1,8 @@
+{"spec":"RF18-adjustment","id":"RF18-01","name":"El motivo es obligatorio y de al menos 4 caracteres","status":"passed","ms":42755,"movements":[]}
+{"spec":"RF18-adjustment","id":"RF18-02","name":"Registrar un ajuste con motivo válido","status":"passed","ms":31130,"movements":["d764d9e8-b548-4b39-bf8c-dda7eae25cdc"]}
+{"spec":"RF20-cancellation","id":"RF20-01","name":"Conservarlo cierra el diálogo sin anular","status":"passed","ms":40689,"movements":["65b8add1-8dbc-48df-acee-21a5b976a7d0"]}
+{"spec":"RF20-cancellation","id":"RF20-02","name":"El motivo es obligatorio al anular","status":"passed","ms":42550,"movements":["c70f2ba1-ecaa-4a4c-a5fd-9ae68677ce9b"]}
+{"spec":"RF20-cancellation","id":"RF20-03","name":"Anular con motivo válido revierte la existencia","status":"passed","ms":45361,"movements":["aa6633cd-b1c3-4cef-97e9-e8cd88285454"]}
+{"spec":"RF21-receipt","id":"RF21-01","name":"Descargar el PDF desde el historial","status":"passed","ms":11674,"movements":[]}
+{"spec":"RF21-receipt","id":"RF21-02","name":"Descargar el PDF desde el detalle","status":"passed","ms":11382,"movements":[]}
+{"spec":"RF21-receipt","id":"RF21-03","name":"Descargar el PDF de un movimiento anulado","status":"passed","ms":29318,"movements":["3b813312-1920-4fdb-8021-5037733a4a62"]}

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testsuite name="RF-15 Salida de inventario (OUTBOUND)" time="217.165825" disabled="0" errors="0" tests="5" failures="0" skipped="0" timestamp="2026-10-27T03:01:43.291Z" hostname="pc">
+		<testcase name="RF15-01 Registrar una salida correcta descuenta la existencia" time="43.224172" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF15-02 Sin productos no aparece la barra Confirmar" time="18.254193" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia" time="50.166145" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF15-04 Inventario insuficiente: botellas y cajas comparten el tope" time="57.332385" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF15-05 Volver del diálogo y Descartar no escriben en el historial" time="26.939200" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<testsuite name="RF-16 Entrada de inventario (INBOUND)" time="90.050611" disabled="0" errors="0" tests="2" failures="0" skipped="0" timestamp="2026-10-27T03:05:22.028Z" hostname="pc">
+		<testcase name="RF16-01 Registrar una entrada y verla en el detalle y el historial" time="41.423445" classname="RF-16 Entrada de inventario (INBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF16-02 Validación de la entrada: sin líneas no hay confirmación y Volver no registra" time="28.750942" classname="RF-16 Entrada de inventario (INBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<testsuite name="RF-17 Traspaso entre bodegas (TRANSFER)" time="210.361339" disabled="0" errors="0" tests="4" failures="0" skipped="0" timestamp="2026-10-27T03:06:53.332Z" hostname="pc">
+		<testcase name="RF17-01 Origen y destino son obligatorios para confirmar" time="41.084878" classname="RF-17 Traspaso entre bodegas (TRANSFER)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF17-02 El destino excluye al origen y viceversa" time="54.796205" classname="RF-17 Traspaso entre bodegas (TRANSFER)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF17-03 Registrar un traspaso mueve la existencia entre las dos bodegas" time="58.856701" classname="RF-17 Traspaso entre bodegas (TRANSFER)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF17-04 Las cantidades del traspaso se topan con la existencia del origen" time="35.771920" classname="RF-17 Traspaso entre bodegas (TRANSFER)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<testsuite name="RF-18 Ajuste de inventario (ADJUSTMENT)" time="96.391516" disabled="0" errors="0" tests="2" failures="0" skipped="0" timestamp="2026-10-27T03:10:25.271Z" hostname="pc">
+		<testcase name="RF18-01 El motivo es obligatorio y de al menos 4 caracteres" time="43.629287" classname="RF-18 Ajuste de inventario (ADJUSTMENT)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF18-02 Registrar un ajuste con motivo válido" time="32.764104" classname="RF-18 Ajuste de inventario (ADJUSTMENT)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<testsuite name="RF-20 Anulación de un movimiento confirmado" time="132.016428" disabled="0" errors="0" tests="3" failures="1" skipped="0" timestamp="2026-10-27T03:12:02.954Z" hostname="pc">
+		<testcase name="RF20-01 Conservarlo cierra el diálogo sin anular" time="38.935440" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF20-02 El motivo es obligatorio al anular" time="41.658744" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF20-03 Anular con motivo válido revierte la existencia" time="31.457990" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="La IA leyó el estado «null»&#10;+ actual - expected&#10;&#10;+ 'null'&#10;- 'confirmado'&#10;">
+			<failure type="testCodeFailure" message="La IA leyó el estado «null»&#10;+ actual - expected&#10;&#10;+ 'null'&#10;- 'confirmado'">
+[Error [ERR_TEST_FAILURE]: La IA leyó el estado «null»
++ actual - expected
+
++ 'null'
+- 'confirmado'
+] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: AssertionError [ERR_ASSERTION]: La IA leyó el estado «null»
+  + actual - expected
+  
+  + 'null'
+  - 'confirmado'
+  
+      at status (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF20-cancellation.e2e.mts:23:10)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF20-cancellation.e2e.mts:98:7)
+      at async TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:74:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'null',
+    expected: 'confirmado',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite name="RF-21 Descarga del comprobante PDF" time="73.000449" disabled="0" errors="0" tests="3" failures="0" skipped="0" timestamp="2026-10-27T03:14:16.453Z" hostname="pc">
+		<testcase name="RF21-01 Descargar el PDF desde el historial" time="11.146123" classname="RF-21 Descarga del comprobante PDF" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF21-02 Descargar el PDF desde el detalle" time="11.112683" classname="RF-21 Descarga del comprobante PDF" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF21-03 Descargar el PDF de un movimiento anulado" time="30.679025" classname="RF-21 Descarga del comprobante PDF" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<!-- tests 19 -->
+	<!-- suites 6 -->
+	<!-- pass 18 -->
+	<!-- fail 1 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 827518.511 -->
+</testsuites>

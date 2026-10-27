@@ -1,0 +1,15 @@
+{"level":"info","message":"stagehand.init","data":{}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":954,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4208}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":982,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3768}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1325,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3487}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Detalle\" de esta fila del historial"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":642,"completionTokens":42,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2857,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Haz clic en el enlace \"Detalle\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":636,"completionTokens":36,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2210,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Click the link \"Detalle\" that opens the movement detail"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":639,"completionTokens":38,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2286,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Haz clic en el enlace (link) cuyo texto es \"Detalle\", no en el botón PDF"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":650,"completionTokens":68,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3489,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Abre el detalle del movimiento con el enlace \"Detalle\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":640,"completionTokens":40,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2421,"resultCount":1}}
+{"level":"info","message":"stagehand.close","data":{}}

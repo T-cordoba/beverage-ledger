@@ -9,24 +9,40 @@ import {
   Field,
   FormAlert,
   Input,
+  RequiredLegend,
   Spinner,
   useNotify,
 } from '@/components/ui';
-import { describeError } from '@/lib/api';
+import { useDescribeError } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
+import { contrastRatio, hexToRgb, isHexColor } from '@/lib/utils';
 import { useOrganization, useUpdateOrganization } from './api';
 
 interface OrganizationForm {
   name: string;
   legalName: string;
   logoUrl: string;
+  brandColor: string;
   timezone: string;
 }
+
+/** `--color-bg` of the dark and light themes in tokens.css: what an accent has to read against. */
+const BACKGROUNDS: [number, number, number][] = [
+  [18, 0, 6],
+  [250, 247, 240],
+];
+/** WCAG's floor for large text and interface elements, which is what an accent paints. */
+const MIN_ACCENT_CONTRAST = 3;
+
+const isLowContrast = (hex: string) =>
+  isHexColor(hex) &&
+  BACKGROUNDS.some((background) => contrastRatio(hexToRgb(hex), background) < MIN_ACCENT_CONTRAST);
 
 export function OrganizationView() {
   const t = useTranslations('admin.organization');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
+  const describeError = useDescribeError();
   const format = useFormatter();
 
   const { data: organization, error, isPending } = useOrganization();
@@ -41,6 +57,7 @@ export function OrganizationView() {
     name: organization?.name ?? '',
     legalName: organization?.legalName ?? '',
     logoUrl: organization?.logoUrl ?? '',
+    brandColor: organization?.brandColor ?? '',
     timezone: organization?.timezone ?? '',
   };
 
@@ -48,6 +65,7 @@ export function OrganizationView() {
     name: rules.text(values.name, { minLength: 2 }),
     timezone: rules.text(values.timezone),
     logoUrl: rules.url(values.logoUrl),
+    brandColor: rules.color(values.brandColor),
   });
 
   if (isPending) {
@@ -71,6 +89,7 @@ export function OrganizationView() {
         name: values.name.trim(),
         legalName: values.legalName.trim(),
         timezone: values.timezone.trim(),
+        brandColor: values.brandColor.trim() || null,
         ...(values.logoUrl.trim() ? { logoUrl: values.logoUrl.trim() } : {}),
       });
       notify('success', t('savedTitle'), t('savedDescription'));
@@ -93,9 +112,15 @@ export function OrganizationView() {
           onSubmit={validation.onSubmit(() => void submit())}
           className="space-y-4"
         >
+          <RequiredLegend />
           {validation.alert && <FormAlert title={validation.alert} />}
 
-          <Field label={t('name')} hint={t('nameHint')} error={validation.errorFor('name')}>
+          <Field
+            required
+            label={t('name')}
+            hint={t('nameHint')}
+            error={validation.errorFor('name')}
+          >
             {({ id, describedBy, invalid }) => (
               <Input
                 id={id}
@@ -140,6 +165,51 @@ export function OrganizationView() {
           </Field>
 
           <Field
+            label={t('brandColor')}
+            hint={
+              isLowContrast(values.brandColor) ? (
+                <span className="text-warning">{t('brandColorLowContrast')}</span>
+              ) : (
+                t('brandColorHint')
+              )
+            }
+            error={validation.errorFor('brandColor')}
+          >
+            {({ id, describedBy, invalid }) => (
+              <div className="flex items-center gap-3">
+                <input
+                  type="color"
+                  aria-label={t('brandColorPicker')}
+                  value={isHexColor(values.brandColor) ? values.brandColor : '#d4af37'}
+                  onChange={(event) => set('brandColor', event.target.value)}
+                  className="h-12 w-14 shrink-0 cursor-pointer rounded-xl border border-border bg-surface p-1"
+                />
+                <Input
+                  id={id}
+                  aria-describedby={describedBy}
+                  aria-invalid={invalid}
+                  value={values.brandColor}
+                  onChange={(event) => set('brandColor', event.target.value)}
+                  onBlur={() => validation.touch('brandColor')}
+                  placeholder={t('brandColorDefault')}
+                  className="font-mono"
+                />
+                {values.brandColor && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => set('brandColor', '')}
+                  >
+                    {t('brandColorReset')}
+                  </Button>
+                )}
+              </div>
+            )}
+          </Field>
+
+          <Field
+            required
             label={t('timezone')}
             hint={t('timezoneHint')}
             error={validation.errorFor('timezone')}

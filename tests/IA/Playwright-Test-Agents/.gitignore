@@ -1,0 +1,10 @@
+.playwright-mcp/
+reports/artifacts/
+# Rate-limit bookkeeping of support/auth-budget.ts, rewritten on every run.
+reports/.refresh-log.json
+# Playwright HTML reports and traces embed the fill steps (password included),
+# the JWTs and the Set-Cookie headers of every request.
+reports/html/
+reports/history/*/html/
+reports/history/*/html-*/
+reports/history/*/artifacts/

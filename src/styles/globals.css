@@ -21,6 +21,16 @@
   }
 }
 
+/**
+ * High contrast lifts dimmed text back to full strength. The interface fades
+ * secondary text with alpha (`text-contrast/60`), which no palette can undo, so
+ * those utilities are matched by name. The !important beats the utility itself.
+ */
+:root[data-contrast='high'] [class*='text-contrast/'],
+:root[data-contrast='high'] [class*='text-foreground/'] {
+  color: rgb(var(--color-text-contrast)) !important;
+}
+
 @layer base {
   * {
     margin: 0;

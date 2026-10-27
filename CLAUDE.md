@@ -60,7 +60,7 @@ Ojo con una cosa: el README es lo único que se mantiene **en inglés o en espa�
 
 **La pantalla de perfil se hizo fuera del orden de fases** —entonces todavía en una rama, `feat/profile-screen`— porque el hueco que tapaba era funcional y no de presentación: nadie podía cambiar su propia contraseña.
 
-**Las bodegas y los traspasos también.** Estaban modeladas desde la primera migración y nunca se habían expuesto; ahora tienen CRUD, selector y filtro, y existe un cuarto tipo de movimiento, `TRANSFER`. Eso cerró de paso tres límites del contrato que la UI tenía que enseñar en vez de esconder. Ver §10.
+**Las bodegas y los traspasos también.** Estaban modeladas desde la primera migración y nunca se habían expuesto; ahora tienen CRUD, selector y filtro, y existe un cuarto tipo de movimiento, `TRANSFER`. Eso cerró de paso tres límites del contrato que la UI tenía que enseñar en vez de esconder. Ver §11.
 
 ---
 
@@ -421,7 +421,99 @@ Imports siempre por alias `@/`, nunca relativos que suban de directorio (`../../
 
 ---
 
-## 10. Deuda del código original (contexto histórico)
+## 10. Pipeline de CI: Docker, Jenkins y SonarQube
+
+Aparte del workflow de GitHub Actions que publica en SonarCloud, los dos repos
+tienen un pipeline de Jenkins que corre en local sobre Docker. Puesta en marcha
+completa en `devops/README.md`; aquí solo lo que condiciona cómo se trabaja.
+
+**Topología.** Una red `devops-net` con Jenkins (`:8080`), SonarQube (`:9000`) y
+los dos contenedores que el propio pipeline despliega, `beverage-ledger-api`
+(`:3001`) y `beverage-ledger-front` (`:3000`). Jenkins monta el socket de Docker,
+así que construye y arranca en el daemon del **host**, no dentro de sí mismo.
+
+**Los dos servidores se levantan a mano con `docker run`**, sin compose ni imagen
+propia, y las herramientas se instalan dentro del contenedor de Jenkins con un
+`docker exec`. Es deliberado: son dos comandos que se copian del README y así el
+repo no carga con infraestructura que no es el entregable. El coste es que el paso
+de las herramientas hay que repetirlo al recrear el contenedor, porque viven en él
+y no en el volumen. Dos cosas que muerden ahí y están en `devops/README.md`: la
+imagen de Jenkins deja `$JAVA_HOME/bin` fuera del `PATH` —y el sonar-scanner lo
+necesita—, y Git Bash convierte `/var/run/docker.sock` a una ruta de Windows.
+
+**El análisis del front corre sin información de tipos.** `disableTypeChecking` en
+su etapa de Sonar, más un tope al montón del bridge de Node en los dos repos. No es
+por velocidad —el sensor tarda 43 s con y sin— sino por memoria: construir el
+programa de TypeScript sobre 291 archivos no cabe en una máquina de 8 GB junto a
+SonarQube y Jenkins, y lo que sigue no es lentitud sino swap, con la CPU parada y el
+disco al 100 %. El precio es real: las reglas que necesitan tipos dejan de correr.
+La API conserva el análisis completo, que ahí sí cabe.
+
+**Nueve etapas comunes**: verificar herramientas · instalar dependencias ·
+análisis estático · pruebas con cobertura · SonarQube · Quality Gate · construir
+imagen · desplegar · comprobar salud. Después, cada repo despliega a producción:
+el front con `Deploy to Vercel` y la API con `Migrate production database` +
+`Deploy to Render`. El contenedor local hace de smoke test antes de tocar
+producción.
+
+**Vercel no ejecuta contenedores**, así que en el front Docker es el entorno de
+build, no lo que se sirve: la etapa `vercel` del `Dockerfile` trae el CLI y el
+código, y al correrla hace `vercel pull` (las variables de producción salen de
+Vercel, no de los build-args), `vercel build` y `vercel deploy --prebuilt --prod`.
+El código entra por `COPY` y no por bind mount porque el daemon es el del host y
+el workspace vive en el volumen `jenkins_home`. **Render sí construye el
+`Dockerfile` de la API**, con el runtime Docker. Jenkins pide por su API el
+`commitId` que probó, en vez de disparar un hook que desplegaría la punta de la
+rama. Los dos servicios tienen el auto-deploy apagado: si no, un push desplegaría
+sin pasar el quality gate. Pasos de dashboard y credenciales en
+`devops/README.md`.
+
+**`output: 'standalone'` está detrás de `BUILD_STANDALONE`.** El trazado del
+bundle sigue los symlinks del almacén de pnpm, y Windows los rechaza sin modo
+desarrollador: activarlo sin condición rompe `pnpm build` en local con `EPERM`.
+Solo lo enciende el `Dockerfile`, que es lo único que lee `.next/standalone`.
+
+**`NEXT_PUBLIC_API_URL` se hornea en la imagen**, porque las `NEXT_PUBLIC_*` se
+inlinean al construir y `src/config/api.ts` lanza si está vacía. Dos
+consecuencias: el `docker build` **exige** el build-arg, y una imagen sirve a una
+sola API —cambiar de entorno es reconstruir, no cambiar una variable de runtime—.
+El valor por defecto es `http://localhost:3001` y no el nombre de servicio,
+porque quien resuelve esa URL es el navegador del host, no el contenedor.
+
+**Ninguna prueba necesita ya una API viva.** Las cuatro que hacían login real se
+reescribieron para **mockear `fetch`, no `@/lib/api`**, y ahí está la diferencia:
+mockear el módulo lo reemplaza entero y no ejecuta nada de `client.ts` —ni el
+middleware que pone el bearer, ni el 401, ni `unwrap`—, mientras que stubbear el
+transporte los deja corriendo todos. `client.ts` pasó de 88.88 % a **100 %** de
+sentencias, y la suite completa de 93.95 % a 95.05 %, sin que salga un paquete a la
+red. `tests/support/` tiene los constructores.
+
+El detalle que hay que respetar al escribir una de estas: `openapi-fetch` lee
+`globalThis.fetch` cuando corre `createClient`, o sea al evaluar el módulo, así que
+el stub tiene que existir **antes** del import — de ahí que `stubbedTransport()`
+importe dinámicamente. Y cada respuesta se construye de nuevo en cada llamada,
+porque un `Response` solo se puede leer una vez y una sola llamada a `api.*` puede
+gastar dos: si no hay token fresco en memoria, el middleware refresca primero.
+
+**Un solo `sonar-project.properties` por repo.** Los proyectos del SonarQube local
+se crean con las mismas claves que SonarCloud (`T-cordoba_beverage-ledger`,
+`T-cordoba_beverage-ledger-api`), de modo que no hace falta ningún override: el
+host y el token los inyecta `withSonarQubeEnv`. Duplicar el archivo habría
+duplicado las listas de `sonar.coverage.exclusions`, que ya tienen que moverse a
+la par con `coverage.include` (§4).
+
+**`--env-file` de Docker no quita las comillas.** Un `.env` con
+`NODE_ENV="development"` entrega el valor *con* comillas y la validación Zod de la
+API rechaza media docena de variables a la vez. Por eso el Jenkinsfile de la API
+escribe su archivo temporal con los valores pelados. Es también el motivo de usar
+un archivo y no `-e`: lo que va por `-e` se lee con `docker inspect`.
+
+**El health check va por nombre de contenedor**, no por `localhost`: el paso corre
+dentro de Jenkins, cuyo `localhost` es el suyo propio.
+
+---
+
+## 11. Deuda del código original (contexto histórico)
 
 Lo que había antes de la reescritura, para que se entienda por qué las convenciones son las que son.
 

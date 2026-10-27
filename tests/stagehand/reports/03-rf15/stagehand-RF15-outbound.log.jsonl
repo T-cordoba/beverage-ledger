@@ -1,0 +1,16 @@
+{"level":"info","message":"stagehand.init","data":{}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1102,"completionTokens":58,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":6173}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1133,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":6162}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1324,"completionTokens":48,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3020}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1397,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3914}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el nombre del primer producto del listado y cuántas unidades en total tiene capturadas su tarjeta"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":7920,"completionTokens":56,"inferenceTimeMs":9821}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae de cada tarjeta de producto del listado su nombre (el título de la tarjeta) y el número de unidades \"en existencia\""}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":8145,"completionTokens":256,"inferenceTimeMs":31777}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1397,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4498}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":943,"completionTokens":44,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":5313}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1079,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":6177}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":807,"completionTokens":49,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3180}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1024,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":5481}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":807,"completionTokens":49,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2773}}
+{"level":"info","message":"stagehand.close","data":{}}

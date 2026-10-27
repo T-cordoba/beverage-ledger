@@ -1,0 +1,169 @@
+Ejecución 16-rf20-validacion — 2026-10-27T03:47:00.706Z
+Archivos: RF20-cancellation.e2e.mts
+
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=true) para RF20-cancellation
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3252,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Correo electrónico" (Escribe el valor en el campo "Correo electrónico")
+    [IA act(observe)] Encuentra el cuadro de texto 'Correo electrónico'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3000,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Contraseña" (Escribe el valor en el campo "Contraseña")
+    [IA act(observe)] Encuentra el cuadro de texto 'Contraseña'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3041,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF20-01 Conservarlo cierra el diálogo sin anular
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":927,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3515,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] button: Añadir botella
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2795,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":38,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2288,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] Pulsa el botón "Confirmar" del diálogo
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1575,"completionTokens":46,"inferenceTimeMs":3819}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Buscar movimientos\" (Escribe el valor en el buscador de movimientos por código)"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":4344,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":6606,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Buscar movimientos" (Escribe el valor en el buscador de movimientos por código)
+    [IA act(observe)] searchbox: Buscar movimientos por código
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Detalle\" de esta fila del historial"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":642,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3331,"resultCount":1}}
+    [IA observe] Pulsa el enlace "Detalle" de esta fila del historial
+    [IA act(observe)] Pulsa el enlace "Detalle"
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la etiqueta que aparece junto al tipo de movimiento"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1444,"completionTokens":37,"inferenceTimeMs":3253}}
+    [IA extract] Extrae el estado del movimiento de esta página de detalle: la etiqueta que aparece junto al tipo de movimiento
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" del movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1311,"completionTokens":29,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2457,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" del movimiento
+    [IA act(observe)] Anular
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Conservarlo\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":651,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2663,"resultCount":1}}
+    [IA observe] Pulsa el botón "Conservarlo" del diálogo
+    [IA act(observe)] click
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la etiqueta que aparece junto al tipo de movimiento"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1444,"completionTokens":37,"inferenceTimeMs":2529}}
+    [IA extract] Extrae el estado del movimiento de esta página de detalle: la etiqueta que aparece junto al tipo de movimiento
+    limpieza: [{"id":"86355d6d-fcb3-4204-bff4-aa1c4afd2d20","before":"CONFIRMED","status":201}]
+
+  ▶ RF20-02 El motivo es obligatorio al anular
+▶ RF-20 Anulación de un movimiento confirmado
+  ✔ RF20-01 Conservarlo cierra el diálogo sin anular (40779.9283ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":934,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2886,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] click
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2569,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":58,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2974,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] Pulsa el botón 'Confirmar' del diálogo
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1595,"completionTokens":46,"inferenceTimeMs":3456}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" del movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1447,"completionTokens":33,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2565,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" del movimiento
+    [IA act(observe)] Botón para anular el movimiento
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" dentro del diálogo para confirmar la anulación"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":658,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2645,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" dentro del diálogo para confirmar la anulación
+    [IA act(observe)] click
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Motivo\" (Escribe el valor en el campo \"Motivo\" del diálogo)"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":739,"completionTokens":39,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2352,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Motivo" (Escribe el valor en el campo "Motivo" del diálogo)
+    [IA act(observe)] textbox: MOTIVO (OBLIGATORIO)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" dentro del diálogo para confirmar la anulación"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":745,"completionTokens":48,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2808,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" dentro del diálogo para confirmar la anulación
+    [IA act(observe)] Anular
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Motivo\" (Escribe el valor en el campo \"Motivo\" del diálogo)"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":752,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3057,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Motivo" (Escribe el valor en el campo "Motivo" del diálogo)
+    [IA rechazada] eligió «(obligatorio) (no es un cuadro de texto)», se esperaba el campo «Motivo»; se vuelve a preguntar
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Motivo\" (Escribe el valor en el campo \"Motivo\" del diálogo). Debe ser el cuadro de texto (textbox) \"Motivo\"; no es \"(obligatorio) (no es un cuadro de texto)\"."}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":784,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3129,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Motivo" (Escribe el valor en el campo "Motivo" del diálogo). Debe ser el cuadro de texto (textbox) "Motivo"; no es "(obligatorio) (no es un cuadro de texto)".
+    [IA act(observe)] textbox: MOTIVO (OBLIGATORIO)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" dentro del diálogo para confirmar la anulación"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":745,"completionTokens":48,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2710,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" dentro del diálogo para confirmar la anulación
+    [IA act(observe)] Anular
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Conservarlo\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":738,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3118,"resultCount":1}}
+    [IA observe] Pulsa el botón "Conservarlo" del diálogo
+    [IA act(observe)] Pulsa el botón 'Conservarlo'
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la etiqueta que aparece junto al tipo de movimiento"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1444,"completionTokens":35,"inferenceTimeMs":2916}}
+    [IA extract] Extrae el estado del movimiento de esta página de detalle: la etiqueta que aparece junto al tipo de movimiento
+    limpieza: [{"id":"d89bd5d8-3ddb-4b5c-9b39-10aa72a55a3a","before":"CONFIRMED","status":201}]
+
+  ▶ RF20-03 Anular con motivo válido revierte la existencia
+  ✔ RF20-02 El motivo es obligatorio al anular (42035.9557ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":934,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3277,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] button: Añadir botella
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":29,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1785,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Confirmar
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":58,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3097,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] Pulsa el botón 'Confirmar' del diálogo
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1595,"completionTokens":46,"inferenceTimeMs":3426}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Buscar movimientos\" (Escribe el valor en el buscador de movimientos por código)"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":4343,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":6690,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Buscar movimientos" (Escribe el valor en el buscador de movimientos por código)
+    [IA act(observe)] searchbox: Buscar movimientos por código
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Detalle\" de esta fila del historial"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":642,"completionTokens":42,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2491,"resultCount":1}}
+    [IA observe] Pulsa el enlace "Detalle" de esta fila del historial
+    [IA act(observe)] Pulsa el enlace "Detalle" de esta fila del historial
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la etiqueta que aparece junto al tipo de movimiento"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1444,"completionTokens":35,"inferenceTimeMs":3160}}
+    [IA extract] Extrae el estado del movimiento de esta página de detalle: la etiqueta que aparece junto al tipo de movimiento
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" del movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1311,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3205,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" del movimiento
+    [IA act(observe)] button: Anular
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Motivo\" (Escribe el valor en el campo \"Motivo\" del diálogo)"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":665,"completionTokens":48,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2952,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Motivo" (Escribe el valor en el campo "Motivo" del diálogo)
+    [IA act(observe)] type
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" dentro del diálogo para confirmar la anulación"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":675,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3623,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" dentro del diálogo para confirmar la anulación
+    [IA act(observe)] Pulsa el botón 'Anular' dentro del diálogo para confirmar la anulación
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la etiqueta que aparece junto al tipo de movimiento"}}
+{"level":"info","message":"Extraction incomplete after processing all data","data":{"category":"extraction","promptTokens":1627,"completionTokens":56,"inferenceTimeMs":3761}}
+    [IA extract] Extrae el estado del movimiento de esta página de detalle: la etiqueta que aparece junto al tipo de movimiento
+    limpieza: [{"id":"b1808571-2eac-4700-a5b0-aee1134a1bbc","before":"CANCELLED","status":null}]
+  ✔ RF20-03 Anular con motivo válido revierte la existencia (48226.4844ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✔ RF-20 Anulación de un movimiento confirmado (149015.7102ms)
+ℹ tests 3
+ℹ suites 1
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 150575.4231

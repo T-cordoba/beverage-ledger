@@ -10,6 +10,7 @@ import { MAIN_NAVIGATION, ROUTES, visibleNavigation } from '@/config/navigation'
 import { useAuth } from '@/features/auth';
 import { cn } from '@/lib/utils';
 import { AccountActions } from './AccountActions';
+import { HelpMenu } from './HelpMenu';
 
 function initialsOf(name: string): string {
   return name
@@ -65,21 +66,24 @@ export function Topbar() {
           })}
         </nav>
 
-        <Popover open={isAccountOpen} onOpenChange={setIsAccountOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="secondary"
-              size="icon"
-              className="ml-auto shrink-0 rounded-full"
-              aria-label={user ? t('account.menuFor', { name: user.name }) : t('account.menu')}
-            >
-              <span className="text-xs font-medium">{user ? initialsOf(user.name) : '—'}</span>
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent align="end" className="w-64">
-            <AccountActions onNavigate={() => setIsAccountOpen(false)} />
-          </PopoverContent>
-        </Popover>
+        <div className="ml-auto flex shrink-0 items-center gap-2">
+          <HelpMenu />
+          <Popover open={isAccountOpen} onOpenChange={setIsAccountOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="secondary"
+                size="icon"
+                className="shrink-0 rounded-full"
+                aria-label={user ? t('account.menuFor', { name: user.name }) : t('account.menu')}
+              >
+                <span className="text-xs font-medium">{user ? initialsOf(user.name) : '—'}</span>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent align="end" className="w-64">
+              <AccountActions onNavigate={() => setIsAccountOpen(false)} />
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
     </header>
   );

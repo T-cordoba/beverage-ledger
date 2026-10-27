@@ -4,6 +4,7 @@ import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useMemo, useState, type ReactNode } from 'react';
 import { Button, Card, EmptyState, SegmentedControl, Skeleton, StatTile } from '@/components/ui';
+import { HALF_WIDTH_WIDGETS, type DashboardWidget } from '@/config/dashboard';
 import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
 import { NewMovementFab, NewMovementPanel, RecentMovementsCard } from '@/features/movements';
@@ -18,7 +19,10 @@ import {
 } from '@/features/reports';
 import { LowStockCard } from '@/features/stock';
 import type { ActivityRow } from '@/lib/api';
+import { cn } from '@/lib/utils';
 import { ActivityChart } from './ActivityChart';
+import { DashboardCustomizer } from './DashboardCustomizer';
+import { useDashboardLayout } from './useDashboardLayout';
 
 /** How many tiles the summary paints, so its placeholder is the same shape. */
 const SUMMARY_TILES = 8;
@@ -40,6 +44,31 @@ export function DashboardView() {
   const activity = useActivityReport(range, granularity, canSeeReports);
 
   const activityRows = activity.data?.data ?? [];
+  const layout = useDashboardLayout();
+
+  const allowed: Record<DashboardWidget, boolean> = {
+    actions: true,
+    summary: canSeeReports,
+    activity: canSeeReports,
+    lowStock: can('stock:read'),
+    recent: can('movement:read'),
+  };
+  const available = layout.order.filter((id) => allowed[id]);
+
+  const widgets: Record<DashboardWidget, ReactNode> = {
+    actions: <NewMovementPanel />,
+    summary: <SummaryTiles summary={summary} t={t} tStates={tStates} format={format} />,
+    activity: (
+      <ActivitySection
+        activity={activity}
+        activityRows={activityRows}
+        granularity={granularity}
+        t={t}
+      />
+    ),
+    lowStock: <LowStockCard />,
+    recent: <RecentMovementsCard />,
+  };
 
   return (
     <div className="space-y-6">
@@ -59,38 +88,36 @@ export function DashboardView() {
           </p>
         </div>
 
-        {canSeeReports && (
-          <SegmentedControl
-            label={tReports('periodLabel')}
-            value={period}
-            options={REPORT_PERIODS.map((value) => ({
-              value,
-              label: tReports(`periods.${value}`),
-            }))}
-            onChange={setPeriod}
-          />
-        )}
+        <div className="flex flex-wrap items-center gap-3">
+          {canSeeReports && (
+            <SegmentedControl
+              label={tReports('periodLabel')}
+              value={period}
+              options={REPORT_PERIODS.map((value) => ({
+                value,
+                label: tReports(`periods.${value}`),
+              }))}
+              onChange={setPeriod}
+            />
+          )}
+          <DashboardCustomizer available={available} />
+        </div>
       </header>
 
-      <NewMovementPanel />
       <NewMovementFab />
 
-      {canSeeReports && <SummaryTiles summary={summary} t={t} tStates={tStates} format={format} />}
-
       <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-        {canSeeReports && (
-          <ActivitySection
-            activity={activity}
-            activityRows={activityRows}
-            granularity={granularity}
-            t={t}
-          />
-        )}
-
-        {can('stock:read') && <LowStockCard />}
+        {available
+          .filter((id) => !layout.hidden.has(id))
+          .map((id) => (
+            <div
+              key={id}
+              className={cn('min-w-0', !HALF_WIDTH_WIDGETS.includes(id) && 'lg:col-span-2')}
+            >
+              {widgets[id]}
+            </div>
+          ))}
       </div>
-
-      {can('movement:read') && <RecentMovementsCard />}
     </div>
   );
 }

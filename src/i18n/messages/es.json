@@ -21,7 +21,8 @@
       "save": "Guardar",
       "search": "Buscar",
       "showDetails": "Ver el detalle",
-      "newMovement": "Registrar movimiento"
+      "newMovement": "Registrar movimiento",
+      "back": "Volver"
     },
     "states": {
       "loading": "Cargando…",
@@ -49,7 +50,10 @@
       "min": "Tiene que ser {min} o más.",
       "max": "Tiene que ser {max} o menos.",
       "mismatch": "No coincide con lo que escribiste arriba.",
-      "summary": "{count, plural, one {Falta un campo por revisar.} other {Faltan # campos por revisar.}}"
+      "summary": "{count, plural, one {Falta un campo por revisar.} other {Faltan # campos por revisar.}}",
+      "requiredMark": "obligatorio",
+      "requiredLegend": "Campo obligatorio",
+      "color": "Escribe un color con la forma #rrggbb, por ejemplo #d4af37."
     },
     "datePicker": {
       "placeholder": "Elegir fecha",
@@ -76,6 +80,10 @@
       "next": "Página siguiente",
       "goToPage": "Ir a la página {page}",
       "current": "Página {page} de {pageCount}"
+    },
+    "select": {
+      "search": "Escribe para buscar…",
+      "noMatches": "Nada coincide con lo que escribiste."
     }
   },
   "marketing": {
@@ -85,7 +93,8 @@
       "how": "Cómo funciona",
       "faq": "Preguntas",
       "signIn": "Iniciar sesión",
-      "dashboard": "Ir al panel"
+      "dashboard": "Ir al panel",
+      "help": "Ayuda"
     },
     "hero": {
       "eyebrow": "Inventario de licores",
@@ -165,7 +174,8 @@
       "tagline": "Inventario de licores para operaciones de hostelería.",
       "rights": "© {year} {brand}",
       "sections": "Secciones",
-      "account": "Cuenta"
+      "account": "Cuenta",
+      "help": "Ayuda"
     }
   },
   "nav": {
@@ -178,18 +188,20 @@
       "reports": "Reportes",
       "admin": "Administración",
       "adminUsers": "Usuarios",
-      "adminCategories": "Categorías",
-      "adminBrands": "Marcas",
-      "adminLocations": "Bodegas",
       "adminOrganization": "Organización",
-      "adminAudit": "Auditoría"
+      "adminAudit": "Auditoría",
+      "catalogProducts": "Productos",
+      "catalogCategories": "Categorías",
+      "catalogBrands": "Marcas",
+      "catalogLocations": "Bodegas"
     },
     "account": {
       "menu": "Menú de la cuenta",
       "menuFor": "Menú de la cuenta de {name}",
       "profile": "Tu perfil",
       "signOut": "Cerrar sesión",
-      "landing": "Ir al sitio público"
+      "landing": "Ir al sitio público",
+      "settings": "Ajustes"
     }
   },
   "auth": {
@@ -327,7 +339,7 @@
         "confirmed": {
           "verb": "Anular",
           "title": "¿Anular {code}?",
-          "description": "Lo que este movimiento tomó de las existencias vuelve. El movimiento se conserva, marcado como anulado: el ledger no se reescribe.",
+          "description": "Lo que este movimiento tomó de las existencias vuelve. El movimiento se conserva, marcado como anulado: el historial nunca se reescribe.",
           "placeholder": "¿Por qué se anula?",
           "successTitle": "Movimiento anulado",
           "successDescription": "{code} se revirtió y las existencias volvieron.",
@@ -341,13 +353,28 @@
       "loadFailed": "No se pudo cargar el catálogo.",
       "empty": "Ningún producto coincide con esos filtros.",
       "loadMore": "Cargar más productos",
-      "onHand": "{count} en existencia",
+      "onHand": "<strong>{count}</strong> en existencia",
       "left": "quedan {count}",
-      "atLimit": "Solo quedan {count} en esta bodega",
       "add": "Añadir {unit}",
       "remove": "Quitar {unit}",
       "unitsPerCase": "{count, plural, one {× # unidad} other {× # unidades}}",
-      "takenTotal": "{count, plural, one {# unidad en total} other {# unidades en total}}"
+      "takenTotal": "{count, plural, one {# unidad en total} other {# unidades en total}}",
+      "state": {
+        "none": "Sin existencias",
+        "low": "Bajo mínimo"
+      },
+      "labels": {
+        "category": "Categoría",
+        "subcategory": "Tipo",
+        "age": "Añejamiento",
+        "abv": "Graduación",
+        "origin": "Origen"
+      },
+      "limit": {
+        "noneAtOrigin": "No hay existencias en la bodega de origen, así que no se puede sacar nada.",
+        "allTaken": "Ya tomaste las {count} unidades que hay en la bodega de origen.",
+        "noFullCase": "{count, plural, one {Queda # unidad} other {Quedan # unidades}}: no alcanza para otra caja, pero sí para botellas sueltas."
+      }
     },
     "register": {
       "pendingDraft": "Ya hay un borrador abierto de un intento que no se pudo confirmar. Si corriges las cantidades y confirmas otra vez, se reutiliza y no se crea un segundo movimiento.",
@@ -358,11 +385,6 @@
       "pickedUpDescription": "Lo que se había capturado está de vuelta. Al confirmar se reutiliza.",
       "pickUpFailed": "No se pudo recuperar el borrador",
       "fields": {
-        "occurredAt": {
-          "label": "Ocurrió el",
-          "hint": "Déjalo vacío para registrarlo como ahora.",
-          "placeholder": "Ahora"
-        },
         "location": {
           "label": "Bodega",
           "hint": "En qué bodega cae este movimiento."
@@ -400,7 +422,7 @@
       },
       "reasonRequired": "Un ajuste necesita un motivo antes de poder confirmarse.",
       "confirm": "Confirmar",
-      "confirmDescription": "Esto escribe <strong>{products} {products, plural, one {producto} other {productos}}</strong> en el ledger y mueve <strong>{units} {unitsAbs, plural, one {unidad} other {unidades}}</strong> — las cajas cuentan según su tamaño.",
+      "confirmDescription": "Esto registra <strong>{products} {products, plural, one {producto} other {productos}}</strong> en el historial de movimientos y mueve <strong>{units} {unitsAbs, plural, one {unidad} other {unidades}}</strong> — las cajas cuentan según su tamaño.",
       "goBack": "Volver",
       "registeredTitle": "Movimiento registrado",
       "registeredDescription": "{code} se confirmó y se aplicó a las existencias.",
@@ -410,15 +432,21 @@
       "discardDescription": "Se limpian todas las líneas, la fecha y la nota. No se crea ningún movimiento.",
       "keep": "Conservarlo",
       "discardedTitle": "Borrador descartado",
-      "discardedNothingSent": "No se envió nada al ledger.",
-      "discardedDraftKept": "Lo que capturaste se limpió. El borrador abierto queda en el historial para que un encargado lo anule."
+      "discardedNothingSent": "No se registró nada.",
+      "discardedDraftKept": "Lo que capturaste se limpió. El borrador abierto queda en el historial para que un encargado lo anule.",
+      "stampedNow": "Se registrará con la fecha y hora actuales.",
+      "history": {
+        "undo": "Deshacer",
+        "redo": "Rehacer",
+        "savedAt": "Borrador guardado en este dispositivo · {time}"
+      }
     }
   },
   "stock": {
     "denied": "No puedes ver las existencias.",
     "levels": {
       "title": "Existencias",
-      "subtitle": "Lo que el ledger dice que hay en bodega ahora mismo. Un producto que nunca se ha movido está en cero.",
+      "subtitle": "Lo que hay en bodega ahora mismo, según los movimientos registrados. Un producto que nunca se ha movido está en cero.",
       "searchPlaceholder": "Buscar por producto…",
       "searchLabel": "Buscar existencias por producto",
       "filterCategory": "Filtrar por categoría",
@@ -459,8 +487,8 @@
       "minimum": "Mínimo",
       "caseSize": "Tamaño de caja",
       "loadFailed": "No se pudo cargar el kardex.",
-      "title": "Líneas del ledger",
-      "caption": "Líneas confirmadas del ledger de {product}",
+      "title": "Historial de movimientos",
+      "caption": "Movimientos confirmados de {product}",
       "loading": "Cargando el kardex",
       "empty": "Este producto nunca se ha movido.",
       "emptyDescription": "Sus existencias quedan en cero hasta que se confirme un movimiento.",
@@ -471,7 +499,7 @@
         "change": "Cambio",
         "balance": "Saldo"
       },
-      "lines": "Líneas del ledger"
+      "lines": "Movimientos"
     }
   },
   "admin": {
@@ -627,7 +655,13 @@
       "reset": "Restablecer",
       "savedTitle": "Organización guardada",
       "savedDescription": "La marca queda actualizada en todos los sitios que la leen.",
-      "saveFailed": "No se pudo guardar la organización"
+      "saveFailed": "No se pudo guardar la organización",
+      "brandColor": "Color de marca",
+      "brandColorHint": "Reemplaza el dorado del producto en botones, enlaces y resaltados. Vacío usa el color por defecto.",
+      "brandColorLowContrast": "Este color se lee mal sobre el fondo claro u oscuro. Prueba un tono más intenso para que botones y enlaces sigan siendo legibles.",
+      "brandColorPicker": "Elegir el color de marca",
+      "brandColorDefault": "Color por defecto",
+      "brandColorReset": "Usar el de defecto"
     },
     "audit": {
       "title": "Log de auditoría",
@@ -813,6 +847,22 @@
       "pointLabel": "{period}: {unitsIn} recibidas, {unitsOut} despachadas",
       "caption": "Unidades recibidas y despachadas por periodo",
       "period": "Periodo"
+    },
+    "customize": {
+      "open": "Personalizar",
+      "title": "Personalizar el panel",
+      "description": "Elige qué tarjetas ver y en qué orden. Se guarda en este dispositivo.",
+      "moveUp": "Subir {widget}",
+      "moveDown": "Bajar {widget}",
+      "reset": "Restablecer",
+      "done": "Listo",
+      "widgets": {
+        "actions": "Registrar movimiento",
+        "summary": "Resumen del periodo",
+        "activity": "Actividad",
+        "lowStock": "Bajo mínimo",
+        "recent": "Últimos movimientos"
+      }
     }
   },
   "reports": {
@@ -877,7 +927,7 @@
       "activateTitle": "¿Activar {name}?",
       "activateDescription": "Vuelve a estar disponible para nuevos movimientos.",
       "deactivateTitle": "¿Desactivar {name}?",
-      "deactivateDescription": "Se conserva en el ledger y en todos los movimientos pasados, pero deja de ofrecerse para los nuevos.",
+      "deactivateDescription": "Se conserva en el historial y en todos los movimientos pasados, pero deja de ofrecerse para los nuevos.",
       "activatedTitle": "Producto activado",
       "activatedDescription": "{name} vuelve a estar disponible.",
       "deactivatedTitle": "Producto desactivado",
@@ -911,7 +961,7 @@
     "form": {
       "createTitle": "Nuevo producto",
       "editTitle": "Editar {name}",
-      "description": "Los productos no se eliminan, solo se desactivan: el ledger los referencia.",
+      "description": "Los productos no se eliminan, solo se desactivan: los movimientos pasados los siguen nombrando.",
       "name": "Nombre",
       "namePlaceholder": "Havana Club 7 Años",
       "category": "Categoría",
@@ -945,7 +995,7 @@
       "isDefault": "{name} (por defecto)"
     },
     "title": "Bodegas",
-    "subtitle": "Dónde vive la mercancía. Cada existencia y cada línea del ledger pertenece a una, y un traspaso mueve unidades entre dos sin cambiar el total.",
+    "subtitle": "Dónde vive la mercancía. Cada existencia y cada movimiento pertenece a una, y un traspaso mueve unidades entre dos sin cambiar el total.",
     "new": "Nueva bodega",
     "loadFailed": "No se pudieron cargar las bodegas.",
     "loading": "Cargando bodegas",
@@ -953,7 +1003,7 @@
     "empty": "Todavía no hay bodegas.",
     "columns": {
       "name": "Nombre",
-      "movementCount": "Líneas del ledger",
+      "movementCount": "Movimientos",
       "actions": "Acciones"
     },
     "default": "Por defecto",
@@ -982,9 +1032,9 @@
     },
     "delete": {
       "title": "¿Eliminar {name}?",
-      "description": "Ninguna línea del ledger la referencia, así que puede irse sin dejar un hueco en el historial.",
+      "description": "Ningún movimiento la usa, así que puede irse sin dejar un hueco en el historial.",
       "blockedDefault": "La bodega por defecto no se puede eliminar: promueve otra primero",
-      "blockedInUse": "{count} {count, plural, one {línea del ledger la referencia} other {líneas del ledger la referencian}}"
+      "blockedInUse": "{count} {count, plural, one {movimiento la usa} other {movimientos la usan}}"
     }
   },
   "errors": {
@@ -999,6 +1049,78 @@
       "description": "No pudimos mostrar esta pantalla. Vuelve a intentarlo; si sigue igual, avísale a quien administre el sistema.",
       "retry": "Reintentar",
       "backHome": "Volver al inicio"
+    },
+    "api": {
+      "network": "No pudimos comunicarnos con el servidor. Revisa tu conexión e inténtalo de nuevo.",
+      "status": {
+        "badRequest": "Algunos datos no son válidos. Revísalos e inténtalo de nuevo.",
+        "unauthorized": "Tu sesión terminó. Vuelve a iniciar sesión.",
+        "forbidden": "No tienes permiso para hacer esto.",
+        "notFound": "Lo que buscas ya no existe.",
+        "conflict": "Alguien cambió estos datos mientras trabajabas. Recarga e inténtalo de nuevo.",
+        "tooLarge": "Lo que intentas enviar es demasiado grande.",
+        "tooManyRequests": "Demasiados intentos seguidos. Espera un momento e inténtalo de nuevo.",
+        "server": "El servidor tuvo un problema. Inténtalo de nuevo en unos minutos."
+      },
+      "codes": {
+        "INSUFFICIENT_PERMISSIONS": "No tienes permiso para hacer esto.",
+        "INVALID_SESSION": "Tu sesión terminó. Vuelve a iniciar sesión.",
+        "INVALID_CREDENTIALS": "El correo o la contraseña no son correctos.",
+        "ACCOUNT_SUSPENDED": "Esta cuenta está suspendida. Pide a quien administre el sistema que la reactive.",
+        "ACCOUNT_INVITED": "Esta invitación todavía no se ha aceptado. Usa el enlace que te enviaron.",
+        "ACCOUNT_NOT_FOUND": "Ninguna cuenta usa ese correo. Pide a quien administre el sistema que te invite.",
+        "GOOGLE_SIGN_IN_DISABLED": "El inicio de sesión con Google no está disponible en este servidor.",
+        "INVALID_SIGN_IN_REQUEST": "No pudimos completar el inicio de sesión. Vuelve a intentarlo.",
+        "GOOGLE_EMAIL_MISSING": "Google no nos dio un correo para tu cuenta.",
+        "BRAND_NOT_FOUND": "Esa marca ya no existe.",
+        "BRAND_NAME_TAKEN": "Ya hay una marca con ese nombre.",
+        "BRAND_IN_USE": "La marca todavía tiene {count, plural, one {# producto} other {# productos}}. Muévelos a otra antes de eliminarla.",
+        "CATEGORY_NOT_FOUND": "Esa categoría ya no existe.",
+        "CATEGORY_NAME_TAKEN": "Ya hay una categoría con ese nombre.",
+        "CATEGORY_IN_USE": "La categoría todavía tiene {count, plural, one {# producto} other {# productos}}. Muévelos a otra antes de eliminarla.",
+        "PRODUCT_NOT_FOUND": "Uno de los productos ya no existe. Recarga la lista.",
+        "PRODUCT_NAME_TAKEN": "Ya hay un producto con ese nombre.",
+        "PRODUCTS_INACTIVE": "Estos productos están desactivados: {products}.",
+        "LOCATION_NOT_FOUND": "Esa bodega ya no existe.",
+        "NO_DEFAULT_LOCATION": "La organización no tiene una bodega principal. Marca una en Bodegas.",
+        "LOCATION_DEFAULT_REQUIRED": "Para dejar de ser la principal, marca otra bodega como principal.",
+        "LOCATION_DEFAULT_UNDELETABLE": "La bodega principal no se puede eliminar.",
+        "LOCATION_IN_USE": "Esta bodega tiene movimientos o existencias, así que no se puede eliminar.",
+        "LOCATION_NAME_TAKEN": "Ya hay una bodega con ese nombre.",
+        "MOVEMENT_NOT_FOUND": "Ese movimiento ya no existe.",
+        "MOVEMENT_ALREADY_CONFIRMED": "Este movimiento ya se había registrado.",
+        "MOVEMENT_ALREADY_CANCELLED": "Este movimiento ya estaba anulado.",
+        "MOVEMENT_CHANGED": "El movimiento cambió mientras lo anulabas. Recarga e inténtalo de nuevo.",
+        "MOVEMENT_NOT_EDITABLE": "Este movimiento ya no es un borrador, así que no se puede editar.",
+        "MOVEMENT_TYPE_FORBIDDEN": "Tu rol no puede registrar este tipo de movimiento.",
+        "MOVEMENT_FUTURE_DATE": "Un movimiento no puede tener una fecha futura.",
+        "NOT_ENOUGH_STOCK": "No hay existencias suficientes para {count, plural, one {# producto} other {# productos}}. Revisa las cantidades.",
+        "STOCK_CHANGED": "Las existencias cambiaron mientras se registraba el movimiento. Inténtalo de nuevo.",
+        "TRANSFER_DESTINATION_REQUIRED": "Un traspaso necesita una bodega de destino.",
+        "TRANSFER_SAME_LOCATION": "El origen y el destino del traspaso tienen que ser bodegas distintas.",
+        "DESTINATION_NOT_ALLOWED": "Solo un traspaso lleva bodega de destino.",
+        "ADJUSTMENT_REASON_REQUIRED": "Un ajuste necesita un motivo.",
+        "ADJUSTMENT_LINE_ZERO": "Una línea de ajuste no puede quedar en cero.",
+        "LINE_NOT_POSITIVE": "Las cantidades tienen que ser mayores que cero.",
+        "ROLE_NOT_ASSIGNABLE": "Ese rol no se puede asignar.",
+        "EMAIL_TAKEN": "Ese correo ya pertenece a alguien de la organización.",
+        "INVITATION_PENDING": "Ese correo ya tiene una invitación pendiente.",
+        "INVITATION_NOT_FOUND": "Esa invitación ya no existe.",
+        "INVITATION_UNUSABLE": "Este enlace de invitación ya no es válido. Pide uno nuevo.",
+        "ORGANIZATION_NOT_FOUND": "No encontramos tu organización.",
+        "INVALID_RANGE": "La fecha de inicio es posterior a la de fin.",
+        "USER_NOT_FOUND": "Esa persona ya no existe.",
+        "CURRENT_PASSWORD_REQUIRED": "Escribe tu contraseña actual.",
+        "CURRENT_PASSWORD_INCORRECT": "La contraseña actual no es correcta.",
+        "SELF_ROLE_CHANGE": "No puedes cambiar tu propio rol ni tu estado.",
+        "LAST_ADMIN": "La organización tiene que conservar al menos un administrador activo.",
+        "VALIDATION_FAILED": "Algunos datos no son válidos. Revísalos e inténtalo de nuevo.",
+        "RECORD_CONFLICT": "Ya existe un registro con esos datos.",
+        "RECORD_REFERENCE": "Se hace referencia a algo que ya no existe. Recarga e inténtalo de nuevo.",
+        "NOT_FOUND": "Lo que buscas ya no existe.",
+        "PAYLOAD_TOO_LARGE": "Lo que intentas enviar es demasiado grande.",
+        "INTERNAL": "El servidor tuvo un problema. Inténtalo de nuevo en unos minutos."
+      }
     }
   },
   "invite": {
@@ -1013,5 +1135,152 @@
     "invalidTitle": "Esta invitación ya no sirve",
     "invalidDescription": "Puede que la hayan cancelado, que ya se haya usado o que se le haya pasado el plazo. Pide una nueva.",
     "backToSignIn": "Ir a iniciar sesión"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "subtitle": "Cómo se ve y se lee la aplicación en este dispositivo. Se guarda aquí, no en tu cuenta.",
+    "theme": {
+      "title": "Apariencia",
+      "description": "Tema de color de toda la aplicación.",
+      "options": {
+        "light": "Claro",
+        "dark": "Oscuro",
+        "system": "Como el dispositivo"
+      }
+    },
+    "contrast": {
+      "title": "Contraste",
+      "description": "El contraste alto usa blanco y negro puros, bordes más visibles y texto secundario a plena intensidad.",
+      "options": {
+        "normal": "Normal",
+        "high": "Alto"
+      }
+    },
+    "textScale": {
+      "title": "Tamaño de texto",
+      "description": "Escala el texto y la interfaz completa: los menús, las tablas y los botones crecen con él sin desbordarse.",
+      "options": {
+        "sm": "Pequeño",
+        "md": "Normal",
+        "lg": "Grande",
+        "xl": "Muy grande"
+      },
+      "preview": "Vista previa · {percent} %",
+      "sample": "Salida de bodega a barra: 2 cajas y 3 botellas."
+    }
+  },
+  "help": {
+    "menu": {
+      "open": "Ayuda y atajos de teclado",
+      "title": "Atajos de teclado",
+      "description": "Funcionan en cualquier pantalla, salvo los de registro, que actúan en la captura de un movimiento.",
+      "guide": "Abrir la guía de uso",
+      "shortcuts": {
+        "search": "Ir a la búsqueda de la pantalla",
+        "help": "Abrir esta ayuda",
+        "undo": "Deshacer el último cambio del borrador",
+        "redo": "Rehacer lo deshecho",
+        "register": "Registrar el movimiento",
+        "submit": "Enviar el formulario",
+        "close": "Cerrar un diálogo o un menú",
+        "jump": "Saltar a la opción que empieza por esa letra en un desplegable",
+        "navigate": "Moverse por las opciones de un desplegable",
+        "focus": "Pasar al siguiente control"
+      }
+    },
+    "guide": {
+      "title": "Guía de uso",
+      "subtitle": "Cómo se usa y se configura la aplicación: el flujo de trabajo, los roles y lo que significa cada término.",
+      "contents": "En esta guía",
+      "sections": {
+        "start": {
+          "title": "Primeros pasos",
+          "intro": "La aplicación lleva el inventario de licores de tu operación: qué hay en cada bodega, qué entró, qué salió y por qué.",
+          "steps": {
+            "signIn": "Entra con el enlace de invitación que te envió quien administra tu organización y elige tu contraseña. No hay registro abierto: solo se entra por invitación.",
+            "dashboard": "El panel resume el periodo: actividad, productos bajo mínimo y últimos movimientos. Con «Personalizar» eliges qué tarjetas ver y en qué orden.",
+            "record": "Para mover mercancía, usa «Registrar movimiento» y elige el tipo.",
+            "check": "En Existencias consultas cuánto hay de cada producto y su historial."
+          }
+        },
+        "roles": {
+          "title": "Roles y permisos",
+          "intro": "Cada persona tiene un rol, y el rol decide qué puede hacer. Quien mueve la mercancía no puede alterar los números que la justifican: por eso los ajustes y las anulaciones son de encargados y administradores. Si te falta un permiso, la opción simplemente no aparece.",
+          "action": "Acción",
+          "actions": {
+            "outbound": "Registrar salidas",
+            "inbound": "Registrar entradas",
+            "adjustment": "Registrar ajustes (con motivo)",
+            "transfer": "Registrar traspasos",
+            "cancel": "Anular un movimiento confirmado",
+            "stock": "Ver existencias e historial",
+            "reports": "Ver reportes",
+            "catalog": "Gestionar el catálogo y las bodegas",
+            "users": "Gestionar usuarios y la organización",
+            "audit": "Ver la auditoría"
+          },
+          "allowed": "Sí",
+          "denied": "No"
+        },
+        "movements": {
+          "title": "Registrar movimientos",
+          "intro": "Cada cambio de existencias es un movimiento. Hay cuatro tipos:",
+          "types": {
+            "outbound": "Salida: mercancía que sale de una bodega, por ejemplo de bodega a barra.",
+            "inbound": "Entrada: mercancía que llega de un proveedor.",
+            "adjustment": "Ajuste: corrige el número registrado hacia arriba o hacia abajo, por merma, rotura o un conteo físico. Siempre exige un motivo.",
+            "transfer": "Traspaso: mueve mercancía entre dos bodegas sin cambiar el total."
+          },
+          "flow": "Elige la bodega, busca los productos y suma botellas o cajas con los botones + y −. Al confirmar, el movimiento se registra con la fecha y hora actuales y las existencias cambian al instante.",
+          "limit": "Al sacar mercancía, los contadores se detienen en lo que hay en la bodega de origen; el mensaje bajo la tarjeta del producto explica por qué no deja seguir.",
+          "fix": "Un movimiento confirmado no se edita. Si hubo un error, se anula (las existencias vuelven) o se corrige con un ajuste."
+        },
+        "drafts": {
+          "title": "Borradores",
+          "body": "Mientras capturas, el borrador se guarda en este dispositivo y verás «Borrador guardado» con la hora. Si cierras la pestaña o recargas, lo recuperas al volver. Deshacer y Rehacer (Ctrl+Z y Ctrl+Y) recorren tus cambios. Si un registro falla, el borrador queda guardado en el servidor: el siguiente intento lo reutiliza, y también puedes retomarlo desde otro dispositivo."
+        },
+        "stock": {
+          "title": "Existencias e historial",
+          "body": "Existencias muestra cuánto hay de cada producto, por bodega. Al abrir un producto ves su historial: cada movimiento confirmado con el saldo que dejó. La tarjeta «Bajo mínimo» del panel avisa de los productos que están en su stock mínimo o por debajo."
+        },
+        "reports": {
+          "title": "Reportes y comprobantes",
+          "body": "Reportes muestra el consumo por producto, categoría o marca en un periodo. Cada movimiento se puede descargar como comprobante en PDF desde su detalle."
+        },
+        "setup": {
+          "title": "Configuración (administradores)",
+          "items": {
+            "organization": "Organización: nombre, razón social, zona horaria y color de marca de la interfaz.",
+            "users": "Usuarios: invita con un enlace de un solo uso, cambia roles o suspende cuentas.",
+            "catalog": "Catálogo: productos, categorías, marcas y bodegas, todo en la sección Catálogo. Los productos no se borran, se desactivan.",
+            "audit": "Auditoría: quién hizo qué, cuándo y desde dónde."
+          }
+        },
+        "settings": {
+          "title": "Preferencias y accesibilidad",
+          "body": "En Ajustes, desde el menú de tu cuenta, eliges tema claro u oscuro, contraste alto y tamaño de texto. Se guardan en el dispositivo. El idioma se cambia desde ese mismo menú."
+        },
+        "shortcuts": {
+          "title": "Atajos de teclado",
+          "body": "Pulsa ? en cualquier pantalla para ver esta lista."
+        },
+        "glossary": {
+          "title": "Glosario",
+          "terms": {
+            "movement": "Movimiento: cualquier cambio de existencias — una salida, una entrada, un ajuste o un traspaso.",
+            "draft": "Borrador: un movimiento capturado pero sin confirmar. No cambia las existencias.",
+            "history": "Historial de movimientos (en inglés, «ledger»): la lista de movimientos confirmados. Nunca se edita ni se borra, y las existencias se calculan a partir de ella.",
+            "kardex": "Kardex: el historial de un solo producto, con el saldo tras cada movimiento.",
+            "minimum": "Stock mínimo: la cantidad a partir de la cual un producto aparece como «bajo mínimo».",
+            "case": "Caja: unidad de compra. Su tamaño dice cuántas botellas trae, y así se convierten cajas en unidades.",
+            "location": "Bodega: el lugar físico donde vive la mercancía."
+          }
+        },
+        "contact": {
+          "title": "¿Algo no funciona?",
+          "body": "Si ves un error que no entiendes o te falta un permiso, habla con quien administre tu organización: puede cambiar tu rol, reactivar tu cuenta o enviarte una invitación nueva. Los mensajes de error dicen qué pasó y, casi siempre, qué hacer."
+        }
+      }
+    }
   }
 }

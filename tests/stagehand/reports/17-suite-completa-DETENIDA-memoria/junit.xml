@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testsuite name="RF-15 Salida de inventario (OUTBOUND)" time="192.289860" disabled="0" errors="0" tests="5" failures="1" skipped="0" timestamp="2026-10-27T03:49:44.725Z" hostname="pc">
+		<testcase name="RF15-01 Registrar una salida correcta descuenta la existencia" time="40.250578" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF15-02 Sin productos no aparece la barra Confirmar" time="19.454202" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia" time="52.209047" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF15-04 Inventario insuficiente: botellas y cajas comparten el tope" time="62.874828" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF15-05 Volver del diálogo y Descartar no escriben en el historial" time="0.004722" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+			<failure type="testCodeFailure" message="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite name="RF-16 Entrada de inventario (INBOUND)" time="17.515966" disabled="0" errors="0" tests="2" failures="2" skipped="0" timestamp="2026-10-27T03:52:58.945Z" hostname="pc">
+		<testcase name="RF16-01 Registrar una entrada y verla en el detalle y el historial" time="0.007187" classname="RF-16 Entrada de inventario (INBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+			<failure type="testCodeFailure" message="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+Error [ERR_TEST_FAILURE]: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+    at async Promise.all (index 0) {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF16-02 Validación de la entrada: sin líneas no hay confirmación y Volver no registra" time="0.002505" classname="RF-16 Entrada de inventario (INBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+			<failure type="testCodeFailure" message="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite name="RF-17 Traspaso entre bodegas (TRANSFER)" time="16.497287" disabled="0" errors="0" tests="4" failures="4" skipped="0" timestamp="2026-10-27T03:53:17.744Z" hostname="pc">
+		<testcase name="RF17-01 Origen y destino son obligatorios para confirmar" time="0.005353" classname="RF-17 Traspaso entre bodegas (TRANSFER)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+			<failure type="testCodeFailure" message="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+Error [ERR_TEST_FAILURE]: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+    at async Promise.all (index 0) {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF17-02 El destino excluye al origen y viceversa" time="0.001798" classname="RF-17 Traspaso entre bodegas (TRANSFER)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+			<failure type="testCodeFailure" message="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF17-03 Registrar un traspaso mueve la existencia entre las dos bodegas" time="0.001785" classname="RF-17 Traspaso entre bodegas (TRANSFER)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+			<failure type="testCodeFailure" message="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF17-04 Las cantidades del traspaso se topan con la existencia del origen" time="0.001641" classname="RF-17 Traspaso entre bodegas (TRANSFER)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+			<failure type="testCodeFailure" message="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite name="RF-18 Ajuste de inventario (ADJUSTMENT)" time="19.565253" disabled="0" errors="0" tests="2" failures="2" skipped="0" timestamp="2026-10-27T03:53:35.724Z" hostname="pc">
+		<testcase name="RF18-01 El motivo es obligatorio y de al menos 4 caracteres" time="0.005829" classname="RF-18 Ajuste de inventario (ADJUSTMENT)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+			<failure type="testCodeFailure" message="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+Error [ERR_TEST_FAILURE]: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+    at async Promise.all (index 0) {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF18-02 Registrar un ajuste con motivo válido" time="0.001384" classname="RF-18 Ajuste de inventario (ADJUSTMENT)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+			<failure type="testCodeFailure" message="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite name="RF-20 Anulación de un movimiento confirmado" time="16.718929" disabled="0" errors="0" tests="3" failures="3" skipped="0" timestamp="2026-10-27T03:53:56.560Z" hostname="pc">
+		<testcase name="RF20-01 Conservarlo cierra el diálogo sin anular" time="0.002782" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+			<failure type="testCodeFailure" message="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+Error [ERR_TEST_FAILURE]: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+    at async Promise.all (index 0) {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF20-02 El motivo es obligatorio al anular" time="0.001424" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+			<failure type="testCodeFailure" message="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF20-03 Anular con motivo válido revierte la existencia" time="0.001162" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+			<failure type="testCodeFailure" message="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite name="RF-21 Descarga del comprobante PDF" time="16.476103" disabled="0" errors="0" tests="3" failures="3" skipped="0" timestamp="2026-10-27T03:54:14.635Z" hostname="pc">
+		<testcase name="RF21-01 Descargar el PDF desde el historial" time="0.003588" classname="RF-21 Descarga del comprobante PDF" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+			<failure type="testCodeFailure" message="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+Error [ERR_TEST_FAILURE]: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+    at async Promise.all (index 0) {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF21-02 Descargar el PDF desde el detalle" time="0.002110" classname="RF-21 Descarga del comprobante PDF" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+			<failure type="testCodeFailure" message="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF21-03 Descargar el PDF de un movimiento anulado" time="0.001239" classname="RF-21 Descarga del comprobante PDF" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+			<failure type="testCodeFailure" message="Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<!-- tests 19 -->
+	<!-- suites 6 -->
+	<!-- pass 4 -->
+	<!-- fail 15 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 287820.3373 -->
+</testsuites>

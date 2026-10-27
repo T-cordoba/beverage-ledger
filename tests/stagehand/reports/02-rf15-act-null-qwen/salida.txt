@@ -1,0 +1,57 @@
+Ejecución 02-rf15 — 2026-10-27T01:49:51.723Z
+Archivos: RF15-outbound.e2e.mts
+
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=false) para RF15-outbound
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1316,"completionTokens":16,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2279}}
+{"level":"info","message":"No actionable element returned by the LLM","data":{"category":"action"}}
+{"level":"info","message":"stagehand.close","data":{}}
+▶ RF-15 Salida de inventario (OUTBOUND)
+  ✖ RF15-01 Registrar una salida correcta descuenta la existencia
+  ✖ RF15-02 Sin productos no aparece la barra Confirmar
+  ✖ RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia
+  ✖ RF15-04 Inventario insuficiente: botellas y cajas comparten el tope
+  ✖ RF15-05 Volver del diálogo y Descartar no escriben en el historial
+✖ RF-15 Salida de inventario (OUTBOUND) (10877.383ms)
+ℹ tests 5
+ℹ suites 1
+ℹ pass 0
+ℹ fail 0
+ℹ cancelled 5
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12100.5708
+
+✖ failing tests:
+
+test at support\suite.mts:1:1213
+✖ RF15-01 Registrar una salida correcta descuenta la existencia
+  'test did not finish before its parent and was cancelled'
+
+test at support\suite.mts:1:1213
+✖ RF15-02 Sin productos no aparece la barra Confirmar
+  'test did not finish before its parent and was cancelled'
+
+test at support\suite.mts:1:1213
+✖ RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia
+  'test did not finish before its parent and was cancelled'
+
+test at support\suite.mts:1:1213
+✖ RF15-04 Inventario insuficiente: botellas y cajas comparten el tope
+  'test did not finish before its parent and was cancelled'
+
+test at support\suite.mts:1:1213
+✖ RF15-05 Volver del diálogo y Descartar no escriben en el historial
+  'test did not finish before its parent and was cancelled'
+
+test at support\suite.mts:1:851
+✖ RF-15 Salida de inventario (OUTBOUND) (10877.383ms)
+  Error: act no pudo completar «Escribe %email% en el campo "Correo electrónico"»: Failed to perform act: No action found
+      at <anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\ai.mts:37:15)
+      at async Ai.call (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\ai.mts:89:42)
+      at async signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\session.mts:113:3)
+      at async SuiteContext.before.timeout (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:45:7)
+      at async TestHook.run (node:internal/test_runner/test:1409:7)
+      at async Suite.runHook (node:internal/test_runner/test:1289:9)
+      at async Suite.run (node:internal/test_runner/test:1899:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)

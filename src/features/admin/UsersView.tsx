@@ -18,7 +18,7 @@ import {
 } from '@/components/ui';
 import { useAuth } from '@/features/auth';
 import { InvitationsCard, InviteDialog } from '@/features/invitations';
-import { describeError, type User } from '@/lib/api';
+import { useDescribeError, type User } from '@/lib/api';
 import { rowsOnPage, useManualRefresh, usePagination } from '@/lib/hooks';
 import { useUpdateUser, useUsers } from './api';
 import { STATUS_TONES } from './roles';
@@ -209,6 +209,7 @@ export function UsersView() {
   const tStatuses = useTranslations('admin.statuses');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
+  const describeError = useDescribeError();
   const format = useFormatter();
 
   const { user: currentUser } = useAuth();

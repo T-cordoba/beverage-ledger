@@ -12,10 +12,11 @@ import {
   Field,
   FormAlert,
   Input,
+  RequiredLegend,
   Select,
   useNotify,
 } from '@/components/ui';
-import { describeError, type User, type UserRole, type UserStatus } from '@/lib/api';
+import { useDescribeError, type User, type UserRole, type UserStatus } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
 import { useUpdateUser } from './api';
 import { ASSIGNABLE_ROLES, ASSIGNABLE_STATUSES } from './roles';
@@ -46,6 +47,7 @@ export function UserFormDialog({
   const tStatuses = useTranslations('admin.statuses');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
+  const describeError = useDescribeError();
 
   const [name, setName] = useState(user.name);
   const [role, setRole] = useState<UserRole>(user.role);
@@ -85,12 +87,13 @@ export function UserFormDialog({
           onSubmit={form.onSubmit(() => void submit())}
           className="space-y-4 text-left"
         >
+          <RequiredLegend />
           <DialogTitle>{t('editTitle', { name: user.name })}</DialogTitle>
           <DialogDescription>{t('description')}</DialogDescription>
 
           {form.alert && <FormAlert title={form.alert} />}
 
-          <Field label={t('name')} error={form.errorFor('name')}>
+          <Field required label={t('name')} error={form.errorFor('name')}>
             {({ id, describedBy, invalid }) => (
               <Input
                 id={id}

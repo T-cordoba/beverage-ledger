@@ -1,0 +1,213 @@
+- generic [ref=e1]:
+  - generic [ref=e44]:
+    - banner [ref=e45]:
+      - generic [ref=e46]:
+        - link "Beverage Ledger Demo" [ref=e47] [cursor=pointer]:
+          - /url: /dashboard
+        - navigation "Principal" [ref=e50]:
+          - link "Panel" [ref=e51] [cursor=pointer]:
+            - /url: /dashboard
+          - link "Existencias" [ref=e52] [cursor=pointer]:
+            - /url: /stock
+          - link "Movimientos" [active] [ref=e53] [cursor=pointer]:
+            - /url: /movements
+          - link "Catálogo" [ref=e54] [cursor=pointer]:
+            - /url: /catalog
+          - link "Reportes" [ref=e55] [cursor=pointer]:
+            - /url: /reports
+        - button "Menú de la cuenta de Manager Katalon (local)" [ref=e56] [cursor=pointer]:
+          - generic [ref=e57]: MK
+    - main [ref=e531]:
+      - generic [ref=e532]:
+        - generic [ref=e533]:
+          - generic [ref=e534]:
+            - heading "Historial de movimientos" [level=1] [ref=e535]
+            - paragraph [ref=e536]: Todo lo que se ha registrado, con su estado.
+          - button "Actualizar" [ref=e537] [cursor=pointer]
+        - generic [ref=e543]:
+          - link "Registrar una salida" [ref=e544] [cursor=pointer]:
+            - /url: /movements/new/outbound
+          - link "Registrar una entrada" [ref=e547] [cursor=pointer]:
+            - /url: /movements/new/inbound
+          - link "Registrar un traspaso" [ref=e550] [cursor=pointer]:
+            - /url: /movements/new/transfer
+          - link "Registrar un ajuste" [ref=e553] [cursor=pointer]:
+            - /url: /movements/new/adjustment
+        - generic [ref=e556]:
+          - searchbox "Buscar movimientos por código" [ref=e557]
+          - combobox "Filtrar por tipo" [ref=e558] [cursor=pointer]:
+            - generic: Todos los tipos
+          - combobox "Filtrar por estado" [ref=e561] [cursor=pointer]:
+            - generic: Todos los estados
+          - button "Filtrar por fecha" [ref=e565] [cursor=pointer]
+        - generic [ref=e569]:
+          - article [ref=e570]:
+            - generic [ref=e571]:
+              - generic [ref=e572]:
+                - generic [ref=e573]:
+                  - generic [ref=e574]: Entrada
+                  - generic [ref=e575]: anulado
+                - heading [level=3] [ref=e576]:
+                  - link "MOV-2026-000879" [ref=e577] [cursor=pointer]:
+                    - /url: /movements/4cd0fcd7-cf31-4f20-a965-90448177c59c
+                - paragraph [ref=e578]: 26 de octubre de 2026 a las 15:04
+                - paragraph [ref=e579]: 1 línea · Manager Katalon (local)
+              - generic [ref=e580]:
+                - link "Detalle" [ref=e581] [cursor=pointer]:
+                  - /url: /movements/4cd0fcd7-cf31-4f20-a965-90448177c59c
+                - button "PDF" [ref=e582] [cursor=pointer]
+          - article [ref=e585]:
+            - generic [ref=e586]:
+              - generic [ref=e587]:
+                - generic [ref=e588]:
+                  - generic [ref=e589]: Entrada
+                  - generic [ref=e590]: anulado
+                - heading [level=3] [ref=e591]:
+                  - link "MOV-2026-000878" [ref=e592] [cursor=pointer]:
+                    - /url: /movements/3793eed6-ea2d-41b1-8f10-68b97b96cc98
+                - paragraph [ref=e593]: 26 de octubre de 2026 a las 15:03
+                - paragraph [ref=e594]: 1 línea · Manager Katalon (local)
+              - generic [ref=e595]:
+                - link "Detalle" [ref=e596] [cursor=pointer]:
+                  - /url: /movements/3793eed6-ea2d-41b1-8f10-68b97b96cc98
+                - button "PDF" [ref=e597] [cursor=pointer]
+          - article [ref=e600]:
+            - generic [ref=e601]:
+              - generic [ref=e602]:
+                - generic [ref=e603]:
+                  - generic [ref=e604]: Entrada
+                  - generic [ref=e605]: anulado
+                - heading [level=3] [ref=e606]:
+                  - link "MOV-2026-000877" [ref=e607] [cursor=pointer]:
+                    - /url: /movements/cccfb731-fa00-427f-9030-5ef8695b7792
+                - paragraph [ref=e608]: 26 de octubre de 2026 a las 15:02
+                - paragraph [ref=e609]: 1 línea · Manager Katalon (local)
+              - generic [ref=e610]:
+                - link "Detalle" [ref=e611] [cursor=pointer]:
+                  - /url: /movements/cccfb731-fa00-427f-9030-5ef8695b7792
+                - button "PDF" [ref=e612] [cursor=pointer]
+          - article [ref=e615]:
+            - generic [ref=e616]:
+              - generic [ref=e617]:
+                - generic [ref=e618]:
+                  - generic [ref=e619]: Entrada
+                  - generic [ref=e620]: anulado
+                - heading [level=3] [ref=e621]:
+                  - link "MOV-2026-000876" [ref=e622] [cursor=pointer]:
+                    - /url: /movements/15044838-5533-40a7-800a-a0d18e961bb9
+                - paragraph [ref=e623]: 26 de octubre de 2026 a las 15:02
+                - paragraph [ref=e624]: 1 línea · Manager Katalon (local)
+              - generic [ref=e625]:
+                - link "Detalle" [ref=e626] [cursor=pointer]:
+                  - /url: /movements/15044838-5533-40a7-800a-a0d18e961bb9
+                - button "PDF" [ref=e627] [cursor=pointer]
+          - article [ref=e630]:
+            - generic [ref=e631]:
+              - generic [ref=e632]:
+                - generic [ref=e633]:
+                  - generic [ref=e634]: Ajuste
+                  - generic [ref=e635]: anulado
+                - heading [level=3] [ref=e636]:
+                  - link "MOV-2026-000875" [ref=e637] [cursor=pointer]:
+                    - /url: /movements/fe9ee8b1-c79e-45e9-b4e1-e40c9f66b397
+                - paragraph [ref=e638]: 26 de octubre de 2026 a las 15:01
+                - paragraph [ref=e639]: 1 línea · Manager Katalon (local)
+              - generic [ref=e640]:
+                - link "Detalle" [ref=e641] [cursor=pointer]:
+                  - /url: /movements/fe9ee8b1-c79e-45e9-b4e1-e40c9f66b397
+                - button "PDF" [ref=e642] [cursor=pointer]
+          - article [ref=e645]:
+            - generic [ref=e646]:
+              - generic [ref=e647]:
+                - generic [ref=e648]:
+                  - generic [ref=e649]: Traspaso
+                  - generic [ref=e650]: anulado
+                - heading [level=3] [ref=e651]:
+                  - link "MOV-2026-000874" [ref=e652] [cursor=pointer]:
+                    - /url: /movements/a82f9951-f3da-4fc4-836a-1fba5d401356
+                - paragraph [ref=e653]: 26 de octubre de 2026 a las 15:00
+                - paragraph [ref=e654]: 2 líneas · Manager Katalon (local)
+              - generic [ref=e655]:
+                - link "Detalle" [ref=e656] [cursor=pointer]:
+                  - /url: /movements/a82f9951-f3da-4fc4-836a-1fba5d401356
+                - button "PDF" [ref=e657] [cursor=pointer]
+          - article [ref=e660]:
+            - generic [ref=e661]:
+              - generic [ref=e662]:
+                - generic [ref=e663]:
+                  - generic [ref=e664]: Entrada
+                  - generic [ref=e665]: anulado
+                - heading [level=3] [ref=e666]:
+                  - link "MOV-2026-000873" [ref=e667] [cursor=pointer]:
+                    - /url: /movements/b3c00482-1f93-406f-a813-4ce09ae58eb7
+                - paragraph [ref=e668]: 26 de octubre de 2026 a las 14:59
+                - paragraph [ref=e669]: 1 línea · Manager Katalon (local)
+              - generic [ref=e670]:
+                - link "Detalle" [ref=e671] [cursor=pointer]:
+                  - /url: /movements/b3c00482-1f93-406f-a813-4ce09ae58eb7
+                - button "PDF" [ref=e672] [cursor=pointer]
+          - article [ref=e675]:
+            - generic [ref=e676]:
+              - generic [ref=e677]:
+                - generic [ref=e678]:
+                  - generic [ref=e679]: Salida
+                  - generic [ref=e680]: anulado
+                - heading [level=3] [ref=e681]:
+                  - link "MOV-2026-000872" [ref=e682] [cursor=pointer]:
+                    - /url: /movements/9e7f586e-a27e-4d4a-9b94-ba9ff8427973
+                - paragraph [ref=e683]: 26 de octubre de 2026 a las 14:57
+                - paragraph [ref=e684]: 1 línea · Manager Katalon (local)
+              - generic [ref=e685]:
+                - link "Detalle" [ref=e686] [cursor=pointer]:
+                  - /url: /movements/9e7f586e-a27e-4d4a-9b94-ba9ff8427973
+                - button "PDF" [ref=e687] [cursor=pointer]
+          - article [ref=e690]:
+            - generic [ref=e691]:
+              - generic [ref=e692]:
+                - generic [ref=e693]:
+                  - generic [ref=e694]: Entrada
+                  - generic [ref=e695]: confirmado
+                - heading [level=3] [ref=e696]:
+                  - link "MOV-2026-000871" [ref=e697] [cursor=pointer]:
+                    - /url: /movements/133f4d5d-612b-455d-9a30-646a72feb2db
+                - paragraph [ref=e698]: 26 de octubre de 2026 a las 14:37
+                - paragraph [ref=e699]: 1 línea · Manager Katalon (local)
+              - generic [ref=e700]:
+                - link "Detalle" [ref=e701] [cursor=pointer]:
+                  - /url: /movements/133f4d5d-612b-455d-9a30-646a72feb2db
+                - button "PDF" [ref=e702] [cursor=pointer]
+          - article [ref=e705]:
+            - generic [ref=e706]:
+              - generic [ref=e707]:
+                - generic [ref=e708]:
+                  - generic [ref=e709]: Entrada
+                  - generic [ref=e710]: anulado
+                - heading [level=3] [ref=e711]:
+                  - link "MOV-2026-000870" [ref=e712] [cursor=pointer]:
+                    - /url: /movements/2ea7198c-cb6a-431d-9a7e-137b8b952934
+                - paragraph [ref=e713]: 26 de octubre de 2026 a las 14:37
+                - paragraph [ref=e714]: 1 línea · Manager Katalon (local)
+              - generic [ref=e715]:
+                - link "Detalle" [ref=e716] [cursor=pointer]:
+                  - /url: /movements/2ea7198c-cb6a-431d-9a7e-137b8b952934
+                - button "PDF" [ref=e717] [cursor=pointer]
+        - navigation "Paginación" [ref=e720]:
+          - paragraph [ref=e721]: 1–10 de 879 resultados
+          - generic [ref=e722]:
+            - generic [ref=e723]:
+              - text: Por página
+              - combobox "Por página" [ref=e724] [cursor=pointer]:
+                - generic: "10"
+            - generic [ref=e727]:
+              - button "Página anterior" [disabled]
+              - list [ref=e728]:
+                - listitem [ref=e729]:
+                  - button "Ir a la página 1" [ref=e730] [cursor=pointer]: "1"
+                - listitem [ref=e731]:
+                  - button "Ir a la página 2" [ref=e732] [cursor=pointer]: "2"
+                - listitem [aria-hidden] [ref=e733]: …
+                - listitem [ref=e734]:
+                  - button "Ir a la página 88" [ref=e735] [cursor=pointer]: "88"
+              - button "Página siguiente" [ref=e736] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e39] [cursor=pointer]
+  - alert [ref=e43]: Historial de movimientos · Beverage Ledger

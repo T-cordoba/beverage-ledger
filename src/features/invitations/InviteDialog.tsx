@@ -12,11 +12,12 @@ import {
   Field,
   FormAlert,
   Input,
+  RequiredLegend,
   Select,
   useNotify,
 } from '@/components/ui';
 import { ASSIGNABLE_ROLES } from '@/features/admin';
-import { describeError, type UserRole } from '@/lib/api';
+import { useDescribeError, type UserRole } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
 import { useCreateInvitation } from './api';
 
@@ -39,6 +40,7 @@ export function InviteDialog({
   const tRoleDescriptions = useTranslations('admin.roleDescriptions');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
+  const describeError = useDescribeError();
 
   const [email, setEmail] = useState('');
   const [role, setRole] = useState<UserRole>('OPERATOR');
@@ -47,6 +49,8 @@ export function InviteDialog({
 
   const invite = useCreateInvitation();
   const notify = useNotify();
+
+  const form = useFormValidation({ email: rules.email(email) });
 
   const close = () => {
     onOpenChange(false);
@@ -57,10 +61,9 @@ export function InviteDialog({
       setRole('OPERATOR');
       setIssuedUrl(null);
       setHasCopied(false);
+      form.reset();
     }, 200);
   };
-
-  const form = useFormValidation({ email: rules.email(email) });
 
   const submit = async () => {
     try {
@@ -139,12 +142,13 @@ export function InviteDialog({
           onSubmit={form.onSubmit(() => void submit())}
           className="space-y-4 text-left"
         >
+          <RequiredLegend />
           <DialogTitle>{t('title')}</DialogTitle>
           <DialogDescription>{t('description')}</DialogDescription>
 
           {form.alert && <FormAlert title={form.alert} />}
 
-          <Field label={t('email')} error={form.errorFor('email')}>
+          <Field required label={t('email')} error={form.errorFor('email')}>
             {({ id, describedBy, invalid }) => (
               <Input
                 id={id}

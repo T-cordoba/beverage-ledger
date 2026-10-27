@@ -1,0 +1,174 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e44]:
+    - banner [ref=e45]:
+      - generic [ref=e46]:
+        - link "Beverage Ledger Demo" [ref=e47] [cursor=pointer]:
+          - /url: /dashboard
+        - navigation "Principal" [ref=e50]:
+          - link "Panel" [ref=e51] [cursor=pointer]:
+            - /url: /dashboard
+          - link "Existencias" [ref=e52] [cursor=pointer]:
+            - /url: /stock
+          - link "Movimientos" [ref=e53] [cursor=pointer]:
+            - /url: /movements
+          - link "Catálogo" [ref=e54] [cursor=pointer]:
+            - /url: /catalog
+          - link "Reportes" [ref=e55] [cursor=pointer]:
+            - /url: /reports
+        - button "Menú de la cuenta de Manager Katalon (local)" [ref=e56] [cursor=pointer]:
+          - generic [ref=e57]: MK
+    - main [ref=e58]:
+      - generic [ref=e59]:
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - heading "Beverage Ledger Demo" [level=1] [ref=e62]
+            - paragraph [ref=e63]: Las existencias tal como están, y lo que se movió entre 26/09/2026 y 26/10/2026.
+          - group "Periodo:" [ref=e64]:
+            - generic [aria-hidden] [ref=e66]: "Periodo:"
+            - generic [ref=e67]:
+              - button "Semana" [ref=e68] [cursor=pointer]
+              - button "Mes" [pressed] [ref=e69] [cursor=pointer]
+              - button "Año" [ref=e70] [cursor=pointer]
+        - generic [ref=e71]:
+          - generic [ref=e72]:
+            - heading "Registrar un movimiento" [level=2] [ref=e73]
+            - paragraph [ref=e74]: Nada se mueve hasta que confirmes.
+          - generic [ref=e75]:
+            - link "Registrar una salida" [ref=e76] [cursor=pointer]:
+              - /url: /movements/new/outbound
+            - link "Registrar una entrada" [ref=e79] [cursor=pointer]:
+              - /url: /movements/new/inbound
+            - link "Registrar un traspaso" [ref=e82] [cursor=pointer]:
+              - /url: /movements/new/transfer
+            - link "Registrar un ajuste" [ref=e85] [cursor=pointer]:
+              - /url: /movements/new/adjustment
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - paragraph [ref=e90]: "12.893"
+            - paragraph [ref=e91]: Unidades en existencia
+            - paragraph [ref=e92]: ahora mismo
+          - generic [ref=e93]:
+            - paragraph [ref=e94]: "0"
+            - paragraph [ref=e95]: Bajo mínimo
+            - paragraph [ref=e96]: ahora mismo
+          - generic [ref=e97]:
+            - paragraph [ref=e98]: "219"
+            - paragraph [ref=e99]: Productos activos
+            - paragraph [ref=e100]: ahora mismo
+          - generic [ref=e101]:
+            - paragraph [ref=e102]: "10"
+            - paragraph [ref=e103]: Productos movidos
+            - paragraph [ref=e104]: en el periodo
+          - generic [ref=e105]:
+            - paragraph [ref=e106]: "85"
+            - paragraph [ref=e107]: Movimientos
+            - paragraph [ref=e108]: confirmados en el periodo
+          - generic [ref=e109]:
+            - paragraph [ref=e110]: "175"
+            - paragraph [ref=e111]: Unidades recibidas
+            - paragraph [ref=e112]: en el periodo
+          - generic [ref=e113]:
+            - paragraph [ref=e114]: "39"
+            - paragraph [ref=e115]: Unidades despachadas
+            - paragraph [ref=e116]: en el periodo
+          - generic [ref=e117]:
+            - paragraph [ref=e118]: "-13"
+            - paragraph [ref=e119]: Ajuste neto
+            - paragraph [ref=e120]: en el periodo
+        - generic [ref=e121]:
+          - generic [ref=e122]:
+            - generic [ref=e123]:
+              - heading "Actividad" [level=2] [ref=e124]
+              - link "Consumo" [ref=e125] [cursor=pointer]:
+                - /url: /reports
+            - generic [ref=e126]:
+              - generic [ref=e127]:
+                - generic [ref=e128]: Recibido
+                - generic [ref=e130]: Despachado
+                - generic [ref=e132]: pico de 175 unidades
+              - slider "Unidades recibidas y despachadas por día entre 27/09/2026 y 25/10/2026" [ref=e134]
+              - generic [ref=e146]:
+                - generic [ref=e147]: 27/09/2026
+                - generic [ref=e148]: 25/10/2026
+              - table [ref=e149]:
+                - caption [ref=e150]: Unidades recibidas y despachadas por periodo
+                - rowgroup [ref=e151]:
+                  - row [ref=e152]:
+                    - columnheader "Periodo" [ref=e153]
+                    - columnheader "Recibido" [ref=e154]
+                    - columnheader "Despachado" [ref=e155]
+                - rowgroup [ref=e156]:
+                  - row [ref=e157]:
+                    - rowheader "27/09/2026" [ref=e158]
+                    - cell "0" [ref=e159]
+                    - cell "12" [ref=e160]
+                  - row [ref=e161]:
+                    - rowheader "29/09/2026" [ref=e162]
+                    - cell "0" [ref=e163]
+                    - cell "13" [ref=e164]
+                  - row [ref=e165]:
+                    - rowheader "25/10/2026" [ref=e166]
+                    - cell "175" [ref=e167]
+                    - cell "14" [ref=e168]
+          - generic [ref=e169]:
+            - generic [ref=e170]:
+              - heading "Bajo mínimo" [level=2] [ref=e171]
+              - link "Ver existencias" [ref=e172] [cursor=pointer]:
+                - /url: /stock
+            - paragraph [ref=e174]: Nada está por debajo de su mínimo.
+        - generic [ref=e175]:
+          - generic [ref=e176]:
+            - heading "Últimos movimientos" [level=2] [ref=e177]
+            - link "Ver el historial" [ref=e178] [cursor=pointer]:
+              - /url: /movements
+          - list [ref=e179]:
+            - listitem [ref=e180]:
+              - generic [ref=e181]:
+                - link "MOV-2026-000864" [ref=e182] [cursor=pointer]:
+                  - /url: /movements/e4a8d7af-f5cd-4461-bcd6-1c99e51c42e6
+                - generic [ref=e183]:
+                  - generic [ref=e184]: Ajuste
+                  - generic [ref=e185]: confirmado
+              - paragraph [ref=e186]: 26 de octubre de 2026 a las 07:59 · 1 línea · Manager Katalon (local)
+            - listitem [ref=e187]:
+              - generic [ref=e188]:
+                - link "MOV-2026-000863" [ref=e189] [cursor=pointer]:
+                  - /url: /movements/e5951b97-081a-4f4d-a524-c7e56c45e376
+                - generic [ref=e190]:
+                  - generic [ref=e191]: Entrada
+                  - generic [ref=e192]: anulado
+              - paragraph [ref=e193]: 26 de octubre de 2026 a las 07:58 · 1 línea · Manager Katalon (local)
+            - listitem [ref=e194]:
+              - generic [ref=e195]:
+                - link "MOV-2026-000862" [ref=e196] [cursor=pointer]:
+                  - /url: /movements/e9cbc0a1-f93c-4847-9189-64ba1650b99a
+                - generic [ref=e197]:
+                  - generic [ref=e198]: Entrada
+                  - generic [ref=e199]: anulado
+              - paragraph [ref=e200]: 26 de octubre de 2026 a las 07:57 · 1 línea · Manager Katalon (local)
+            - listitem [ref=e201]:
+              - generic [ref=e202]:
+                - link "MOV-2026-000861" [ref=e203] [cursor=pointer]:
+                  - /url: /movements/486c8c36-5432-42bc-ae76-b40ff08f1d7e
+                - generic [ref=e204]:
+                  - generic [ref=e205]: Entrada
+                  - generic [ref=e206]: confirmado
+              - paragraph [ref=e207]: 26 de octubre de 2026 a las 07:57 · 1 línea · Manager Katalon (local)
+            - listitem [ref=e208]:
+              - generic [ref=e209]:
+                - link "MOV-2026-000860" [ref=e210] [cursor=pointer]:
+                  - /url: /movements/640cffff-825b-4f79-8cf1-af7e0756aa9a
+                - generic [ref=e211]:
+                  - generic [ref=e212]: Entrada
+                  - generic [ref=e213]: confirmado
+              - paragraph [ref=e214]: 26 de octubre de 2026 a las 07:57 · 1 línea · Manager Katalon (local)
+            - listitem [ref=e215]:
+              - generic [ref=e216]:
+                - link "MOV-2026-000859" [ref=e217] [cursor=pointer]:
+                  - /url: /movements/fa65d485-bd36-4450-999e-e3c62a0f3f5f
+                - generic [ref=e218]:
+                  - generic [ref=e219]: Ajuste
+                  - generic [ref=e220]: confirmado
+              - paragraph [ref=e221]: 26 de octubre de 2026 a las 07:57 · 1 línea · Manager Katalon (local)
+  - button "Open Next.js Dev Tools" [ref=e39] [cursor=pointer]
+  - alert [ref=e43]: Panel · Beverage Ledger

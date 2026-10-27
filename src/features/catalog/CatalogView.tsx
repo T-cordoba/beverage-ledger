@@ -20,7 +20,7 @@ import {
 import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
 import { rowsOnPage, useManualRefresh, usePagination } from '@/lib/hooks';
-import { describeError, type Product } from '@/lib/api';
+import { useDescribeError, type Product } from '@/lib/api';
 import { useProducts, useUpdateProduct } from './api';
 import { CatalogFilters } from './CatalogFilters';
 import { ProductFormDialog } from './ProductFormDialog';
@@ -137,6 +137,7 @@ export function CatalogView() {
   const t = useTranslations('catalog');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
+  const describeError = useDescribeError();
   const format = useFormatter();
 
   const { can } = useAuth();

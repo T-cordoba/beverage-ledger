@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Cypress Studio AI" tests="3" failures="0" time="25.448">
+  <testsuite name="RF21-receipt.cy.ts" tests="3" failures="0" skipped="0" time="25.448" timestamp="2026-10-26T08:42:01.016Z">
+    <testcase classname="RF21-receipt.cy.ts" name="RF-21 Comprobante › Descargar el PDF desde el historial" time="6.243"></testcase>
+    <testcase classname="RF21-receipt.cy.ts" name="RF-21 Comprobante › Descargar el PDF desde el detalle" time="11.203"></testcase>
+    <testcase classname="RF21-receipt.cy.ts" name="RF-21 Comprobante › Descargar el PDF de un movimiento anulado" time="7.965"></testcase>
+  </testsuite>
+</testsuites>

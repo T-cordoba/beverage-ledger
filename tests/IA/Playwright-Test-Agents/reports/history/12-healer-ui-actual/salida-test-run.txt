@@ -1,0 +1,27 @@
+# Salida de la última ejecución completa del Healer (herramienta MCP test_run de playwright-test)
+# 2026-10-26T23:23:52Z (18:23 -05:00), sesión headless de Claude Code 76125b04-b2a6-4e68-90d7-ae3a635c90cf.
+# Copiada literalmente del resultado de la herramienta en la transcripción; esa ejecución no escribió junit.xml.
+
+
+Running 20 tests using 1 worker
+  ✓   1 [id=bd7661edfdd723f70ea3-e51d532f946b51d30557] [project=chromium] › RF15-outbound.spec.ts:10:7 › RF-15 Salida › Registrar una salida correcta (42.1s)
+  ✓   2 [id=bd7661edfdd723f70ea3-498ec0650971100e2536] [project=chromium] › RF15-outbound.spec.ts:63:7 › RF-15 Salida › Sin productos no aparece la barra Confirmar (3.1s)
+  ✓   3 [id=bd7661edfdd723f70ea3-dd74980414c0c636b247] [project=chromium] › RF15-outbound.spec.ts:87:7 › RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper (6.2s)
+  ✓   4 [id=bd7661edfdd723f70ea3-2c0352f7f8017ce6c50d] [project=chromium] › RF15-outbound.spec.ts:127:7 › RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas (3.7s)
+  ✓   5 [id=bd7661edfdd723f70ea3-2aad5aafeff4a01e34d1] [project=chromium] › RF15-outbound.spec.ts:172:7 › RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger (46.5s)
+  ✓   6 [id=fc8c1dedc5a08c937126-ccd93e3b2f6b316e7718] [project=chromium] › RF16-inbound.spec.ts:10:7 › RF-16 Entrada › Registrar una entrada y verla en detalle e historial (17.5s)
+  ✓   7 [id=fc8c1dedc5a08c937126-85e93a88609b4e289b34] [project=chromium] › RF16-inbound.spec.ts:65:7 › RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver (41.9s)
+  ✓   8 [id=b8ccc993e3c011665fce-b2c96792ccaa77679981] [project=chromium] › RF17-transfer.spec.ts:12:7 › RF-17 Traspaso › Origen y destino obligatorios (3.4s)
+  ✓   9 [id=b8ccc993e3c011665fce-f85f2e4af13cf3987146] [project=chromium] › RF17-transfer.spec.ts:42:7 › RF-17 Traspaso › El destino excluye al origen (4.0s)
+  ✓  10 [id=b8ccc993e3c011665fce-7b064cf52b12e571fe4d] [project=chromium] › RF17-transfer.spec.ts:77:7 › RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas (47.2s)
+  ✓  11 [id=b8ccc993e3c011665fce-89dd695579bdfb264a2a] [project=chromium] › RF17-transfer.spec.ts:169:7 › RF-17 Traspaso › Cantidades del traspaso topadas por el origen (10.5s)
+  ✓  12 [id=add7776ff927bcfe2186-778e547741d0f4160b4d] [project=chromium] › RF18-adjustment.spec.ts:9:7 › RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres (4.5s)
+  ✓  13 [id=add7776ff927bcfe2186-3af12949e4f65ef52c5b] [project=chromium] › RF18-adjustment.spec.ts:56:7 › RF-18 Ajuste › Registrar un ajuste con motivo válido (8.2s)
+  ✓  14 [id=bc796356794c631a3edb-afae7ca42583fa00d71b] [project=chromium] › RF20-cancellation.spec.ts:54:7 › RF-20 Anulación › Conservarlo cancela la anulación (37.0s)
+  ✓  15 [id=bc796356794c631a3edb-66f61ca966381be2e964] [project=chromium] › RF20-cancellation.spec.ts:81:7 › RF-20 Anulación › Motivo obligatorio al anular (19.0s)
+  ✓  16 [id=bc796356794c631a3edb-40e72259d14241ba44c0] [project=chromium] › RF20-cancellation.spec.ts:120:7 › RF-20 Anulación › Anular con motivo válido (59.6s)
+  ✓  17 [id=fcdaa19fcfd3b68ba20c-c60bf1554616d9317498] [project=chromium] › RF21-receipt.spec.ts:36:7 › RF-21 Comprobante › Descargar el PDF desde el historial (3.8s)
+  ✓  18 [id=fcdaa19fcfd3b68ba20c-d3fd3d4ae3609f59fab1] [project=chromium] › RF21-receipt.spec.ts:53:7 › RF-21 Comprobante › Descargar el PDF desde el detalle (2.7s)
+  ✓  19 [id=fcdaa19fcfd3b68ba20c-10726a6370e15ae9fed5] [project=chromium] › RF21-receipt.spec.ts:71:7 › RF-21 Comprobante › Descargar el PDF de un movimiento anulado (26.4s)
+  ✓  20 [id=11ceb7af692008938f3b-6908f0cb897156895bee] [project=chromium] › seed.spec.ts:7:7 › Seed › seed (4.6s)
+  20 passed (7.1m)

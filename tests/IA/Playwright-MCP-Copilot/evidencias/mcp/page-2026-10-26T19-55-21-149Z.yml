@@ -1,0 +1,24 @@
+- generic [ref=f5e3]:
+  - link "Volver al sitio" [ref=f5e4] [cursor=pointer]:
+    - /url: /
+  - generic [ref=f5e8]:
+    - link "Beverage Ledger Gestión de inventario de licores" [ref=f5e9] [cursor=pointer]:
+      - /url: /
+      - img "Beverage Ledger" [ref=f5e10]
+      - generic [ref=f5e11]: Gestión de inventario de licores
+    - generic [ref=f5e12]:
+      - heading "Iniciar sesión" [level=1] [ref=f5e13]
+      - generic [ref=f5e14]:
+        - generic [ref=f5e15]:
+          - generic [ref=f5e16]: Correo electrónico
+          - textbox "Correo electrónico" [ref=f5e17]
+        - generic [ref=f5e18]:
+          - generic [ref=f5e19]: Contraseña
+          - generic [ref=f5e20]:
+            - textbox "Contraseña" [ref=f5e21]
+            - button "Mostrar la contraseña" [ref=f5e23] [cursor=pointer]
+        - button "Entrar" [ref=f5e27] [cursor=pointer]
+        - paragraph [ref=f5e28]: Se entra por invitación. Pídesela a quien administre tu organización.
+    - generic [ref=f5e29]:
+      - combobox "Idioma" [ref=f5e30] [cursor=pointer]
+      - combobox [aria-hidden] [ref=f5e33]

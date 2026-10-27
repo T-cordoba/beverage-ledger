@@ -1,0 +1,1 @@
+{"at":"2026-10-27T01:49:59.453Z","scenario":"RF15-outbound · login","kind":"act","instruction":"Escribe %email% en el campo \"Correo electrónico\"","ok":false,"attempt":1,"ms":3491,"error":"act no pudo completar «Escribe %email% en el campo \"Correo electrónico\"»: Failed to perform act: No action found"}

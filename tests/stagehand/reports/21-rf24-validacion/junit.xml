@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testsuite name="RF-24 Consultar el kardex de un producto" time="73.147602" disabled="0" errors="0" tests="2" failures="0" skipped="0" timestamp="2026-10-27T07:52:59.067Z" hostname="DESKTOP-AKKQNK6">
+		<testcase name="RF24-01 Abrir el kardex desde existencias y recorrer el saldo corrido" time="53.753097" classname="test" file="C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF24-02 El kardex de un producto inexistente avisa y deja volver a existencias" time="6.167713" classname="test" file="C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<!-- tests 2 -->
+	<!-- suites 1 -->
+	<!-- pass 2 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 73845.701 -->
+</testsuites>

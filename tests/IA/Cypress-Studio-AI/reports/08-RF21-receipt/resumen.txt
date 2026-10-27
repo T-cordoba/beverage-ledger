@@ -1,0 +1,9 @@
+Ejecución: 08-RF21-receipt
+Inicio: 2026-10-26T08:42:01.016Z  Fin: 2026-10-26T08:42:26.464Z
+Cypress 16.2.0 · chrome 155.0.8059.86 · front http://localhost:3000 · API http://localhost:3001
+Total: 3 · aprobadas 3 · fallidas 0 · pendientes 0 · omitidas 0
+
+RF21-receipt.cy.ts: 3/3 aprobadas
+  [passed] RF-21 Comprobante › Descargar el PDF desde el historial (6243 ms)
+  [passed] RF-21 Comprobante › Descargar el PDF desde el detalle (11203 ms)
+  [passed] RF-21 Comprobante › Descargar el PDF de un movimiento anulado (7965 ms)

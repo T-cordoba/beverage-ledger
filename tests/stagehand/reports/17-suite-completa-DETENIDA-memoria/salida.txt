@@ -1,0 +1,371 @@
+Ejecución 17-suite-completa — 2026-10-27T03:49:43.095Z
+Archivos: RF15-outbound.e2e.mts, RF16-inbound.e2e.mts, RF17-transfer.e2e.mts, RF18-adjustment.e2e.mts, RF20-cancellation.e2e.mts, RF21-receipt.e2e.mts
+
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=true) para RF15-outbound
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2734,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Correo electrónico" (Escribe el valor en el campo "Correo electrónico")
+    [IA act(observe)] Encuentra el cuadro de texto 'Correo electrónico'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2804,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Contraseña" (Escribe el valor en el campo "Contraseña")
+    [IA act(observe)] Encuentra el cuadro de texto 'Contraseña'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3010,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF15-01 Registrar una salida correcta descuenta la existencia
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":51,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3518,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] Añadir botella
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Nota\" (Escribe el valor en el campo \"Nota\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":7977,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":10151,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Nota" (Escribe el valor en el campo "Nota")
+    [IA act(observe)] textBox: NOTA
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra los botones \"Ver el resumen\", \"Descartar\" y \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":400,"completionTokens":100,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":6008,"resultCount":3}}
+    [IA observe] Encuentra los botones "Ver el resumen", "Descartar" y "Confirmar"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2964,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":33,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1875,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] Pulsa el botón Confirmar
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1651,"completionTokens":47,"inferenceTimeMs":3491}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+    limpieza: [{"id":"9f580c5d-8c21-4fcc-8690-2661b0148598","before":"CONFIRMED","status":201}]
+
+  ▶ RF15-02 Sin productos no aparece la barra Confirmar
+▶ RF-15 Salida de inventario (OUTBOUND)
+  ✔ RF15-01 Registrar una salida correcta descuenta la existencia (40250.5779ms)
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"De la primera tarjeta de producto del listado extrae: name = el texto de su encabezado (heading), que es el nombre del producto (no la marca); totalUnits = el número de la frase \"unidades en total\" de esa tarjeta"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":7979,"completionTokens":49,"inferenceTimeMs":10398}}
+    [IA extract] De la primera tarjeta de producto del listado extrae: name = el texto de su encabezado (heading), que es el nombre del producto (no la marca); totalUnits = el número de la frase "unidades en total" de esa tarjeta
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2987,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] button: Añadir botella
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":997,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3273,"resultCount":1}}
+    [IA observe] Pulsa el botón "Quitar botella" de esta tarjeta de producto
+    [IA act(observe)] Pulsa el botón 'Quitar botella'
+
+  ▶ RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia
+  ✔ RF15-02 Sin productos no aparece la barra Confirmar (19454.2016ms)
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae de cada tarjeta de producto del listado: name = el texto del encabezado (heading) de la tarjeta, que es el nombre del producto (no la marca que aparece debajo); stock = el número que aparece justo antes de \"en existencia\""}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":8225,"completionTokens":285,"inferenceTimeMs":35758}}
+    [IA extract] Extrae de cada tarjeta de producto del listado: name = el texto del encabezado (heading) de la tarjeta, que es el nombre del producto (no la marca que aparece debajo); stock = el número que aparece justo antes de "en existencia"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":976,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3158,"resultCount":1}}
+    [IA observe] Pulsa el botón "Quitar botella" de esta tarjeta de producto
+    [IA act(observe)] Pulsa el botón 'Quitar botella'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar caja\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":976,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3446,"resultCount":1}}
+    [IA observe] Pulsa el botón "Quitar caja" de esta tarjeta de producto
+    [IA act(observe)] Pulsa el botón 'Quitar caja'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3202,"resultCount":1}}
+    [IA observe] Encuentra el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+
+  ▶ RF15-04 Inventario insuficiente: botellas y cajas comparten el tope
+  ✔ RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia (52209.0466ms)
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae de cada tarjeta de producto del listado: name = el texto del encabezado (heading) de la tarjeta, que es el nombre del producto (no la marca que aparece debajo); stock = el número que aparece justo antes de \"en existencia\""}}
+
+!! Memoria insuficiente (300 MB libres): se detiene la ejecución tras el escenario en curso.
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":8225,"completionTokens":284,"inferenceTimeMs":40700}}
+    [IA extract] Extrae de cada tarjeta de producto del listado: name = el texto del encabezado (heading) de la tarjeta, que es el nombre del producto (no la marca que aparece debajo); stock = el número que aparece justo antes de "en existencia"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3244,"resultCount":1}}
+    [IA observe] Encuentra el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Abre el selector \"Bodega\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":7998,"completionTokens":44,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":9988,"resultCount":1}}
+    [IA observe] Abre el selector "Bodega"
+    [IA act(observe)] Select the 'BODEGA' dropdown to open it.
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Barra E2E\" de la lista de bodegas"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":892,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3844,"resultCount":1}}
+    [IA observe] Elige la opción "Barra E2E" de la lista de bodegas
+    [IA act(observe)] Elige la opción 'Barra E2E' de la lista de bodegas
+  ✔ RF15-04 Inventario insuficiente: botellas y cajas comparten el tope (62874.8281ms)
+  ✖ RF15-05 Volver del diálogo y Descartar no escriben en el historial (4.7224ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✖ RF-15 Salida de inventario (OUTBOUND) (192289.8598ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=true) para RF16-inbound
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2744,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Correo electrónico" (Escribe el valor en el campo "Correo electrónico")
+    [IA act(observe)] Encuentra el cuadro de texto 'Correo electrónico'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2830,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Contraseña" (Escribe el valor en el campo "Contraseña")
+    [IA act(observe)] Type into the 'Contraseña' text box
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2905,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+▶ RF-16 Entrada de inventario (INBOUND)
+  ✖ RF16-01 Registrar una entrada y verla en el detalle y el historial (7.1868ms)
+  ✖ RF16-02 Validación de la entrada: sin líneas no hay confirmación y Volver no registra (2.5052ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✖ RF-16 Entrada de inventario (INBOUND) (17515.9663ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=true) para RF17-transfer
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2329,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Correo electrónico" (Escribe el valor en el campo "Correo electrónico")
+    [IA act(observe)] Encuentra el cuadro de texto 'Correo electrónico'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2726,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Contraseña" (Escribe el valor en el campo "Contraseña")
+    [IA act(observe)] Type into the 'Contraseña' text box
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2935,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+▶ RF-17 Traspaso entre bodegas (TRANSFER)
+  ✖ RF17-01 Origen y destino son obligatorios para confirmar (5.353ms)
+  ✖ RF17-02 El destino excluye al origen y viceversa (1.7982ms)
+  ✖ RF17-03 Registrar un traspaso mueve la existencia entre las dos bodegas (1.7849ms)
+  ✖ RF17-04 Las cantidades del traspaso se topan con la existencia del origen (1.6411ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✖ RF-17 Traspaso entre bodegas (TRANSFER) (16497.2871ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=true) para RF18-adjustment
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3266,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Correo electrónico" (Escribe el valor en el campo "Correo electrónico")
+    [IA act(observe)] Encuentra el cuadro de texto 'Correo electrónico'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3534,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Contraseña" (Escribe el valor en el campo "Contraseña")
+    [IA act(observe)] Type into the 'Contraseña' text box
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3330,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+▶ RF-18 Ajuste de inventario (ADJUSTMENT)
+  ✖ RF18-01 El motivo es obligatorio y de al menos 4 caracteres (5.8292ms)
+  ✖ RF18-02 Registrar un ajuste con motivo válido (1.384ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✖ RF-18 Ajuste de inventario (ADJUSTMENT) (19565.2531ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=true) para RF20-cancellation
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2514,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Correo electrónico" (Escribe el valor en el campo "Correo electrónico")
+    [IA act(observe)] Encuentra el cuadro de texto 'Correo electrónico'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2718,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Contraseña" (Escribe el valor en el campo "Contraseña")
+    [IA act(observe)] Type into the 'Contraseña' text box
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2919,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+▶ RF-20 Anulación de un movimiento confirmado
+  ✖ RF20-01 Conservarlo cierra el diálogo sin anular (2.7819ms)
+  ✖ RF20-02 El motivo es obligatorio al anular (1.4238ms)
+  ✖ RF20-03 Anular con motivo válido revierte la existencia (1.1619ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✖ RF-20 Anulación de un movimiento confirmado (16718.9292ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=true) para RF21-receipt
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2416,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Correo electrónico" (Escribe el valor en el campo "Correo electrónico")
+    [IA act(observe)] Encuentra el cuadro de texto 'Correo electrónico'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2685,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Contraseña" (Escribe el valor en el campo "Contraseña")
+    [IA act(observe)] Type into the 'Contraseña' text box
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2836,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+▶ RF-21 Descarga del comprobante PDF
+  ✖ RF21-01 Descargar el PDF desde el historial (3.5882ms)
+  ✖ RF21-02 Descargar el PDF desde el detalle (2.1101ms)
+  ✖ RF21-03 Descargar el PDF de un movimiento anulado (1.239ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✖ RF-21 Descarga del comprobante PDF (16476.1031ms)
+ℹ tests 19
+ℹ suites 6
+ℹ pass 4
+ℹ fail 15
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 287820.3373
+
+✖ failing tests:
+
+test at support\suite.mts:1:1258
+✖ RF15-05 Volver del diálogo y Descartar no escriben en el historial (4.7224ms)
+  Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at support\suite.mts:1:1258
+✖ RF16-01 Registrar una entrada y verla en el detalle y el historial (7.1868ms)
+  Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at support\suite.mts:1:1258
+✖ RF16-02 Validación de la entrada: sin líneas no hay confirmación y Volver no registra (2.5052ms)
+  Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at support\suite.mts:1:1258
+✖ RF17-01 Origen y destino son obligatorios para confirmar (5.353ms)
+  Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at support\suite.mts:1:1258
+✖ RF17-02 El destino excluye al origen y viceversa (1.7982ms)
+  Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at support\suite.mts:1:1258
+✖ RF17-03 Registrar un traspaso mueve la existencia entre las dos bodegas (1.7849ms)
+  Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at support\suite.mts:1:1258
+✖ RF17-04 Las cantidades del traspaso se topan con la existencia del origen (1.6411ms)
+  Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at support\suite.mts:1:1258
+✖ RF18-01 El motivo es obligatorio y de al menos 4 caracteres (5.8292ms)
+  Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at support\suite.mts:1:1258
+✖ RF18-02 Registrar un ajuste con motivo válido (1.384ms)
+  Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at support\suite.mts:1:1258
+✖ RF20-01 Conservarlo cierra el diálogo sin anular (2.7819ms)
+  Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at support\suite.mts:1:1258
+✖ RF20-02 El motivo es obligatorio al anular (1.4238ms)
+  Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at support\suite.mts:1:1258
+✖ RF20-03 Anular con motivo válido revierte la existencia (1.1619ms)
+  Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at support\suite.mts:1:1258
+✖ RF21-01 Descargar el PDF desde el historial (3.5882ms)
+  Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at support\suite.mts:1:1258
+✖ RF21-02 Descargar el PDF desde el detalle (2.1101ms)
+  Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at support\suite.mts:1:1258
+✖ RF21-03 Descargar el PDF de un movimiento anulado (1.239ms)
+  Error: Ejecución detenida antes de este escenario: RAM libre 300 MB durante 30 s (2026-10-27T03:52:18.533Z)
+      at TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)

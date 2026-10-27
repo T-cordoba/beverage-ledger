@@ -1,0 +1,29 @@
+{"level":"info","message":"stagehand.init","data":{}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":954,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3996}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":982,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3738}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1325,"completionTokens":48,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3320}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":977,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3319,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":976,"completionTokens":64,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3716,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir caja\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":977,"completionTokens":51,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3069,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar caja\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":976,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3389,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Click the button \"Añadir botella\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":968,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3304,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Click the button \"Quitar botella\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":967,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3228,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Click the button \"Añadir caja\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":968,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3267,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Click the button \"Quitar caja\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":967,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3125,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón con nombre accesible \"Añadir botella\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":975,"completionTokens":65,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3648,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón con nombre accesible \"Quitar botella\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":974,"completionTokens":60,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3616,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón con nombre accesible \"Añadir caja\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":975,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3073,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón con nombre accesible \"Quitar caja\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":974,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3199,"resultCount":1}}
+{"level":"info","message":"stagehand.close","data":{}}

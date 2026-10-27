@@ -2,6 +2,7 @@
 
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { cn } from '@/lib/utils';
+import { Combobox } from './Combobox';
 
 /**
  * Radix reserves the empty string for "nothing selected", so no item may carry
@@ -18,12 +19,28 @@ const triggerSizes = {
   md: 'h-12 rounded-xl px-4 text-sm sm:rounded-2xl sm:px-6 sm:text-base',
 } as const;
 
+/** Past this many options, scrolling to find one is slower than typing it. */
+const SEARCHABLE_FROM = 10;
+
+/** Shared with `Combobox`, so the two triggers cannot drift apart. */
+export function selectTriggerClassName(size: keyof typeof triggerSizes, className?: string) {
+  return cn(
+    'group flex w-full items-center justify-between gap-2 border border-border bg-surface/80 font-medium text-foreground',
+    'transition-colors hover:border-accent/30',
+    'focus-visible:border-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20',
+    'disabled:cursor-not-allowed disabled:opacity-50',
+    'aria-invalid:border-danger/60 aria-invalid:focus-visible:ring-danger/20',
+    triggerSizes[size],
+    className,
+  );
+}
+
 export interface SelectOption {
   value: string;
   label: string;
 }
 
-interface SelectProps {
+export interface SelectProps {
   value: string;
   onValueChange: (value: string) => void;
   options: SelectOption[];
@@ -40,7 +57,16 @@ interface SelectProps {
   'aria-invalid'?: boolean;
 }
 
-export function Select({
+/** A long list becomes a `Combobox` with a filter box; a short one stays a plain list. */
+export function Select(props: Readonly<SelectProps>) {
+  return props.options.length > SEARCHABLE_FROM ? (
+    <Combobox {...props} />
+  ) : (
+    <PlainSelect {...props} />
+  );
+}
+
+function PlainSelect({
   value,
   onValueChange,
   options,
@@ -63,15 +89,7 @@ export function Select({
         aria-label={ariaLabel}
         aria-describedby={describedBy}
         aria-invalid={invalid}
-        className={cn(
-          'group flex w-full items-center justify-between gap-2 border border-border bg-surface/80 font-medium text-foreground',
-          'transition-colors hover:border-accent/30',
-          'focus-visible:border-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20',
-          'disabled:cursor-not-allowed disabled:opacity-50',
-          'aria-invalid:border-danger/60 aria-invalid:focus-visible:ring-danger/20',
-          triggerSizes[size],
-          className,
-        )}
+        className={selectTriggerClassName(size, className)}
       >
         <SelectPrimitive.Value />
         <SelectPrimitive.Icon asChild>
@@ -121,17 +139,29 @@ export function Select({
   );
 }
 
-function ChevronDownIcon({ className }: Readonly<{ className?: string }>) {
+export function ChevronDownIcon({ className }: Readonly<{ className?: string }>) {
   return (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
     </svg>
   );
 }
 
-function CheckIcon({ className }: Readonly<{ className?: string }>) {
+export function CheckIcon({ className }: Readonly<{ className?: string }>) {
   return (
-    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
     </svg>
   );

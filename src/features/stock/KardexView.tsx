@@ -4,17 +4,18 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import {
+  BackLink,
   Badge,
   Button,
   Card,
   DataTable,
+  type DataTableColumn,
   EmptyState,
   Pagination,
   RefreshButton,
   Skeleton,
   Spinner,
   StatTile,
-  type DataTableColumn,
 } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { useProduct } from '@/features/catalog';
@@ -28,9 +29,7 @@ import { useDescribeCases } from './quantity';
 function OccurredAtCell({ entry }: Readonly<{ entry: KardexEntry }>) {
   const format = useFormatter();
   return (
-    <span className="text-contrast/70">
-      {format.dateTime(new Date(entry.occurredAt), 'full')}
-    </span>
+    <span className="text-contrast/70">{format.dateTime(new Date(entry.occurredAt), 'full')}</span>
   );
 }
 
@@ -70,9 +69,7 @@ function ChangeCell({ entry }: Readonly<{ entry: KardexEntry }>) {
 
 function BalanceCell({ entry }: Readonly<{ entry: KardexEntry }>) {
   const format = useFormatter();
-  return (
-    <span className="font-medium text-accent">{format.number(entry.balanceAfter)}</span>
-  );
+  return <span className="font-medium text-accent">{format.number(entry.balanceAfter)}</span>;
 }
 
 const occurredAtCell = (entry: KardexEntry) => <OccurredAtCell entry={entry} />;
@@ -180,9 +177,7 @@ export function KardexView({ productId }: Readonly<{ productId: string }>) {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <Link href={ROUTES.stock} className="text-sm text-contrast/60 hover:text-accent">
-          ← {t('backToStock')}
-        </Link>
+        <BackLink href={ROUTES.stock} />
         <div className="flex items-start justify-between gap-3">
           <h1 className="text-2xl font-light text-foreground sm:text-3xl">{product.data.name}</h1>
           <RefreshButton onRefresh={refresh} isRefreshing={isRefreshing} />

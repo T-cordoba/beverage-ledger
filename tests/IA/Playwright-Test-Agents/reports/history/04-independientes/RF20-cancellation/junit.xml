@@ -1,0 +1,31 @@
+<testsuites id="" name="" tests="3" failures="0" skipped="0" errors="0" time="116.461173">
+<testsuite name="RF20-cancellation.spec.ts" timestamp="2026-10-26T03:29:43.249Z" hostname="chromium" tests="3" failures="0" skipped="0" time="109.894" errors="0">
+<testcase name="RF-20 Anulación › Conservarlo cancela la anulación" classname="RF20-cancellation.spec.ts" time="38.52">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-63df8-rvarlo-cancela-la-anulación-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-63df8-rvarlo-cancela-la-anulación-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-20 Anulación › Motivo obligatorio al anular" classname="RF20-cancellation.spec.ts" time="10.736">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-7414c-otivo-obligatorio-al-anular-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-7414c-otivo-obligatorio-al-anular-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-20 Anulación › Anular con motivo válido" classname="RF20-cancellation.spec.ts" time="60.638">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

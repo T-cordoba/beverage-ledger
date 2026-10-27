@@ -1,0 +1,57 @@
+// spec: planner/beverage-ledger-movimientos.plan.md
+// seed: generator/seed.pw.ts
+
+import { WRITES_ALLOWED, WRITES_SKIPPED_REASON } from './support/env';
+import { expect, test } from './support/fixtures';
+
+test.describe('RF-15 Salida', () => {
+  test('Registrar una salida correcta', async ({ page, ledger }) => {
+    test.skip(!WRITES_ALLOWED, WRITES_SKIPPED_REASON);
+
+    // 1. Ir a /movements/new/outbound. Anotar la existencia del primer producto, añadir 1 botella y escribir una nota opcional.
+    await page.goto('/movements/new/outbound');
+    const card = page
+      .getByRole('listitem')
+      .filter({ has: page.getByRole('button', { name: 'Añadir botella' }) })
+      .first();
+    const productName = (await card.getByRole('heading', { level: 3 }).innerText()).trim();
+    const stockText = await card.getByText(/\d+ en existencia/).innerText();
+    const before = Number(/(\d+) en existencia/.exec(stockText)![1]);
+
+    await card.getByRole('button', { name: 'Añadir botella' }).click();
+    await page.getByRole('textbox', { name: 'Nota' }).fill('Salida E2E');
+
+    await expect(card.getByText('1 unidad en total')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Ver el resumen' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Descartar' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Confirmar' })).toBeVisible();
+
+    // 2. Pulsar 'Confirmar' en la barra.
+    await page.getByRole('button', { name: 'Confirmar' }).click();
+    const dialog = page.getByRole('dialog');
+    await expect(dialog.getByRole('heading', { name: '¿Confirmar esta salida?' })).toBeVisible();
+    await expect(
+      dialog.getByText(
+        'Esto escribe 1 producto en el ledger y mueve 1 unidad — las cajas cuentan según su tamaño.',
+      ),
+    ).toBeVisible();
+
+    // 3. Pulsar 'Confirmar' dentro del diálogo.
+    await dialog.getByRole('button', { name: 'Confirmar' }).click();
+    await expect(page).toHaveURL(/\/movements\/[0-9a-f-]{36}$/);
+    ledger.track(page.url().split('/').pop()!);
+    await expect(page.getByText('Movimiento registrado')).toBeVisible();
+    await expect(page.getByText(/MOV-\d{4}-\d+ se confirmó y se aplicó a las existencias\./)).toBeVisible();
+
+    // La existencia del producto en /stock baja en 1 unidad
+    await page.goto('/stock');
+    const row = page.getByRole('row').filter({ hasText: productName }).first();
+    await expect(row.getByText(`${before - 1} unidades`)).toBeVisible();
+
+    // El movimiento aparece en /movements como 'Salida' 'confirmado'
+    await page.goto('/movements');
+    const latest = page.getByRole('listitem').filter({ hasText: 'Salida' }).first();
+    await expect(latest.getByText('Salida', { exact: true })).toBeVisible();
+    await expect(latest.getByText('confirmado')).toBeVisible();
+  });
+});

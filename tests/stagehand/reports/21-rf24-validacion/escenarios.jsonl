@@ -1,0 +1,2 @@
+{"spec":"RF24-kardex","id":"RF24-01","name":"Abrir el kardex desde existencias y recorrer el saldo corrido","status":"passed","ms":53751,"movements":[]}
+{"spec":"RF24-kardex","id":"RF24-02","name":"El kardex de un producto inexistente avisa y deja volver a existencias","status":"passed","ms":6167,"movements":[]}

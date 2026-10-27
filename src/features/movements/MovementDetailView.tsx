@@ -4,6 +4,7 @@ import { useFormatter, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useState, type ReactNode } from 'react';
 import {
+  BackLink,
   Button,
   Card,
   Dialog,
@@ -15,12 +16,13 @@ import {
   Field,
   FormAlert,
   Input,
+  RequiredLegend,
   Spinner,
   useNotify,
 } from '@/components/ui';
 import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
-import { describeError, type Movement } from '@/lib/api';
+import { useDescribeError, type Movement } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
 import { useCancelMovement, useConfirmMovement, useMovement } from './api';
 import { MIN_REASON_LENGTH, MOVEMENT_TYPES } from './movement-types';
@@ -43,6 +45,7 @@ function Detail({ label, children }: Readonly<{ label: string; children: ReactNo
 function CancelMovementDialog({ movement }: Readonly<{ movement: Movement }>) {
   const t = useTranslations('movements.detail.cancel');
   const tStates = useTranslations('common.states');
+  const describeError = useDescribeError();
   const [isOpen, setIsOpen] = useState(false);
   const [reason, setReason] = useState('');
   const cancel = useCancelMovement();
@@ -83,12 +86,18 @@ function CancelMovementDialog({ movement }: Readonly<{ movement: Movement }>) {
             onSubmit={validation.onSubmit(() => void submit())}
             className="space-y-4"
           >
+            <RequiredLegend />
             <DialogTitle>{t(`${variant}.title`, { code: movement.code })}</DialogTitle>
             <DialogDescription>{t(`${variant}.description`)}</DialogDescription>
 
             {validation.alert && <FormAlert title={validation.alert} />}
 
-            <Field label={t('reason')} className="text-left" error={validation.errorFor('reason')}>
+            <Field
+              required
+              label={t('reason')}
+              className="text-left"
+              error={validation.errorFor('reason')}
+            >
               {({ id, describedBy, invalid }) => (
                 <Input
                   id={id}
@@ -134,6 +143,7 @@ function CancelMovementDialog({ movement }: Readonly<{ movement: Movement }>) {
 function ConfirmDraftButton({ movement }: Readonly<{ movement: Movement }>) {
   const t = useTranslations('movements.detail');
   const tStates = useTranslations('common.states');
+  const describeError = useDescribeError();
   const confirm = useConfirmMovement();
   const notify = useNotify();
 
@@ -190,9 +200,7 @@ export function MovementDetailView({ id }: Readonly<{ id: string }>) {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-2">
-          <Link href={ROUTES.movements} className="text-sm text-contrast/60 hover:text-accent">
-            ← {t('backToHistory')}
-          </Link>
+          <BackLink href={ROUTES.movements} />
           <h1 className="font-mono text-2xl text-accent sm:text-3xl">{movement.code}</h1>
           <div className="flex flex-wrap items-center gap-2">
             <MovementTypeBadge type={movement.type} />

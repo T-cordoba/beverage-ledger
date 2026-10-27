@@ -1,0 +1,55 @@
+
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        16.2.0                                                                         │
+  │ Browser:        Chrome 155 (headless)                                                          │
+  │ Node Version:   v24.22.1 (C:\Program Files\nodejs\node.exe)                                    │
+  │ Specs:          1 found (RF16-inbound.cy.ts)                                                   │
+  │ Searched:       C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\te │
+  │                 sts\IA\Cypress-Studio-AI\RF16-inbound.cy.ts                                    │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  RF16-inbound.cy.ts                                                              (1 of 1)
+
+
+  RF-16 Entrada
+    √ Registrar una entrada y verla en detalle e historial (11560ms)
+    √ Validación de la entrada: sin líneas y diálogo con Volver (34794ms)
+
+
+  2 passing (47s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     46 seconds                                                                       │
+  │ Spec Ran:     RF16-inbound.cy.ts                                                               │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✔  RF16-inbound.cy.ts                       00:46        2        2        -        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✔  All specs passed!                        00:46        2        2        -        -        -  
+

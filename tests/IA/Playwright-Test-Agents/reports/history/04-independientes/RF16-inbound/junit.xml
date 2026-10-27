@@ -1,0 +1,22 @@
+<testsuites id="" name="" tests="2" failures="0" skipped="0" errors="0" time="65.836318">
+<testsuite name="RF16-inbound.spec.ts" timestamp="2026-10-26T03:27:09.387Z" hostname="chromium" tests="2" failures="0" skipped="0" time="60.763" errors="0">
+<testcase name="RF-16 Entrada › Registrar una entrada y verla en detalle e historial" classname="RF16-inbound.spec.ts" time="17.761">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver" classname="RF16-inbound.spec.ts" time="43.002">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

@@ -1,0 +1,57 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e44]:
+    - banner [ref=e45]:
+      - generic [ref=e46]:
+        - link "Beverage Ledger Demo" [ref=e47] [cursor=pointer]:
+          - /url: /dashboard
+        - navigation "Principal" [ref=e50]:
+          - link "Panel" [ref=e51] [cursor=pointer]:
+            - /url: /dashboard
+          - link "Existencias" [ref=e52] [cursor=pointer]:
+            - /url: /stock
+          - link "Movimientos" [ref=e53] [cursor=pointer]:
+            - /url: /movements
+          - link "Catálogo" [ref=e54] [cursor=pointer]:
+            - /url: /catalog
+          - link "Reportes" [ref=e55] [cursor=pointer]:
+            - /url: /reports
+        - button "Menú de la cuenta de Manager Katalon (local)" [ref=e56] [cursor=pointer]:
+          - generic [ref=e57]: MK
+    - main [ref=e739]:
+      - generic [ref=e740]:
+        - generic [ref=e741]:
+          - generic [ref=e742]:
+            - link "← Historial de movimientos" [ref=e743] [cursor=pointer]:
+              - /url: /movements
+            - heading "MOV-2026-000879" [level=1] [ref=e744]
+            - generic [ref=e745]:
+              - generic [ref=e746]: Entrada
+              - generic [ref=e747]: anulado
+          - button "PDF" [ref=e749] [cursor=pointer]
+        - generic [ref=e753]:
+          - generic [ref=e754]:
+            - term [ref=e755]: Ocurrió el
+            - definition [ref=e756]: 26 de octubre de 2026 a las 15:04
+          - generic [ref=e757]:
+            - term [ref=e758]: Registrado por
+            - definition [ref=e759]: Manager Katalon (local)
+          - generic [ref=e760]:
+            - term [ref=e761]: Creado el
+            - definition [ref=e762]: 26 de octubre de 2026 a las 15:04
+          - generic [ref=e763]:
+            - term [ref=e764]: Confirmado el
+            - definition [ref=e765]: 26 de octubre de 2026 a las 15:04
+          - generic [ref=e766]:
+            - term [ref=e767]: Anulado el
+            - definition [ref=e768]: 26 de octubre de 2026 a las 15:04
+        - generic [ref=e769]:
+          - heading "Líneas (1)" [level=2] [ref=e770]
+          - list [ref=e771]:
+            - listitem [ref=e772]:
+              - generic [ref=e773]:
+                - paragraph [ref=e774]: "1942"
+                - paragraph [ref=e775]: DON JULIO
+                - paragraph [ref=e776]: 1 unidad base
+              - generic [ref=e777]: 1 botella
+  - button "Open Next.js Dev Tools" [ref=e39] [cursor=pointer]
+  - alert [ref=e43]: Movimiento · Beverage Ledger

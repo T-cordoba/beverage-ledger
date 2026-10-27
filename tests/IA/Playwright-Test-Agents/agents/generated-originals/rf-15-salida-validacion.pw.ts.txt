@@ -1,0 +1,30 @@
+// spec: planner/beverage-ledger-movimientos.plan.md
+// seed: generator/seed.pw.ts
+
+import { expect, test } from './support/fixtures';
+
+test.describe('RF-15 Salida', () => {
+  test('Sin productos no aparece la barra Confirmar', async ({ page }) => {
+    // 1. Ir a /movements/new/outbound sin añadir nada (localStorage limpio).
+    await page.goto('/movements/new/outbound');
+    await expect(page.getByRole('searchbox', { name: 'Buscar productos' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Añadir botella' }).first()).toBeEnabled();
+    await expect(page.getByRole('button', { name: 'Confirmar' })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Descartar' })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Ver el resumen' })).toHaveCount(0);
+    const cards = page
+      .getByRole('listitem')
+      .filter({ has: page.getByRole('button', { name: 'Añadir botella' }) });
+    await expect(cards.first().getByText('0 unidades en total')).toBeVisible();
+    await expect(page.getByText(/^[1-9]\d* unidades? en total$/)).toHaveCount(0);
+
+    // 2. Añadir 1 botella y luego pulsar 'Quitar botella'.
+    const card = cards.first();
+    await card.getByRole('button', { name: 'Añadir botella' }).click();
+    await expect(page.getByRole('button', { name: 'Confirmar' })).toBeVisible();
+    await card.getByRole('button', { name: 'Quitar botella' }).click();
+    await expect(page.getByRole('button', { name: 'Confirmar' })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Descartar' })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Ver el resumen' })).toHaveCount(0);
+  });
+});

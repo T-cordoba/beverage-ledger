@@ -1,0 +1,8 @@
+Ejecución: 04-RF16-inbound
+Inicio: 2026-10-26T08:37:47.305Z  Fin: 2026-10-26T08:38:33.829Z
+Cypress 16.2.0 · chrome 155.0.8059.86 · front http://localhost:3000 · API http://localhost:3001
+Total: 2 · aprobadas 2 · fallidas 0 · pendientes 0 · omitidas 0
+
+RF16-inbound.cy.ts: 2/2 aprobadas
+  [passed] RF-16 Entrada › Registrar una entrada y verla en detalle e historial (11636 ms)
+  [passed] RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver (34857 ms)

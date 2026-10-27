@@ -1,0 +1,152 @@
+Ejecución 03-rf15 — 2026-10-27T01:55:48.073Z
+Archivos: RF15-outbound.e2e.mts
+
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=false) para RF15-outbound
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1102,"completionTokens":58,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":6173}}
+    [IA act] Escribe %email% en el campo "Correo electrónico"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1133,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":6162}}
+    [IA act] Escribe %password% en el campo "Contraseña"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1324,"completionTokens":48,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3020}}
+    [IA act] Pulsa el botón "Entrar" para iniciar sesión
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF15-01 Registrar una salida correcta descuenta la existencia
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1397,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3914}}
+    [IA act] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+
+  ▶ RF15-02 Sin productos no aparece la barra Confirmar
+▶ RF-15 Salida de inventario (OUTBOUND)
+  ✖ RF15-01 Registrar una salida correcta descuenta la existencia (26555.1538ms)
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el nombre del primer producto del listado y cuántas unidades en total tiene capturadas su tarjeta"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":7920,"completionTokens":56,"inferenceTimeMs":9821}}
+    [IA extract] Extrae el nombre del primer producto del listado y cuántas unidades en total tiene capturadas su tarjeta
+
+  ▶ RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia
+  ✖ RF15-02 Sin productos no aparece la barra Confirmar (12176.413ms)
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae de cada tarjeta de producto del listado su nombre (el título de la tarjeta) y el número de unidades \"en existencia\""}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":8145,"completionTokens":256,"inferenceTimeMs":31777}}
+    [IA extract] Extrae de cada tarjeta de producto del listado su nombre (el título de la tarjeta) y el número de unidades "en existencia"
+
+  ▶ RF15-04 Inventario insuficiente: botellas y cajas comparten el tope
+  ✖ RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia (34408.2962ms)
+
+  ▶ RF15-05 Volver del diálogo y Descartar no escriben en el historial
+  ✖ RF15-04 Inventario insuficiente: botellas y cajas comparten el tope (31277.6625ms)
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1397,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4498}}
+    [IA act] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":943,"completionTokens":44,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":5313}}
+    [IA act] Pulsa el botón "Confirmar"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1079,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":6177}}
+    [IA act] Pulsa el botón "Volver" del diálogo
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":807,"completionTokens":49,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3180}}
+    [IA act] Pulsa el botón "Descartar"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1024,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":5481}}
+    [IA act] Pulsa el botón "Conservarlo" del diálogo
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":807,"completionTokens":49,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2773}}
+    [IA act] Pulsa el botón "Descartar"
+  ✖ RF15-05 Volver del diálogo y Descartar no escriben en el historial (43932.624ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✖ RF-15 Salida de inventario (OUTBOUND) (173433.1772ms)
+ℹ tests 5
+ℹ suites 1
+ℹ pass 0
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 174796.6264
+
+✖ failing tests:
+
+test at support\suite.mts:1:1213
+✖ RF15-01 Registrar una salida correcta descuenta la existencia (26555.1538ms)
+  Error: [
+    {
+      "origin": "string",
+      "code": "invalid_format",
+      "format": "regex",
+      "pattern": "/^\\d+-\\d+$/",
+      "path": [
+        "structuredContent",
+        "action",
+        "elementId"
+      ],
+      "message": "Invalid input"
+    }
+  ]
+      at RPCClient.receiveResponse (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\node_modules\@browserbasehq\stagehand\dist\index.mjs:4204:18)
+      at RPCClient.receive (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\node_modules\@browserbasehq\stagehand\dist\index.mjs:4132:9)
+      at CDPClient.RPCClient.cdp.onmessage (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\node_modules\@browserbasehq\stagehand\dist\index.mjs:4008:42)
+      at CDPClient.handleMessage (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\node_modules\@browserbasehq\stagehand\dist\index.mjs:3655:35) {
+    [cause]: { code: -32602, message: '[\n  {\n    "origin": "string",\n    "code": "invalid_format",\n    "format": "regex",\n    "pattern": "/^\\\\d+-\\\\d+$/",\n    "path": [\n      "structuredContent",\n      "action",\n      "elementId"\n    ],\n    "message": "Invalid input"\n  }\n]', data: { name: 'ZodError', issues: [Array] } }
+  }
+
+test at support\suite.mts:1:1213
+✖ RF15-02 Sin productos no aparece la barra Confirmar (12176.413ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'DON JULIO'
+  - '1942'
+  
+      at Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF15-outbound.e2e.mts:110:14)
+      at async TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'DON JULIO',
+    expected: '1942',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at support\suite.mts:1:1213
+✖ RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia (34408.2962ms)
+  AssertionError [ERR_ASSERTION]: La IA no extrajo la tarjeta «1942»
+      at lowestStockProduct (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF15-outbound.e2e.mts:36:12)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF15-outbound.e2e.mts:132:31)
+      at async TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at support\suite.mts:1:1213
+✖ RF15-04 Inventario insuficiente: botellas y cajas comparten el tope (31277.6625ms)
+  Error: Tiempo agotado esperando: las tarjetas de producto del selector. Último valor: []
+      at waitFor (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\dom.mts:220:9)
+      at async lowestStockProduct (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF15-outbound.e2e.mts:29:17)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF15-outbound.e2e.mts:161:31)
+      at async TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at support\suite.mts:1:1213
+✖ RF15-05 Volver del diálogo y Descartar no escriben en el historial (43932.624ms)
+  Error: [
+    {
+      "origin": "string",
+      "code": "invalid_format",
+      "format": "regex",
+      "pattern": "/^\\d+-\\d+$/",
+      "path": [
+        "structuredContent",
+        "action",
+        "elementId"
+      ],
+      "message": "Invalid input"
+    }
+  ]
+      at RPCClient.receiveResponse (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\node_modules\@browserbasehq\stagehand\dist\index.mjs:4204:18)
+      at RPCClient.receive (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\node_modules\@browserbasehq\stagehand\dist\index.mjs:4132:9)
+      at CDPClient.RPCClient.cdp.onmessage (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\node_modules\@browserbasehq\stagehand\dist\index.mjs:4008:42)
+      at CDPClient.handleMessage (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\node_modules\@browserbasehq\stagehand\dist\index.mjs:3655:35) {
+    [cause]: { code: -32602, message: '[\n  {\n    "origin": "string",\n    "code": "invalid_format",\n    "format": "regex",\n    "pattern": "/^\\\\d+-\\\\d+$/",\n    "path": [\n      "structuredContent",\n      "action",\n      "elementId"\n    ],\n    "message": "Invalid input"\n  }\n]', data: { name: 'ZodError', issues: [Array] } }
+  }

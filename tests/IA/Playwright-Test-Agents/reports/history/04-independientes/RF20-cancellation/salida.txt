@@ -1,0 +1,8 @@
+
+Running 3 tests using 1 worker
+
+  ✓  1 [chromium] › IA\Playwright-Test-Agents\tests\RF20-cancellation.spec.ts:54:7 › RF-20 Anulación › Conservarlo cancela la anulación (38.5s)
+  ✓  2 [chromium] › IA\Playwright-Test-Agents\tests\RF20-cancellation.spec.ts:81:7 › RF-20 Anulación › Motivo obligatorio al anular (10.7s)
+  ✓  3 [chromium] › IA\Playwright-Test-Agents\tests\RF20-cancellation.spec.ts:120:7 › RF-20 Anulación › Anular con motivo válido (1.0m)
+
+  3 passed (1.9m)

@@ -6,6 +6,7 @@ import {
   Card,
   ConfirmDialog,
   DataTable,
+  type DataTableColumn,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -18,8 +19,8 @@ import {
   Input,
   Pagination,
   RefreshButton,
+  RequiredLegend,
   Skeleton,
-  type DataTableColumn,
 } from '@/components/ui';
 import { rules, useFormValidation } from '@/lib/forms';
 import { usePagination } from '@/lib/hooks';
@@ -216,14 +217,16 @@ function TaxonomyFormDialog({
           onSubmit={validation.onSubmit(() => void submit())}
           className="space-y-4 text-left"
         >
+          <RequiredLegend />
           <DialogTitle>{item ? copy.editTitle(item.name) : copy.createTitle}</DialogTitle>
           <DialogDescription>{copy.formDescription}</DialogDescription>
           {validation.alert && <FormAlert title={validation.alert} />}
-          <Field label={t('name')} error={validation.errorFor('name')}>
+          <Field required label={t('name')} error={validation.errorFor('name')}>
             {createNameFieldRenderer(name, setName, () => validation.touch('name'))}
           </Field>
           {withSortOrder && (
             <Field
+              required
               label={t('sortOrder')}
               hint={t('sortOrderHint')}
               error={validation.errorFor('sortOrder')}

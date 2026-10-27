@@ -1,0 +1,40 @@
+<testsuites id="" name="" tests="4" failures="0" skipped="0" errors="0" time="52.58623600000001">
+<testsuite name="RF17-transfer.spec.ts" timestamp="2026-10-26T03:28:19.133Z" hostname="chromium" tests="4" failures="0" skipped="0" time="45.915" errors="0">
+<testcase name="RF-17 Traspaso › Origen y destino obligatorios" classname="RF17-transfer.spec.ts" time="4.06">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-Origen-y-destino-obligatorios-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-Origen-y-destino-obligatorios-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-17 Traspaso › El destino excluye al origen" classname="RF17-transfer.spec.ts" time="4.311">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-El-destino-excluye-al-origen-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-El-destino-excluye-al-origen-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas" classname="RF17-transfer.spec.ts" time="7.677">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-17 Traspaso › Cantidades del traspaso topadas por el origen" classname="RF17-transfer.spec.ts" time="29.867">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

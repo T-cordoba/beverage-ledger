@@ -16,7 +16,7 @@ import {
   type BadgeProps,
   type DataTableColumn,
 } from '@/components/ui';
-import { describeError, type Invitation } from '@/lib/api';
+import { useDescribeError, type Invitation } from '@/lib/api';
 import { rowsOnPage, useManualRefresh, usePagination } from '@/lib/hooks';
 import { useInvitations, useRevokeInvitation } from './api';
 
@@ -161,6 +161,7 @@ export function InvitationsCard() {
   const tRoles = useTranslations('admin.roles');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
+  const describeError = useDescribeError();
   const format = useFormatter();
 
   const pagination = usePagination('invitations');

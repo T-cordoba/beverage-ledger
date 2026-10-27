@@ -1,0 +1,58 @@
+
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        16.2.0                                                                         │
+  │ Browser:        Chrome 155 (headless)                                                          │
+  │ Node Version:   v24.22.1 (C:\Program Files\nodejs\node.exe)                                    │
+  │ Specs:          1 found (RF15-outbound.cy.ts)                                                  │
+  │ Searched:       C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\te │
+  │                 sts\IA\Cypress-Studio-AI\RF15-outbound.cy.ts                                   │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  RF15-outbound.cy.ts                                                             (1 of 1)
+
+
+  RF-15 Salida
+    √ Registrar una salida correcta (16812ms)
+    √ Sin productos no aparece la barra Confirmar (2018ms)
+    √ Cantidades incorrectas: quitar por debajo de cero y tope del stepper (5085ms)
+    √ Inventario insuficiente por tope compartido botellas/cajas (3764ms)
+    √ Volver del diálogo y Descartar no escriben en el ledger (48842ms)
+
+
+  5 passing (1m)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        5                                                                                │
+  │ Passing:      5                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 minute, 16 seconds                                                             │
+  │ Spec Ran:     RF15-outbound.cy.ts                                                              │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✔  RF15-outbound.cy.ts                      01:16        5        5        -        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✔  All specs passed!                        01:16        5        5        -        -        -  
+

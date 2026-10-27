@@ -1,0 +1,10 @@
+
+Running 5 tests using 1 worker
+
+  ✓  1 [chromium] › IA\Playwright-Test-Agents\tests\RF15-outbound.spec.ts:10:7 › RF-15 Salida › Registrar una salida correcta (41.9s)
+  ✓  2 [chromium] › IA\Playwright-Test-Agents\tests\RF15-outbound.spec.ts:63:7 › RF-15 Salida › Sin productos no aparece la barra Confirmar (6.0s)
+  ✓  3 [chromium] › IA\Playwright-Test-Agents\tests\RF15-outbound.spec.ts:87:7 › RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper (5.2s)
+  ✓  4 [chromium] › IA\Playwright-Test-Agents\tests\RF15-outbound.spec.ts:125:7 › RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas (4.6s)
+  ✓  5 [chromium] › IA\Playwright-Test-Agents\tests\RF15-outbound.spec.ts:163:7 › RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger (44.8s)
+
+  5 passed (1.8m)

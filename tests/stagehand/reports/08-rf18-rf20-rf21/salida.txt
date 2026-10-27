@@ -1,0 +1,323 @@
+Ejecución 08-rf18-rf20-rf21 — 2026-10-27T02:26:57.826Z
+Archivos: RF18-adjustment.e2e.mts, RF20-cancellation.e2e.mts, RF21-receipt.e2e.mts
+
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=false) para RF18-adjustment
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":954,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4056}}
+    [IA act] Escribe %email% en el campo "Correo electrónico"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":982,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3632}}
+    [IA act] Escribe %password% en el campo "Contraseña"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":905,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2856,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF18-01 El motivo es obligatorio y de al menos 4 caracteres
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":933,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2888,"resultCount":1}}
+    [IA observe] Pulsa el botón "Quitar botella" de esta tarjeta de producto
+    [IA act(observe)] click
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8172,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":10708}}
+    [IA act] Escribe %motivo% en el campo "Motivo"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8217,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":10146}}
+    [IA act] Escribe %motivo% en el campo "Motivo"
+
+  ▶ RF18-02 Registrar un ajuste con motivo válido
+▶ RF-18 Ajuste de inventario (ADJUSTMENT)
+  ✖ RF18-01 El motivo es obligatorio y de al menos 4 caracteres (42743.7604ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":933,"completionTokens":64,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4178,"resultCount":1}}
+    [IA observe] Pulsa el botón "Quitar botella" de esta tarjeta de producto
+    [IA rechazada] eligió «botellas», se esperaba «Quitar botella»; se vuelve a preguntar
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar botella\" de esta tarjeta de producto. El elemento correcto se llama exactamente \"Quitar botella\"; no es \"botellas\"."}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":953,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3014,"resultCount":1}}
+    [IA observe] Pulsa el botón "Quitar botella" de esta tarjeta de producto. El elemento correcto se llama exactamente "Quitar botella"; no es "botellas".
+    [IA act(observe)] button: Quitar botella
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8244,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":10960}}
+    [IA act] Escribe %motivo% en el campo "Motivo"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3127,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":513,"completionTokens":38,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2085,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] Pulsa el botón "Confirmar" del diálogo
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1650,"completionTokens":46,"inferenceTimeMs":3431}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+    limpieza: [{"id":"c65baf5e-92dd-4d9e-8d98-e7aebb79d4cf","before":"CONFIRMED","status":201}]
+  ✔ RF18-02 Registrar un ajuste con motivo válido (35814.5756ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✖ RF-18 Ajuste de inventario (ADJUSTMENT) (98727.7807ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=false) para RF20-cancellation
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":954,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3886}}
+    [IA act] Escribe %email% en el campo "Correo electrónico"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":982,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3929}}
+    [IA act] Escribe %password% en el campo "Contraseña"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":905,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3264,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] Click the 'Entrar' button to start the session
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF20-01 Conservarlo cierra el diálogo sin anular
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":920,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3468,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] button: Añadir botella
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2803,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":33,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2002,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] Pulsa el botón Confirmar
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1557,"completionTokens":46,"inferenceTimeMs":4510}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":4842,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":6755}}
+    [IA act] Escribe %codigo% en el buscador de movimientos por código
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Detalle\" de esta fila del historial"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":642,"completionTokens":42,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2667,"resultCount":1}}
+    [IA observe] Pulsa el enlace "Detalle" de esta fila del historial
+    [IA act(observe)] Pulsa el enlace "Detalle" de esta fila del historial
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento que muestra esta página de detalle (por ejemplo confirmado o anulado)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1437,"completionTokens":34,"inferenceTimeMs":2783}}
+    [IA extract] Extrae el estado del movimiento que muestra esta página de detalle (por ejemplo confirmado o anulado)
+    limpieza: [{"id":"50b8c993-608f-41c7-a1f2-f9e463905bfc","before":"CONFIRMED","status":201}]
+
+  ▶ RF20-02 El motivo es obligatorio al anular
+▶ RF-20 Anulación de un movimiento confirmado
+  ✖ RF20-01 Conservarlo cierra el diálogo sin anular (32260.1657ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":934,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3216,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] button: Añadir botella
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2683,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2832,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1595,"completionTokens":46,"inferenceTimeMs":3494}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" del movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1447,"completionTokens":38,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2742,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" del movimiento
+    [IA act(observe)] Pulsa el botón 'Anular' del movimiento
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" dentro del diálogo para confirmar la anulación"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":658,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3418,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" dentro del diálogo para confirmar la anulación
+    [IA act(observe)] Pulsa el botón 'Anular' dentro del diálogo para confirmar la anulación
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1243,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3901}}
+    [IA act] Escribe %motivo% en el campo "Motivo" del diálogo
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" dentro del diálogo para confirmar la anulación"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":745,"completionTokens":48,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2594,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" dentro del diálogo para confirmar la anulación
+    [IA act(observe)] Anular
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1256,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3220}}
+    [IA act] Escribe %motivo% en el campo "Motivo" del diálogo
+    limpieza: [{"id":"69d8d914-0128-495c-99cd-0dea9850a371","before":"CONFIRMED","status":201}]
+
+  ▶ RF20-03 Anular con motivo válido revierte la existencia
+  ✖ RF20-02 El motivo es obligatorio al anular (32750.4307ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":934,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3013,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] click
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2719,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2497,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] click
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1595,"completionTokens":46,"inferenceTimeMs":3540}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":4842,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":6834}}
+    [IA act] Escribe %codigo% en el buscador de movimientos por código
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Detalle\" de esta fila del historial"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":642,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2984,"resultCount":1}}
+    [IA observe] Pulsa el enlace "Detalle" de esta fila del historial
+    [IA act(observe)] Pulsa el enlace "Detalle"
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento que muestra esta página de detalle (por ejemplo confirmado o anulado)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1437,"completionTokens":34,"inferenceTimeMs":2770}}
+    [IA extract] Extrae el estado del movimiento que muestra esta página de detalle (por ejemplo confirmado o anulado)
+    limpieza: [{"id":"4803e7b8-ff75-47c3-ae38-03930872fa09","before":"CONFIRMED","status":201}]
+  ✖ RF20-03 Anular con motivo válido revierte la existencia (31489.4905ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✖ RF-20 Anulación de un movimiento confirmado (117553.1214ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=false) para RF21-receipt
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":954,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3885}}
+    [IA act] Escribe %email% en el campo "Correo electrónico"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":982,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3710}}
+    [IA act] Escribe %password% en el campo "Contraseña"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":905,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3067,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] Click the 'Entrar' button to start the session
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF21-01 Descargar el PDF desde el historial
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del primer movimiento de la lista del historial"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":4417,"completionTokens":46,"inferenceTimeMs":5848}}
+    [IA extract] Extrae el código del primer movimiento de la lista del historial
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"PDF\" de esta fila del historial"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":642,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2969,"resultCount":1}}
+    [IA observe] Pulsa el botón "PDF" de esta fila del historial
+    [IA act(observe)] Pulsa el botón 'PDF'
+    PDF verificado: MOV-2026-000966.pdf (BEVERAGE LEDGER DEMO Movimiento de inventario MOV-2026-000966 Tipo: INBOUND Estado: CANCELLED Fecha: 26 de octubre de 20…)
+
+  ▶ RF21-02 Descargar el PDF desde el detalle
+▶ RF-21 Descarga del comprobante PDF
+  ✔ RF21-01 Descargar el PDF desde el historial (11577.0001ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Detalle\" de esta fila del historial"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":642,"completionTokens":42,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2768,"resultCount":1}}
+    [IA observe] Pulsa el enlace "Detalle" de esta fila del historial
+    [IA act(observe)] Pulsa el enlace "Detalle" de esta fila del historial
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón para descargar el comprobante PDF de este movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1361,"completionTokens":40,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3221,"resultCount":1}}
+    [IA observe] Encuentra el botón para descargar el comprobante PDF de este movimiento
+    [IA rechazada] eligió «← VolverMOV-2026-000966EntradaanuladoPDF», se esperaba «PDF»; se vuelve a preguntar
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón para descargar el comprobante PDF de este movimiento. El elemento correcto se llama exactamente \"PDF\"; no es \"← VolverMOV-2026-000966EntradaanuladoPDF\"."}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1397,"completionTokens":29,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2390,"resultCount":1}}
+    [IA observe] Encuentra el botón para descargar el comprobante PDF de este movimiento. El elemento correcto se llama exactamente "PDF"; no es "← VolverMOV-2026-000966EntradaanuladoPDF".
+    [IA act(observe)] button: PDF
+    PDF verificado: MOV-2026-000966.pdf (BEVERAGE LEDGER DEMO Movimiento de inventario MOV-2026-000966 Tipo: INBOUND Estado: CANCELLED Fecha: 26 de octubre de 20…)
+
+  ▶ RF21-03 Descargar el PDF de un movimiento anulado
+  ✔ RF21-02 Descargar el PDF desde el detalle (11097.3547ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":934,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3226,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] button: Añadir botella
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2660,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2477,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] click
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1595,"completionTokens":46,"inferenceTimeMs":3441}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" del movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1447,"completionTokens":38,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2774,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" del movimiento
+    [IA act(observe)] Pulsa el botón 'Anular' del movimiento
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1169,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3801}}
+    [IA act] Escribe %motivo% en el campo "Motivo" del diálogo
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" dentro del diálogo para confirmar la anulación"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":675,"completionTokens":48,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2725,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" dentro del diálogo para confirmar la anulación
+    [IA act(observe)] Anular
+    limpieza: [{"id":"2ef86acc-8b1b-44b5-8158-b782716ad43b","before":"CANCELLED","status":null}]
+  ✖ RF21-03 Descargar el PDF de un movimiento anulado (40203.7967ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✖ RF-21 Descarga del comprobante PDF (82994.6713ms)
+ℹ tests 8
+ℹ suites 3
+ℹ pass 3
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 303093.8379
+
+✖ failing tests:
+
+test at support\suite.mts:1:1213
+✖ RF18-01 El motivo es obligatorio y de al menos 4 caracteres (42743.7604ms)
+  Error: Tiempo agotado esperando: el motivo escrito. Último valor: {"label":"Motivo* (obligatorio)","value":"ab    ","invalid":true,"placeholder":"Rotura, diferencia de conteo…"}
+      at waitFor (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\dom.mts:227:9)
+      at async typeReason (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF18-adjustment.e2e.mts:28:3)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF18-adjustment.e2e.mts:57:7)
+      at async TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at support\suite.mts:1:1213
+✖ RF20-01 Conservarlo cierra el diálogo sin anular (32260.1657ms)
+  AssertionError [ERR_ASSERTION]: La IA leyó el estado «confirmed»
+  + actual - expected
+  
+  + 'confirmed'
+  - 'confirmado'
+            ^
+  
+      at status (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF20-cancellation.e2e.mts:23:10)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF20-cancellation.e2e.mts:40:7)
+      at async TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'confirmed',
+    expected: 'confirmado',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at support\suite.mts:1:1213
+✖ RF20-02 El motivo es obligatorio al anular (32750.4307ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '    ab' !== 'ab'
+  
+      at Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF20-cancellation.e2e.mts:79:14)
+      at async TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '    ab',
+    expected: 'ab',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at support\suite.mts:1:1213
+✖ RF20-03 Anular con motivo válido revierte la existencia (31489.4905ms)
+  AssertionError [ERR_ASSERTION]: La IA leyó el estado «confirmed»
+  + actual - expected
+  
+  + 'confirmed'
+  - 'confirmado'
+            ^
+  
+      at status (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF20-cancellation.e2e.mts:23:10)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF20-cancellation.e2e.mts:98:7)
+      at async TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'confirmed',
+    expected: 'confirmado',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at support\suite.mts:1:1213
+✖ RF21-03 Descargar el PDF de un movimiento anulado (40203.7967ms)
+  Error: Tiempo agotado esperando: el texto «Anulado el». Último valor: "Beverage Ledger Demo Panel Existencias Movimientos Catálogo Reportes ? MK ← Volver MOV-2026-000967 Entrada anulado PDF OCURRIÓ EL 26 de octubre de 2026 a las 21:31 REGISTRADO POR Manager Katalon (local) CREADO EL 26 de octubre de 2026 a las 21:31 CONFIRMADO EL 26 de octubre de 2026 a las 21:31 ANULADO EL 26 de octubre de 2026 a las 21:31 Líneas (1) 1942 DON JULIO 1 unidad base 1 botella"
+      at waitFor (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\dom.mts:227:9)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF21-receipt.e2e.mts:97:7)
+      at async TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)

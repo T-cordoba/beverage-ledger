@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, type ReactNode } from 'react';
 import {
+  BackLink,
   Button,
   Card,
   ConfirmDialog,
-  DatePicker,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -17,6 +17,7 @@ import {
   Field,
   FormAlert,
   Input,
+  RequiredLegend,
   Textarea,
   useNotify,
 } from '@/components/ui';
@@ -24,9 +25,9 @@ import { ROUTES } from '@/config/navigation';
 import { useAuth } from '@/features/auth';
 import { useCatalogFilters } from '@/features/catalog';
 import { LocationSelect } from '@/features/locations';
-import { describeError, type MovementType } from '@/lib/api';
+import { useDescribeError, type MovementType } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
-import { parseDateKey } from '@/lib/utils';
+import { useShortcut } from '@/lib/hooks';
 import { useCancelMovement, useOpenDraft, useRegisterMovement, useResumeDraft } from './api';
 import { MIN_REASON_LENGTH, MOVEMENT_TYPES } from './movement-types';
 import { ProductPicker } from './ProductPicker';
@@ -39,6 +40,69 @@ const strong = (chunks: ReactNode) => <span className="font-medium text-accent">
 const strongForeground = (chunks: ReactNode) => (
   <span className="font-medium text-foreground">{chunks}</span>
 );
+
+const UNDO_ICON = 'M9 14 4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11';
+const REDO_ICON = 'm15 14 5-5-5-5M20 9H9.5a5.5 5.5 0 0 0 0 11H13';
+
+function HistoryButton({
+  icon,
+  label,
+  shortcut,
+  disabled,
+  onClick,
+}: Readonly<{
+  icon: string;
+  label: string;
+  shortcut: string;
+  disabled: boolean;
+  onClick: () => void;
+}>) {
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={onClick}
+      disabled={disabled}
+      title={`${label} (${shortcut})`}
+      aria-keyshortcuts={shortcut.replace('Ctrl', 'Control')}
+    >
+      <svg aria-hidden className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icon} />
+      </svg>
+      {label}
+    </Button>
+  );
+}
+
+/** Where the draft stands, so leaving the page does not feel like losing it. */
+function DraftStatus({ draft }: Readonly<{ draft: MovementDraft }>) {
+  const t = useTranslations('movements.register.history');
+  const format = useFormatter();
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <p aria-live="polite" className="text-xs text-contrast/50">
+        {!draft.isEmpty &&
+          draft.savedAt &&
+          t('savedAt', { time: format.dateTime(draft.savedAt, 'time') })}
+      </p>
+      <HistoryButton
+        icon={UNDO_ICON}
+        label={t('undo')}
+        shortcut="Ctrl+Z"
+        disabled={!draft.canUndo}
+        onClick={draft.undo}
+      />
+      <HistoryButton
+        icon={REDO_ICON}
+        label={t('redo')}
+        shortcut="Ctrl+Y"
+        disabled={!draft.canRedo}
+        onClick={draft.redo}
+      />
+    </div>
+  );
+}
 
 /**
  * Every captured line, on demand.
@@ -121,6 +185,7 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
   const t = useTranslations('movements.register');
   const tTypes = useTranslations('movements.types');
   const tStates = useTranslations('common.states');
+  const describeError = useDescribeError();
   const format = useFormatter();
 
   const meta = MOVEMENT_TYPES[type];
@@ -185,6 +250,15 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
     ? format.number(draft.totalBaseUnits, 'signed')
     : String(draft.totalBaseUnits);
 
+  useShortcut('mod+z', draft.undo, { enabled: draft.canUndo });
+  useShortcut(['mod+y', 'mod+shift+z'], draft.redo, { enabled: draft.canRedo });
+
+  const requestConfirm = () => {
+    if (validation.attempt()) setIsConfirmOpen(true);
+  };
+  // From inside the note too: finishing the note is the moment to register.
+  useShortcut('mod+enter', requestConfirm, { enabled: !draft.isEmpty, inFields: true });
+
   const submit = async () => {
     try {
       const movement = await register.mutateAsync({
@@ -194,9 +268,6 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
         destinationLocationId: meta.needsDestination
           ? draft.destinationLocationId || undefined
           : undefined,
-        // A date key is a calendar day; the API takes an instant. Omitted means
-        // now, which is what an empty picker stands for.
-        occurredAt: draft.occurredAt ? parseDateKey(draft.occurredAt).toISOString() : undefined,
         reason: trimmedReason || undefined,
         note: draft.note.trim() || undefined,
         draftId: draft.pendingMovementId,
@@ -243,10 +314,16 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
   return (
     <div ref={validation.ref} className="space-y-6">
       <header className="space-y-1">
-        <h1 className="text-2xl font-light text-foreground sm:text-3xl">
-          {tTypes(`${type}.action`)}
-        </h1>
-        <p className="text-sm text-contrast/60">{tTypes(`${type}.effect`)}</p>
+        <BackLink href={ROUTES.movements} />
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div className="space-y-1">
+            <h1 className="text-2xl font-light text-foreground sm:text-3xl">
+              {tTypes(`${type}.action`)}
+            </h1>
+            <p className="text-sm text-contrast/60">{tTypes(`${type}.effect`)}</p>
+          </div>
+          <DraftStatus draft={draft} />
+        </div>
       </header>
 
       {draft.pendingMovementId && (
@@ -286,21 +363,14 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
       )}
 
       <Card className="grid gap-4 bg-contrast/5 sm:grid-cols-2">
-        <Field
-          label={t('fields.occurredAt.label')}
-          hint={t('fields.occurredAt.hint')}
-          className="sm:col-span-1"
-        >
-          {() => (
-            <DatePicker
-              value={draft.occurredAt}
-              onChange={draft.setOccurredAt}
-              placeholder={t('fields.occurredAt.placeholder')}
-            />
-          )}
-        </Field>
+        <p className="text-sm text-contrast/60 sm:col-span-2">{t('stampedNow')}</p>
+
+        {(meta.needsDestination || meta.requiresReason) && (
+          <RequiredLegend className="sm:col-span-2" />
+        )}
 
         <Field
+          required={meta.needsDestination}
           label={meta.needsDestination ? t('fields.origin.label') : t('fields.location.label')}
           hint={meta.needsDestination ? t('fields.origin.hint') : t('fields.location.hint')}
           error={validation.errorFor('origin')}
@@ -325,6 +395,7 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
 
         {meta.needsDestination && (
           <Field
+            required
             label={t('fields.destination.label')}
             hint={t('fields.destination.hint')}
             error={validation.errorFor('destination')}
@@ -348,6 +419,7 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
 
         {meta.requiresReason && (
           <Field
+            required
             label={t('fields.reason.label')}
             hint={t('fields.reason.hint')}
             error={validation.errorFor('reason')}
@@ -427,9 +499,8 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
                 <Button
                   size="lg"
                   className="flex-1 aria-disabled:opacity-50 sm:flex-initial"
-                  onClick={() => {
-                    if (validation.attempt()) setIsConfirmOpen(true);
-                  }}
+                  onClick={requestConfirm}
+                  aria-keyshortcuts="Control+Enter"
                   aria-disabled={!validation.isValid}
                   isLoading={register.isPending}
                 >
@@ -455,7 +526,13 @@ export function RegisterMovementView({ type }: Readonly<{ type: MovementType }>)
         open={isConfirmOpen}
         onOpenChange={setIsConfirmOpen}
         icon={
-          <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            aria-hidden="true"
+            className="h-8 w-8"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"

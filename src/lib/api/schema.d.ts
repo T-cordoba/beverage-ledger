@@ -747,6 +747,7 @@ export interface components {
       name: string;
       slug: string;
       logoUrl: string | null;
+      brandColor: string | null;
       timezone: string;
     };
     /**
@@ -882,6 +883,8 @@ export interface components {
       /** @description Registered name, for documents that need it */
       legalName: string | null;
       logoUrl: string | null;
+      /** @description Interface accent, "#rrggbb" */
+      brandColor: string | null;
       /** @description IANA time zone. Reports bucket by it */
       timezone: string;
       /** Format: date-time */
@@ -892,6 +895,8 @@ export interface components {
       legalName?: string;
       /** Format: uri */
       logoUrl?: string;
+      /** @description Null restores the product default. Omitted leaves it as it is */
+      brandColor?: string | null;
       /**
        * @description IANA time zone
        * @example America/Bogota
@@ -1119,19 +1124,12 @@ export interface components {
        * @description Required on a transfer, and rejected on every other type
        */
       destinationLocationId?: string;
-      /**
-       * Format: date-time
-       * @description When it happened, which need not be now. Defaults to now
-       */
-      occurredAt?: string;
       /** @description Mandatory on adjustments */
       reason?: string;
       note?: string;
       items: components['schemas']['MovementLineInputDto'][];
     };
     UpdateMovementDto: {
-      /** Format: date-time */
-      occurredAt?: string;
       reason?: string;
       note?: string;
       items?: components['schemas']['MovementLineInputDto'][];

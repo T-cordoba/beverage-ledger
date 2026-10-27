@@ -12,6 +12,9 @@ describe('unwrap', () => {
     const desenvolver = () => unwrap(result);
 
     expect(desenvolver).toThrow(ApiError);
+    expect(desenvolver).toThrow(
+      expect.objectContaining({ status: 500, message: 'Internal server error' }),
+    );
   });
 
   it('Camino 2 - la respuesta es correcta pero no trae cuerpo y lanza ApiError', () => {
@@ -20,6 +23,13 @@ describe('unwrap', () => {
     const desenvolver = () => unwrap(result);
 
     expect(desenvolver).toThrow(ApiError);
+    expect(desenvolver).toThrow(
+      expect.objectContaining({
+        status: 200,
+        body: null,
+        message: 'Request failed with status 200',
+      }),
+    );
   });
 
   it('Camino 3 - la respuesta es correcta y trae cuerpo, que es lo que retorna', () => {
@@ -28,6 +38,6 @@ describe('unwrap', () => {
 
     const desenvuelto = unwrap(result);
 
-    expect(desenvuelto).toEqual(page);
+    expect(desenvuelto).toBe(page);
   });
 });

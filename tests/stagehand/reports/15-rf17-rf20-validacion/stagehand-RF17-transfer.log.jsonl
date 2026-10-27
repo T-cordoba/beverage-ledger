@@ -1,0 +1,62 @@
+{"level":"info","message":"stagehand.init","data":{}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3349,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3261,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3076,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3312,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Abre el selector de bodega \"Desde\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":8172,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":9170,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Bodega principal (por defecto)\" de la lista de bodegas abierta"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":852,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4270,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Abre el selector de bodega \"Hacia\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":8176,"completionTokens":36,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":8672,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Barra E2E\" de la lista de bodegas abierta"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":831,"completionTokens":69,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3817,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Abre el selector de bodega \"Desde\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":8054,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":10232,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Bodega principal (por defecto)\" de la lista de bodegas abierta"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":834,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3935,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Abre el selector de bodega \"Hacia\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":8058,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":10115,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae los nombres de todas las opciones de la lista desplegable de bodegas que está abierta"}}
+{"level":"info","message":"Extraction incomplete after processing all data","data":{"category":"extraction","promptTokens":950,"completionTokens":44,"inferenceTimeMs":3356}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Barra E2E\" de la lista de bodegas abierta"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":813,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2937,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Abre el selector de bodega \"Desde\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":801,"completionTokens":42,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2624,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Abre el selector de bodega \"Desde\". El elemento correcto se llama exactamente \"Desde\"; no es \"null\"."}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":8074,"completionTokens":60,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":10780,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae los nombres de todas las opciones de la lista desplegable de bodegas que está abierta"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":956,"completionTokens":56,"inferenceTimeMs":3985}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Abre el selector de bodega \"Desde\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":8054,"completionTokens":60,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":10788,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Bodega principal (por defecto)\" de la lista de bodegas abierta"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":834,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4052,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Abre el selector de bodega \"Hacia\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":8058,"completionTokens":44,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":9401,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Barra E2E\" de la lista de bodegas abierta"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":813,"completionTokens":63,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3666,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":51,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3113,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2927,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":515,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2723,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1757,"completionTokens":47,"inferenceTimeMs":4194}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Abre el selector de bodega \"Desde\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":8605,"completionTokens":33,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":9069,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Bodega principal (por defecto)\" de la lista de bodegas abierta"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":872,"completionTokens":73,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4143,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Añadir caja\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1024,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3258,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1024,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3722,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Quitar caja\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1023,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3521,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Quitar botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1023,"completionTokens":64,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3925,"resultCount":1}}
+{"level":"info","message":"stagehand.close","data":{}}

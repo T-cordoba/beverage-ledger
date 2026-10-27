@@ -1,0 +1,44 @@
+// spec: planner/beverage-ledger-movimientos.plan.md
+// seed: generator/seed.pw.ts
+
+import { expect, test } from './support/fixtures';
+
+test.describe('RF-15 Salida', () => {
+  test('Cantidades incorrectas: quitar por debajo de cero y tope del stepper', async ({ page }) => {
+    await page.goto('/movements/new/outbound');
+
+    const stockLabels = page.getByText(/^\d+ en existencia$/);
+    await expect(stockLabels.first()).toBeVisible();
+
+    // Poca existencia: el producto con menos unidades entre los que muestra la página.
+    const cards = page.getByRole('listitem').filter({ hasText: 'en existencia' });
+    const names = await cards.getByRole('heading', { level: 3 }).allTextContents();
+    const stocks = (await stockLabels.allTextContents()).map((text) => Number.parseInt(text, 10));
+    const lowest = stocks.indexOf(Math.min(...stocks));
+    const name = names[lowest];
+    const stock = stocks[lowest];
+
+    const card = cards.filter({ has: page.getByRole('heading', { name, exact: true }) });
+    const removeBottle = card.getByRole('button', { name: 'Quitar botella' });
+    const removeCase = card.getByRole('button', { name: 'Quitar caja' });
+    const addBottle = card.getByRole('button', { name: 'Añadir botella' });
+    const addCase = card.getByRole('button', { name: 'Añadir caja' });
+
+    // 1. Con el contador en 0 pulsar 'Quitar botella' y 'Quitar caja'.
+    if (await removeBottle.isEnabled()) await removeBottle.click();
+    if (await removeCase.isEnabled()) await removeCase.click();
+    await expect(card.getByText('0 unidades en total')).toBeVisible();
+
+    // 2. Pulsar 'Añadir botella' repetidamente hasta alcanzar la existencia N.
+    for (let i = 0; i < stock; i++) {
+      await addBottle.click();
+    }
+
+    await expect(card.getByText(`${stock} unidades en total`)).toBeVisible();
+    await expect(addBottle).toBeDisabled();
+    await expect(addBottle).toHaveAttribute('title', 'Solo quedan 0 en esta bodega');
+    await expect(addCase).toBeDisabled();
+    await expect(addCase).toHaveAttribute('title', 'Solo quedan 0 en esta bodega');
+    await expect(card.getByText(`${stock} en existencia · quedan 0`)).toBeVisible();
+  });
+});

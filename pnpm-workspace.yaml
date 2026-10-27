@@ -6,12 +6,17 @@
 # pass without it. Listing them as ignored records that the decision was made
 # deliberately instead of leaving a warning on every install.
 #
-# @parcel/watcher and @swc/core arrived with next-intl's compiler plugin.
+# @parcel/watcher and @swc/core arrived with next-intl's compiler plugin; esbuild
+# with the Cypress suite. Cypress is the exception to "prebuilt": its script
+# downloads the test runner, so that step is run by hand with
+# `pnpm exec cypress install` (tests/cypress/README.md).
 onlyBuiltDependencies: []
 
 ignoredBuiltDependencies:
   - '@parcel/watcher'
   - '@swc/core'
+  - cypress
+  - esbuild
   - unrs-resolver
 
 # Refuse packages published less than 24h ago. Compromised versions are usually

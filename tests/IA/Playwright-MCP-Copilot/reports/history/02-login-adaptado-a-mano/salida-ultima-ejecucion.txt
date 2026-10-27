@@ -1,0 +1,260 @@
+
+Running 19 tests using 1 worker
+
+  ✘   1 [chromium] › tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:5:7 › RF-15 Salida › Registrar una salida correcta (17.4s)
+  ✓   2 [chromium] › tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:52:7 › RF-15 Salida › Sin productos no aparece la barra Confirmar (2.0s)
+  ✘   3 [chromium] › tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:74:7 › RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper (19.9s)
+  ✘   4 [chromium] › tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:109:7 › RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas (18.2s)
+  ✘   5 [chromium] › tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:143:7 › RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger (31.8s)
+  ✓   6 [chromium] › tests\IA\Playwright-MCP-Copilot\RF16-inbound.pw.ts:5:7 › RF-16 Entrada › Registrar una entrada y verla en detalle e historial (27.8s)
+  ✘   7 [chromium] › tests\IA\Playwright-MCP-Copilot\RF16-inbound.pw.ts:56:7 › RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver (29.2s)
+  ✓   8 [chromium] › tests\IA\Playwright-MCP-Copilot\RF17-transfer.pw.ts:26:7 › RF-17 Traspaso › Origen y destino obligatorios (5.3s)
+  ✓   9 [chromium] › tests\IA\Playwright-MCP-Copilot\RF17-transfer.pw.ts:52:7 › RF-17 Traspaso › El destino excluye al origen (3.6s)
+  ✓  10 [chromium] › tests\IA\Playwright-MCP-Copilot\RF17-transfer.pw.ts:86:7 › RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas (55.1s)
+  ✘  11 [chromium] › tests\IA\Playwright-MCP-Copilot\RF17-transfer.pw.ts:145:7 › RF-17 Traspaso › Cantidades del traspaso topadas por el origen (22.5s)
+  ✓  12 [chromium] › tests\IA\Playwright-MCP-Copilot\RF18-adjustment.pw.ts:6:7 › RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres (3.0s)
+  ✓  13 [chromium] › tests\IA\Playwright-MCP-Copilot\RF18-adjustment.pw.ts:46:7 › RF-18 Ajuste › Registrar un ajuste con motivo válido (28.3s)
+  ✓  14 [chromium] › tests\IA\Playwright-MCP-Copilot\RF20-cancellation.pw.ts:47:7 › RF-20 Anulación › Conservarlo cancela la anulación (29.0s)
+  ✓  15 [chromium] › tests\IA\Playwright-MCP-Copilot\RF20-cancellation.pw.ts:72:7 › RF-20 Anulación › Motivo obligatorio al anular (9.3s)
+  ✓  16 [chromium] › tests\IA\Playwright-MCP-Copilot\RF20-cancellation.pw.ts:106:7 › RF-20 Anulación › Anular con motivo válido (1.0m)
+  ✓  17 [chromium] › tests\IA\Playwright-MCP-Copilot\RF21-receipt.pw.ts:32:7 › RF-21 Comprobante › Descargar el PDF desde el historial (7.1s)
+  ✓  18 [chromium] › tests\IA\Playwright-MCP-Copilot\RF21-receipt.pw.ts:48:7 › RF-21 Comprobante › Descargar el PDF desde el detalle (18.7s)
+  ✓  19 [chromium] › tests\IA\Playwright-MCP-Copilot\RF21-receipt.pw.ts:65:7 › RF-21 Comprobante › Descargar el PDF de un movimiento anulado (10.3s)
+
+
+  1) [chromium] › tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:5:7 › RF-15 Salida › Registrar una salida correcta 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('dialog').getByText('Esto escribe 1 producto en el ledger y mueve 1 unidad — las cajas cuentan según su tamaño.')
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('dialog').getByText('Esto escribe 1 producto en el ledger y mueve 1 unidad — las cajas cuentan según su tamaño.') with timeout 15000ms
+      - waiting for getByRole('dialog').getByText('Esto escribe 1 producto en el ledger y mueve 1 unidad — las cajas cuentan según su tamaño.')
+
+
+      30 |         'Esto escribe 1 producto en el ledger y mueve 1 unidad — las cajas cuentan según su tamaño.',
+      31 |       ),
+    > 32 |     ).toBeVisible();
+         |       ^
+      33 |
+      34 |     await dialog.getByRole('button', { name: 'Confirmar' }).click();
+      35 |     await expect(page).toHaveURL(/\/movements\/[0-9a-f-]{36}$/);
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:32:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF15-outbound.pw.ts-RF-15--c7bb6-gistrar-una-salida-correcta-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF15-outbound.pw.ts-RF-15--c7bb6-gistrar-una-salida-correcta-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF15-outbound.pw.ts-RF-15--c7bb6-gistrar-una-salida-correcta-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF15-outbound.pw.ts-RF-15--c7bb6-gistrar-una-salida-correcta-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:74:7 › RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('listitem').filter({ hasText: 'en existencia' }).filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir botella' })
+    Expected: "Solo quedan 0 en esta bodega"
+    Received: ""
+    Timeout:  15000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('listitem').filter({ hasText: 'en existencia' }).filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir botella' }) with timeout 15000ms
+      - waiting for getByRole('listitem').filter({ hasText: 'en existencia' }).filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir botella' })
+        33 × locator resolved to <button disabled aria-label="Añadir botella" class="inline-flex items-center justify-center whitespace-nowrap transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 bg-accent text-background shadow-panel hover:bg-accent-hover h-8 w-8 rounded-lg text-base font-light">+</button>
+           - unexpected value "null"
+
+
+      101 |     await expect(card.getByText(`${stock} unidades en total`)).toBeVisible();
+      102 |     await expect(addBottle).toBeDisabled();
+    > 103 |     await expect(addBottle).toHaveAttribute('title', 'Solo quedan 0 en esta bodega');
+          |                             ^
+      104 |     await expect(addCase).toBeDisabled();
+      105 |     await expect(addCase).toHaveAttribute('title', 'Solo quedan 0 en esta bodega');
+      106 |     await expect(card.getByText(`${stock} en existencia · quedan 0`)).toBeVisible();
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:103:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF15-outbound.pw.ts-RF-15--dd8b3--de-cero-y-tope-del-stepper-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF15-outbound.pw.ts-RF-15--dd8b3--de-cero-y-tope-del-stepper-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF15-outbound.pw.ts-RF-15--dd8b3--de-cero-y-tope-del-stepper-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF15-outbound.pw.ts-RF-15--dd8b3--de-cero-y-tope-del-stepper-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [chromium] › tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:109:7 › RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('listitem').filter({ hasText: 'en existencia' }).filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir caja' })
+    Expected: "Solo quedan 11 en esta bodega"
+    Received: ""
+    Timeout:  15000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('listitem').filter({ hasText: 'en existencia' }).filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir caja' }) with timeout 15000ms
+      - waiting for getByRole('listitem').filter({ hasText: 'en existencia' }).filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir caja' })
+        33 × locator resolved to <button disabled aria-label="Añadir caja" class="inline-flex items-center justify-center whitespace-nowrap transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 bg-accent text-background shadow-panel hover:bg-accent-hover h-8 w-8 rounded-lg text-base font-light">+</button>
+           - unexpected value "null"
+
+
+      131 |     await expect(card.getByText(`${stock} en existencia · quedan ${leftover}`)).toBeVisible();
+      132 |     await expect(addCase).toBeDisabled();
+    > 133 |     await expect(addCase).toHaveAttribute('title', `Solo quedan ${leftover} en esta bodega`);
+          |                           ^
+      134 |
+      135 |     await page.getByRole('combobox', { name: 'Bodega' }).click();
+      136 |     await page.getByRole('option', { name: 'Barra E2E' }).click();
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:133:27
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [chromium] › tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:143:7 › RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('No se envió nada al ledger.')
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('No se envió nada al ledger.') with timeout 15000ms
+      - waiting for getByText('No se envió nada al ledger.')
+
+
+      181 |
+      182 |     await expect(page.getByRole('heading', { name: 'Borrador descartado' })).toBeVisible();
+    > 183 |     await expect(page.getByText('No se envió nada al ledger.')).toBeVisible();
+          |                                                                 ^
+      184 |     await expect(card.getByText('0 unidades en total')).toBeVisible();
+      185 |     await expect(page.getByRole('button', { name: 'Confirmar', exact: true })).toHaveCount(0);
+      186 |   });
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:183:65
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF15-outbound.pw.ts-RF-15--e4b8f-ar-no-escriben-en-el-ledger-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF15-outbound.pw.ts-RF-15--e4b8f-ar-no-escriben-en-el-ledger-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF15-outbound.pw.ts-RF-15--e4b8f-ar-no-escriben-en-el-ledger-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF15-outbound.pw.ts-RF-15--e4b8f-ar-no-escriben-en-el-ledger-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [chromium] › tests\IA\Playwright-MCP-Copilot\RF16-inbound.pw.ts:56:7 › RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Ahora' })
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Ahora' }) with timeout 15000ms
+      - waiting for getByRole('button', { name: 'Ahora' })
+
+
+      72 |     await expect(card.getByText('1 unidad en total')).toBeVisible();
+      73 |
+    > 74 |     await expect(page.getByRole('button', { name: 'Ahora' })).toBeVisible();
+         |                                                               ^
+      75 |     await expect(page.getByText('Déjalo vacío para registrarlo como ahora.')).toBeVisible();
+      76 |     await page.getByRole('textbox', { name: 'Nota' }).fill('Entrada E2E');
+      77 |
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-MCP-Copilot\RF16-inbound.pw.ts:74:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) [chromium] › tests\IA\Playwright-MCP-Copilot\RF17-transfer.pw.ts:145:7 › RF-17 Traspaso › Cantidades del traspaso topadas por el origen 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('listitem').filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir botella' })
+    Expected: "Solo quedan 0 en esta bodega"
+    Received: ""
+    Timeout:  15000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('listitem').filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir botella' }) with timeout 15000ms
+      - waiting for getByRole('listitem').filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir botella' })
+        33 × locator resolved to <button disabled aria-label="Añadir botella" class="inline-flex items-center justify-center whitespace-nowrap transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 bg-accent text-background shadow-panel hover:bg-accent-hover h-8 w-8 rounded-lg text-base font-light">+</button>
+           - unexpected value "null"
+
+
+      185 |     await expect(card.getByText(/quedan 0/)).toBeVisible();
+      186 |     await expect(addBottle).toBeDisabled();
+    > 187 |     await expect(addBottle).toHaveAttribute('title', 'Solo quedan 0 en esta bodega');
+          |                             ^
+      188 |     await expect(addCase).toBeDisabled();
+      189 |     await expect(addCase).toHaveAttribute('title', 'Solo quedan 0 en esta bodega');
+      190 |
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-MCP-Copilot\RF17-transfer.pw.ts:187:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF17-transfer.pw.ts-RF-17--861d1-spaso-topadas-por-el-origen-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF17-transfer.pw.ts-RF-17--861d1-spaso-topadas-por-el-origen-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF17-transfer.pw.ts-RF-17--861d1-spaso-topadas-por-el-origen-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace tests\IA\Playwright-MCP-Copilot\reports\artifacts\RF17-transfer.pw.ts-RF-17--861d1-spaso-topadas-por-el-origen-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6 failed
+    [chromium] › tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:5:7 › RF-15 Salida › Registrar una salida correcta 
+    [chromium] › tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:74:7 › RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper 
+    [chromium] › tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:109:7 › RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas 
+    [chromium] › tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:143:7 › RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger 
+    [chromium] › tests\IA\Playwright-MCP-Copilot\RF16-inbound.pw.ts:56:7 › RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver 
+    [chromium] › tests\IA\Playwright-MCP-Copilot\RF17-transfer.pw.ts:145:7 › RF-17 Traspaso › Cantidades del traspaso topadas por el origen 
+  13 passed (7.2m)

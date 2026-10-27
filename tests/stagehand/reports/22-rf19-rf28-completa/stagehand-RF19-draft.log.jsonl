@@ -1,0 +1,26 @@
+{"level":"info","message":"stagehand.init","data":{}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1481,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1929,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3433,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1016,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3766,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Nota\" (Escribe el valor en el campo \"Nota\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":7892,"completionTokens":31,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":86389,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Descartar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":388,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1878,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Descartar\" del diálogo para confirmar el descarte"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":466,"completionTokens":64,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2144,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1044,"completionTokens":48,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3997,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1722,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Volver\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":34,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1456,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Descartar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":388,"completionTokens":29,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1161,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Descartar\" del diálogo para confirmar el descarte"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":466,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1902,"resultCount":1}}
+{"level":"info","message":"stagehand.close","data":{}}

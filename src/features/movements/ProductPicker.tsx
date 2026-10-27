@@ -13,15 +13,6 @@ import { cn } from '@/lib/utils';
 import { MOVEMENT_TYPES } from './movement-types';
 import type { MovementDraft } from './useMovementDraft';
 
-function MetaItem({ icon, children }: Readonly<{ icon: ReactNode; children: ReactNode }>) {
-  return (
-    <div className="flex items-center gap-1.5 text-xs text-contrast/70">
-      {icon}
-      <span>{children}</span>
-    </div>
-  );
-}
-
 function QuantityStepper({
   label,
   note,
@@ -29,7 +20,6 @@ function QuantityStepper({
   value,
   onChange,
   canIncrease = true,
-  atLimitLabel,
 }: Readonly<{
   label: string;
   /** What a unit of this stepper is worth, when it is not one base unit. */
@@ -38,7 +28,6 @@ function QuantityStepper({
   value: number;
   onChange: (delta: number) => void;
   canIncrease?: boolean;
-  atLimitLabel?: string;
 }>) {
   const t = useTranslations('movements.picker');
 
@@ -64,7 +53,6 @@ function QuantityStepper({
           onClick={() => onChange(1)}
           aria-label={t('add', { unit: unitLabel })}
           disabled={!canIncrease}
-          title={canIncrease ? undefined : atLimitLabel}
           className="rounded-lg text-base font-light"
         >
           +
@@ -72,6 +60,33 @@ function QuantityStepper({
       </div>
     </div>
   );
+}
+
+type StockState = 'none' | 'low' | 'ok';
+
+const STOCK_TONE: Record<StockState, string> = {
+  none: 'text-danger',
+  low: 'text-warning',
+  ok: 'text-foreground',
+};
+
+function stockStateOf(available: number, minimumStock: number | null): StockState {
+  if (available <= 0) return 'none';
+  if (minimumStock !== null && available <= minimumStock) return 'low';
+  return 'ok';
+}
+
+/** Why a "+" went dead, said where the eye already is instead of in a tooltip. */
+function limitMessage(
+  t: ReturnType<typeof useTranslations<'movements.picker'>>,
+  available: number,
+  remaining: number,
+  caseSize: number,
+): string | null {
+  if (available <= 0) return t('limit.noneAtOrigin');
+  if (remaining <= 0) return t('limit.allTaken', { count: available });
+  if (remaining < caseSize) return t('limit.noFullCase', { count: remaining });
+  return null;
 }
 
 function ProductCard({
@@ -94,7 +109,16 @@ function ProductCard({
   // either counter: six bottles and one case of twelve is eighteen off the shelf.
   const taken = quantities.BOTTLE + quantities.CASE * product.caseSize;
   const remaining = available === null ? Infinity : available - taken;
-  const atLimitLabel = t('atLimit', { count: Math.max(remaining, 0) });
+  const stockState = available === null ? null : stockStateOf(available, product.minimumStock);
+  const limit = available === null ? null : limitMessage(t, available, remaining, product.caseSize);
+
+  const details = [
+    { label: t('labels.category'), value: product.category.name },
+    { label: t('labels.subcategory'), value: product.subcategory },
+    { label: t('labels.age'), value: product.age },
+    { label: t('labels.abv'), value: product.abv === null ? null : `${product.abv}%` },
+    { label: t('labels.origin'), value: product.origin },
+  ].filter((detail): detail is { label: string; value: string } => Boolean(detail.value));
 
   return (
     <li
@@ -105,79 +129,46 @@ function ProductCard({
           : 'border-border/30 hover:border-accent/30',
       )}
     >
-      {isSelected && (
-        <span
-          aria-hidden="true"
-          className="absolute right-3 top-3 h-2 w-2 rounded-full bg-accent"
-        />
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className="text-base font-light text-foreground transition-colors group-hover:text-accent">
+            {product.name}
+          </h3>
+          {product.brand && <span className="text-xs text-contrast/60">{product.brand.name}</span>}
+        </div>
+        {stockState && stockState !== 'ok' && (
+          <Badge tone={stockState === 'none' ? 'danger' : 'warning'} emphasis>
+            {t(`state.${stockState}`)}
+          </Badge>
+        )}
+      </div>
+
+      {/* First thing under the name: how much there is decides whether the rest
+          of the card matters. One sentence, "N en existencia · quedan M". */}
+      {available !== null && stockState && (
+        <p className="text-sm text-contrast/70">
+          {t.rich('onHand', {
+            count: available,
+            strong: (chunks) => (
+              <span className={cn('text-2xl font-semibold tabular-nums', STOCK_TONE[stockState])}>
+                {chunks}
+              </span>
+            ),
+          })}
+          {taken > 0 && ` · ${t('left', { count: Math.max(remaining, 0) })}`}
+        </p>
       )}
 
       {/* Grows to fill whatever the tallest card in the row needs, so the
           steppers below line up across the grid instead of floating mid-card. */}
-      <div className="flex-1 space-y-2 pr-4">
-        <h3 className="text-base font-light text-foreground transition-colors group-hover:text-accent">
-          {product.name}
-        </h3>
-
-        <div className="flex flex-wrap items-center gap-1.5">
-          <Badge tone="accent" emphasis>
-            {product.category.name}
-          </Badge>
-          {product.brand && <Badge>{product.brand.name}</Badge>}
-          {product.subcategory && <Badge tone="accent">{product.subcategory}</Badge>}
-          {product.age && <Badge tone="info">{product.age}</Badge>}
-        </div>
-
-        {(product.abv !== null || product.origin) && (
-          <div className="flex flex-wrap items-center gap-3">
-            {product.abv !== null && (
-              <MetaItem
-                icon={
-                  <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 10V3L4 14h7v7l9-11h-7z"
-                    />
-                  </svg>
-                }
-              >
-                {product.abv}% ABV
-              </MetaItem>
-            )}
-            {product.origin && (
-              <MetaItem
-                icon={
-                  <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                }
-              >
-                {product.origin}
-              </MetaItem>
-            )}
+      <dl className="grid flex-1 grid-cols-2 content-start gap-x-3 gap-y-1.5 text-xs">
+        {details.map((detail) => (
+          <div key={detail.label} className="min-w-0">
+            <dt className="uppercase tracking-wider text-contrast/50">{detail.label}</dt>
+            <dd className="truncate text-contrast/90">{detail.value}</dd>
           </div>
-        )}
-      </div>
-
-      {available !== null && (
-        <p className={cn('text-xs', remaining <= 0 ? 'text-warning' : 'text-contrast/60')}>
-          {t('onHand', { count: available })}
-          {taken > 0 && ` · ${t('left', { count: Math.max(remaining, 0) })}`}
-        </p>
-      )}
+        ))}
+      </dl>
 
       <div className="space-y-2">
         <QuantityStepper
@@ -186,7 +177,6 @@ function ProductCard({
           value={quantities.BOTTLE}
           onChange={(delta) => onAdjust('BOTTLE', delta)}
           canIncrease={remaining >= 1}
-          atLimitLabel={atLimitLabel}
         />
         <QuantityStepper
           label={tUnits('case', { count: 2 })}
@@ -197,9 +187,12 @@ function ProductCard({
           value={quantities.CASE}
           onChange={(delta) => onAdjust('CASE', delta)}
           canIncrease={remaining >= product.caseSize}
-          atLimitLabel={atLimitLabel}
         />
       </div>
+
+      <p aria-live="polite" className="min-h-4 text-xs text-warning">
+        {limit}
+      </p>
 
       {/* Reserved whether or not anything is taken, so adding the first bottle
           does not make every card in the row grow a line. */}

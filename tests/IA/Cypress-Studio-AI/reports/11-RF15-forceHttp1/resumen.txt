@@ -1,0 +1,11 @@
+Ejecución: 11-RF15-forceHttp1
+Inicio: 2026-10-26T12:39:27.886Z  Fin: 2026-10-26T12:40:44.777Z
+Cypress 16.2.0 · chrome 155.0.8059.86 · front http://localhost:3000 · API http://localhost:3001
+Total: 5 · aprobadas 5 · fallidas 0 · pendientes 0 · omitidas 0
+
+tests\IA\Cypress-Studio-AI\RF15-outbound.cy.ts: 5/5 aprobadas
+  [passed] RF-15 Salida › Registrar una salida correcta (17203 ms)
+  [passed] RF-15 Salida › Sin productos no aparece la barra Confirmar (1936 ms)
+  [passed] RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper (4660 ms)
+  [passed] RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas (3489 ms)
+  [passed] RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger (49550 ms)

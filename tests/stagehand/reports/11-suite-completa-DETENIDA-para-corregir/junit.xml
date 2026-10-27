@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testsuite name="RF-15 Salida de inventario (OUTBOUND)" time="173.832295" disabled="0" errors="0" tests="5" failures="2" skipped="0" timestamp="2026-10-27T02:55:38.648Z" hostname="pc">
+		<testcase name="RF15-01 Registrar una salida correcta descuenta la existencia" time="17.130554" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="La IA no encontró «Añadir botella» en 3 intentos: Pulsa el botón &quot;Añadir botella&quot; de esta tarjeta de producto">
+			<failure type="testCodeFailure" message="La IA no encontró «Añadir botella» en 3 intentos: Pulsa el botón &quot;Añadir botella&quot; de esta tarjeta de producto">
+Error [ERR_TEST_FAILURE]: La IA no encontró «Añadir botella» en 3 intentos: Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    at async Promise.all (index 0) {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: La IA no encontró «Añadir botella» en 3 intentos: Pulsa el botón "Añadir botella" de esta tarjeta de producto
+      at Ai.resolve (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\ai.mts:67:11)
+      at async Ai.click (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\ai.mts:72:23)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF15-outbound.e2e.mts:63:7)
+      at async TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:74:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF15-02 Sin productos no aparece la barra Confirmar" time="20.565039" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia" time="48.635732" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF15-04 Inventario insuficiente: botellas y cajas comparten el tope" time="64.114323" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF15-05 Volver del diálogo y Descartar no escriben en el historial" time="0.000863" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+			<failure type="testCodeFailure" message="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite name="RF-16 Entrada de inventario (INBOUND)" time="20.179385" disabled="0" errors="0" tests="2" failures="2" skipped="0" timestamp="2026-10-27T02:58:33.715Z" hostname="pc">
+		<testcase name="RF16-01 Registrar una entrada y verla en el detalle y el historial" time="0.001642" classname="RF-16 Entrada de inventario (INBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+			<failure type="testCodeFailure" message="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+Error [ERR_TEST_FAILURE]: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+    at async Promise.all (index 0) {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF16-02 Validación de la entrada: sin líneas no hay confirmación y Volver no registra" time="0.000782" classname="RF-16 Entrada de inventario (INBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+			<failure type="testCodeFailure" message="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite name="RF-17 Traspaso entre bodegas (TRANSFER)" time="19.390802" disabled="0" errors="0" tests="4" failures="4" skipped="0" timestamp="2026-10-27T02:58:55.024Z" hostname="pc">
+		<testcase name="RF17-01 Origen y destino son obligatorios para confirmar" time="0.001970" classname="RF-17 Traspaso entre bodegas (TRANSFER)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+			<failure type="testCodeFailure" message="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+Error [ERR_TEST_FAILURE]: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+    at async Promise.all (index 0) {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF17-02 El destino excluye al origen y viceversa" time="0.000543" classname="RF-17 Traspaso entre bodegas (TRANSFER)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+			<failure type="testCodeFailure" message="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF17-03 Registrar un traspaso mueve la existencia entre las dos bodegas" time="0.000448" classname="RF-17 Traspaso entre bodegas (TRANSFER)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+			<failure type="testCodeFailure" message="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF17-04 Las cantidades del traspaso se topan con la existencia del origen" time="0.001495" classname="RF-17 Traspaso entre bodegas (TRANSFER)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+			<failure type="testCodeFailure" message="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite name="RF-18 Ajuste de inventario (ADJUSTMENT)" time="19.379984" disabled="0" errors="0" tests="2" failures="2" skipped="0" timestamp="2026-10-27T02:59:15.532Z" hostname="pc">
+		<testcase name="RF18-01 El motivo es obligatorio y de al menos 4 caracteres" time="0.002091" classname="RF-18 Ajuste de inventario (ADJUSTMENT)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+			<failure type="testCodeFailure" message="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+Error [ERR_TEST_FAILURE]: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+    at async Promise.all (index 0) {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF18-02 Registrar un ajuste con motivo válido" time="0.000847" classname="RF-18 Ajuste de inventario (ADJUSTMENT)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+			<failure type="testCodeFailure" message="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite name="RF-20 Anulación de un movimiento confirmado" time="19.350246" disabled="0" errors="0" tests="3" failures="3" skipped="0" timestamp="2026-10-27T02:59:36.085Z" hostname="pc">
+		<testcase name="RF20-01 Conservarlo cierra el diálogo sin anular" time="0.001930" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+			<failure type="testCodeFailure" message="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+Error [ERR_TEST_FAILURE]: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+    at async Promise.all (index 0) {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF20-02 El motivo es obligatorio al anular" time="0.000714" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+			<failure type="testCodeFailure" message="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF20-03 Anular con motivo válido revierte la existencia" time="0.000724" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+			<failure type="testCodeFailure" message="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite name="RF-21 Descarga del comprobante PDF" time="19.152434" disabled="0" errors="0" tests="3" failures="3" skipped="0" timestamp="2026-10-27T02:59:56.523Z" hostname="pc">
+		<testcase name="RF21-01 Descargar el PDF desde el historial" time="0.002399" classname="RF-21 Descarga del comprobante PDF" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+			<failure type="testCodeFailure" message="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+Error [ERR_TEST_FAILURE]: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+    at async Promise.all (index 0) {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF21-02 Descargar el PDF desde el detalle" time="0.000885" classname="RF-21 Descarga del comprobante PDF" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+			<failure type="testCodeFailure" message="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF21-03 Descargar el PDF de un movimiento anulado" time="0.000642" classname="RF-21 Descarga del comprobante PDF" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+			<failure type="testCodeFailure" message="Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.">
+[Error [ERR_TEST_FAILURE]: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Ejecución detenida por memoria insuficiente: el escenario no se ejecutó.
+      at TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:64:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<!-- tests 19 -->
+	<!-- suites 6 -->
+	<!-- pass 3 -->
+	<!-- fail 16 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 278568.6516 -->
+</testsuites>

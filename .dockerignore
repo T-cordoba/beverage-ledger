@@ -1,0 +1,29 @@
+node_modules
+.next
+out
+build
+coverage
+reports
+
+.git
+.github
+.vercel
+.claude
+
+# Never bake credentials into an image layer. .env.example carries no secrets
+# but the build does not read it either.
+.env
+.env.*
+
+# npm lockfile left over from before pnpm; keeping it out of the context stops
+# anything in the image from resolving against it. See CLAUDE.md §3.
+package-lock.json
+
+docs
+tests
+*.tsbuildinfo
+next-env.d.ts
+Dockerfile
+.dockerignore
+Jenkinsfile
+devops

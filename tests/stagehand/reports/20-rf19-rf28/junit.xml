@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testsuite name="RF-19 Guardar y retomar un borrador de movimiento" time="194.216094" disabled="0" errors="0" tests="2" failures="0" skipped="0" timestamp="2026-10-27T07:42:32.006Z" hostname="DESKTOP-AKKQNK6">
+		<testcase name="RF19-01 El borrador sobrevive a salir de la vista y a recargar, y es propio de su tipo" time="114.174432" classname="test" file="C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF19-02 Un borrador vacío no se confirma, Volver no lo pierde y Descartar sí lo borra" time="57.845321" classname="test" file="C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<testsuite name="RF-22 Consultar las existencias actuales" time="97.445031" disabled="0" errors="0" tests="2" failures="0" skipped="0" timestamp="2026-10-27T07:45:46.998Z" hostname="DESKTOP-AKKQNK6">
+		<testcase name="RF22-01 El listado de existencias muestra sus columnas y filas" time="26.768206" classname="test" file="C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF22-02 Sin sesión, /stock redirige al login y no muestra existencias" time="57.461014" classname="test" file="C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<testsuite name="RF-23 Filtrar las existencias" time="96.030290" disabled="0" errors="0" tests="2" failures="0" skipped="0" timestamp="2026-10-27T07:47:25.116Z" hostname="DESKTOP-AKKQNK6">
+		<testcase name="RF23-01 Buscar un producto y filtrar por su categoría acota el listado" time="47.076558" classname="test" file="C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF23-02 Una búsqueda con comodín no devuelve nada y Limpiar filtros restaura el listado" time="35.809078" classname="test" file="C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<testsuite name="RF-24 Consultar el kardex de un producto" time="73.596122" disabled="0" errors="0" tests="2" failures="2" skipped="0" timestamp="2026-10-27T07:49:01.814Z" hostname="DESKTOP-AKKQNK6">
+		<testcase name="RF24-01 Abrir el kardex desde existencias y recorrer el saldo corrido" time="9.447238" classname="test" file="C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts" failure="El kardex y el listado no coinciden en la existencia&#10;&#10;0 !== 3&#10;">
+			<failure type="testCodeFailure" message="El kardex y el listado no coinciden en la existencia&#10;&#10;0 !== 3">
+Error [ERR_TEST_FAILURE]: El kardex y el listado no coinciden en la existencia
+
+0 !== 3
+
+    at async Promise.all (index 0) {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: AssertionError [ERR_ASSERTION]: El kardex y el listado no coinciden en la existencia
+  
+  0 !== 3
+  
+      at Object.run (C:\VisualProjects\beverage-ledger\tests\stagehand\RF24-kardex.e2e.mts:30:14)
+      at async TestContext.&lt;anonymous> (C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts:76:11)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1869:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 3,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+}
+			</failure>
+		</testcase>
+		<testcase name="RF24-02 El kardex de un producto inexistente avisa y deja volver a existencias" time="50.886837" classname="test" file="C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts" failure="Tiempo agotado esperando: que cargue /stock/00000000-0000-4000-8000-000000000000. Último valor: false">
+			<failure type="testCodeFailure" message="Tiempo agotado esperando: que cargue /stock/00000000-0000-4000-8000-000000000000. Último valor: false">
+[Error [ERR_TEST_FAILURE]: Tiempo agotado esperando: que cargue /stock/00000000-0000-4000-8000-000000000000. Último valor: false] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Tiempo agotado esperando: que cargue /stock/00000000-0000-4000-8000-000000000000. Último valor: false
+      at waitFor (C:\VisualProjects\beverage-ledger\tests\stagehand\support\dom.mts:270:9)
+      at async goto (C:\VisualProjects\beverage-ledger\tests\stagehand\support\session.mts:98:7)
+      at async Object.run (C:\VisualProjects\beverage-ledger\tests\stagehand\RF24-kardex.e2e.mts:55:7)
+      at async TestContext.&lt;anonymous> (C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts:76:11)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:960:7)
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite name="RF-27 Consultar los productos bajo el stock mínimo" time="34.035847" disabled="0" errors="0" tests="2" failures="0" skipped="0" timestamp="2026-10-27T07:50:16.085Z" hostname="DESKTOP-AKKQNK6">
+		<testcase name="RF27-01 La tarjeta Bajo mínimo lista los productos y lleva al kardex y a existencias" time="12.526232" classname="test" file="C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF27-02 La lista no trae de más: cada producto tiene mínimo y está marcado Bajo mínimo en existencias" time="8.402884" classname="test" file="C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<testsuite name="RF-28 Generar el reporte de consumo" time="87.030918" disabled="0" errors="0" tests="2" failures="1" skipped="0" timestamp="2026-10-27T07:50:50.793Z" hostname="DESKTOP-AKKQNK6">
+		<testcase name="RF28-01 Cambiar el periodo y la agrupación actualiza resumen y ranking con cifras coherentes" time="52.583213" classname="test" file="C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF28-02 El periodo elegido se conserva al volver con el botón atrás (DEF-03)" time="19.676199" classname="test" file="C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts" failure="Al volver, el periodo marcado es «Mes» y el rango 27/09/2026 – 27/10/2026, no 27/10/2025 – 27/10/2026&#10;&#10;'Mes' !== 'Año'&#10;">
+			<failure type="testCodeFailure" message="Al volver, el periodo marcado es «Mes» y el rango 27/09/2026 – 27/10/2026, no 27/10/2025 – 27/10/2026&#10;&#10;'Mes' !== 'Año'">
+[Error [ERR_TEST_FAILURE]: Al volver, el periodo marcado es «Mes» y el rango 27/09/2026 – 27/10/2026, no 27/10/2025 – 27/10/2026
+
+'Mes' !== 'Año'
+] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: AssertionError [ERR_ASSERTION]: Al volver, el periodo marcado es «Mes» y el rango 27/09/2026 – 27/10/2026, no 27/10/2025 – 27/10/2026
+  
+  'Mes' !== 'Año'
+  
+      at Object.run (C:\VisualProjects\beverage-ledger\tests\stagehand\RF28-consumption.e2e.mts:88:14)
+      at async TestContext.&lt;anonymous> (C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts:76:11)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'Mes',
+    expected: 'Año',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<!-- tests 12 -->
+	<!-- suites 6 -->
+	<!-- pass 9 -->
+	<!-- fail 3 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 595465.1261 -->
+</testsuites>

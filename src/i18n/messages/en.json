@@ -21,7 +21,8 @@
       "save": "Save",
       "search": "Search",
       "showDetails": "Show the detail",
-      "newMovement": "Record a movement"
+      "newMovement": "Record a movement",
+      "back": "Back"
     },
     "states": {
       "loading": "Loading…",
@@ -49,7 +50,10 @@
       "min": "It has to be {min} or more.",
       "max": "It has to be {max} or less.",
       "mismatch": "It does not match what you wrote above.",
-      "summary": "{count, plural, one {One field needs a look.} other {# fields need a look.}}"
+      "summary": "{count, plural, one {One field needs a look.} other {# fields need a look.}}",
+      "requiredMark": "required",
+      "requiredLegend": "Required field",
+      "color": "Enter a colour in the form #rrggbb, for example #d4af37."
     },
     "datePicker": {
       "placeholder": "Pick a date",
@@ -76,6 +80,10 @@
       "next": "Next page",
       "goToPage": "Go to page {page}",
       "current": "Page {page} of {pageCount}"
+    },
+    "select": {
+      "search": "Type to search…",
+      "noMatches": "Nothing matches what you typed."
     }
   },
   "marketing": {
@@ -85,7 +93,8 @@
       "how": "How it works",
       "faq": "Questions",
       "signIn": "Sign in",
-      "dashboard": "Go to the dashboard"
+      "dashboard": "Go to the dashboard",
+      "help": "Help"
     },
     "hero": {
       "eyebrow": "Liquor inventory",
@@ -165,7 +174,8 @@
       "tagline": "Liquor inventory for hospitality operations.",
       "rights": "© {year} {brand}",
       "sections": "Sections",
-      "account": "Account"
+      "account": "Account",
+      "help": "Help"
     }
   },
   "nav": {
@@ -178,18 +188,20 @@
       "reports": "Reports",
       "admin": "Admin",
       "adminUsers": "Users",
-      "adminCategories": "Categories",
-      "adminBrands": "Brands",
-      "adminLocations": "Locations",
       "adminOrganization": "Organization",
-      "adminAudit": "Audit log"
+      "adminAudit": "Audit log",
+      "catalogProducts": "Products",
+      "catalogCategories": "Categories",
+      "catalogBrands": "Brands",
+      "catalogLocations": "Locations"
     },
     "account": {
       "menu": "Account menu",
       "menuFor": "Account menu for {name}",
       "profile": "Your profile",
       "signOut": "Sign out",
-      "landing": "Go to the public site"
+      "landing": "Go to the public site",
+      "settings": "Settings"
     }
   },
   "auth": {
@@ -327,7 +339,7 @@
         "confirmed": {
           "verb": "Void",
           "title": "Void {code}?",
-          "description": "Whatever this movement took from stock goes back. The movement is kept, marked as cancelled — the ledger is never rewritten.",
+          "description": "Whatever this movement took from stock goes back. The movement is kept, marked as cancelled — the history is never rewritten.",
           "placeholder": "Why is it being voided?",
           "successTitle": "Movement voided",
           "successDescription": "{code} was reverted and stock returned.",
@@ -341,13 +353,28 @@
       "loadFailed": "The catalogue could not be loaded.",
       "empty": "No products match those filters.",
       "loadMore": "Load more products",
-      "onHand": "{count} on hand",
+      "onHand": "<strong>{count}</strong> on hand",
       "left": "{count} left",
-      "atLimit": "Only {count} left at this location",
       "add": "Add {unit}",
       "remove": "Remove {unit}",
       "unitsPerCase": "{count, plural, one {× # unit} other {× # units}}",
-      "takenTotal": "{count, plural, one {# unit in total} other {# units in total}}"
+      "takenTotal": "{count, plural, one {# unit in total} other {# units in total}}",
+      "state": {
+        "none": "Out of stock",
+        "low": "Below minimum"
+      },
+      "labels": {
+        "category": "Category",
+        "subcategory": "Type",
+        "age": "Age",
+        "abv": "ABV",
+        "origin": "Origin"
+      },
+      "limit": {
+        "noneAtOrigin": "There's no stock at the origin location, so nothing can be taken.",
+        "allTaken": "You've taken all {count} units at the origin location.",
+        "noFullCase": "{count, plural, one {# unit is} other {# units are}} left: not enough for another case, but enough for single bottles."
+      }
     },
     "register": {
       "pendingDraft": "A draft is already open from an attempt that could not be confirmed. Fixing the quantities and confirming again reuses it, so no second movement is created.",
@@ -358,11 +385,6 @@
       "pickedUpDescription": "What was captured is back. Confirming reuses it.",
       "pickUpFailed": "Could not pick up the draft",
       "fields": {
-        "occurredAt": {
-          "label": "Occurred at",
-          "hint": "Leave it empty to record it as happening now.",
-          "placeholder": "Now"
-        },
         "location": {
           "label": "Location",
           "hint": "Which warehouse this movement lands on."
@@ -400,7 +422,7 @@
       },
       "reasonRequired": "An adjustment needs a reason before it can be confirmed.",
       "confirm": "Confirm",
-      "confirmDescription": "This writes <strong>{products} {products, plural, one {product} other {products}}</strong> to the ledger and moves <strong>{units} {unitsAbs, plural, one {unit} other {units}}</strong> — cases counted by their case size.",
+      "confirmDescription": "This records <strong>{products} {products, plural, one {product} other {products}}</strong> in the movement history and moves <strong>{units} {unitsAbs, plural, one {unit} other {units}}</strong> — cases counted by their case size.",
       "goBack": "Go back",
       "registeredTitle": "Movement registered",
       "registeredDescription": "{code} was confirmed and applied to stock.",
@@ -410,15 +432,21 @@
       "discardDescription": "Every line, the date and the note are cleared. No movement is created.",
       "keep": "Keep it",
       "discardedTitle": "Draft discarded",
-      "discardedNothingSent": "Nothing was sent to the ledger.",
-      "discardedDraftKept": "What you captured is cleared. The open draft stays in the history for a manager to void."
+      "discardedNothingSent": "Nothing was recorded.",
+      "discardedDraftKept": "What you captured is cleared. The open draft stays in the history for a manager to void.",
+      "stampedNow": "It will be recorded with the current date and time.",
+      "history": {
+        "undo": "Undo",
+        "redo": "Redo",
+        "savedAt": "Draft saved on this device · {time}"
+      }
     }
   },
   "stock": {
     "denied": "You cannot see stock levels.",
     "levels": {
       "title": "Stock on hand",
-      "subtitle": "What the ledger says is in the cellar right now. A product that has never moved sits at zero.",
+      "subtitle": "What is in the cellar right now, according to the recorded movements. A product that has never moved sits at zero.",
       "searchPlaceholder": "Search by product…",
       "searchLabel": "Search stock by product",
       "filterCategory": "Filter by category",
@@ -459,8 +487,8 @@
       "minimum": "Minimum",
       "caseSize": "Case size",
       "loadFailed": "The kardex could not be loaded.",
-      "title": "Ledger lines",
-      "caption": "Confirmed ledger lines for {product}",
+      "title": "Movement history",
+      "caption": "Confirmed movements for {product}",
       "loading": "Loading the kardex",
       "empty": "This product has never moved.",
       "emptyDescription": "Its stock stays at zero until a movement is confirmed.",
@@ -471,7 +499,7 @@
         "change": "Change",
         "balance": "Balance"
       },
-      "lines": "Ledger lines"
+      "lines": "Movements"
     }
   },
   "admin": {
@@ -627,7 +655,13 @@
       "reset": "Reset",
       "savedTitle": "Organization saved",
       "savedDescription": "The branding is updated everywhere it is read from.",
-      "saveFailed": "Could not save the organization"
+      "saveFailed": "Could not save the organization",
+      "brandColor": "Brand colour",
+      "brandColorHint": "Replaces the product's gold on buttons, links and highlights. Empty uses the default.",
+      "brandColorLowContrast": "This colour reads poorly on the light or dark background. Try a stronger shade so buttons and links stay legible.",
+      "brandColorPicker": "Pick the brand colour",
+      "brandColorDefault": "Default colour",
+      "brandColorReset": "Use the default"
     },
     "audit": {
       "title": "Audit log",
@@ -813,6 +847,22 @@
       "pointLabel": "{period}: {unitsIn} received, {unitsOut} dispatched",
       "caption": "Units received and dispatched per period",
       "period": "Period"
+    },
+    "customize": {
+      "open": "Customize",
+      "title": "Customize the dashboard",
+      "description": "Choose which cards to see and in what order. Saved on this device.",
+      "moveUp": "Move {widget} up",
+      "moveDown": "Move {widget} down",
+      "reset": "Reset",
+      "done": "Done",
+      "widgets": {
+        "actions": "Record a movement",
+        "summary": "Period summary",
+        "activity": "Activity",
+        "lowStock": "Below minimum",
+        "recent": "Latest movements"
+      }
     }
   },
   "reports": {
@@ -877,7 +927,7 @@
       "activateTitle": "Activate {name}?",
       "activateDescription": "It becomes available for new movements again.",
       "deactivateTitle": "Deactivate {name}?",
-      "deactivateDescription": "It stays in the ledger and in every past movement, but stops being offered for new ones.",
+      "deactivateDescription": "It stays in the history and in every past movement, but stops being offered for new ones.",
       "activatedTitle": "Product activated",
       "activatedDescription": "{name} is available again.",
       "deactivatedTitle": "Product deactivated",
@@ -911,7 +961,7 @@
     "form": {
       "createTitle": "New product",
       "editTitle": "Edit {name}",
-      "description": "Products are never deleted, only deactivated: the ledger references them.",
+      "description": "Products are never deleted, only deactivated: past movements still name them.",
       "name": "Name",
       "namePlaceholder": "Havana Club 7 Años",
       "category": "Category",
@@ -945,7 +995,7 @@
       "isDefault": "{name} (default)"
     },
     "title": "Locations",
-    "subtitle": "Where stock lives. Every level and every ledger line belongs to one, and a transfer moves units between two without changing the total.",
+    "subtitle": "Where stock lives. Every level and every movement belongs to one, and a transfer moves units between two without changing the total.",
     "new": "New location",
     "loadFailed": "The locations could not be loaded.",
     "loading": "Loading locations",
@@ -953,7 +1003,7 @@
     "empty": "No locations yet.",
     "columns": {
       "name": "Name",
-      "movementCount": "Ledger lines",
+      "movementCount": "Movements",
       "actions": "Actions"
     },
     "default": "Default",
@@ -982,9 +1032,9 @@
     },
     "delete": {
       "title": "Delete {name}?",
-      "description": "No ledger line references it, so it can go without leaving a gap in the history.",
+      "description": "No movement uses it, so it can go without leaving a gap in the history.",
       "blockedDefault": "The default cannot be deleted: promote another one first",
-      "blockedInUse": "{count} ledger {count, plural, one {line references} other {lines reference}} it"
+      "blockedInUse": "{count} {count, plural, one {movement uses} other {movements use}} it"
     }
   },
   "errors": {
@@ -999,6 +1049,78 @@
       "description": "We could not render this screen. Try again; if it keeps happening, tell whoever administers the system.",
       "retry": "Try again",
       "backHome": "Back to the home page"
+    },
+    "api": {
+      "network": "We couldn't reach the server. Check your connection and try again.",
+      "status": {
+        "badRequest": "Some of the data isn't valid. Check it and try again.",
+        "unauthorized": "Your session ended. Sign in again.",
+        "forbidden": "You don't have permission to do this.",
+        "notFound": "What you're looking for no longer exists.",
+        "conflict": "Someone changed this data while you were working. Reload and try again.",
+        "tooLarge": "What you're sending is too large.",
+        "tooManyRequests": "Too many attempts in a row. Wait a moment and try again.",
+        "server": "The server ran into a problem. Try again in a few minutes."
+      },
+      "codes": {
+        "INSUFFICIENT_PERMISSIONS": "You don't have permission to do this.",
+        "INVALID_SESSION": "Your session ended. Sign in again.",
+        "INVALID_CREDENTIALS": "The email or password is incorrect.",
+        "ACCOUNT_SUSPENDED": "This account is suspended. Ask an administrator to restore it.",
+        "ACCOUNT_INVITED": "This invitation hasn't been accepted yet. Use the link you were sent.",
+        "ACCOUNT_NOT_FOUND": "No account uses that email. Ask an administrator to invite you.",
+        "GOOGLE_SIGN_IN_DISABLED": "Google sign-in isn't available on this server.",
+        "INVALID_SIGN_IN_REQUEST": "We couldn't complete the sign-in. Try again.",
+        "GOOGLE_EMAIL_MISSING": "Google didn't give us an email for your account.",
+        "BRAND_NOT_FOUND": "That brand no longer exists.",
+        "BRAND_NAME_TAKEN": "There's already a brand with that name.",
+        "BRAND_IN_USE": "The brand still has {count, plural, one {# product} other {# products}}. Move them to another before deleting it.",
+        "CATEGORY_NOT_FOUND": "That category no longer exists.",
+        "CATEGORY_NAME_TAKEN": "There's already a category with that name.",
+        "CATEGORY_IN_USE": "The category still has {count, plural, one {# product} other {# products}}. Move them to another before deleting it.",
+        "PRODUCT_NOT_FOUND": "One of the products no longer exists. Reload the list.",
+        "PRODUCT_NAME_TAKEN": "There's already a product with that name.",
+        "PRODUCTS_INACTIVE": "These products are deactivated: {products}.",
+        "LOCATION_NOT_FOUND": "That location no longer exists.",
+        "NO_DEFAULT_LOCATION": "The organization has no main location. Mark one in Locations.",
+        "LOCATION_DEFAULT_REQUIRED": "To stop being the main location, mark another one as main.",
+        "LOCATION_DEFAULT_UNDELETABLE": "The main location can't be deleted.",
+        "LOCATION_IN_USE": "This location has movements or stock, so it can't be deleted.",
+        "LOCATION_NAME_TAKEN": "There's already a location with that name.",
+        "MOVEMENT_NOT_FOUND": "That movement no longer exists.",
+        "MOVEMENT_ALREADY_CONFIRMED": "This movement had already been recorded.",
+        "MOVEMENT_ALREADY_CANCELLED": "This movement was already voided.",
+        "MOVEMENT_CHANGED": "The movement changed while you were voiding it. Reload and try again.",
+        "MOVEMENT_NOT_EDITABLE": "This movement is no longer a draft, so it can't be edited.",
+        "MOVEMENT_TYPE_FORBIDDEN": "Your role can't record this type of movement.",
+        "MOVEMENT_FUTURE_DATE": "A movement can't be dated in the future.",
+        "NOT_ENOUGH_STOCK": "There isn't enough stock for {count, plural, one {# product} other {# products}}. Check the quantities.",
+        "STOCK_CHANGED": "Stock changed while the movement was being recorded. Try again.",
+        "TRANSFER_DESTINATION_REQUIRED": "A transfer needs a destination location.",
+        "TRANSFER_SAME_LOCATION": "A transfer's origin and destination must be different locations.",
+        "DESTINATION_NOT_ALLOWED": "Only a transfer has a destination location.",
+        "ADJUSTMENT_REASON_REQUIRED": "An adjustment needs a reason.",
+        "ADJUSTMENT_LINE_ZERO": "An adjustment line can't be zero.",
+        "LINE_NOT_POSITIVE": "Quantities must be greater than zero.",
+        "ROLE_NOT_ASSIGNABLE": "That role can't be assigned.",
+        "EMAIL_TAKEN": "That email already belongs to someone in the organization.",
+        "INVITATION_PENDING": "That email already has a pending invitation.",
+        "INVITATION_NOT_FOUND": "That invitation no longer exists.",
+        "INVITATION_UNUSABLE": "This invitation link is no longer valid. Ask for a new one.",
+        "ORGANIZATION_NOT_FOUND": "We couldn't find your organization.",
+        "INVALID_RANGE": "The start date is after the end date.",
+        "USER_NOT_FOUND": "That person no longer exists.",
+        "CURRENT_PASSWORD_REQUIRED": "Enter your current password.",
+        "CURRENT_PASSWORD_INCORRECT": "The current password is incorrect.",
+        "SELF_ROLE_CHANGE": "You can't change your own role or status.",
+        "LAST_ADMIN": "The organization must keep at least one active administrator.",
+        "VALIDATION_FAILED": "Some of the data isn't valid. Check it and try again.",
+        "RECORD_CONFLICT": "A record with that data already exists.",
+        "RECORD_REFERENCE": "Something referenced no longer exists. Reload and try again.",
+        "NOT_FOUND": "What you're looking for no longer exists.",
+        "PAYLOAD_TOO_LARGE": "What you're sending is too large.",
+        "INTERNAL": "The server ran into a problem. Try again in a few minutes."
+      }
     }
   },
   "invite": {
@@ -1013,5 +1135,152 @@
     "invalidTitle": "This invitation no longer works",
     "invalidDescription": "It may have been cancelled, already used, or left too long. Ask for a new one.",
     "backToSignIn": "Go to sign in"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "How the app looks and reads on this device. Saved here, not on your account.",
+    "theme": {
+      "title": "Appearance",
+      "description": "Colour theme for the whole app.",
+      "options": {
+        "light": "Light",
+        "dark": "Dark",
+        "system": "Match device"
+      }
+    },
+    "contrast": {
+      "title": "Contrast",
+      "description": "High contrast uses pure black and white, more visible borders and secondary text at full strength.",
+      "options": {
+        "normal": "Normal",
+        "high": "High"
+      }
+    },
+    "textScale": {
+      "title": "Text size",
+      "description": "Scales the text and the whole interface: menus, tables and buttons grow with it without overflowing.",
+      "options": {
+        "sm": "Small",
+        "md": "Normal",
+        "lg": "Large",
+        "xl": "Extra large"
+      },
+      "preview": "Preview · {percent}%",
+      "sample": "Storeroom to bar: 2 cases and 3 bottles."
+    }
+  },
+  "help": {
+    "menu": {
+      "open": "Help and keyboard shortcuts",
+      "title": "Keyboard shortcuts",
+      "description": "They work on any screen, except the recording ones, which act while capturing a movement.",
+      "guide": "Open the user guide",
+      "shortcuts": {
+        "search": "Go to the page's search box",
+        "help": "Open this help",
+        "undo": "Undo the last draft change",
+        "redo": "Redo what was undone",
+        "register": "Record the movement",
+        "submit": "Submit the form",
+        "close": "Close a dialog or menu",
+        "jump": "Jump to the option starting with that letter in a dropdown",
+        "navigate": "Move through a dropdown's options",
+        "focus": "Move to the next control"
+      }
+    },
+    "guide": {
+      "title": "User guide",
+      "subtitle": "How to use and set up the app: the workflow, the roles and what each term means.",
+      "contents": "In this guide",
+      "sections": {
+        "start": {
+          "title": "Getting started",
+          "intro": "The app keeps your operation's liquor inventory: what is in each location, what came in, what went out and why.",
+          "steps": {
+            "signIn": "Sign in with the invitation link your organization's administrator sent you and choose your password. There is no open sign-up: invitation is the only way in.",
+            "dashboard": "The dashboard sums up the period: activity, products below minimum and the latest movements. «Customize» chooses which cards to show and in what order.",
+            "record": "To move stock, use «Record a movement» and pick the type.",
+            "check": "Stock shows how much there is of each product, and its history."
+          }
+        },
+        "roles": {
+          "title": "Roles and permissions",
+          "intro": "Everyone has a role, and the role decides what they can do. Whoever moves the goods cannot change the numbers that account for them, so adjustments and cancellations belong to managers and administrators. If you lack a permission, the option simply isn't there.",
+          "action": "Action",
+          "actions": {
+            "outbound": "Record outbound movements",
+            "inbound": "Record inbound movements",
+            "adjustment": "Record adjustments (with a reason)",
+            "transfer": "Record transfers",
+            "cancel": "Cancel a confirmed movement",
+            "stock": "See stock and history",
+            "reports": "See reports",
+            "catalog": "Manage the catalogue and locations",
+            "users": "Manage users and the organization",
+            "audit": "See the audit log"
+          },
+          "allowed": "Yes",
+          "denied": "No"
+        },
+        "movements": {
+          "title": "Recording movements",
+          "intro": "Every change in stock is a movement. There are four types:",
+          "types": {
+            "outbound": "Outbound: stock leaving a location, for example from the cellar to the bar.",
+            "inbound": "Inbound: stock arriving from a supplier.",
+            "adjustment": "Adjustment: corrects the recorded number up or down, for shrinkage, breakage or a physical count. It always needs a reason.",
+            "transfer": "Transfer: moves stock between two locations without changing the total."
+          },
+          "flow": "Pick the location, find the products and add bottles or cases with the + and − buttons. On confirming, the movement is recorded with the current date and time and stock changes at once.",
+          "limit": "When taking stock out, the counters stop at what the origin location holds; the message under the product card says why it won't go further.",
+          "fix": "A confirmed movement is never edited. If there was a mistake, cancel it (stock goes back) or correct it with an adjustment."
+        },
+        "drafts": {
+          "title": "Drafts",
+          "body": "While you capture, the draft is saved on this device and you'll see «Draft saved» with the time. If you close the tab or reload, it comes back when you return. Undo and Redo (Ctrl+Z and Ctrl+Y) step through your changes. If recording fails, the draft stays saved on the server: the next attempt reuses it, and you can also pick it up from another device."
+        },
+        "stock": {
+          "title": "Stock and history",
+          "body": "Stock shows how much there is of each product, per location. Opening a product shows its history: every confirmed movement with the balance it left. The dashboard's «Below minimum» card flags products at or under their minimum stock."
+        },
+        "reports": {
+          "title": "Reports and receipts",
+          "body": "Reports shows consumption by product, category or brand over a period. Every movement can be downloaded as a PDF receipt from its detail page."
+        },
+        "setup": {
+          "title": "Setup (administrators)",
+          "items": {
+            "organization": "Organization: name, legal name, time zone and the interface's brand colour.",
+            "users": "Users: invite with a single-use link, change roles or suspend accounts.",
+            "catalog": "Catalogue: products, categories, brands and locations, all in the Catalogue section. Products are never deleted, only deactivated.",
+            "audit": "Audit log: who did what, when and from where."
+          }
+        },
+        "settings": {
+          "title": "Preferences and accessibility",
+          "body": "In Settings, from your account menu, choose a light or dark theme, high contrast and text size. They are saved on the device. The language is changed from the same menu."
+        },
+        "shortcuts": {
+          "title": "Keyboard shortcuts",
+          "body": "Press ? on any screen to see this list."
+        },
+        "glossary": {
+          "title": "Glossary",
+          "terms": {
+            "movement": "Movement: any change in stock — an outbound, an inbound, an adjustment or a transfer.",
+            "draft": "Draft: a movement captured but not yet confirmed. It doesn't change stock.",
+            "history": "Movement history (the «ledger»): the list of confirmed movements. It is never edited or deleted, and stock is calculated from it.",
+            "kardex": "Kardex: the history of a single product, with the balance after each movement.",
+            "minimum": "Minimum stock: the quantity at which a product shows as «below minimum».",
+            "case": "Case: the purchasing unit. Its size says how many bottles it holds, which is how cases become units.",
+            "location": "Location: the physical place where stock lives."
+          }
+        },
+        "contact": {
+          "title": "Something not working?",
+          "body": "If you see an error you don't understand or you're missing a permission, talk to your organization's administrator: they can change your role, reactivate your account or send you a new invitation. Error messages say what happened and, almost always, what to do."
+        }
+      }
+    }
   }
 }

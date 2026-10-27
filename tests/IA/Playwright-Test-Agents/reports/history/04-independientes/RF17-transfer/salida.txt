@@ -1,0 +1,9 @@
+
+Running 4 tests using 1 worker
+
+  ✓  1 [chromium] › IA\Playwright-Test-Agents\tests\RF17-transfer.spec.ts:12:7 › RF-17 Traspaso › Origen y destino obligatorios (4.1s)
+  ✓  2 [chromium] › IA\Playwright-Test-Agents\tests\RF17-transfer.spec.ts:42:7 › RF-17 Traspaso › El destino excluye al origen (4.3s)
+  ✓  3 [chromium] › IA\Playwright-Test-Agents\tests\RF17-transfer.spec.ts:77:7 › RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas (7.7s)
+  ✓  4 [chromium] › IA\Playwright-Test-Agents\tests\RF17-transfer.spec.ts:141:7 › RF-17 Traspaso › Cantidades del traspaso topadas por el origen (29.9s)
+
+  4 passed (52.6s)

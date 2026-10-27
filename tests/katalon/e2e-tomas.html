@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>E2E Tomas</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">RF-22 Ver existencias</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>https://beverage-ledger.vercel.app/login<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='email']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='password']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; const el = document.querySelector('input[type=email]'); set.call(el, 'admin@beverageledger.local'); el.dispatchEvent(new Event('input', { bubbles: true }));<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; const el = document.querySelector('input[type=password]'); set.call(el, 'SecurePass123!'); el.dispatchEvent(new Event('input', { bubbles: true }));<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>css=input[type='email']<datalist></datalist></td>
+	<td>admin@beverageledger.local</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//button[normalize-space()='Entrar']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//nav[@aria-label='Principal']//a[normalize-space()='Existencias']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//nav[@aria-label='Principal']//a[normalize-space()='Existencias']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//table[caption[normalize-space()='Existencias por producto']]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>xpath=//table[caption[normalize-space()='Existencias por producto']]//tbody//a[starts-with(@href,'/stock/')]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//h1<datalist></datalist></td>
+	<td>Existencias</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//table[caption[normalize-space()='Existencias por producto']]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//nav[@aria-label='Paginación']//p<datalist></datalist></td>
+	<td>glob:*de*resultados*</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">RF-23 Filtrar</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>https://beverage-ledger.vercel.app/login<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='email']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='password']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; const el = document.querySelector('input[type=email]'); set.call(el, 'admin@beverageledger.local'); el.dispatchEvent(new Event('input', { bubbles: true }));<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; const el = document.querySelector('input[type=password]'); set.call(el, 'SecurePass123!'); el.dispatchEvent(new Event('input', { bubbles: true }));<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>css=input[type='email']<datalist></datalist></td>
+	<td>admin@beverageledger.local</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//button[normalize-space()='Entrar']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//nav[@aria-label='Principal']//a[normalize-space()='Existencias']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//nav[@aria-label='Principal']//a[normalize-space()='Existencias']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//table[caption[normalize-space()='Existencias por producto']]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>xpath=//table[caption[normalize-space()='Existencias por producto']]//tbody//a[starts-with(@href,'/stock/')]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; const el = document.querySelector('main input[type=search]'); set.call(el, 'AMARO'); el.dispatchEvent(new Event('input', { bubbles: true }));<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>2000<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>xpath=(//table[caption[normalize-space()='Existencias por producto']]//tbody//a[starts-with(@href,'/stock/')])[1]<datalist></datalist></td>
+	<td>glob:*AMARO*</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=(//table[caption[normalize-space()='Existencias por producto']]//tbody//a[starts-with(@href,'/stock/')])[1]<datalist></datalist></td>
+	<td>glob:*AMARO*</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">RF-23 Sin coincidencias</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>https://beverage-ledger.vercel.app/login<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='email']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='password']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; const el = document.querySelector('input[type=email]'); set.call(el, 'admin@beverageledger.local'); el.dispatchEvent(new Event('input', { bubbles: true }));<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; const el = document.querySelector('input[type=password]'); set.call(el, 'SecurePass123!'); el.dispatchEvent(new Event('input', { bubbles: true }));<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>css=input[type='email']<datalist></datalist></td>
+	<td>admin@beverageledger.local</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//button[normalize-space()='Entrar']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//nav[@aria-label='Principal']//a[normalize-space()='Existencias']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//nav[@aria-label='Principal']//a[normalize-space()='Existencias']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//table[caption[normalize-space()='Existencias por producto']]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>xpath=//table[caption[normalize-space()='Existencias por producto']]//tbody//a[starts-with(@href,'/stock/')]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; const el = document.querySelector('main input[type=search]'); set.call(el, 'zzz-producto-que-no-existe'); el.dispatchEvent(new Event('input', { bubbles: true }));<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>2000<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Ningún producto coincide con esos filtros.<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Ningún producto coincide con esos filtros.<datalist></datalist></td>
+	<td></td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">RF-24 Kardex</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>https://beverage-ledger.vercel.app/login<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='email']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='password']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; const el = document.querySelector('input[type=email]'); set.call(el, 'admin@beverageledger.local'); el.dispatchEvent(new Event('input', { bubbles: true }));<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; const el = document.querySelector('input[type=password]'); set.call(el, 'SecurePass123!'); el.dispatchEvent(new Event('input', { bubbles: true }));<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>css=input[type='email']<datalist></datalist></td>
+	<td>admin@beverageledger.local</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//button[normalize-space()='Entrar']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//nav[@aria-label='Principal']//a[normalize-space()='Existencias']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//nav[@aria-label='Principal']//a[normalize-space()='Existencias']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//table[caption[normalize-space()='Existencias por producto']]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>xpath=//table[caption[normalize-space()='Existencias por producto']]//tbody//a[starts-with(@href,'/stock/')]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>xpath=(//table[caption[normalize-space()='Existencias por producto']]//tbody//a[starts-with(@href,'/stock/')])[1]<datalist></datalist></td>
+	<td>producto</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//table[caption[normalize-space()='Existencias por producto']]//tbody//a[starts-with(@href,'/stock/')])[1]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//table[starts-with(normalize-space(caption),'Movimientos confirmados de')]//tbody/tr[1]/td[5]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//h1<datalist></datalist></td>
+	<td>${producto}</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>xpath=//table[starts-with(normalize-space(caption),'Movimientos confirmados de')]//tbody/tr[1]/td[5]<datalist></datalist></td>
+	<td>saldo</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>xpath=//p[normalize-space()='En existencia']/preceding-sibling::p[1]<datalist></datalist></td>
+	<td>${saldo}</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//p[normalize-space()='En existencia']/preceding-sibling::p[1]<datalist></datalist></td>
+	<td>${saldo}</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">RF-27 Bajo minimo</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>https://beverage-ledger.vercel.app/login<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='email']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='password']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; const el = document.querySelector('input[type=email]'); set.call(el, 'admin@beverageledger.local'); el.dispatchEvent(new Event('input', { bubbles: true }));<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; const el = document.querySelector('input[type=password]'); set.call(el, 'SecurePass123!'); el.dispatchEvent(new Event('input', { bubbles: true }));<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>css=input[type='email']<datalist></datalist></td>
+	<td>admin@beverageledger.local</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//button[normalize-space()='Entrar']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//nav[@aria-label='Principal']//a[normalize-space()='Existencias']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//h2[normalize-space()='Bajo mínimo']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>xpath=//main//li//a[starts-with(@href,'/stock/')] | //*[normalize-space()='Nada está por debajo de su mínimo.']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//main//li//a[starts-with(@href,'/stock/')] | //*[normalize-space()='Nada está por debajo de su mínimo.']<datalist></datalist></td>
+	<td></td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">RF-28 Reporte</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>https://beverage-ledger.vercel.app/login<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='email']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='password']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; const el = document.querySelector('input[type=email]'); set.call(el, 'admin@beverageledger.local'); el.dispatchEvent(new Event('input', { bubbles: true }));<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; const el = document.querySelector('input[type=password]'); set.call(el, 'SecurePass123!'); el.dispatchEvent(new Event('input', { bubbles: true }));<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>css=input[type='email']<datalist></datalist></td>
+	<td>admin@beverageledger.local</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//button[normalize-space()='Entrar']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//nav[@aria-label='Principal']//a[normalize-space()='Existencias']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//nav[@aria-label='Principal']//a[normalize-space()='Reportes']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//button[normalize-space()='Por categoría']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//button[normalize-space()='Año']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//button[normalize-space()='Año']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//button[normalize-space()='Por categoría']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForAttribute</td>
+	<td>xpath=//button[normalize-space()='Por categoría']@aria-pressed<datalist></datalist></td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>1000<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementNotPresent</td>
+	<td>css=[aria-label='Cargando el reporte']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=main ul &gt; li span.rounded-full<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyAttribute</td>
+	<td>xpath=//button[normalize-space()='Por categoría']@aria-pressed<datalist></datalist></td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=main ul &gt; li span.rounded-full<datalist></datalist></td>
+	<td>1</td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">RF-19 Borrador</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>https://beverage-ledger.vercel.app/login<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='email']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>css=input[type='password']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; const el = document.querySelector('input[type=email]'); set.call(el, 'admin@beverageledger.local'); el.dispatchEvent(new Event('input', { bubbles: true }));<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; const el = document.querySelector('input[type=password]'); set.call(el, 'SecurePass123!'); el.dispatchEvent(new Event('input', { bubbles: true }));<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>css=input[type='email']<datalist></datalist></td>
+	<td>admin@beverageledger.local</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//button[normalize-space()='Entrar']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//nav[@aria-label='Principal']//a[normalize-space()='Existencias']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>localStorage.removeItem('beverage-ledger:movement-draft:OUTBOUND');<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Registrar una salida<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>xpath=//main//li/p[contains(normalize-space(),'en existencia')]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//button[@aria-label='Añadir botella' and not(@disabled)])[1]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//button[@aria-label='Añadir botella' and not(@disabled)])[1]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//button[contains(normalize-space(),'· 2 unidades')]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>refresh</td>
+	<td><datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//button[contains(normalize-space(),'· 2 unidades')]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//button[contains(normalize-space(),'· 2 unidades')]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//button[normalize-space()='Descartar'])[1]<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>xpath=//*[@role='dialog']//button[normalize-space()='Descartar']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=//*[@role='dialog']//button[normalize-space()='Descartar']<datalist></datalist></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementNotPresent</td>
+	<td>xpath=//button[contains(normalize-space(),'· 2 unidades')]<datalist></datalist></td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

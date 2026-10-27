@@ -1,0 +1,2 @@
+# Rate-limit bookkeeping of the takeRefreshTurn task, rewritten on every run.
+reports/.refresh-log.json

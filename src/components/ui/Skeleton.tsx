@@ -18,7 +18,10 @@ export function Skeleton({ className }: Readonly<{ className?: string }>) {
 }
 
 /** A stack of lines, for a block of text whose length is not known. */
-export function SkeletonText({ lines = 3, className }: Readonly<{ lines?: number; className?: string }>) {
+export function SkeletonText({
+  lines = 3,
+  className,
+}: Readonly<{ lines?: number; className?: string }>) {
   return (
     <span className={cn('block space-y-2', className)}>
       {Array.from({ length: lines }, (_, index) => (

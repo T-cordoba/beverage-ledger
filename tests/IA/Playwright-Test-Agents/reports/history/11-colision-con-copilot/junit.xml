@@ -1,0 +1,413 @@
+<testsuites id="" name="" tests="19" failures="3" skipped="0" errors="3" time="401.28324299999997">
+<testsuite name="RF15-outbound.spec.ts" timestamp="2026-10-26T23:42:21.312Z" hostname="chromium" tests="5" failures="0" skipped="0" time="72.369" errors="0">
+<testcase name="RF-15 Salida › Registrar una salida correcta" classname="RF15-outbound.spec.ts" time="10.757">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-15 Salida › Sin productos no aparece la barra Confirmar" classname="RF15-outbound.spec.ts" time="2.864">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper" classname="RF15-outbound.spec.ts" time="6.73">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas" classname="RF15-outbound.spec.ts" time="5.371">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger" classname="RF15-outbound.spec.ts" time="46.647">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="RF16-inbound.spec.ts" timestamp="2026-10-26T23:42:21.312Z" hostname="chromium" tests="2" failures="0" skipped="0" time="58.529" errors="0">
+<testcase name="RF-16 Entrada › Registrar una entrada y verla en detalle e historial" classname="RF16-inbound.spec.ts" time="46.163">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver" classname="RF16-inbound.spec.ts" time="12.366">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="RF17-transfer.spec.ts" timestamp="2026-10-26T23:42:21.312Z" hostname="chromium" tests="4" failures="2" skipped="0" time="76.441" errors="0">
+<testcase name="RF-17 Traspaso › Origen y destino obligatorios" classname="RF17-transfer.spec.ts" time="5.97">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-Origen-y-destino-obligatorios-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-Origen-y-destino-obligatorios-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-17 Traspaso › El destino excluye al origen" classname="RF17-transfer.spec.ts" time="4.535">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-El-destino-excluye-al-origen-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-El-destino-excluye-al-origen-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas" classname="RF17-transfer.spec.ts" time="49.772">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toBeEnabled() failed" type="expect.toBeEnabled">
+<![CDATA[  [chromium] › RF17-transfer.spec.ts:77:7 › RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas 
+
+    Error: expect(locator).toBeEnabled() failed
+
+    Locator: getByRole('combobox', { name: 'Desde' })
+    Expected: enabled
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeEnabled" getByRole('combobox', { name: 'Desde' }) with timeout 15000ms
+      - waiting for getByRole('combobox', { name: 'Desde' })
+
+
+      83 |     const chooseEnds = async () => {
+      84 |       await page.goto('/movements/new/transfer');
+    > 85 |       await expect(from).toBeEnabled();
+         |                          ^
+      86 |       await from.click();
+      87 |       await page.getByRole('option', { name: SOURCE_OPTION }).click();
+      88 |       await expect(page.getByRole('listbox')).toHaveCount(0);
+        at chooseEnds (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\RF17-transfer.spec.ts:85:26)
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\RF17-transfer.spec.ts:118:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+<testcase name="RF-17 Traspaso › Cantidades del traspaso topadas por el origen" classname="RF17-transfer.spec.ts" time="16.164">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toBeEnabled() failed" type="expect.toBeEnabled">
+<![CDATA[  [chromium] › RF17-transfer.spec.ts:169:7 › RF-17 Traspaso › Cantidades del traspaso topadas por el origen 
+
+    Error: expect(locator).toBeEnabled() failed
+
+    Locator: getByRole('combobox', { name: 'Desde' })
+    Expected: enabled
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeEnabled" getByRole('combobox', { name: 'Desde' }) with timeout 15000ms
+      - waiting for getByRole('combobox', { name: 'Desde' })
+
+
+      171 |     await page.goto('/movements/new/transfer');
+      172 |     const from = page.getByRole('combobox', { name: 'Desde' });
+    > 173 |     await expect(from).toBeEnabled();
+          |                        ^
+      174 |     await from.click();
+      175 |     await page.getByRole('option', { name: SOURCE_OPTION }).click();
+      176 |     await expect(page.getByRole('listbox')).toHaveCount(0);
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\RF17-transfer.spec.ts:173:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="RF18-adjustment.spec.ts" timestamp="2026-10-26T23:42:21.312Z" hostname="chromium" tests="2" failures="1" skipped="0" time="35.457" errors="0">
+<testcase name="RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres" classname="RF18-adjustment.spec.ts" time="16.605">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<![CDATA[  [chromium] › RF18-adjustment.spec.ts:9:7 › RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Registrar un ajuste' })
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Registrar un ajuste' }) with timeout 15000ms
+      - waiting for getByRole('heading', { name: 'Registrar un ajuste' })
+
+
+      10 |     // 1. Ir a /movements/new/adjustment, añadir una cantidad con signo a un producto y dejar 'Motivo' vacío.
+      11 |     await page.goto('/movements/new/adjustment');
+    > 12 |     await expect(page.getByRole('heading', { name: 'Registrar un ajuste' })).toBeVisible();
+         |                                                                              ^
+      13 |
+      14 |     const card = page
+      15 |       .getByRole('listitem')
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\RF18-adjustment.spec.ts:12:78
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+<testcase name="RF-18 Ajuste › Registrar un ajuste con motivo válido" classname="RF18-adjustment.spec.ts" time="18.852">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="RF20-cancellation.spec.ts" timestamp="2026-10-26T23:42:21.312Z" hostname="chromium" tests="3" failures="0" skipped="0" time="66.364" errors="1">
+<testcase name="RF-20 Anulación › Conservarlo cancela la anulación" classname="RF20-cancellation.spec.ts" time="22.7">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-63df8-rvarlo-cancela-la-anulación-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-63df8-rvarlo-cancela-la-anulación-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-20 Anulación › Motivo obligatorio al anular" classname="RF20-cancellation.spec.ts" time="27.263">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-7414c-otivo-obligatorio-al-anular-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-7414c-otivo-obligatorio-al-anular-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-20 Anulación › Anular con motivo válido" classname="RF20-cancellation.spec.ts" time="16.401">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.innerText: Timeout 15000ms exceeded." type="TimeoutError">
+<![CDATA[  [chromium] › RF20-cancellation.spec.ts:120:7 › RF-20 Anulación › Anular con motivo válido ────────
+
+    TimeoutError: locator.innerText: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByRole('listitem').filter({ has: getByRole('button', { name: 'Añadir botella' }) }).first().getByRole('heading', { level: 3 })
+
+
+      160 |     .filter({ has: page.getByRole('button', { name: 'Añadir botella' }) })
+      161 |     .first();
+    > 162 |   return (await card.getByRole('heading', { level: 3 }).innerText()).trim();
+          |                                                         ^
+      163 | }
+      164 |
+        at firstInboundProductName (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\RF20-cancellation.spec.ts:162:57)
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\RF20-cancellation.spec.ts:124:47
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="RF21-receipt.spec.ts" timestamp="2026-10-26T23:42:21.312Z" hostname="chromium" tests="3" failures="0" skipped="0" time="43.359" errors="2">
+<testcase name="RF-21 Comprobante › Descargar el PDF desde el historial" classname="RF21-receipt.spec.ts" time="16.277">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.innerText: Timeout 15000ms exceeded." type="TimeoutError">
+<![CDATA[  [chromium] › RF21-receipt.spec.ts:36:7 › RF-21 Comprobante › Descargar el PDF desde el historial ─
+
+    TimeoutError: locator.innerText: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByRole('article').first().getByRole('link', { name: /^MOV-/ }).first()
+
+
+      38 |     await page.goto('/movements');
+      39 |     const first = page.getByRole('article').first();
+    > 40 |     const code = (await first.getByRole('link', { name: /^MOV-/ }).first().innerText()).trim();
+         |                                                                            ^
+      41 |     const pdfButton = first.getByRole('button', { name: 'PDF' });
+      42 |     await expect(pdfButton).toHaveAccessibleDescription(`Descargar ${code} en PDF`);
+      43 |
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\RF21-receipt.spec.ts:40:76
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="RF-21 Comprobante › Descargar el PDF desde el detalle" classname="RF21-receipt.spec.ts" time="16.179">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.click: Timeout 15000ms exceeded." type="TimeoutError">
+<![CDATA[  [chromium] › RF21-receipt.spec.ts:53:7 › RF-21 Comprobante › Descargar el PDF desde el detalle ───
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByRole('article').first().getByRole('link', { name: 'Detalle' })
+
+
+      54 |     // 1. Abrir el detalle de un movimiento y pulsar el botón 'PDF'.
+      55 |     await page.goto('/movements');
+    > 56 |     await page.getByRole('article').first().getByRole('link', { name: 'Detalle' }).click();
+         |                                                                                    ^
+      57 |     await expect(page).toHaveURL(/\/movements\/[0-9a-f-]{36}$/);
+      58 |     const title = page.getByRole('heading', { level: 1 });
+      59 |     await expect(title).toHaveText(/^MOV-\d{4}-\d+$/);
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\RF21-receipt.spec.ts:56:84
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="RF-21 Comprobante › Descargar el PDF de un movimiento anulado" classname="RF21-receipt.spec.ts" time="10.903">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\attachments\MOV-2026-000948-pdf-04e52a4b43723d6ba625642476edeaa6d897190e.pdf]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

@@ -1,0 +1,45 @@
+// spec: planner/beverage-ledger-movimientos.plan.md
+// seed: generator/seed.pw.ts
+
+import { expect, test } from './support/fixtures';
+
+test.describe('RF-16 Entrada', () => {
+  test('Validación de la entrada: sin líneas y diálogo con Volver', async ({ page }) => {
+    const movementCode = page.getByRole('link', { name: /^MOV-\d{4}-\d+$/ }).first();
+
+    await page.goto('/movements');
+    await expect(movementCode).toBeVisible();
+    const lastCode = await movementCode.textContent();
+
+    // 1. Abrir /movements/new/inbound sin productos.
+    await page.goto('/movements/new/inbound');
+    await expect(page.getByRole('heading', { name: 'Registrar una entrada' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Confirmar', exact: true })).toHaveCount(0);
+
+    // 2. Añadir un producto, 'Confirmar' y 'Volver'.
+    const card = page
+      .getByRole('listitem')
+      .filter({ has: page.getByRole('button', { name: 'Añadir botella' }) })
+      .first();
+    await card.getByRole('button', { name: 'Añadir botella' }).click();
+    await expect(card.getByText('1 unidad en total')).toBeVisible();
+
+    // 3. Probar el selector 'Ocurrió el' (por defecto 'Ahora') y la nota.
+    await expect(page.getByRole('button', { name: 'Ahora' })).toBeVisible();
+    await expect(page.getByText('Déjalo vacío para registrarlo como ahora.')).toBeVisible();
+    await page.getByRole('textbox', { name: 'Nota' }).fill('Entrada E2E');
+
+    await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
+    const dialog = page.getByRole('dialog');
+    await expect(dialog.getByRole('heading', { name: '¿Confirmar esta entrada?' })).toBeVisible();
+    await dialog.getByRole('button', { name: 'Volver' }).click();
+
+    await expect(dialog).toBeHidden();
+    await expect(card.getByText('1 unidad en total')).toBeVisible();
+    await expect(page.getByText('Movimiento registrado')).toHaveCount(0);
+
+    // El diálogo se cierra sin crear movimiento.
+    await page.goto('/movements');
+    await expect(movementCode).toHaveText(lastCode!);
+  });
+});

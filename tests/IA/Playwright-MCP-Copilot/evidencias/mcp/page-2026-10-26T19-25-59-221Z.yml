@@ -1,0 +1,26 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - link "Volver al sitio" [ref=e4] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e8]:
+      - link "Beverage Ledger Gestión de inventario de licores" [ref=e9] [cursor=pointer]:
+        - /url: /
+        - img "Beverage Ledger" [ref=e10]
+        - generic [ref=e11]: Gestión de inventario de licores
+      - generic [ref=e12]:
+        - heading "Iniciar sesión" [level=1] [ref=e13]
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - generic [ref=e16]: Correo electrónico
+            - textbox "Correo electrónico" [active] [ref=e17]
+          - generic [ref=e18]:
+            - generic [ref=e19]: Contraseña
+            - generic [ref=e20]:
+              - textbox "Contraseña" [ref=e21]
+              - button "Mostrar la contraseña" [ref=e23] [cursor=pointer]
+          - button "Entrar" [ref=e27] [cursor=pointer]
+          - paragraph [ref=e28]: Se entra por invitación. Pídesela a quien administre tu organización.
+      - combobox "Idioma" [ref=e30] [cursor=pointer]:
+        - generic: Español
+  - button "Open Next.js Dev Tools" [ref=e39] [cursor=pointer]
+  - alert [ref=e43]

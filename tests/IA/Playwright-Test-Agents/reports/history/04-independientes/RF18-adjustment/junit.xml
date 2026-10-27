@@ -1,0 +1,22 @@
+<testsuites id="" name="" tests="2" failures="0" skipped="0" errors="0" time="23.998009000000003">
+<testsuite name="RF18-adjustment.spec.ts" timestamp="2026-10-26T03:29:15.769Z" hostname="chromium" tests="2" failures="0" skipped="0" time="19.277" errors="0">
+<testcase name="RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres" classname="RF18-adjustment.spec.ts" time="7.54">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-18 Ajuste › Registrar un ajuste con motivo válido" classname="RF18-adjustment.spec.ts" time="11.737">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\test-finished-1.png]]
+
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

@@ -3,12 +3,13 @@
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Button, useNotify } from '@/components/ui';
-import { describeError } from '@/lib/api';
+import { useDescribeError } from '@/lib/api';
 import { downloadMovementPdf } from './api';
 
 export function MovementPdfButton({ id, code }: Readonly<{ id: string; code: string }>) {
   const t = useTranslations('movements.card');
   const tStates = useTranslations('common.states');
+  const describeError = useDescribeError();
   const notify = useNotify();
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -32,7 +33,13 @@ export function MovementPdfButton({ id, code }: Readonly<{ id: string; code: str
       title={t('pdfTitle', { code })}
     >
       {!isDownloading && (
-        <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          aria-hidden="true"
+          className="h-4 w-4 shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"

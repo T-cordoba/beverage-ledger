@@ -1,0 +1,57 @@
+
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        16.2.0                                                                         │
+  │ Browser:        Chrome 155 (headless)                                                          │
+  │ Node Version:   v24.22.1 (C:\Program Files\nodejs\node.exe)                                    │
+  │ Specs:          1 found (RF17-transfer.cy.ts)                                                  │
+  │ Searched:       C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\te │
+  │                 sts\IA\Cypress-Studio-AI\RF17-transfer.cy.ts                                   │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  RF17-transfer.cy.ts                                                             (1 of 1)
+
+
+  RF-17 Traspaso
+    √ Origen y destino obligatorios (7039ms)
+    √ El destino excluye al origen (2761ms)
+    √ Registrar un traspaso y verificar las dos puntas (39155ms)
+    √ Cantidades del traspaso topadas por el origen (20057ms)
+
+
+  4 passing (1m)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        4                                                                                │
+  │ Passing:      4                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 minute, 9 seconds                                                              │
+  │ Spec Ran:     RF17-transfer.cy.ts                                                              │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✔  RF17-transfer.cy.ts                      01:09        4        4        -        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✔  All specs passed!                        01:09        4        4        -        -        -  
+

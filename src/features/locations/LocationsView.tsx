@@ -8,6 +8,7 @@ import {
   Card,
   ConfirmDialog,
   DataTable,
+  type DataTableColumn,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -19,11 +20,11 @@ import {
   FormAlert,
   Input,
   RefreshButton,
+  RequiredLegend,
   Skeleton,
   useNotify,
-  type DataTableColumn,
 } from '@/components/ui';
-import { describeError, type Location } from '@/lib/api';
+import { useDescribeError, type Location } from '@/lib/api';
 import { rules, useFormValidation } from '@/lib/forms';
 import { useManualRefresh } from '@/lib/hooks';
 import { useCreateLocation, useDeleteLocation, useLocations, useUpdateLocation } from './api';
@@ -63,6 +64,7 @@ function LocationFormDialog({
           onSubmit={validation.onSubmit(() => void submit())}
           className="space-y-4 text-left"
         >
+          <RequiredLegend />
           <DialogTitle>
             {location ? t('editTitle', { name: location.name }) : t('createTitle')}
           </DialogTitle>
@@ -71,7 +73,7 @@ function LocationFormDialog({
 
           {validation.alert && <FormAlert title={validation.alert} />}
 
-          <Field label={t('name')} error={validation.errorFor('name')}>
+          <Field required label={t('name')} error={validation.errorFor('name')}>
             {({ id, describedBy, invalid }) => (
               <Input
                 id={id}
@@ -258,6 +260,7 @@ export function LocationsView() {
   const t = useTranslations('locations');
   const tStates = useTranslations('common.states');
   const tActions = useTranslations('common.actions');
+  const describeError = useDescribeError();
 
   const { data, isPending, isError, refetch } = useLocations();
   const { refresh, isRefreshing } = useManualRefresh(refetch);

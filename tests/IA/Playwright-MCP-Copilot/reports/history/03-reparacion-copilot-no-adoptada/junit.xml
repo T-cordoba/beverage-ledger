@@ -1,0 +1,164 @@
+<testsuites id="" name="" tests="19" failures="2" skipped="0" errors="0" time="417.20680799999997">
+<testsuite name="RF15-outbound.pw.ts" timestamp="2026-10-26T23:56:13.603Z" hostname="chromium" tests="5" failures="1" skipped="0" time="37.667" errors="0">
+<testcase name="RF-15 Salida › Registrar una salida correcta" classname="RF15-outbound.pw.ts" time="10.973">
+</testcase>
+<testcase name="RF-15 Salida › Sin productos no aparece la barra Confirmar" classname="RF15-outbound.pw.ts" time="2.623">
+</testcase>
+<testcase name="RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper" classname="RF15-outbound.pw.ts" time="6.862">
+</testcase>
+<testcase name="RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas" classname="RF15-outbound.pw.ts" time="4.046">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<![CDATA[  [chromium] › RF15-outbound.pw.ts:105:7 › RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('listitem').filter({ hasText: 'en existencia' }).filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByText(/quedan 11/i)
+    Expected: visible
+    Error: strict mode violation: getByRole('listitem').filter({ hasText: 'en existencia' }).filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByText(/quedan 11/i) resolved to 2 elements:
+        1) <p class="text-sm text-contrast/70">…</p> aka getByText('en existencia · quedan 11')
+        2) <p aria-live="polite" class="min-h-4 text-xs text-warning">Quedan 11 unidades: no alcanza para otra caja, pe…</p> aka getByText('Quedan 11 unidades: no')
+
+    Call log:
+      - Expect "toBeVisible" getByRole('listitem').filter({ hasText: 'en existencia' }).filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByText(/quedan 11/i) with timeout 15000ms
+      - waiting for getByRole('listitem').filter({ hasText: 'en existencia' }).filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByText(/quedan 11/i)
+
+
+      127 |     await expect(card.getByText(new RegExp(`${stock} en existencia.*quedan ${leftover}`, 'i'))).toBeVisible();
+      128 |     await expect(addCase).toBeDisabled();
+    > 129 |     await expect(card.getByText(new RegExp(`quedan ${leftover}`, 'i'))).toBeVisible();
+          |                                                                         ^
+      130 |
+      131 |     await page.getByRole('combobox', { name: 'Bodega' }).click();
+      132 |     await page.getByRole('option', { name: 'Barra E2E' }).click();
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:129:73
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+<testcase name="RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger" classname="RF15-outbound.pw.ts" time="13.163">
+</testcase>
+</testsuite>
+<testsuite name="RF16-inbound.pw.ts" timestamp="2026-10-26T23:56:13.603Z" hostname="chromium" tests="2" failures="1" skipped="0" time="75.192" errors="0">
+<testcase name="RF-16 Entrada › Registrar una entrada y verla en detalle e historial" classname="RF16-inbound.pw.ts" time="49.225">
+</testcase>
+<testcase name="RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver" classname="RF16-inbound.pw.ts" time="25.967">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<![CDATA[  [chromium] › RF16-inbound.pw.ts:56:7 › RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/Déjalo vacío.*ahora|registrarlo como ahora|Ahora.*vacío|registrar ahora/i)
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText(/Déjalo vacío.*ahora|registrarlo como ahora|Ahora.*vacío|registrar ahora/i) with timeout 15000ms
+      - waiting for getByText(/Déjalo vacío.*ahora|registrarlo como ahora|Ahora.*vacío|registrar ahora/i)
+
+
+      72 |     await expect(card.getByText('1 unidad en total')).toBeVisible();
+      73 |
+    > 74 |     await expect(page.getByText(/Déjalo vacío.*ahora|registrarlo como ahora|Ahora.*vacío|registrar ahora/i)).toBeVisible();
+         |                                                                                                              ^
+      75 |     await page.getByRole('textbox', { name: 'Nota' }).fill('Entrada E2E');
+      76 |
+      77 |     await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-MCP-Copilot\RF16-inbound.pw.ts:74:110
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="RF17-transfer.pw.ts" timestamp="2026-10-26T23:56:13.603Z" hostname="chromium" tests="4" failures="0" skipped="0" time="75.03" errors="0">
+<testcase name="RF-17 Traspaso › Origen y destino obligatorios" classname="RF17-transfer.pw.ts" time="3.646">
+</testcase>
+<testcase name="RF-17 Traspaso › El destino excluye al origen" classname="RF17-transfer.pw.ts" time="3.549">
+</testcase>
+<testcase name="RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas" classname="RF17-transfer.pw.ts" time="55.791">
+</testcase>
+<testcase name="RF-17 Traspaso › Cantidades del traspaso topadas por el origen" classname="RF17-transfer.pw.ts" time="12.044">
+</testcase>
+</testsuite>
+<testsuite name="RF18-adjustment.pw.ts" timestamp="2026-10-26T23:56:13.603Z" hostname="chromium" tests="2" failures="0" skipped="0" time="28.148" errors="0">
+<testcase name="RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres" classname="RF18-adjustment.pw.ts" time="4.271">
+</testcase>
+<testcase name="RF-18 Ajuste › Registrar un ajuste con motivo válido" classname="RF18-adjustment.pw.ts" time="23.877">
+</testcase>
+</testsuite>
+<testsuite name="RF20-cancellation.pw.ts" timestamp="2026-10-26T23:56:13.603Z" hostname="chromium" tests="3" failures="0" skipped="0" time="114.842" errors="0">
+<testcase name="RF-20 Anulación › Conservarlo cancela la anulación" classname="RF20-cancellation.pw.ts" time="25.263">
+</testcase>
+<testcase name="RF-20 Anulación › Motivo obligatorio al anular" classname="RF20-cancellation.pw.ts" time="28.388">
+</testcase>
+<testcase name="RF-20 Anulación › Anular con motivo válido" classname="RF20-cancellation.pw.ts" time="61.191">
+</testcase>
+</testsuite>
+<testsuite name="RF21-receipt.pw.ts" timestamp="2026-10-26T23:56:13.603Z" hostname="chromium" tests="3" failures="0" skipped="0" time="37.064" errors="0">
+<testcase name="RF-21 Comprobante › Descargar el PDF desde el historial" classname="RF21-receipt.pw.ts" time="6.007">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt.pw.ts-RF-21-C-f1e8e-r-el-PDF-desde-el-historial-chromium\attachments\MOV-2026-000956-pdf-d82e5cba560864b70e763ed4f4111191d7c51035.pdf]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-21 Comprobante › Descargar el PDF desde el detalle" classname="RF21-receipt.pw.ts" time="5.214">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt.pw.ts-RF-21-C-a9f26-gar-el-PDF-desde-el-detalle-chromium\attachments\MOV-2026-000956-pdf-f5d7e61746b09a973ddd405319b56b3caea80bf5.pdf]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-21 Comprobante › Descargar el PDF de un movimiento anulado" classname="RF21-receipt.pw.ts" time="25.843">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt.pw.ts-RF-21-C-89952-DF-de-un-movimiento-anulado-chromium\attachments\MOV-2026-000957-pdf-661cd44883f9a57c33a5c8c5694094cad9cd859b.pdf]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>
