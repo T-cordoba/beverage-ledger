@@ -1,0 +1,291 @@
+Ejecución 22-rf19-rf28-completa — 2026-10-27T07:54:21.090Z
+Archivos: RF19-draft.e2e.mts, RF22-stock-levels.e2e.mts, RF23-stock-filters.e2e.mts, RF24-kardex.e2e.mts, RF27-low-stock.e2e.mts, RF28-consumption.e2e.mts
+
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:latest (http://localhost:11434/v1), headless=true) para RF19-draft
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1481,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Correo electrónico" (Escribe el valor en el campo "Correo electrónico")
+    [IA act(observe)] Encuentra el cuadro de texto 'Correo electrónico'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1929,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Contraseña" (Escribe el valor en el campo "Contraseña")
+    [IA act(observe)] Type into the 'Contraseña' text box
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3433,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF19-01 El borrador sobrevive a salir de la vista y a recargar, y es propio de su tipo
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1016,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3766,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] click
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Nota\" (Escribe el valor en el campo \"Nota\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":7892,"completionTokens":31,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":86389,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Nota" (Escribe el valor en el campo "Nota")
+    [IA act(observe)] text box for NOTA
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Descartar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":388,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1878,"resultCount":1}}
+    [IA observe] Pulsa el botón "Descartar"
+    [IA act(observe)] Pulsa el botón "Descartar"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Descartar\" del diálogo para confirmar el descarte"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":466,"completionTokens":64,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2144,"resultCount":1}}
+    [IA observe] Pulsa el botón "Descartar" del diálogo para confirmar el descarte
+    [IA act(observe)] Pulsa el botón 'Descartar' del diálogo para confirmar el descarte
+
+  ▶ RF19-02 Un borrador vacío no se confirma, Volver no lo pierde y Descartar sí lo borra
+▶ RF-19 Guardar y retomar un borrador de movimiento
+  ✔ RF19-01 El borrador sobrevive a salir de la vista y a recargar, y es propio de su tipo (111791.9451ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1044,"completionTokens":48,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3997,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] click
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1722,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Volver\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":34,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1456,"resultCount":1}}
+    [IA observe] Pulsa el botón "Volver" del diálogo
+    [IA act(observe)] Pulsa el botón Volver
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Descartar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":388,"completionTokens":29,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1161,"resultCount":1}}
+    [IA observe] Pulsa el botón "Descartar"
+    [IA act(observe)] click
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Descartar\" del diálogo para confirmar el descarte"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":466,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1902,"resultCount":1}}
+    [IA observe] Pulsa el botón "Descartar" del diálogo para confirmar el descarte
+    [IA act(observe)] Pulsa el botón "Descartar"
+  ✔ RF19-02 Un borrador vacío no se confirma, Volver no lo pierde y Descartar sí lo borra (54727.3928ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✔ RF-19 Guardar y retomar un borrador de movimiento (179708.0222ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:latest (http://localhost:11434/v1), headless=true) para RF22-stock-levels
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1465,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Correo electrónico" (Escribe el valor en el campo "Correo electrónico")
+    [IA act(observe)] Encuentra el cuadro de texto 'Correo electrónico'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1930,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Contraseña" (Escribe el valor en el campo "Contraseña")
+    [IA act(observe)] Type into the 'Contraseña' text box
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3413,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF22-01 El listado de existencias muestra sus columnas y filas
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"De la primera fila de la tabla de existencias extrae: name = el nombre del producto (el enlace), units = el número de la columna \"En existencia\""}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":3923,"completionTokens":43,"inferenceTimeMs":23975}}
+    [IA extract] De la primera fila de la tabla de existencias extrae: name = el nombre del producto (el enlace), units = el número de la columna "En existencia"
+
+  ▶ RF22-02 Sin sesión, /stock redirige al login y no muestra existencias
+▶ RF-22 Consultar las existencias actuales
+  ✔ RF22-01 El listado de existencias muestra sus columnas y filas (26322.22ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Menú de la cuenta de Manager test\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":3851,"completionTokens":60,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":25439,"resultCount":1}}
+    [IA observe] Pulsa el botón "Menú de la cuenta de Manager test"
+    [IA act(observe)] Pulsa el botón 'Menú de la cuenta de Manager test'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Cerrar sesión\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":4059,"completionTokens":32,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":26517,"resultCount":1}}
+    [IA observe] Pulsa el botón "Cerrar sesión"
+    [IA act(observe)] button: Cerrar sesión
+  ✔ RF22-02 Sin sesión, /stock redirige al login y no muestra existencias (56504.233ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✔ RF-22 Consultar las existencias actuales (95946.731ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:latest (http://localhost:11434/v1), headless=true) para RF23-stock-filters
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1466,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Correo electrónico" (Escribe el valor en el campo "Correo electrónico")
+    [IA act(observe)] Encuentra el cuadro de texto 'Correo electrónico'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1862,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Contraseña" (Escribe el valor en el campo "Contraseña")
+    [IA act(observe)] Type into the 'Contraseña' text box
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3296,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF23-01 Buscar un producto y filtrar por su categoría acota el listado
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Buscar existencias por producto\" (Escribe el valor en el buscador de existencias)"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":3781,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":24180,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Buscar existencias por producto" (Escribe el valor en el buscador de existencias)
+    [IA act(observe)] Encuentra el cuadro de texto 'Buscar existencias por producto' (Escribe el valor en el buscador de existencias)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Abre el selector \"Filtrar por categoría\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1469,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":6031,"resultCount":1}}
+    [IA observe] Abre el selector "Filtrar por categoría"
+    [IA act(observe)] Filtrar por categoría
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"APÉRITIFS & VERMOUTHS\" de la lista de categorías"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1827,"completionTokens":58,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":8144,"resultCount":1}}
+    [IA observe] Elige la opción "APÉRITIFS & VERMOUTHS" de la lista de categorías
+    [IA act(observe)] option: APÉRITIFS & VERMOUTHS
+
+  ▶ RF23-02 Una búsqueda con comodín no devuelve nada y Limpiar filtros restaura el listado
+▶ RF-23 Filtrar las existencias
+  ✔ RF23-01 Buscar un producto y filtrar por su categoría acota el listado (45643.3381ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Buscar existencias por producto\" (Escribe el valor en el buscador de existencias)"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":3864,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":24816,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Buscar existencias por producto" (Escribe el valor en el buscador de existencias)
+    [IA act(observe)] Buscar existencias por producto
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Limpiar filtros\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1141,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4319,"resultCount":1}}
+    [IA observe] Pulsa el botón "Limpiar filtros"
+    [IA act(observe)] Limpiar filtros
+  ✔ RF23-02 Una búsqueda con comodín no devuelve nada y Limpiar filtros restaura el listado (35296.7673ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✔ RF-23 Filtrar las existencias (93823.1724ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:latest (http://localhost:11434/v1), headless=true) para RF24-kardex
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1435,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Correo electrónico" (Escribe el valor en el campo "Correo electrónico")
+    [IA act(observe)] Encuentra el cuadro de texto 'Correo electrónico'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1870,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Contraseña" (Escribe el valor en el campo "Contraseña")
+    [IA act(observe)] Type into the 'Contraseña' text box
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3302,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF24-01 Abrir el kardex desde existencias y recorrer el saldo corrido
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"1942\" de esta fila"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":533,"completionTokens":45,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1737,"resultCount":1}}
+    [IA observe] Pulsa el enlace "1942" de esta fila
+    [IA act(observe)] click
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae onHand = el número grande de la tarjeta \"En existencia\" del producto"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":3836,"completionTokens":38,"inferenceTimeMs":22626}}
+    [IA extract] Extrae onHand = el número grande de la tarjeta "En existencia" del producto
+    [IA rechazada] la tarjeta dice 3, no 1942; se vuelve a preguntar
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae onHand = el número grande de la tarjeta \"En existencia\" del producto. Tu respuesta anterior era incorrecta: la tarjeta dice 3, no 1942. Léelo de nuevo en la página."}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":3893,"completionTokens":35,"inferenceTimeMs":22805}}
+    [IA extract] Extrae onHand = el número grande de la tarjeta "En existencia" del producto. Tu respuesta anterior era incorrecta: la tarjeta dice 3, no 1942. Léelo de nuevo en la página.
+
+  ▶ RF24-02 El kardex de un producto inexistente avisa y deja volver a existencias
+▶ RF-24 Consultar el kardex de un producto
+  ✔ RF24-01 Abrir el kardex desde existencias y recorrer el saldo corrido (50818.0627ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Existencias\" que acompaña al aviso de producto no disponible"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":727,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2292,"resultCount":1}}
+    [IA observe] Pulsa el enlace "Existencias" que acompaña al aviso de producto no disponible
+    [IA act(observe)] link: Existencias
+  ✔ RF24-02 El kardex de un producto inexistente avisa y deja volver a existencias (6093.9225ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✔ RF-24 Consultar el kardex de un producto (70009.1027ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:latest (http://localhost:11434/v1), headless=true) para RF27-low-stock
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1430,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Correo electrónico" (Escribe el valor en el campo "Correo electrónico")
+    [IA act(observe)] Encuentra el cuadro de texto 'Correo electrónico'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1860,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Contraseña" (Escribe el valor en el campo "Contraseña")
+    [IA act(observe)] Type into the 'Contraseña' text box
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3300,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF27-01 La tarjeta Bajo mínimo lista los productos y lleva al kardex y a existencias
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae products = los nombres de producto (enlaces) de la lista de esta tarjeta, en orden"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":850,"completionTokens":46,"inferenceTimeMs":2787}}
+    [IA extract] Extrae products = los nombres de producto (enlaces) de la lista de esta tarjeta, en orden
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"PRUEBA CAJA NEGRA\" de la lista"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":709,"completionTokens":58,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2441,"resultCount":1}}
+    [IA observe] Pulsa el enlace "PRUEBA CAJA NEGRA" de la lista
+    [IA act(observe)] Pulsa el enlace 'PRUEBA CAJA NEGRA'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Ver existencias\" de la tarjeta"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":735,"completionTokens":49,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2271,"resultCount":1}}
+    [IA observe] Pulsa el enlace "Ver existencias" de la tarjeta
+    [IA act(observe)] Ver existencias
+
+  ▶ RF27-02 La lista no trae de más: cada producto tiene mínimo y está marcado Bajo mínimo en existencias
+▶ RF-27 Consultar los productos bajo el stock mínimo
+  ✔ RF27-01 La tarjeta Bajo mínimo lista los productos y lleva al kardex y a existencias (11681.3441ms)
+  ✔ RF27-02 La lista no trae de más: cada producto tiene mínimo y está marcado Bajo mínimo en existencias (8373.5383ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✔ RF-27 Consultar los productos bajo el stock mínimo (33028.2324ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:latest (http://localhost:11434/v1), headless=true) para RF28-consumption
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1435,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Correo electrónico" (Escribe el valor en el campo "Correo electrónico")
+    [IA act(observe)] Encuentra el cuadro de texto 'Correo electrónico'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1870,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Contraseña" (Escribe el valor en el campo "Contraseña")
+    [IA act(observe)] Type into the 'Contraseña' text box
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3298,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF28-01 Cambiar el periodo y la agrupación actualiza resumen y ranking con cifras coherentes
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Año\" del control \"Periodo:\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":2326,"completionTokens":49,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":11114,"resultCount":1}}
+    [IA observe] Pulsa el botón "Año" del control "Periodo:"
+    [IA act(observe)] button: Año
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Por categoría\" del control \"Agrupar:\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":915,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3370,"resultCount":1}}
+    [IA observe] Pulsa el botón "Por categoría" del control "Agrupar:"
+    [IA act(observe)] click
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae unitsOut = el número de la tarjeta \"Unidades despachadas\""}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":3226,"completionTokens":56,"inferenceTimeMs":16653}}
+    [IA extract] Extrae unitsOut = el número de la tarjeta "Unidades despachadas"
+    [IA rechazada] la tarjeta dice 963, no 14.043; se vuelve a preguntar
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae unitsOut = el número de la tarjeta \"Unidades despachadas\". Tu respuesta anterior era incorrecta: la tarjeta dice 963, no 14.043. Léelo de nuevo en la página."}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":3291,"completionTokens":38,"inferenceTimeMs":17208}}
+    [IA extract] Extrae unitsOut = el número de la tarjeta "Unidades despachadas". Tu respuesta anterior era incorrecta: la tarjeta dice 963, no 14.043. Léelo de nuevo en la página.
+
+  ▶ RF28-02 El periodo elegido se conserva al volver con el botón atrás (DEF-03)
+▶ RF-28 Generar el reporte de consumo
+  ✔ RF28-01 Cambiar el periodo y la agrupación actualiza resumen y ranking con cifras coherentes (50279.0292ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Año\" del control \"Periodo:\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":2475,"completionTokens":49,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":12238,"resultCount":1}}
+    [IA observe] Pulsa el botón "Año" del control "Periodo:"
+    [IA act(observe)] button: Año
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Existencias\" de la navegación principal"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":954,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3842,"resultCount":1}}
+    [IA observe] Pulsa el enlace "Existencias" de la navegación principal
+    [IA act(observe)] Pulsa el enlace 'Existencias' de la navegación principal
+  ✖ RF28-02 El periodo elegido se conserva al volver con el botón atrás (DEF-03) (19477.5018ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✖ RF-28 Generar el reporte de consumo (82686.6485ms)
+ℹ tests 12
+ℹ suites 6
+ℹ pass 11
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 559010.4865
+
+✖ failing tests:
+
+test at support\suite.mts:1:1300
+✖ RF28-02 El periodo elegido se conserva al volver con el botón atrás (DEF-03) (19477.5018ms)
+  AssertionError [ERR_ASSERTION]: Al volver, el periodo marcado es «Mes» y el rango 27/09/2026 – 27/10/2026, no 27/10/2025 – 27/10/2026
+  
+  'Mes' !== 'Año'
+  
+      at Object.run (C:\VisualProjects\beverage-ledger\tests\stagehand\RF28-consumption.e2e.mts:88:14)
+      at async TestContext.<anonymous> (C:\VisualProjects\beverage-ledger\tests\stagehand\support\suite.mts:76:11)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'Mes',
+    expected: 'Año',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

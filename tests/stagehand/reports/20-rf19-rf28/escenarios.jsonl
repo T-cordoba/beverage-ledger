@@ -1,0 +1,12 @@
+{"spec":"RF19-draft","id":"RF19-01","name":"El borrador sobrevive a salir de la vista y a recargar, y es propio de su tipo","status":"passed","ms":114173,"movements":[]}
+{"spec":"RF19-draft","id":"RF19-02","name":"Un borrador vacío no se confirma, Volver no lo pierde y Descartar sí lo borra","status":"passed","ms":57845,"movements":[]}
+{"spec":"RF22-stock-levels","id":"RF22-01","name":"El listado de existencias muestra sus columnas y filas","status":"passed","ms":26766,"movements":[]}
+{"spec":"RF22-stock-levels","id":"RF22-02","name":"Sin sesión, /stock redirige al login y no muestra existencias","status":"passed","ms":57460,"movements":[]}
+{"spec":"RF23-stock-filters","id":"RF23-01","name":"Buscar un producto y filtrar por su categoría acota el listado","status":"passed","ms":47074,"movements":[]}
+{"spec":"RF23-stock-filters","id":"RF23-02","name":"Una búsqueda con comodín no devuelve nada y Limpiar filtros restaura el listado","status":"passed","ms":35809,"movements":[]}
+{"spec":"RF24-kardex","id":"RF24-01","name":"Abrir el kardex desde existencias y recorrer el saldo corrido","status":"failed","ms":9446,"movements":[],"error":"El kardex y el listado no coinciden en la existencia\n\n0 !== 3\n"}
+{"spec":"RF24-kardex","id":"RF24-02","name":"El kardex de un producto inexistente avisa y deja volver a existencias","status":"failed","ms":50886,"movements":[],"error":"Tiempo agotado esperando: que cargue /stock/00000000-0000-4000-8000-000000000000. Último valor: false"}
+{"spec":"RF27-low-stock","id":"RF27-01","name":"La tarjeta Bajo mínimo lista los productos y lleva al kardex y a existencias","status":"passed","ms":12525,"movements":[]}
+{"spec":"RF27-low-stock","id":"RF27-02","name":"La lista no trae de más: cada producto tiene mínimo y está marcado Bajo mínimo en existencias","status":"passed","ms":8402,"movements":[]}
+{"spec":"RF28-consumption","id":"RF28-01","name":"Cambiar el periodo y la agrupación actualiza resumen y ranking con cifras coherentes","status":"passed","ms":52581,"movements":[]}
+{"spec":"RF28-consumption","id":"RF28-02","name":"El periodo elegido se conserva al volver con el botón atrás (DEF-03)","status":"failed","ms":19675,"movements":[],"error":"Al volver, el periodo marcado es «Mes» y el rango 27/09/2026 – 27/10/2026, no 27/10/2025 – 27/10/2026\n\n'Mes' !== 'Año'\n"}

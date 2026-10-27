@@ -1,0 +1,50 @@
+Ejecución 21-rf24-validacion — 2026-10-27T07:52:58.339Z
+Archivos: RF24-kardex.e2e.mts
+
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:latest (http://localhost:11434/v1), headless=true) para RF24-kardex
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1487,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Correo electrónico" (Escribe el valor en el campo "Correo electrónico")
+    [IA act(observe)] Encuentra el cuadro de texto 'Correo electrónico'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1942,"resultCount":1}}
+    [IA observe] Encuentra el cuadro de texto "Contraseña" (Escribe el valor en el campo "Contraseña")
+    [IA act(observe)] Type into the 'Contraseña' text box
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3438,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF24-01 Abrir el kardex desde existencias y recorrer el saldo corrido
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"1942\" de esta fila"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":533,"completionTokens":45,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1805,"resultCount":1}}
+    [IA observe] Pulsa el enlace "1942" de esta fila
+    [IA act(observe)] click
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae onHand = el número grande de la tarjeta \"En existencia\" del producto"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":3836,"completionTokens":38,"inferenceTimeMs":24200}}
+    [IA extract] Extrae onHand = el número grande de la tarjeta "En existencia" del producto
+    [IA rechazada] la tarjeta dice 3, no 1942; se vuelve a preguntar
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae onHand = el número grande de la tarjeta \"En existencia\" del producto. Tu respuesta anterior era incorrecta: la tarjeta dice 3, no 1942. Léelo de nuevo en la página."}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":3893,"completionTokens":35,"inferenceTimeMs":24056}}
+    [IA extract] Extrae onHand = el número grande de la tarjeta "En existencia" del producto. Tu respuesta anterior era incorrecta: la tarjeta dice 3, no 1942. Léelo de nuevo en la página.
+
+  ▶ RF24-02 El kardex de un producto inexistente avisa y deja volver a existencias
+▶ RF-24 Consultar el kardex de un producto
+  ✔ RF24-01 Abrir el kardex desde existencias y recorrer el saldo corrido (53753.0966ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Existencias\" que acompaña al aviso de producto no disponible"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":727,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2374,"resultCount":1}}
+    [IA observe] Pulsa el enlace "Existencias" que acompaña al aviso de producto no disponible
+    [IA act(observe)] link: Existencias
+  ✔ RF24-02 El kardex de un producto inexistente avisa y deja volver a existencias (6167.7127ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✔ RF-24 Consultar el kardex de un producto (73147.6021ms)
+ℹ tests 2
+ℹ suites 1
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 73845.701
