@@ -18,9 +18,12 @@ defineParameterType({
 
 const exactly = (text: string) => new RegExp(`^${text}$`);
 
+// A required field's label also carries "*" and a screen-reader "(obligatorio)".
+const labelText = (text: string) => new RegExp(`^${text}(\\* \\(obligatorio\\))?$`);
+
 const fieldLabelled = (label: string, scope = 'main') =>
   cy
-    .contains(`${scope} label`, exactly(label))
+    .contains(`${scope} label`, labelText(label))
     .invoke('attr', 'for')
     .then((id) => cy.get(`[id="${id}"]`));
 
@@ -47,7 +50,7 @@ const openCapture = (kind: MovementKind) => {
   captureKind = kind;
   cy.get('nav[aria-label="Principal"]:visible').contains('a', 'Panel').click();
   cy.contains('a', exactly(ENTRY_POINTS[kind])).click();
-  cy.contains('main label', exactly(kind === 'traspaso' ? 'Desde' : 'Bodega')).should('be.visible');
+  cy.contains('main label', labelText(kind === 'traspaso' ? 'Desde' : 'Bodega')).should('be.visible');
 };
 
 // Named explicitly: an empty origin makes the picker sum every location, while the API
