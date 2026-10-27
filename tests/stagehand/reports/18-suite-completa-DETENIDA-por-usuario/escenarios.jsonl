@@ -1,0 +1,6 @@
+{"spec":"RF15-outbound","id":"RF15-01","name":"Registrar una salida correcta descuenta la existencia","status":"passed","ms":30424,"movements":["50427a34-45e3-4dbe-87c3-a74a382923fe"]}
+{"spec":"RF15-outbound","id":"RF15-02","name":"Sin productos no aparece la barra Confirmar","status":"passed","ms":17766,"movements":[]}
+{"spec":"RF15-outbound","id":"RF15-03","name":"Cantidades incorrectas: no baja de cero y el tope es la existencia","status":"passed","ms":39853,"movements":[]}
+{"spec":"RF15-outbound","id":"RF15-04","name":"Inventario insuficiente: botellas y cajas comparten el tope","status":"passed","ms":43699,"movements":[]}
+{"spec":"RF15-outbound","id":"RF15-05","name":"Volver del diálogo y Descartar no escriben en el historial","status":"passed","ms":25916,"movements":[]}
+{"spec":"RF16-inbound","id":"RF16-01","name":"Registrar una entrada y verla en el detalle y el historial","status":"passed","ms":43395,"movements":["ebec23a8-9c59-4a3c-bd12-fc176ac2b7c9"]}

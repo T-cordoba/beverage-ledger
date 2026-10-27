@@ -1,0 +1,22 @@
+{
+  "actPromptTokens": 70523,
+  "actCompletionTokens": 621,
+  "actReasoningTokens": 0,
+  "actCachedInputTokens": 0,
+  "actInferenceTimeMs": 113953,
+  "extractPromptTokens": 3663,
+  "extractCompletionTokens": 149,
+  "extractReasoningTokens": 0,
+  "extractCachedInputTokens": 0,
+  "extractInferenceTimeMs": 11060,
+  "observePromptTokens": 13707,
+  "observeCompletionTokens": 919,
+  "observeReasoningTokens": 0,
+  "observeCachedInputTokens": 0,
+  "observeInferenceTimeMs": 60011,
+  "totalPromptTokens": 87893,
+  "totalCompletionTokens": 1689,
+  "totalReasoningTokens": 0,
+  "totalCachedInputTokens": 0,
+  "totalInferenceTimeMs": 185024
+}

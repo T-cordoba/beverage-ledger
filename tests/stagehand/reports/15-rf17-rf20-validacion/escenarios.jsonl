@@ -1,0 +1,7 @@
+{"spec":"RF17-transfer","id":"RF17-01","name":"Origen y destino son obligatorios para confirmar","status":"passed","ms":33702,"movements":[]}
+{"spec":"RF17-transfer","id":"RF17-02","name":"El destino excluye al origen y viceversa","status":"passed","ms":52475,"movements":[]}
+{"spec":"RF17-transfer","id":"RF17-03","name":"Registrar un traspaso mueve la existencia entre las dos bodegas","status":"passed","ms":58819,"movements":["b0f03f1b-d365-4478-a09d-d5c3b98b9265"]}
+{"spec":"RF17-transfer","id":"RF17-04","name":"Las cantidades del traspaso se topan con la existencia del origen","status":"passed","ms":34080,"movements":[]}
+{"spec":"RF20-cancellation","id":"RF20-01","name":"Conservarlo cierra el diálogo sin anular","status":"passed","ms":38437,"movements":["aaef8c42-ff03-4fbc-adb4-7953ae921bf8"]}
+{"spec":"RF20-cancellation","id":"RF20-02","name":"El motivo es obligatorio al anular","status":"failed","ms":51997,"movements":["717e6b7f-2ca6-4ecb-995d-e574d1e1f1c5"],"error":"La IA no extrajo el dato correcto en 3 intentos (Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo \"confirmado\" o \"anulado\")): el estado no es «confirmed»"}
+{"spec":"RF20-cancellation","id":"RF20-03","name":"Anular con motivo válido revierte la existencia","status":"passed","ms":47048,"movements":["d39ce2f2-0933-4fe5-a5f5-0bb0d16f5929"]}

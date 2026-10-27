@@ -1,0 +1,7 @@
+{"spec":"RF17-transfer","id":"RF17-01","name":"Origen y destino son obligatorios para confirmar","status":"failed","ms":46669,"movements":[],"error":"Tiempo agotado esperando: la lista de «Hacia». Último valor: null"}
+{"spec":"RF17-transfer","id":"RF17-02","name":"El destino excluye al origen y viceversa","status":"failed","ms":27901,"movements":[],"error":"Tiempo agotado esperando: la lista de «Desde». Último valor: null"}
+{"spec":"RF17-transfer","id":"RF17-03","name":"Registrar un traspaso mueve la existencia entre las dos bodegas","status":"passed","ms":57555,"movements":["8b192c57-d1a3-48f3-a4d1-b92cf263c545"]}
+{"spec":"RF17-transfer","id":"RF17-04","name":"Las cantidades del traspaso se topan con la existencia del origen","status":"passed","ms":35280,"movements":[]}
+{"spec":"RF20-cancellation","id":"RF20-01","name":"Conservarlo cierra el diálogo sin anular","status":"passed","ms":39780,"movements":["7b2f639c-ebc8-4295-90f1-9936f91dba5e"]}
+{"spec":"RF20-cancellation","id":"RF20-02","name":"El motivo es obligatorio al anular","status":"failed","ms":36705,"movements":["5dccfb78-7402-4893-997f-a73a2104fb74"],"error":"La IA no encontró el campo «Motivo» en 3 intentos: Escribe %motivo% en el campo \"Motivo\" del diálogo"}
+{"spec":"RF20-cancellation","id":"RF20-03","name":"Anular con motivo válido revierte la existencia","status":"passed","ms":49901,"movements":["2642543e-d6be-4a6e-b443-a5b019dd2926"]}

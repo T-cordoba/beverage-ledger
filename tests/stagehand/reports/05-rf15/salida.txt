@@ -1,0 +1,135 @@
+Ejecución 05-rf15 — 2026-10-27T02:08:10.762Z
+Archivos: RF15-outbound.e2e.mts
+
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=false) para RF15-outbound
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":954,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3885}}
+    [IA act] Escribe %email% en el campo "Correo electrónico"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":982,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3524}}
+    [IA act] Escribe %password% en el campo "Contraseña"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1324,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3078}}
+    [IA act] Pulsa el botón "Entrar" para iniciar sesión
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF15-01 Registrar una salida correcta descuenta la existencia
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1397,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4133}}
+    [IA act] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8480,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":10847}}
+    [IA act] Escribe %nota% en el campo "Nota"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra los botones \"Ver el resumen\", \"Descartar\" y \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":400,"completionTokens":100,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":5209,"resultCount":3}}
+    [IA observe] Encuentra los botones "Ver el resumen", "Descartar" y "Confirmar"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":806,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3097}}
+    [IA act] Pulsa el botón "Confirmar"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":930,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3466}}
+    [IA act] Pulsa el botón "Confirmar" del diálogo
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1651,"completionTokens":47,"inferenceTimeMs":3681}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+    limpieza: [{"id":"713527f5-7095-4ad6-a344-3b5702bd6933","before":"CONFIRMED","status":201}]
+
+  ▶ RF15-02 Sin productos no aparece la barra Confirmar
+▶ RF-15 Salida de inventario (OUTBOUND)
+  ✔ RF15-01 Registrar una salida correcta descuenta la existencia (42002.4648ms)
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"De la primera tarjeta de producto del listado extrae: name = el texto de su encabezado (heading), que es el nombre del producto (no la marca); totalUnits = el número de la frase \"unidades en total\" de esa tarjeta"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":7979,"completionTokens":49,"inferenceTimeMs":9990}}
+    [IA extract] De la primera tarjeta de producto del listado extrae: name = el texto de su encabezado (heading), que es el nombre del producto (no la marca); totalUnits = el número de la frase "unidades en total" de esa tarjeta
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1397,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3734}}
+    [IA act] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1416,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3525}}
+    [IA act] Pulsa el botón "Quitar botella" de esta tarjeta de producto
+
+  ▶ RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia
+  ✔ RF15-02 Sin productos no aparece la barra Confirmar (20738.9856ms)
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae de cada tarjeta de producto del listado: name = el texto del encabezado (heading) de la tarjeta, que es el nombre del producto (no la marca que aparece debajo); stock = el número que aparece justo antes de \"en existencia\""}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":8225,"completionTokens":285,"inferenceTimeMs":35169}}
+    [IA extract] Extrae de cada tarjeta de producto del listado: name = el texto del encabezado (heading) de la tarjeta, que es el nombre del producto (no la marca que aparece debajo); stock = el número que aparece justo antes de "en existencia"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1395,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3127}}
+    [IA act] Pulsa el botón "Quitar botella" de esta tarjeta de producto
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1395,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3810}}
+    [IA act] Pulsa el botón "Quitar caja" de esta tarjeta de producto
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3004,"resultCount":1}}
+    [IA observe] Encuentra el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+
+  ▶ RF15-04 Inventario insuficiente: botellas y cajas comparten el tope
+  ✔ RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia (50424.4139ms)
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae de cada tarjeta de producto del listado: name = el texto del encabezado (heading) de la tarjeta, que es el nombre del producto (no la marca que aparece debajo); stock = el número que aparece justo antes de \"en existencia\""}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":8225,"completionTokens":285,"inferenceTimeMs":35208}}
+    [IA extract] Extrae de cada tarjeta de producto del listado: name = el texto del encabezado (heading) de la tarjeta, que es el nombre del producto (no la marca que aparece debajo); stock = el número que aparece justo antes de "en existencia"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3045,"resultCount":1}}
+    [IA observe] Encuentra el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8417,"completionTokens":62,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":11766}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":622,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3267}}
+    [IA act] Abre el selector "Bodega"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1311,"completionTokens":67,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4184}}
+    [IA act] Elige la opción "Barra E2E" de la lista de bodegas
+
+  ▶ RF15-05 Volver del diálogo y Descartar no escriben en el historial
+  ✖ RF15-04 Inventario insuficiente: botellas y cajas comparten el tope (77126.3184ms)
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1415,"completionTokens":60,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4282}}
+    [IA act] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":810,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3063}}
+    [IA act] Pulsa el botón "Confirmar"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":941,"completionTokens":58,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3661}}
+    [IA act] Pulsa el botón "Volver" del diálogo
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":811,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4071}}
+    [IA act] Pulsa el botón "Descartar"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":886,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3392}}
+    [IA act] Pulsa el botón "Conservarlo" del diálogo
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":811,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3329}}
+    [IA act] Pulsa el botón "Descartar"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":892,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3569}}
+    [IA act] Pulsa el botón "Descartar" del diálogo para confirmar el descarte
+  ✔ RF15-05 Volver del diálogo y Descartar no escriben en el historial (37947.1235ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✖ RF-15 Salida de inventario (OUTBOUND) (248695.249ms)
+ℹ tests 5
+ℹ suites 1
+ℹ pass 4
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 250212.7869
+
+✖ failing tests:
+
+test at support\suite.mts:1:1213
+✖ RF15-04 Inventario insuficiente: botellas y cajas comparten el tope (77126.3184ms)
+  Error: Tiempo agotado esperando: Barra E2E elegida. Último valor: {"text":"Bodega por defecto","disabled":false,"expanded":false}
+      at waitFor (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\dom.mts:220:9)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF15-outbound.e2e.mts:183:7)
+      at async TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)

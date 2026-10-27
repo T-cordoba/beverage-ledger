@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testsuite name="RF-15 Salida de inventario (OUTBOUND)" time="233.184692" disabled="0" errors="0" tests="5" failures="0" skipped="0" timestamp="2026-10-27T02:13:05.539Z" hostname="pc">
+		<testcase name="RF15-01 Registrar una salida correcta descuenta la existencia" time="43.642813" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF15-02 Sin productos no aparece la barra Confirmar" time="20.994743" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia" time="50.918265" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF15-04 Inventario insuficiente: botellas y cajas comparten el tope" time="59.389557" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF15-05 Volver del diálogo y Descartar no escriben en el historial" time="36.662019" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<testsuite name="RF-16 Entrada de inventario (INBOUND)" time="109.489035" disabled="0" errors="0" tests="2" failures="1" skipped="0" timestamp="2026-10-27T02:17:00.041Z" hostname="pc">
+		<testcase name="RF16-01 Registrar una entrada y verla en el detalle y el historial" time="60.255230" classname="RF-16 Entrada de inventario (INBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Tiempo agotado esperando: el detalle del movimiento. Último valor: &quot;/movements&quot;">
+			<failure type="testCodeFailure" message="Tiempo agotado esperando: el detalle del movimiento. Último valor: &quot;/movements&quot;">
+Error [ERR_TEST_FAILURE]: Tiempo agotado esperando: el detalle del movimiento. Último valor: "/movements"
+    at async Promise.all (index 0) {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Tiempo agotado esperando: el detalle del movimiento. Último valor: "/movements"
+      at waitFor (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\dom.mts:220:9)
+      at async openFromHistory (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\flows.mts:193:3)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF16-inbound.e2e.mts:46:7)
+      at async TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF16-02 Validación de la entrada: sin líneas no hay confirmación y Volver no registra" time="28.329393" classname="RF-16 Entrada de inventario (INBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<!-- tests 7 -->
+	<!-- suites 2 -->
+	<!-- pass 6 -->
+	<!-- fail 1 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 345372.5293 -->
+</testsuites>

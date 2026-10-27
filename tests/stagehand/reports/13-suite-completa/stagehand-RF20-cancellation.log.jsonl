@@ -1,0 +1,67 @@
+{"level":"info","message":"stagehand.init","data":{}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":954,"completionTokens":64,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4713}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":982,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3892}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":906,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2952,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":921,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3274,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2878,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":33,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1894,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1575,"completionTokens":46,"inferenceTimeMs":3857}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":4843,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":6901}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Detalle\" de esta fila del historial"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":642,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3006,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo \"confirmado\" o \"anulado\")"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1491,"completionTokens":34,"inferenceTimeMs":3358}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo \"confirmado\" o \"anulado\"). Tu respuesta anterior era incorrecta: el estado no es «success». Léelo de nuevo en la página."}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1538,"completionTokens":23,"inferenceTimeMs":2570}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo \"confirmado\" o \"anulado\"). Tu respuesta anterior era incorrecta: el estado no es «anulado». Léelo de nuevo en la página."}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1540,"completionTokens":41,"inferenceTimeMs":3197}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" del movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1311,"completionTokens":34,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2740,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Conservarlo\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":651,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3066,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo \"confirmado\" o \"anulado\")"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1492,"completionTokens":35,"inferenceTimeMs":3037}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":934,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3755,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3432,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2541,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1595,"completionTokens":47,"inferenceTimeMs":3717}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" del movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1447,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3691,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" dentro del diálogo para confirmar la anulación"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":658,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4129,"resultCount":1}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1243,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3784}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" dentro del diálogo para confirmar la anulación"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":745,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3316,"resultCount":1}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1256,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3260}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":934,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3281,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2938,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2514,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1595,"completionTokens":46,"inferenceTimeMs":4156}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":4842,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":7519}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Detalle\" de esta fila del historial"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":642,"completionTokens":42,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2800,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo \"confirmado\" o \"anulado\")"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1492,"completionTokens":35,"inferenceTimeMs":3065}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo \"confirmado\" o \"anulado\"). Tu respuesta anterior era incorrecta: el estado no es «anulado». Léelo de nuevo en la página."}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1540,"completionTokens":41,"inferenceTimeMs":3266}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" del movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1311,"completionTokens":49,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3212,"resultCount":1}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1169,"completionTokens":51,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3397}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" dentro del diálogo para confirmar la anulación"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":675,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3914,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo \"confirmado\" o \"anulado\")"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1675,"completionTokens":35,"inferenceTimeMs":2826}}
+{"level":"info","message":"stagehand.close","data":{}}

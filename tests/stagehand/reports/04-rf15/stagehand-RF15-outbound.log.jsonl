@@ -1,0 +1,37 @@
+{"level":"info","message":"stagehand.init","data":{}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":954,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3908}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":982,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3710}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1324,"completionTokens":48,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3360}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1397,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3582}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8480,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":10815}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra los botones \"Ver el resumen\", \"Descartar\" y \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":400,"completionTokens":100,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":5438,"resultCount":3}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":806,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3076}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":930,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3572}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"De la primera tarjeta de producto del listado extrae: name = el texto de su encabezado (heading), que es el nombre del producto (no la marca); totalUnits = el número de la frase \"unidades en total\" de esa tarjeta"}}
+{"level":"info","message":"Extraction incomplete after processing all data","data":{"category":"extraction","promptTokens":7979,"completionTokens":78,"inferenceTimeMs":11878}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1397,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3856}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1416,"completionTokens":60,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4085}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae de cada tarjeta de producto del listado: name = el texto del encabezado (heading) de la tarjeta, que es el nombre del producto (no la marca que aparece debajo); stock = el número que aparece justo antes de \"en existencia\""}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":8225,"completionTokens":285,"inferenceTimeMs":35706}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1395,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3896}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1395,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4407}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":93,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":5775,"resultCount":2}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae de cada tarjeta de producto del listado: name = el texto del encabezado (heading) de la tarjeta, que es el nombre del producto (no la marca que aparece debajo); stock = el número que aparece justo antes de \"en existencia\""}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":8225,"completionTokens":439,"inferenceTimeMs":44534}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2985,"resultCount":1}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8417,"completionTokens":62,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":11912}}
+{"level":"error","message":"CDP response failed","data":{"requestId":948,"method":"Input.dispatchMouseEvent","error":"-32602 Invalid mouse button","targetId":"11D46F74DBE86CCC9F8765AC7BA42B0A"}}
+{"level":"error","message":"CDP response failed","data":{"requestId":949,"method":"Input.dispatchMouseEvent","error":"-32602 Invalid mouse button","targetId":"11D46F74DBE86CCC9F8765AC7BA42B0A"}}
+{"level":"error","message":"Error performing click","data":{"category":"action","error":"-32602 Invalid mouse button","xpath":"xpath=/html[1]/body[1]/div[2]/div[1]/main[1]/div[1]/div[1]/div[1]/button[1]"}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8226,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":10684}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1397,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4058}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":806,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2926}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":930,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3493}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":811,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3377}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":886,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3617}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":811,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3290}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":892,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3588}}
+{"level":"info","message":"stagehand.close","data":{}}

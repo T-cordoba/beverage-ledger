@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testsuite name="RF-15 Salida de inventario (OUTBOUND)" time="10.877383" disabled="0" errors="0" tests="5" failures="5" skipped="0" timestamp="2026-10-27T01:49:52.998Z" hostname="pc">
+		<testcase name="RF15-01 Registrar una salida correcta descuenta la existencia" time="0.000000" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="test did not finish before its parent and was cancelled">
+			<failure type="cancelledByParent" message="test did not finish before its parent and was cancelled">
+[Error [ERR_TEST_FAILURE]: test did not finish before its parent and was cancelled] { code: 'ERR_TEST_FAILURE', failureType: 'cancelledByParent', cause: 'test did not finish before its parent and was cancelled' }
+			</failure>
+		</testcase>
+		<testcase name="RF15-02 Sin productos no aparece la barra Confirmar" time="0.000000" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="test did not finish before its parent and was cancelled">
+			<failure type="cancelledByParent" message="test did not finish before its parent and was cancelled">
+[Error [ERR_TEST_FAILURE]: test did not finish before its parent and was cancelled] { code: 'ERR_TEST_FAILURE', failureType: 'cancelledByParent', cause: 'test did not finish before its parent and was cancelled' }
+			</failure>
+		</testcase>
+		<testcase name="RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia" time="0.000000" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="test did not finish before its parent and was cancelled">
+			<failure type="cancelledByParent" message="test did not finish before its parent and was cancelled">
+[Error [ERR_TEST_FAILURE]: test did not finish before its parent and was cancelled] { code: 'ERR_TEST_FAILURE', failureType: 'cancelledByParent', cause: 'test did not finish before its parent and was cancelled' }
+			</failure>
+		</testcase>
+		<testcase name="RF15-04 Inventario insuficiente: botellas y cajas comparten el tope" time="0.000000" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="test did not finish before its parent and was cancelled">
+			<failure type="cancelledByParent" message="test did not finish before its parent and was cancelled">
+[Error [ERR_TEST_FAILURE]: test did not finish before its parent and was cancelled] { code: 'ERR_TEST_FAILURE', failureType: 'cancelledByParent', cause: 'test did not finish before its parent and was cancelled' }
+			</failure>
+		</testcase>
+		<testcase name="RF15-05 Volver del diálogo y Descartar no escriben en el historial" time="0.000000" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="test did not finish before its parent and was cancelled">
+			<failure type="cancelledByParent" message="test did not finish before its parent and was cancelled">
+[Error [ERR_TEST_FAILURE]: test did not finish before its parent and was cancelled] { code: 'ERR_TEST_FAILURE', failureType: 'cancelledByParent', cause: 'test did not finish before its parent and was cancelled' }
+			</failure>
+		</testcase>
+	</testsuite>
+	<!-- tests 5 -->
+	<!-- suites 1 -->
+	<!-- pass 0 -->
+	<!-- fail 0 -->
+	<!-- cancelled 5 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 12100.5708 -->
+</testsuites>

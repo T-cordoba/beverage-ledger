@@ -1,0 +1,30 @@
+Ejecución 01-rf15-ollama — 2026-10-27T01:49:28.384Z
+Archivos: RF15-outbound.e2e.mts
+
+<anonymous_script>:18
+    "fileName": "^MOV-\d{4}-\d{6}\.pdf$",
+                       ^
+
+SyntaxError: Bad escaped character in JSON at position 403 (line 18 column 24)
+    at JSON.parse (<anonymous>)
+    at <anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\flows.mts:20:36)
+    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+    at async node:internal/modules/esm/loader:647:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.22.1
+✖ RF15-outbound.e2e.mts (1406.1859ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1433.6355
+
+✖ failing tests:
+
+test at RF15-outbound.e2e.mts:1:1
+✖ RF15-outbound.e2e.mts (1406.1859ms)
+  'test failed'

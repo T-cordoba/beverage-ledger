@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testsuite name="RF-17 Traspaso entre bodegas (TRANSFER)" time="197.937319" disabled="0" errors="0" tests="4" failures="0" skipped="0" timestamp="2026-10-27T03:40:38.706Z" hostname="pc">
+		<testcase name="RF17-01 Origen y destino son obligatorios para confirmar" time="33.705758" classname="RF-17 Traspaso entre bodegas (TRANSFER)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF17-02 El destino excluye al origen y viceversa" time="52.478515" classname="RF-17 Traspaso entre bodegas (TRANSFER)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF17-03 Registrar un traspaso mueve la existencia entre las dos bodegas" time="58.822144" classname="RF-17 Traspaso entre bodegas (TRANSFER)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF17-04 Las cantidades del traspaso se topan con la existencia del origen" time="34.083088" classname="RF-17 Traspaso entre bodegas (TRANSFER)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<testsuite name="RF-20 Anulación de un movimiento confirmado" time="154.985894" disabled="0" errors="0" tests="3" failures="1" skipped="0" timestamp="2026-10-27T03:43:58.138Z" hostname="pc">
+		<testcase name="RF20-01 Conservarlo cierra el diálogo sin anular" time="38.440928" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF20-02 El motivo es obligatorio al anular" time="52.000096" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="La IA no extrajo el dato correcto en 3 intentos (Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo &quot;confirmado&quot; o &quot;anulado&quot;)): el estado no es «confirmed»">
+			<failure type="testCodeFailure" message="La IA no extrajo el dato correcto en 3 intentos (Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo &quot;confirmado&quot; o &quot;anulado&quot;)): el estado no es «confirmed»">
+[Error [ERR_TEST_FAILURE]: La IA no extrajo el dato correcto en 3 intentos (Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo "confirmado" o "anulado")): el estado no es «confirmed»] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: La IA no extrajo el dato correcto en 3 intentos (Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo "confirmado" o "anulado")): el estado no es «confirmed»
+      at Ai.extractChecked (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\ai.mts:108:11)
+      at async status (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF20-cancellation.e2e.mts:23:28)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF20-cancellation.e2e.mts:86:7)
+      at async TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:74:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF20-03 Anular con motivo válido revierte la existencia" time="47.051794" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<!-- tests 7 -->
+	<!-- suites 2 -->
+	<!-- pass 6 -->
+	<!-- fail 1 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 355876.9216 -->
+</testsuites>

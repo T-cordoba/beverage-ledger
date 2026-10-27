@@ -1,0 +1,32 @@
+{
+  "name": "beverage-ledger-stagehand-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pruebas E2E con IA (Stagehand) de RF-15, RF-16, RF-17, RF-18, RF-20 y RF-21 de Beverage Ledger.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "test": "node scripts/run.mjs",
+    "test:rf15": "node scripts/run.mjs RF15",
+    "test:rf16": "node scripts/run.mjs RF16",
+    "test:rf17": "node scripts/run.mjs RF17",
+    "test:rf18": "node scripts/run.mjs RF18",
+    "test:rf20": "node scripts/run.mjs RF20",
+    "test:rf21": "node scripts/run.mjs RF21",
+    "typecheck": "tsc --noEmit -p .",
+    "check:model": "node scripts/check-model.mjs",
+    "scan:secrets": "node scripts/scan-secrets.mjs"
+  },
+  "dependencies": {
+    "@browserbasehq/stagehand": "4.3.0",
+    "dotenv": "17.2.3",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "24.9.1",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3"
+  }
+}

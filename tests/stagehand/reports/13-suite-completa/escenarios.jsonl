@@ -1,0 +1,19 @@
+{"spec":"RF15-outbound","id":"RF15-01","name":"Registrar una salida correcta descuenta la existencia","status":"passed","ms":43876,"movements":["78934b25-d206-457d-a6dc-b5d5d348a31b"]}
+{"spec":"RF15-outbound","id":"RF15-02","name":"Sin productos no aparece la barra Confirmar","status":"passed","ms":21265,"movements":[]}
+{"spec":"RF15-outbound","id":"RF15-03","name":"Cantidades incorrectas: no baja de cero y el tope es la existencia","status":"passed","ms":53068,"movements":[]}
+{"spec":"RF15-outbound","id":"RF15-04","name":"Inventario insuficiente: botellas y cajas comparten el tope","status":"passed","ms":69981,"movements":[]}
+{"spec":"RF15-outbound","id":"RF15-05","name":"Volver del diálogo y Descartar no escriben en el historial","status":"failed","ms":19850,"movements":[],"error":"Volver no debería registrar un movimiento\n+ actual - expected\n\n+ 'MOV-2026-000983'\n- ''\n"}
+{"spec":"RF16-inbound","id":"RF16-01","name":"Registrar una entrada y verla en el detalle y el historial","status":"passed","ms":35507,"movements":["bd8c8e42-f4b7-407b-9f88-4519d3d10eb3"]}
+{"spec":"RF16-inbound","id":"RF16-02","name":"Validación de la entrada: sin líneas no hay confirmación y Volver no registra","status":"passed","ms":34811,"movements":[]}
+{"spec":"RF17-transfer","id":"RF17-01","name":"Origen y destino son obligatorios para confirmar","status":"passed","ms":43087,"movements":[]}
+{"spec":"RF17-transfer","id":"RF17-02","name":"El destino excluye al origen y viceversa","status":"passed","ms":58338,"movements":[]}
+{"spec":"RF17-transfer","id":"RF17-03","name":"Registrar un traspaso mueve la existencia entre las dos bodegas","status":"passed","ms":66338,"movements":["fee68aa0-2738-454d-97ab-9f5203095be8"]}
+{"spec":"RF17-transfer","id":"RF17-04","name":"Las cantidades del traspaso se topan con la existencia del origen","status":"passed","ms":44417,"movements":[]}
+{"spec":"RF18-adjustment","id":"RF18-01","name":"El motivo es obligatorio y de al menos 4 caracteres","status":"passed","ms":47057,"movements":[]}
+{"spec":"RF18-adjustment","id":"RF18-02","name":"Registrar un ajuste con motivo válido","status":"passed","ms":33603,"movements":["cd3c6372-2652-4ff6-8f52-2feac88f18af"]}
+{"spec":"RF20-cancellation","id":"RF20-01","name":"Conservarlo cierra el diálogo sin anular","status":"passed","ms":46384,"movements":["10be8ccd-735a-4186-8b3c-38f80106265c"]}
+{"spec":"RF20-cancellation","id":"RF20-02","name":"El motivo es obligatorio al anular","status":"failed","ms":36556,"movements":["89c8648d-6672-4cab-bde6-6819764396d0"],"error":"Expected values to be strictly equal:\n\n'    ab' !== 'ab'\n"}
+{"spec":"RF20-cancellation","id":"RF20-03","name":"Anular con motivo válido revierte la existencia","status":"passed","ms":53754,"movements":["b04cd385-cb0a-465c-8eb9-d47b79d1d173"]}
+{"spec":"RF21-receipt","id":"RF21-01","name":"Descargar el PDF desde el historial","status":"passed","ms":11671,"movements":[]}
+{"spec":"RF21-receipt","id":"RF21-02","name":"Descargar el PDF desde el detalle","status":"passed","ms":11645,"movements":[]}
+{"spec":"RF21-receipt","id":"RF21-03","name":"Descargar el PDF de un movimiento anulado","status":"passed","ms":33301,"movements":["00a756d0-6da2-4922-9e47-95c717870d9e"]}

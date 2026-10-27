@@ -1,0 +1,15 @@
+node_modules/
+.env
+.stagehand/
+# Lock of the throttle pacing, rewritten on every run.
+reports/.refresh-log.json
+# Chrome's raw download folder; the verified receipts are copied to reports/<run>/comprobantes/.
+reports/*/downloads/
+# Screenshots of the intermediate runs stay local (~10 MB): their resumen.md,
+# junit.xml, ai-log.jsonl, ollama.jsonl and salida.txt are versioned and tell
+# what failed and why. Screenshots are versioned for the runs the README cites.
+reports/0[3-5]-*/screenshots/
+reports/08-*/screenshots/
+reports/1[01]-*/screenshots/
+reports/14-*/screenshots/
+reports/17-*/screenshots/

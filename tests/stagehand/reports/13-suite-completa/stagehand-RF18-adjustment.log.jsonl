@@ -1,0 +1,22 @@
+{"level":"info","message":"stagehand.init","data":{}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":954,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4510}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":982,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4001}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":906,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3225,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":933,"completionTokens":64,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4442,"resultCount":1}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8172,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":12046}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8217,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":10689}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8217,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":11025}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":934,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2992,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":933,"completionTokens":64,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4038,"resultCount":1}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8244,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":11460}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3086,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":513,"completionTokens":38,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2390,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1650,"completionTokens":47,"inferenceTimeMs":3592}}
+{"level":"info","message":"stagehand.close","data":{}}

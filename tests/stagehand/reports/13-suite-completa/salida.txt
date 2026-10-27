@@ -1,0 +1,635 @@
+Ejecución 13-suite-completa — 2026-10-27T03:16:58.458Z
+Archivos: RF15-outbound.e2e.mts, RF16-inbound.e2e.mts, RF17-transfer.e2e.mts, RF18-adjustment.e2e.mts, RF20-cancellation.e2e.mts, RF21-receipt.e2e.mts
+
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=true) para RF15-outbound
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":954,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4481}}
+    [IA act] Escribe %email% en el campo "Correo electrónico"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":982,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3717}}
+    [IA act] Escribe %password% en el campo "Contraseña"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":906,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2808,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF15-01 Registrar una salida correcta descuenta la existencia
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3411,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] button: Añadir botella
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8480,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":11245}}
+    [IA act] Escribe %nota% en el campo "Nota"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra los botones \"Ver el resumen\", \"Descartar\" y \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":400,"completionTokens":100,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":6450,"resultCount":3}}
+    [IA observe] Encuentra los botones "Ver el resumen", "Descartar" y "Confirmar"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3509,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":38,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3066,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] Pulsa el botón "Confirmar" del diálogo
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1651,"completionTokens":47,"inferenceTimeMs":4245}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+    limpieza: [{"id":"78934b25-d206-457d-a6dc-b5d5d348a31b","before":"CONFIRMED","status":201}]
+
+  ▶ RF15-02 Sin productos no aparece la barra Confirmar
+▶ RF-15 Salida de inventario (OUTBOUND)
+  ✔ RF15-01 Registrar una salida correcta descuenta la existencia (43880.3916ms)
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"De la primera tarjeta de producto del listado extrae: name = el texto de su encabezado (heading), que es el nombre del producto (no la marca); totalUnits = el número de la frase \"unidades en total\" de esa tarjeta"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":7979,"completionTokens":49,"inferenceTimeMs":12248}}
+    [IA extract] De la primera tarjeta de producto del listado extrae: name = el texto de su encabezado (heading), que es el nombre del producto (no la marca); totalUnits = el número de la frase "unidades en total" de esa tarjeta
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3040,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] click
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":997,"completionTokens":51,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3175,"resultCount":1}}
+    [IA observe] Pulsa el botón "Quitar botella" de esta tarjeta de producto
+    [IA act(observe)] button: Quitar botella
+
+  ▶ RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia
+  ✔ RF15-02 Sin productos no aparece la barra Confirmar (21267.5124ms)
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae de cada tarjeta de producto del listado: name = el texto del encabezado (heading) de la tarjeta, que es el nombre del producto (no la marca que aparece debajo); stock = el número que aparece justo antes de \"en existencia\""}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":8225,"completionTokens":285,"inferenceTimeMs":38022}}
+    [IA extract] Extrae de cada tarjeta de producto del listado: name = el texto del encabezado (heading) de la tarjeta, que es el nombre del producto (no la marca que aparece debajo); stock = el número que aparece justo antes de "en existencia"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":976,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3573,"resultCount":1}}
+    [IA observe] Pulsa el botón "Quitar botella" de esta tarjeta de producto
+    [IA act(observe)] Pulsa el botón 'Quitar botella'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar caja\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":976,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3402,"resultCount":1}}
+    [IA observe] Pulsa el botón "Quitar caja" de esta tarjeta de producto
+    [IA act(observe)] Pulsa el botón 'Quitar caja'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3103,"resultCount":1}}
+    [IA observe] Encuentra el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+    [IA act(observe)] Añadir botella
+
+  ▶ RF15-04 Inventario insuficiente: botellas y cajas comparten el tope
+  ✔ RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia (53069.9385ms)
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae de cada tarjeta de producto del listado: name = el texto del encabezado (heading) de la tarjeta, que es el nombre del producto (no la marca que aparece debajo); stock = el número que aparece justo antes de \"en existencia\""}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":8225,"completionTokens":285,"inferenceTimeMs":43010}}
+    [IA extract] Extrae de cada tarjeta de producto del listado: name = el texto del encabezado (heading) de la tarjeta, que es el nombre del producto (no la marca que aparece debajo); stock = el número que aparece justo antes de "en existencia"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3980,"resultCount":1}}
+    [IA observe] Encuentra el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8417,"completionTokens":62,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":12379}}
+    [IA act] Abre el selector "Bodega"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Barra E2E\" de la lista de bodegas"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":892,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4465,"resultCount":1}}
+    [IA observe] Elige la opción "Barra E2E" de la lista de bodegas
+    [IA act(observe)] Elige la opción 'Barra E2E' de la lista de bodegas
+
+  ▶ RF15-05 Volver del diálogo y Descartar no escriben en el historial
+  ✔ RF15-04 Inventario insuficiente: botellas y cajas comparten el tope (69987.9015ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":997,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":5791,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] Pulsa el botón 'Añadir botella' de esta tarjeta de producto
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":391,"completionTokens":55,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3655,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Volver\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":522,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3530,"resultCount":1}}
+    [IA observe] Pulsa el botón "Volver" del diálogo
+    [IA act(observe)] Pulsa el botón 'Volver'
+  ✖ RF15-05 Volver del diálogo y Descartar no escriben en el historial (19854.1152ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✖ RF-15 Salida de inventario (OUTBOUND) (229202.9052ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=true) para RF16-inbound
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":954,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":5316}}
+    [IA act] Escribe %email% en el campo "Correo electrónico"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":982,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4694}}
+    [IA act] Escribe %password% en el campo "Contraseña"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":906,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3182,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF16-01 Registrar una entrada y verla en el detalle y el historial
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir caja\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":934,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3163,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir caja" de esta tarjeta de producto
+    [IA act(observe)] click
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2991,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":512,"completionTokens":33,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1921,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] Pulsa el botón Confirmar
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1596,"completionTokens":46,"inferenceTimeMs":3664}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":4842,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":7965}}
+    [IA act] Escribe %codigo% en el buscador de movimientos por código
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Detalle\" de esta fila del historial"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":642,"completionTokens":42,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2979,"resultCount":1}}
+    [IA observe] Pulsa el enlace "Detalle" de esta fila del historial
+    [IA act(observe)] Pulsa el enlace "Detalle" de esta fila del historial
+    limpieza: [{"id":"bd8c8e42-f4b7-407b-9f88-4519d3d10eb3","before":"CONFIRMED","status":201}]
+
+  ▶ RF16-02 Validación de la entrada: sin líneas no hay confirmación y Volver no registra
+▶ RF-16 Entrada de inventario (INBOUND)
+  ✔ RF16-01 Registrar una entrada y verla en el detalle y el historial (35511.9149ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":934,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3758,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] button: Añadir botella
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8024,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":12428}}
+    [IA act] Escribe %nota% en el campo "Nota"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3627,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Volver\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":34,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2027,"resultCount":1}}
+    [IA observe] Pulsa el botón "Volver" del diálogo
+    [IA act(observe)] Pulsa el botón Volver
+  ✔ RF16-02 Validación de la entrada: sin líneas no hay confirmación y Volver no registra (34814.1815ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✔ RF-16 Entrada de inventario (INBOUND) (94540.8632ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=true) para RF17-transfer
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":954,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4130}}
+    [IA act] Escribe %email% en el campo "Correo electrónico"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":982,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3833}}
+    [IA act] Escribe %password% en el campo "Contraseña"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":906,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3070,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF17-01 Origen y destino son obligatorios para confirmar
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3487,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] Añadir botella
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8591,"completionTokens":62,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":13167}}
+    [IA act] Abre el selector de bodega "Desde"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Bodega principal (por defecto)\" de la lista de bodegas abierta"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":852,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4353,"resultCount":1}}
+    [IA observe] Elige la opción "Bodega principal (por defecto)" de la lista de bodegas abierta
+    [IA act(observe)] selectOptionFromDropdown
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8595,"completionTokens":62,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":12455}}
+    [IA act] Abre el selector de bodega "Hacia"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Barra E2E\" de la lista de bodegas abierta"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":831,"completionTokens":70,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4284,"resultCount":1}}
+    [IA observe] Elige la opción "Barra E2E" de la lista de bodegas abierta
+    [IA act(observe)] Elige la opción 'Barra E2E' de la lista de bodegas abierta
+
+  ▶ RF17-02 El destino excluye al origen y viceversa
+▶ RF-17 Traspaso entre bodegas (TRANSFER)
+  ✔ RF17-01 Origen y destino son obligatorios para confirmar (43092.912ms)
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8473,"completionTokens":63,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":13114}}
+    [IA act] Abre el selector de bodega "Desde"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Bodega principal (por defecto)\" de la lista de bodegas abierta"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":834,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3889,"resultCount":1}}
+    [IA observe] Elige la opción "Bodega principal (por defecto)" de la lista de bodegas abierta
+    [IA act(observe)] Select the option 'Bodega principal (por defecto)' from the open warehouses list
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8477,"completionTokens":64,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":12275}}
+    [IA act] Abre el selector de bodega "Hacia"
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae los nombres de todas las opciones de la lista desplegable de bodegas que está abierta"}}
+{"level":"info","message":"Extraction incomplete after processing all data","data":{"category":"extraction","promptTokens":950,"completionTokens":46,"inferenceTimeMs":3219}}
+    [IA extract] Extrae los nombres de todas las opciones de la lista desplegable de bodegas que está abierta
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Barra E2E\" de la lista de bodegas abierta"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":813,"completionTokens":63,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3604,"resultCount":1}}
+    [IA observe] Elige la opción "Barra E2E" de la lista de bodegas abierta
+    [IA act(observe)] Select the 'Barra E2E' option from the warehouse dropdown
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8477,"completionTokens":63,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":12312}}
+    [IA act] Abre el selector de bodega "Desde"
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae los nombres de todas las opciones de la lista desplegable de bodegas que está abierta"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":956,"completionTokens":56,"inferenceTimeMs":4077}}
+    [IA extract] Extrae los nombres de todas las opciones de la lista desplegable de bodegas que está abierta
+
+  ▶ RF17-03 Registrar un traspaso mueve la existencia entre las dos bodegas
+  ✔ RF17-02 El destino excluye al origen y viceversa (58339.9497ms)
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8473,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":12700}}
+    [IA act] Abre el selector de bodega "Desde"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Bodega principal (por defecto)\" de la lista de bodegas abierta"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":834,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4092,"resultCount":1}}
+    [IA observe] Elige la opción "Bodega principal (por defecto)" de la lista de bodegas abierta
+    [IA act(observe)] Select the option 'Bodega principal (por defecto)' from the open warehouse list
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8477,"completionTokens":64,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":13241}}
+    [IA act] Abre el selector de bodega "Hacia"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Barra E2E\" de la lista de bodegas abierta"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":813,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3493,"resultCount":1}}
+    [IA observe] Elige la opción "Barra E2E" de la lista de bodegas abierta
+    [IA act(observe)] option: Barra E2E
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":51,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3197,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] Añadir botella
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2956,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":515,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3149,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] click
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1757,"completionTokens":47,"inferenceTimeMs":3764}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+    limpieza: [{"id":"fee68aa0-2738-454d-97ab-9f5203095be8","before":"CONFIRMED","status":201}]
+
+  ▶ RF17-04 Las cantidades del traspaso se topan con la existencia del origen
+  ✔ RF17-03 Registrar un traspaso mueve la existencia entre las dos bodegas (66342.2529ms)
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":9024,"completionTokens":64,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":16726}}
+    [IA act] Abre el selector de bodega "Desde"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Bodega principal (por defecto)\" de la lista de bodegas abierta"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":872,"completionTokens":73,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":5116,"resultCount":1}}
+    [IA observe] Elige la opción "Bodega principal (por defecto)" de la lista de bodegas abierta
+    [IA act(observe)] Elige la opción 'Bodega principal (por defecto)' de la lista de bodegas abierta
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Añadir caja\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1024,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3913,"resultCount":1}}
+    [IA observe] Encuentra el botón "Añadir caja" de esta tarjeta de producto
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1024,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3831,"resultCount":1}}
+    [IA observe] Encuentra el botón "Añadir botella" de esta tarjeta de producto
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Quitar caja\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1023,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3575,"resultCount":1}}
+    [IA observe] Encuentra el botón "Quitar caja" de esta tarjeta de producto
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Quitar botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1023,"completionTokens":64,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4002,"resultCount":1}}
+    [IA observe] Encuentra el botón "Quitar botella" de esta tarjeta de producto
+    [IA act(observe)] Añadir caja
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] button: Añadir botella
+    [IA act(observe)] Encuentra el botón 'Quitar botella' de esta tarjeta de producto
+    [IA act(observe)] Encuentra el botón 'Quitar botella' de esta tarjeta de producto
+    [IA act(observe)] Encuentra el botón 'Quitar botella' de esta tarjeta de producto
+    [IA act(observe)] Encuentra el botón 'Quitar botella' de esta tarjeta de producto
+    [IA act(observe)] Encuentra el botón 'Quitar botella' de esta tarjeta de producto
+    [IA act(observe)] Encuentra el botón 'Quitar botella' de esta tarjeta de producto
+    [IA act(observe)] Encuentra el botón 'Quitar botella' de esta tarjeta de producto
+    [IA act(observe)] Encuentra el botón 'Quitar botella' de esta tarjeta de producto
+    [IA act(observe)] button: Quitar caja
+    [IA act(observe)] Encuentra el botón 'Quitar botella' de esta tarjeta de producto
+    [IA act(observe)] button: Quitar caja
+  ✔ RF17-04 Las cantidades del traspaso se topan con la existencia del origen (44420.771ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✖ RF-17 Traspaso entre bodegas (TRANSFER) (233174.3597ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=true) para RF18-adjustment
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":954,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4510}}
+    [IA act] Escribe %email% en el campo "Correo electrónico"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":982,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4001}}
+    [IA act] Escribe %password% en el campo "Contraseña"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":906,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3225,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF18-01 El motivo es obligatorio y de al menos 4 caracteres
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":933,"completionTokens":64,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4442,"resultCount":1}}
+    [IA observe] Pulsa el botón "Quitar botella" de esta tarjeta de producto
+    [IA act(observe)] Pulsa el botón 'Quitar botella' de esta tarjeta de producto
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8172,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":12046}}
+    [IA act] Escribe %motivo% en el campo "Motivo"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8217,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":10689}}
+    [IA act] Escribe %motivo% en el campo "Motivo"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8217,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":11025}}
+    [IA act] Escribe %motivo% en el campo "Motivo"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":934,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2992,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] click
+
+  ▶ RF18-02 Registrar un ajuste con motivo válido
+▶ RF-18 Ajuste de inventario (ADJUSTMENT)
+  ✔ RF18-01 El motivo es obligatorio y de al menos 4 caracteres (47062.2852ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":933,"completionTokens":64,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4038,"resultCount":1}}
+    [IA observe] Pulsa el botón "Quitar botella" de esta tarjeta de producto
+    [IA act(observe)] Pulsa el botón 'Quitar botella' de esta tarjeta de producto
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":8244,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":11460}}
+    [IA act] Escribe %motivo% en el campo "Motivo"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3086,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":513,"completionTokens":38,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2390,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] Pulsa el botón "Confirmar" del diálogo
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1650,"completionTokens":47,"inferenceTimeMs":3592}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+    limpieza: [{"id":"cd3c6372-2652-4ff6-8f52-2feac88f18af","before":"CONFIRMED","status":201}]
+  ✔ RF18-02 Registrar un ajuste con motivo válido (33605.1399ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✔ RF-18 Ajuste de inventario (ADJUSTMENT) (103241.8235ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=true) para RF20-cancellation
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":954,"completionTokens":64,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4713}}
+    [IA act] Escribe %email% en el campo "Correo electrónico"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":982,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3892}}
+    [IA act] Escribe %password% en el campo "Contraseña"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":906,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2952,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF20-01 Conservarlo cierra el diálogo sin anular
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":921,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3274,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] button: Añadir botella
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2878,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":33,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1894,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] Pulsa el botón Confirmar
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1575,"completionTokens":46,"inferenceTimeMs":3857}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":4843,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":6901}}
+    [IA act] Escribe %codigo% en el buscador de movimientos por código
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Detalle\" de esta fila del historial"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":642,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3006,"resultCount":1}}
+    [IA observe] Pulsa el enlace "Detalle" de esta fila del historial
+    [IA act(observe)] Pulsa el enlace "Detalle"
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo \"confirmado\" o \"anulado\")"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1491,"completionTokens":34,"inferenceTimeMs":3358}}
+    [IA extract] Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo "confirmado" o "anulado")
+    [IA rechazada] el estado no es «success»; se vuelve a preguntar
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo \"confirmado\" o \"anulado\"). Tu respuesta anterior era incorrecta: el estado no es «success». Léelo de nuevo en la página."}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1538,"completionTokens":23,"inferenceTimeMs":2570}}
+    [IA extract] Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo "confirmado" o "anulado"). Tu respuesta anterior era incorrecta: el estado no es «success». Léelo de nuevo en la página.
+    [IA rechazada] el estado no es «anulado»; se vuelve a preguntar
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo \"confirmado\" o \"anulado\"). Tu respuesta anterior era incorrecta: el estado no es «anulado». Léelo de nuevo en la página."}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1540,"completionTokens":41,"inferenceTimeMs":3197}}
+    [IA extract] Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo "confirmado" o "anulado"). Tu respuesta anterior era incorrecta: el estado no es «anulado». Léelo de nuevo en la página.
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" del movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1311,"completionTokens":34,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2740,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" del movimiento
+    [IA act(observe)] Botón para anular el movimiento
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Conservarlo\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":651,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3066,"resultCount":1}}
+    [IA observe] Pulsa el botón "Conservarlo" del diálogo
+    [IA act(observe)] button: Conservarlo
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo \"confirmado\" o \"anulado\")"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1492,"completionTokens":35,"inferenceTimeMs":3037}}
+    [IA extract] Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo "confirmado" o "anulado")
+    limpieza: [{"id":"10be8ccd-735a-4186-8b3c-38f80106265c","before":"CONFIRMED","status":201}]
+
+  ▶ RF20-02 El motivo es obligatorio al anular
+▶ RF-20 Anulación de un movimiento confirmado
+  ✔ RF20-01 Conservarlo cierra el diálogo sin anular (46389.853ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":934,"completionTokens":46,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3755,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] click
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3432,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2541,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] click
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1595,"completionTokens":47,"inferenceTimeMs":3717}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" del movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1447,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3691,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" del movimiento
+    [IA act(observe)] Click the 'Anular' button
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" dentro del diálogo para confirmar la anulación"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":658,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4129,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" dentro del diálogo para confirmar la anulación
+    [IA act(observe)] Pulsa el botón 'Anular' dentro del diálogo para confirmar la anulación
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1243,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3784}}
+    [IA act] Escribe %motivo% en el campo "Motivo" del diálogo
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" dentro del diálogo para confirmar la anulación"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":745,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3316,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" dentro del diálogo para confirmar la anulación
+    [IA act(observe)] Pulsa el botón 'Anular' dentro del diálogo para confirmar la anulación
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1256,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3260}}
+    [IA act] Escribe %motivo% en el campo "Motivo" del diálogo
+    limpieza: [{"id":"89c8648d-6672-4cab-bde6-6819764396d0","before":"CONFIRMED","status":201}]
+
+  ▶ RF20-03 Anular con motivo válido revierte la existencia
+  ✖ RF20-02 El motivo es obligatorio al anular (36558.9018ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":934,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3281,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] button: Añadir botella
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2938,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2514,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] click
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1595,"completionTokens":46,"inferenceTimeMs":4156}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":4842,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":7519}}
+    [IA act] Escribe %codigo% en el buscador de movimientos por código
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Detalle\" de esta fila del historial"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":642,"completionTokens":42,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2800,"resultCount":1}}
+    [IA observe] Pulsa el enlace "Detalle" de esta fila del historial
+    [IA act(observe)] Pulsa el enlace "Detalle" de esta fila del historial
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo \"confirmado\" o \"anulado\")"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1492,"completionTokens":35,"inferenceTimeMs":3065}}
+    [IA extract] Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo "confirmado" o "anulado")
+    [IA rechazada] el estado no es «anulado»; se vuelve a preguntar
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo \"confirmado\" o \"anulado\"). Tu respuesta anterior era incorrecta: el estado no es «anulado». Léelo de nuevo en la página."}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1540,"completionTokens":41,"inferenceTimeMs":3266}}
+    [IA extract] Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo "confirmado" o "anulado"). Tu respuesta anterior era incorrecta: el estado no es «anulado». Léelo de nuevo en la página.
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" del movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1311,"completionTokens":49,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3212,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" del movimiento
+    [IA act(observe)] button: Anular
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1169,"completionTokens":51,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3397}}
+    [IA act] Escribe %motivo% en el campo "Motivo" del diálogo
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" dentro del diálogo para confirmar la anulación"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":675,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3914,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" dentro del diálogo para confirmar la anulación
+    [IA act(observe)] Pulsa el botón 'Anular' dentro del diálogo para confirmar la anulación
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo \"confirmado\" o \"anulado\")"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1675,"completionTokens":35,"inferenceTimeMs":2826}}
+    [IA extract] Extrae el estado del movimiento de esta página de detalle: la palabra en español que aparece en la etiqueta junto al tipo de movimiento, copiada sin traducir (por ejemplo "confirmado" o "anulado")
+    limpieza: [{"id":"b04cd385-cb0a-465c-8eb9-d47b79d1d173","before":"CANCELLED","status":null}]
+  ✔ RF20-03 Anular con motivo válido revierte la existencia (53756.0966ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✖ RF-20 Anulación de un movimiento confirmado (158292.2974ms)
+{"level":"info","message":"stagehand.init","data":{}}
+  Stagehand listo (ollama/qwen2.5:7b (http://localhost:11434/v1), headless=true) para RF21-receipt
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":954,"completionTokens":64,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4515}}
+    [IA act] Escribe %email% en el campo "Correo electrónico"
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":982,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3786}}
+    [IA act] Escribe %password% en el campo "Contraseña"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":906,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2827,"resultCount":1}}
+    [IA observe] Pulsa el botón "Entrar" para iniciar sesión
+    [IA act(observe)] button: Entrar
+  Sesión iniciada (redirigido a /dashboard)
+
+  ▶ RF21-01 Descargar el PDF desde el historial
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del primer movimiento de la lista del historial"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":4417,"completionTokens":46,"inferenceTimeMs":6200}}
+    [IA extract] Extrae el código del primer movimiento de la lista del historial
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"PDF\" de esta fila del historial"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":642,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2945,"resultCount":1}}
+    [IA observe] Pulsa el botón "PDF" de esta fila del historial
+    [IA act(observe)] Pulsa el botón 'PDF'
+    PDF verificado: MOV-2026-000989.pdf (BEVERAGE LEDGER DEMO Movimiento de inventario MOV-2026-000989 Tipo: INBOUND Estado: CANCELLED Fecha: 26 de octubre de 20…)
+
+  ▶ RF21-02 Descargar el PDF desde el detalle
+▶ RF-21 Descarga del comprobante PDF
+  ✔ RF21-01 Descargar el PDF desde el historial (11674.7304ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Detalle\" de esta fila del historial"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":642,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3115,"resultCount":1}}
+    [IA observe] Pulsa el enlace "Detalle" de esta fila del historial
+    [IA act(observe)] Pulsa el enlace "Detalle"
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón para descargar el comprobante PDF de este movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1361,"completionTokens":40,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3353,"resultCount":1}}
+    [IA observe] Encuentra el botón para descargar el comprobante PDF de este movimiento
+    [IA rechazada] eligió «← VolverMOV-2026-000989EntradaanuladoPDF», se esperaba «PDF»; se vuelve a preguntar
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón para descargar el comprobante PDF de este movimiento. El elemento correcto se llama exactamente \"PDF\"; no es \"← VolverMOV-2026-000989EntradaanuladoPDF\"."}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1397,"completionTokens":29,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2548,"resultCount":1}}
+    [IA observe] Encuentra el botón para descargar el comprobante PDF de este movimiento. El elemento correcto se llama exactamente "PDF"; no es "← VolverMOV-2026-000989EntradaanuladoPDF".
+    [IA act(observe)] button: PDF
+    PDF verificado: MOV-2026-000989.pdf (BEVERAGE LEDGER DEMO Movimiento de inventario MOV-2026-000989 Tipo: INBOUND Estado: CANCELLED Fecha: 26 de octubre de 20…)
+
+  ▶ RF21-03 Descargar el PDF de un movimiento anulado
+  ✔ RF21-02 Descargar el PDF desde el detalle (11646.2824ms)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":934,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3588,"resultCount":1}}
+    [IA observe] Pulsa el botón "Añadir botella" de esta tarjeta de producto
+    [IA act(observe)] button: Añadir botella
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2956,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar"
+    [IA act(observe)] Pulsa el botón 'Confirmar'
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2587,"resultCount":1}}
+    [IA observe] Pulsa el botón "Confirmar" del diálogo
+    [IA act(observe)] click
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1595,"completionTokens":46,"inferenceTimeMs":3691}}
+    [IA extract] Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" del movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1447,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3618,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" del movimiento
+    [IA act(observe)] Click the 'Anular' button
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1169,"completionTokens":62,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":4328}}
+    [IA act] Escribe %motivo% en el campo "Motivo" del diálogo
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" dentro del diálogo para confirmar la anulación"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":675,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3652,"resultCount":1}}
+    [IA observe] Pulsa el botón "Anular" dentro del diálogo para confirmar la anulación
+    [IA act(observe)] Pulsa el botón 'Anular' dentro del diálogo para confirmar la anulación
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"PDF\" para descargar el comprobante del movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1498,"completionTokens":41,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3201,"resultCount":1}}
+    [IA observe] Pulsa el botón "PDF" para descargar el comprobante del movimiento
+    [IA act(observe)] Pulsa el botón "PDF" para descargar el comprobante del movimiento
+    PDF verificado: MOV-2026-000990.pdf (BEVERAGE LEDGER DEMO Movimiento de inventario MOV-2026-000990 Tipo: INBOUND Estado: CANCELLED Fecha: 26 de octubre de 20…)
+    limpieza: [{"id":"00a756d0-6da2-4922-9e47-95c717870d9e","before":"CANCELLED","status":null}]
+  ✔ RF21-03 Descargar el PDF de un movimiento anulado (33302.909ms)
+{"level":"info","message":"stagehand.close","data":{}}
+✔ RF-21 Descarga del comprobante PDF (77824.2103ms)
+ℹ tests 19
+ℹ suites 6
+ℹ pass 17
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 906378.802
+
+✖ failing tests:
+
+test at support\suite.mts:1:1258
+✖ RF15-05 Volver del diálogo y Descartar no escriben en el historial (19854.1152ms)
+  AssertionError [ERR_ASSERTION]: Volver no debería registrar un movimiento
+  + actual - expected
+  
+  + 'MOV-2026-000983'
+  - ''
+  
+      at Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF15-outbound.e2e.mts:227:14)
+      at async TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:74:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'MOV-2026-000983',
+    expected: '',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at support\suite.mts:1:896
+✖ RF-17 Traspaso entre bodegas (TRANSFER) (233174.3597ms)
+  [Error: EBUSY: resource busy or locked, unlink 'C:\Users\admin\AppData\Local\Temp\stagehand-chrome-tRHIh1\Default\Network\Cookies'] { errno: -4082, code: 'EBUSY', syscall: 'unlink', path: 'C:\\Users\\admin\\AppData\\Local\\Temp\\stagehand-chrome-tRHIh1\\Default\\Network\\Cookies' }
+
+test at support\suite.mts:1:1258
+✖ RF20-02 El motivo es obligatorio al anular (36558.9018ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '    ab' !== 'ab'
+  
+      at Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF20-cancellation.e2e.mts:84:14)
+      at async TestContext.<anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:74:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '    ab',
+    expected: 'ab',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,6 @@
+{"spec":"RF16-inbound","id":"RF16-01","name":"Registrar una entrada y verla en el detalle y el historial","status":"passed","ms":30749,"movements":["c91540bf-81e3-445d-b436-188c2e72aec9"]}
+{"spec":"RF16-inbound","id":"RF16-02","name":"Validación de la entrada: sin líneas no hay confirmación y Volver no registra","status":"passed","ms":41883,"movements":[]}
+{"spec":"RF17-transfer","id":"RF17-01","name":"Origen y destino son obligatorios para confirmar","status":"passed","ms":39998,"movements":[]}
+{"spec":"RF17-transfer","id":"RF17-02","name":"El destino excluye al origen y viceversa","status":"passed","ms":66122,"movements":[]}
+{"spec":"RF17-transfer","id":"RF17-03","name":"Registrar un traspaso mueve la existencia entre las dos bodegas","status":"passed","ms":59350,"movements":["588654e2-1094-4b9b-8bc0-5ebcecf9b39b"]}
+{"spec":"RF17-transfer","id":"RF17-04","name":"Las cantidades del traspaso se topan con la existencia del origen","status":"passed","ms":39064,"movements":[]}

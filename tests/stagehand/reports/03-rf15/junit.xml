@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testsuite name="RF-15 Salida de inventario (OUTBOUND)" time="173.433177" disabled="0" errors="0" tests="5" failures="5" skipped="0" timestamp="2026-10-27T01:55:49.581Z" hostname="pc">
+		<testcase name="RF15-01 Registrar una salida correcta descuenta la existencia" time="26.555154" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="[&#10;  {&#10;    &quot;origin&quot;: &quot;string&quot;,&#10;    &quot;code&quot;: &quot;invalid_format&quot;,&#10;    &quot;format&quot;: &quot;regex&quot;,&#10;    &quot;pattern&quot;: &quot;/^\\d+-\\d+$/&quot;,&#10;    &quot;path&quot;: [&#10;      &quot;structuredContent&quot;,&#10;      &quot;action&quot;,&#10;      &quot;elementId&quot;&#10;    ],&#10;    &quot;message&quot;: &quot;Invalid input&quot;&#10;  }&#10;]">
+			<failure type="testCodeFailure" message="[&#10;  {&#10;    &quot;origin&quot;: &quot;string&quot;,&#10;    &quot;code&quot;: &quot;invalid_format&quot;,&#10;    &quot;format&quot;: &quot;regex&quot;,&#10;    &quot;pattern&quot;: &quot;/^\\d+-\\d+$/&quot;,&#10;    &quot;path&quot;: [&#10;      &quot;structuredContent&quot;,&#10;      &quot;action&quot;,&#10;      &quot;elementId&quot;&#10;    ],&#10;    &quot;message&quot;: &quot;Invalid input&quot;&#10;  }&#10;]">
+Error [ERR_TEST_FAILURE]: [
+  {
+    "origin": "string",
+    "code": "invalid_format",
+    "format": "regex",
+    "pattern": "/^\\d+-\\d+$/",
+    "path": [
+      "structuredContent",
+      "action",
+      "elementId"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at async Promise.all (index 0) {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: [
+    {
+      "origin": "string",
+      "code": "invalid_format",
+      "format": "regex",
+      "pattern": "/^\\d+-\\d+$/",
+      "path": [
+        "structuredContent",
+        "action",
+        "elementId"
+      ],
+      "message": "Invalid input"
+    }
+  ]
+      at RPCClient.receiveResponse (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\node_modules\@browserbasehq\stagehand\dist\index.mjs:4204:18)
+      at RPCClient.receive (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\node_modules\@browserbasehq\stagehand\dist\index.mjs:4132:9)
+      at CDPClient.RPCClient.cdp.onmessage (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\node_modules\@browserbasehq\stagehand\dist\index.mjs:4008:42)
+      at CDPClient.handleMessage (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\node_modules\@browserbasehq\stagehand\dist\index.mjs:3655:35) {
+    [cause]: { code: -32602, message: '[\n  {\n    "origin": "string",\n    "code": "invalid_format",\n    "format": "regex",\n    "pattern": "/^\\\\d+-\\\\d+$/",\n    "path": [\n      "structuredContent",\n      "action",\n      "elementId"\n    ],\n    "message": "Invalid input"\n  }\n]', data: [Object] }
+  }
+}
+			</failure>
+		</testcase>
+		<testcase name="RF15-02 Sin productos no aparece la barra Confirmar" time="12.176413" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Expected values to be strictly equal:&#10;+ actual - expected&#10;&#10;+ 'DON JULIO'&#10;- '1942'&#10;">
+			<failure type="testCodeFailure" message="Expected values to be strictly equal:&#10;+ actual - expected&#10;&#10;+ 'DON JULIO'&#10;- '1942'">
+[Error [ERR_TEST_FAILURE]: Expected values to be strictly equal:
++ actual - expected
+
++ 'DON JULIO'
+- '1942'
+] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'DON JULIO'
+  - '1942'
+  
+      at Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF15-outbound.e2e.mts:110:14)
+      at async TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'DON JULIO',
+    expected: '1942',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+}
+			</failure>
+		</testcase>
+		<testcase name="RF15-03 Cantidades incorrectas: no baja de cero y el tope es la existencia" time="34.408296" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="La IA no extrajo la tarjeta «1942»">
+			<failure type="testCodeFailure" message="La IA no extrajo la tarjeta «1942»">
+[Error [ERR_TEST_FAILURE]: La IA no extrajo la tarjeta «1942»] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: AssertionError [ERR_ASSERTION]: La IA no extrajo la tarjeta «1942»
+      at lowestStockProduct (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF15-outbound.e2e.mts:36:12)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF15-outbound.e2e.mts:132:31)
+      at async TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+}
+			</failure>
+		</testcase>
+		<testcase name="RF15-04 Inventario insuficiente: botellas y cajas comparten el tope" time="31.277662" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Tiempo agotado esperando: las tarjetas de producto del selector. Último valor: []">
+			<failure type="testCodeFailure" message="Tiempo agotado esperando: las tarjetas de producto del selector. Último valor: []">
+[Error [ERR_TEST_FAILURE]: Tiempo agotado esperando: las tarjetas de producto del selector. Último valor: []] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Tiempo agotado esperando: las tarjetas de producto del selector. Último valor: []
+      at waitFor (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\dom.mts:220:9)
+      at async lowestStockProduct (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF15-outbound.e2e.mts:29:17)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF15-outbound.e2e.mts:161:31)
+      at async TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF15-05 Volver del diálogo y Descartar no escriben en el historial" time="43.932624" classname="RF-15 Salida de inventario (OUTBOUND)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="[&#10;  {&#10;    &quot;origin&quot;: &quot;string&quot;,&#10;    &quot;code&quot;: &quot;invalid_format&quot;,&#10;    &quot;format&quot;: &quot;regex&quot;,&#10;    &quot;pattern&quot;: &quot;/^\\d+-\\d+$/&quot;,&#10;    &quot;path&quot;: [&#10;      &quot;structuredContent&quot;,&#10;      &quot;action&quot;,&#10;      &quot;elementId&quot;&#10;    ],&#10;    &quot;message&quot;: &quot;Invalid input&quot;&#10;  }&#10;]">
+			<failure type="testCodeFailure" message="[&#10;  {&#10;    &quot;origin&quot;: &quot;string&quot;,&#10;    &quot;code&quot;: &quot;invalid_format&quot;,&#10;    &quot;format&quot;: &quot;regex&quot;,&#10;    &quot;pattern&quot;: &quot;/^\\d+-\\d+$/&quot;,&#10;    &quot;path&quot;: [&#10;      &quot;structuredContent&quot;,&#10;      &quot;action&quot;,&#10;      &quot;elementId&quot;&#10;    ],&#10;    &quot;message&quot;: &quot;Invalid input&quot;&#10;  }&#10;]">
+[Error [ERR_TEST_FAILURE]: [
+  {
+    "origin": "string",
+    "code": "invalid_format",
+    "format": "regex",
+    "pattern": "/^\\d+-\\d+$/",
+    "path": [
+      "structuredContent",
+      "action",
+      "elementId"
+    ],
+    "message": "Invalid input"
+  }
+]] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: [
+    {
+      "origin": "string",
+      "code": "invalid_format",
+      "format": "regex",
+      "pattern": "/^\\d+-\\d+$/",
+      "path": [
+        "structuredContent",
+        "action",
+        "elementId"
+      ],
+      "message": "Invalid input"
+    }
+  ]
+      at RPCClient.receiveResponse (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\node_modules\@browserbasehq\stagehand\dist\index.mjs:4204:18)
+      at RPCClient.receive (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\node_modules\@browserbasehq\stagehand\dist\index.mjs:4132:9)
+      at CDPClient.RPCClient.cdp.onmessage (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\node_modules\@browserbasehq\stagehand\dist\index.mjs:4008:42)
+      at CDPClient.handleMessage (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\node_modules\@browserbasehq\stagehand\dist\index.mjs:3655:35) {
+    [cause]: { code: -32602, message: '[\n  {\n    "origin": "string",\n    "code": "invalid_format",\n    "format": "regex",\n    "pattern": "/^\\\\d+-\\\\d+$/",\n    "path": [\n      "structuredContent",\n      "action",\n      "elementId"\n    ],\n    "message": "Invalid input"\n  }\n]', data: [Object] }
+  }
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<!-- tests 5 -->
+	<!-- suites 1 -->
+	<!-- pass 0 -->
+	<!-- fail 5 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 174796.6264 -->
+</testsuites>

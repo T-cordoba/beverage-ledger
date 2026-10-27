@@ -1,0 +1,21 @@
+{
+  "locations": {
+    "source": "Bodega principal (por defecto)",
+    "destination": "Barra E2E"
+  },
+  "notes": {
+    "outbound": "Salida Stagehand E2E",
+    "inbound": "Entrada Stagehand E2E"
+  },
+  "reasons": {
+    "adjustment": "Rotura de botella",
+    "cancellation": "Error de captura",
+    "tooShort": "ab",
+    "blank": "    "
+  },
+  "minReasonLength": 4,
+  "receipt": {
+    "fileName": "^MOV-\\d{4}-\\d{6}\\.pdf$",
+    "typeLabels": ["OUTBOUND", "INBOUND", "TRANSFER", "ADJUSTMENT"]
+  }
+}

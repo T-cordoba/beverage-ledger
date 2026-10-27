@@ -1,0 +1,29 @@
+{"level":"info","message":"stagehand.init","data":{}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":954,"completionTokens":59,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3885}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":982,"completionTokens":61,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3710}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":905,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3067,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del primer movimiento de la lista del historial"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":4417,"completionTokens":46,"inferenceTimeMs":5848}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"PDF\" de esta fila del historial"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":642,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2969,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el enlace \"Detalle\" de esta fila del historial"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":642,"completionTokens":42,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2768,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón para descargar el comprobante PDF de este movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1361,"completionTokens":40,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3221,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón para descargar el comprobante PDF de este movimiento. El elemento correcto se llama exactamente \"PDF\"; no es \"← VolverMOV-2026-000966EntradaanuladoPDF\"."}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1397,"completionTokens":29,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2390,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":934,"completionTokens":53,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3226,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2660,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2477,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1595,"completionTokens":46,"inferenceTimeMs":3441}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" del movimiento"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":1447,"completionTokens":38,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2774,"resultCount":1}}
+{"level":"info","message":"Act inference completed","data":{"category":"action","promptTokens":1169,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3801}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Anular\" dentro del diálogo para confirmar la anulación"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":675,"completionTokens":48,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2725,"resultCount":1}}
+{"level":"info","message":"stagehand.close","data":{}}

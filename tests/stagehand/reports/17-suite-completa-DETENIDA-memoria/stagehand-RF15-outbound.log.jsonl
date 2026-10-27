@@ -1,0 +1,42 @@
+{"level":"info","message":"stagehand.init","data":{}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Correo electrónico\" (Escribe el valor en el campo \"Correo electrónico\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":452,"completionTokens":37,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2734,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Contraseña\" (Escribe el valor en el campo \"Contraseña\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":478,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2804,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Entrar\" para iniciar sesión"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":904,"completionTokens":47,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3010,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":51,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3518,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el cuadro de texto \"Nota\" (Escribe el valor en el campo \"Nota\")"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":7977,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":10151,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra los botones \"Ver el resumen\", \"Descartar\" y \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":400,"completionTokens":100,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":6008,"resultCount":3}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":387,"completionTokens":54,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2964,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Confirmar\" del diálogo"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":511,"completionTokens":33,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":1875,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae el código del movimiento que se muestra como título principal de la página (formato MOV-AAAA-NNNNNN)"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":1651,"completionTokens":47,"inferenceTimeMs":3491}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"De la primera tarjeta de producto del listado extrae: name = el texto de su encabezado (heading), que es el nombre del producto (no la marca); totalUnits = el número de la frase \"unidades en total\" de esa tarjeta"}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":7979,"completionTokens":49,"inferenceTimeMs":10398}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":2987,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":997,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3273,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae de cada tarjeta de producto del listado: name = el texto del encabezado (heading) de la tarjeta, que es el nombre del producto (no la marca que aparece debajo); stock = el número que aparece justo antes de \"en existencia\""}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":8225,"completionTokens":285,"inferenceTimeMs":35758}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":976,"completionTokens":56,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3158,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Pulsa el botón \"Quitar caja\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":976,"completionTokens":57,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3446,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":52,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3202,"resultCount":1}}
+{"level":"info","message":"Starting extraction using an accessibility snapshot","data":{"category":"extraction","instruction":"Extrae de cada tarjeta de producto del listado: name = el texto del encabezado (heading) de la tarjeta, que es el nombre del producto (no la marca que aparece debajo); stock = el número que aparece justo antes de \"en existencia\""}}
+{"level":"info","message":"Extraction completed successfully","data":{"category":"extraction","promptTokens":8225,"completionTokens":284,"inferenceTimeMs":40700}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Encuentra el botón \"Añadir botella\" de esta tarjeta de producto"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":978,"completionTokens":50,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3244,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Abre el selector \"Bodega\""}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":7998,"completionTokens":44,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":9988,"resultCount":1}}
+{"level":"info","message":"Starting observation","data":{"category":"observation","instruction":"Elige la opción \"Barra E2E\" de la lista de bodegas"}}
+{"level":"info","message":"Observation completed","data":{"category":"observation","promptTokens":892,"completionTokens":66,"reasoningTokens":0,"cachedInputTokens":0,"inferenceTimeMs":3844,"resultCount":1}}
+{"level":"info","message":"stagehand.close","data":{}}

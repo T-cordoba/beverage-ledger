@@ -1,0 +1,7 @@
+{"spec":"RF15-outbound","id":"RF15-01","name":"Registrar una salida correcta descuenta la existencia","status":"passed","ms":43640,"movements":["909a1e86-668d-45e3-9271-652fd7da3f71"]}
+{"spec":"RF15-outbound","id":"RF15-02","name":"Sin productos no aparece la barra Confirmar","status":"passed","ms":20993,"movements":[]}
+{"spec":"RF15-outbound","id":"RF15-03","name":"Cantidades incorrectas: no baja de cero y el tope es la existencia","status":"passed","ms":50917,"movements":[]}
+{"spec":"RF15-outbound","id":"RF15-04","name":"Inventario insuficiente: botellas y cajas comparten el tope","status":"passed","ms":59387,"movements":[]}
+{"spec":"RF15-outbound","id":"RF15-05","name":"Volver del diálogo y Descartar no escriben en el historial","status":"passed","ms":36660,"movements":[]}
+{"spec":"RF16-inbound","id":"RF16-01","name":"Registrar una entrada y verla en el detalle y el historial","status":"failed","ms":60253,"movements":["bb1a97cc-d765-4c1d-ae83-e7e867ebc9f6"],"error":"Tiempo agotado esperando: el detalle del movimiento. Último valor: \"/movements\""}
+{"spec":"RF16-inbound","id":"RF16-02","name":"Validación de la entrada: sin líneas no hay confirmación y Volver no registra","status":"passed","ms":28327,"movements":[]}

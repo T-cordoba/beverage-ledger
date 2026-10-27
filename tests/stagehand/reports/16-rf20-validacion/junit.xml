@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testsuite name="RF-20 Anulación de un movimiento confirmado" time="149.015710" disabled="0" errors="0" tests="3" failures="0" skipped="0" timestamp="2026-10-27T03:47:02.530Z" hostname="pc">
+		<testcase name="RF20-01 Conservarlo cierra el diálogo sin anular" time="40.779928" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF20-02 El motivo es obligatorio al anular" time="42.035956" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF20-03 Anular con motivo válido revierte la existencia" time="48.226484" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<!-- tests 3 -->
+	<!-- suites 1 -->
+	<!-- pass 3 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 150575.4231 -->
+</testsuites>

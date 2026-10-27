@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testsuite name="RF-18 Ajuste de inventario (ADJUSTMENT)" time="94.396102" disabled="0" errors="0" tests="2" failures="0" skipped="0" timestamp="2026-10-27T02:33:09.529Z" hostname="pc">
+		<testcase name="RF18-01 El motivo es obligatorio y de al menos 4 caracteres" time="42.757638" classname="RF-18 Ajuste de inventario (ADJUSTMENT)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF18-02 Registrar un ajuste con motivo válido" time="31.131262" classname="RF-18 Ajuste de inventario (ADJUSTMENT)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<testsuite name="RF-20 Anulación de un movimiento confirmado" time="148.727915" disabled="0" errors="0" tests="3" failures="0" skipped="0" timestamp="2026-10-27T02:34:45.185Z" hostname="pc">
+		<testcase name="RF20-01 Conservarlo cierra el diálogo sin anular" time="40.691193" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF20-02 El motivo es obligatorio al anular" time="42.552616" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF20-03 Anular con motivo válido revierte la existencia" time="45.363669" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<testsuite name="RF-21 Descarga del comprobante PDF" time="73.313348" disabled="0" errors="0" tests="3" failures="0" skipped="0" timestamp="2026-10-27T02:37:15.361Z" hostname="pc">
+		<testcase name="RF21-01 Descargar el PDF desde el historial" time="11.677436" classname="RF-21 Descarga del comprobante PDF" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF21-02 Descargar el PDF desde el detalle" time="11.384261" classname="RF-21 Descarga del comprobante PDF" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF21-03 Descargar el PDF de un movimiento anulado" time="29.319497" classname="RF-21 Descarga del comprobante PDF" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<!-- tests 8 -->
+	<!-- suites 3 -->
+	<!-- pass 8 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 320778.2781 -->
+</testsuites>

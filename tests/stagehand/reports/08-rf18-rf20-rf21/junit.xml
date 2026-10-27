@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testsuite name="RF-18 Ajuste de inventario (ADJUSTMENT)" time="98.727781" disabled="0" errors="0" tests="2" failures="1" skipped="0" timestamp="2026-10-27T02:26:59.165Z" hostname="pc">
+		<testcase name="RF18-01 El motivo es obligatorio y de al menos 4 caracteres" time="42.743760" classname="RF-18 Ajuste de inventario (ADJUSTMENT)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Tiempo agotado esperando: el motivo escrito. Último valor: {&quot;label&quot;:&quot;Motivo* (obligatorio)&quot;,&quot;value&quot;:&quot;ab    &quot;,&quot;invalid&quot;:true,&quot;placeholder&quot;:&quot;Rotura, diferencia de conteo…&quot;}">
+			<failure type="testCodeFailure" message="Tiempo agotado esperando: el motivo escrito. Último valor: {&quot;label&quot;:&quot;Motivo* (obligatorio)&quot;,&quot;value&quot;:&quot;ab    &quot;,&quot;invalid&quot;:true,&quot;placeholder&quot;:&quot;Rotura, diferencia de conteo…&quot;}">
+Error [ERR_TEST_FAILURE]: Tiempo agotado esperando: el motivo escrito. Último valor: {"label":"Motivo* (obligatorio)","value":"ab    ","invalid":true,"placeholder":"Rotura, diferencia de conteo…"}
+    at async Promise.all (index 0) {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Tiempo agotado esperando: el motivo escrito. Último valor: {"label":"Motivo* (obligatorio)","value":"ab    ","invalid":true,"placeholder":"Rotura, diferencia de conteo…"}
+      at waitFor (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\dom.mts:227:9)
+      at async typeReason (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF18-adjustment.e2e.mts:28:3)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF18-adjustment.e2e.mts:57:7)
+      at async TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+}
+			</failure>
+		</testcase>
+		<testcase name="RF18-02 Registrar un ajuste con motivo válido" time="35.814576" classname="RF-18 Ajuste de inventario (ADJUSTMENT)" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+	</testsuite>
+	<testsuite name="RF-20 Anulación de un movimiento confirmado" time="117.553121" disabled="0" errors="0" tests="3" failures="3" skipped="0" timestamp="2026-10-27T02:28:39.145Z" hostname="pc">
+		<testcase name="RF20-01 Conservarlo cierra el diálogo sin anular" time="32.260166" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="La IA leyó el estado «confirmed»&#10;+ actual - expected&#10;&#10;+ 'confirmed'&#10;- 'confirmado'&#10;          ^&#10;">
+			<failure type="testCodeFailure" message="La IA leyó el estado «confirmed»&#10;+ actual - expected&#10;&#10;+ 'confirmed'&#10;- 'confirmado'&#10;          ^">
+Error [ERR_TEST_FAILURE]: La IA leyó el estado «confirmed»
++ actual - expected
+
++ 'confirmed'
+- 'confirmado'
+          ^
+
+    at async Promise.all (index 0) {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: AssertionError [ERR_ASSERTION]: La IA leyó el estado «confirmed»
+  + actual - expected
+  
+  + 'confirmed'
+  - 'confirmado'
+            ^
+  
+      at status (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF20-cancellation.e2e.mts:23:10)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF20-cancellation.e2e.mts:40:7)
+      at async TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Promise.all (index 0)
+      at async Suite.run (node:internal/test_runner/test:1905:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'confirmed',
+    expected: 'confirmado',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+}
+			</failure>
+		</testcase>
+		<testcase name="RF20-02 El motivo es obligatorio al anular" time="32.750431" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Expected values to be strictly equal:&#10;&#10;'    ab' !== 'ab'&#10;">
+			<failure type="testCodeFailure" message="Expected values to be strictly equal:&#10;&#10;'    ab' !== 'ab'">
+[Error [ERR_TEST_FAILURE]: Expected values to be strictly equal:
+
+'    ab' !== 'ab'
+] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  '    ab' !== 'ab'
+  
+      at Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF20-cancellation.e2e.mts:79:14)
+      at async TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '    ab',
+    expected: 'ab',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+}
+			</failure>
+		</testcase>
+		<testcase name="RF20-03 Anular con motivo válido revierte la existencia" time="31.489490" classname="RF-20 Anulación de un movimiento confirmado" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="La IA leyó el estado «confirmed»&#10;+ actual - expected&#10;&#10;+ 'confirmed'&#10;- 'confirmado'&#10;          ^&#10;">
+			<failure type="testCodeFailure" message="La IA leyó el estado «confirmed»&#10;+ actual - expected&#10;&#10;+ 'confirmed'&#10;- 'confirmado'&#10;          ^">
+[Error [ERR_TEST_FAILURE]: La IA leyó el estado «confirmed»
++ actual - expected
+
++ 'confirmed'
+- 'confirmado'
+          ^
+] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: AssertionError [ERR_ASSERTION]: La IA leyó el estado «confirmed»
+  + actual - expected
+  
+  + 'confirmed'
+  - 'confirmado'
+            ^
+  
+      at status (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF20-cancellation.e2e.mts:23:10)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF20-cancellation.e2e.mts:98:7)
+      at async TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'confirmed',
+    expected: 'confirmado',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite name="RF-21 Descarga del comprobante PDF" time="82.994671" disabled="0" errors="0" tests="3" failures="1" skipped="0" timestamp="2026-10-27T02:30:38.000Z" hostname="pc">
+		<testcase name="RF21-01 Descargar el PDF desde el historial" time="11.577000" classname="RF-21 Descarga del comprobante PDF" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF21-02 Descargar el PDF desde el detalle" time="11.097355" classname="RF-21 Descarga del comprobante PDF" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts"/>
+		<testcase name="RF21-03 Descargar el PDF de un movimiento anulado" time="40.203797" classname="RF-21 Descarga del comprobante PDF" file="C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts" failure="Tiempo agotado esperando: el texto «Anulado el». Último valor: &quot;Beverage Ledger Demo Panel Existencias Movimientos Catálogo Reportes ? MK ← Volver MOV-2026-000967 Entrada anulado PDF OCURRIÓ EL 26 de octubre de 2026 a las 21:31 REGISTRADO POR Manager Katalon (local) CREADO EL 26 de octubre de 2026 a las 21:31 CONFIRMADO EL 26 de octubre de 2026 a las 21:31 ANULADO EL 26 de octubre de 2026 a las 21:31 Líneas (1) 1942 DON JULIO 1 unidad base 1 botella&quot;">
+			<failure type="testCodeFailure" message="Tiempo agotado esperando: el texto «Anulado el». Último valor: &quot;Beverage Ledger Demo Panel Existencias Movimientos Catálogo Reportes ? MK ← Volver MOV-2026-000967 Entrada anulado PDF OCURRIÓ EL 26 de octubre de 2026 a las 21:31 REGISTRADO POR Manager Katalon (local) CREADO EL 26 de octubre de 2026 a las 21:31 CONFIRMADO EL 26 de octubre de 2026 a las 21:31 ANULADO EL 26 de octubre de 2026 a las 21:31 Líneas (1) 1942 DON JULIO 1 unidad base 1 botella&quot;">
+[Error [ERR_TEST_FAILURE]: Tiempo agotado esperando: el texto «Anulado el». Último valor: "Beverage Ledger Demo Panel Existencias Movimientos Catálogo Reportes ? MK ← Volver MOV-2026-000967 Entrada anulado PDF OCURRIÓ EL 26 de octubre de 2026 a las 21:31 REGISTRADO POR Manager Katalon (local) CREADO EL 26 de octubre de 2026 a las 21:31 CONFIRMADO EL 26 de octubre de 2026 a las 21:31 ANULADO EL 26 de octubre de 2026 a las 21:31 Líneas (1) 1942 DON JULIO 1 unidad base 1 botella"] {
+  code: 'ERR_TEST_FAILURE',
+  failureType: 'testCodeFailure',
+  cause: Error: Tiempo agotado esperando: el texto «Anulado el». Último valor: "Beverage Ledger Demo Panel Existencias Movimientos Catálogo Reportes ? MK ← Volver MOV-2026-000967 Entrada anulado PDF OCURRIÓ EL 26 de octubre de 2026 a las 21:31 REGISTRADO POR Manager Katalon (local) CREADO EL 26 de octubre de 2026 a las 21:31 CONFIRMADO EL 26 de octubre de 2026 a las 21:31 ANULADO EL 26 de octubre de 2026 a las 21:31 Líneas (1) 1942 DON JULIO 1 unidad base 1 botella"
+      at waitFor (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\dom.mts:227:9)
+      at async Object.run (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\RF21-receipt.e2e.mts:97:7)
+      at async TestContext.&lt;anonymous> (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\stagehand\support\suite.mts:69:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Suite.processPendingSubtests (node:internal/test_runner/test:974:7)
+}
+			</failure>
+		</testcase>
+	</testsuite>
+	<!-- tests 8 -->
+	<!-- suites 3 -->
+	<!-- pass 3 -->
+	<!-- fail 5 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 303093.8379 -->
+</testsuites>
