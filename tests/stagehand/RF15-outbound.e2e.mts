@@ -45,7 +45,8 @@ async function lowestStockProduct(ctx: Ctx) {
     assert.equal(seen.stock, real.stock, `La IA leyó mal la existencia de «${real.name}»`);
   }
   const candidates = cards.filter((c) => c.stock! > 0);
-  const lowest = candidates.reduce((min, c) => (c.stock! < min.stock! ? c : min));
+  assert.ok(candidates.length > 0, 'Ningún producto de la primera página tiene existencia en la bodega de origen');
+  const lowest = candidates.reduce((min, c) => (c.stock! < min.stock! ? c : min), candidates[0]!);
   return { name: lowest.name, stock: lowest.stock! };
 }
 

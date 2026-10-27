@@ -256,9 +256,17 @@ detener contenedores ajenos (Jenkins, MySQL, Mosquitto) y ejecutar con
 - **Falta una ejecución completa 19/19 con el código actual.** Es lo primero que
   hay que hacer en un equipo con más memoria: `npm test` con `HEADLESS=true`.
 - **6 escenarios sin validar con el código actual** (ver "Resultados reales").
-- **Cambio sin ejecutar:** se eliminó el método `Ai.act()` (instrucción en lenguaje
-  natural), que ya no usaba ningún escenario; no altera el flujo, pero es posterior
-  a la última ejecución.
+- **Cambios sin ejecutar** (posteriores a la última ejecución; solo comprobados con
+  `npm run typecheck`):
+  - se eliminó el método `Ai.act()` (instrucción en lenguaje natural), que ya no
+    usaba ningún escenario;
+  - la elección del producto de RF15-03/RF15-04 (`lowestStockProduct`) y de RF17-04
+    usaba `reduce()` sin valor inicial: si ningún producto cumplía la condición
+    (existencia > 0, o ≥ 12 en el origen) fallaba con un `TypeError` sin contexto.
+    Ahora el escenario falla con una aserción que dice qué dato del entorno falta.
+    Cuando hay candidatos se elige el mismo producto que antes, así que RF15-03,
+    RF15-04 y RF17-04 cuentan como validados por las ejecuciones `18` y `15`, pero
+    esta versión exacta no se ha ejecutado.
 - **Modelo local pequeño.** `qwen2.5:7b` se equivoca a menudo (elige el nodo vecino,
   traduce, repite la instrucción). La suite lo compensa validando cada elección y
   repreguntando hasta 3 veces, así que un escenario falla si el modelo se equivoca

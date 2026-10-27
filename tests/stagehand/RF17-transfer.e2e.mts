@@ -142,7 +142,9 @@ defineSuite('RF17-transfer', 'RF-17 Traspaso entre bodegas (TRANSFER)', [
       const cards = await pickerReady(ctx, true);
       // The smallest stock that still fits a case: the cap comes in a few clicks
       // and shows that cases and bottles spend the same pool.
-      const target = cards.filter((c) => c.stock! >= 12).reduce((min, c) => (c.stock! < min.stock! ? c : min));
+      const fitsCase = cards.filter((c) => c.stock! >= 12);
+      assert.ok(fitsCase.length > 0, `Ningún producto de la primera página tiene 12 unidades o más en «${SOURCE}»`);
+      const target = fitsCase.reduce((min, c) => (c.stock! < min.stock! ? c : min), fitsCase[0]!);
       const { name } = target;
       const stock = target.stock!;
       const cases = Math.floor(stock / 12);
