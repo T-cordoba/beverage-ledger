@@ -5,6 +5,7 @@ Característica: RF-28 Consultar el reporte de consumo
   Quiero ver qué se consume más en un periodo
   Para decidir qué comprar
 
+  @visual
   Escenario: Ranking anual por categoría
     Dado Camila ingresó a la aplicación
     Cuando ella abre la sección "Reportes"

@@ -28,6 +28,7 @@
     "format:check": "prettier --check .",
     "test:cypress": "cypress run",
     "test:cypress:open": "cypress open",
+    "test:visual": "cypress run --env tags=@visual",
     "typecheck:cypress": "tsc -p tests/cypress"
   },
   "dependencies": {
@@ -45,6 +46,7 @@
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
+    "@applitools/eyes-cypress": "^3.62.0",
     "@badeball/cypress-cucumber-preprocessor": "^28.0.1",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8",
     "@cucumber/cucumber": "13.3.0",

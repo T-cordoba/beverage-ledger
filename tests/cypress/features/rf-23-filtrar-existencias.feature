@@ -9,6 +9,7 @@ Característica: RF-23 Filtrar las existencias
     Dado Camila ingresó a la aplicación
     Y ella abre la sección "Existencias"
 
+  @visual
   Escenario: Buscar por parte del nombre
     Cuando ella busca "AMARO" en las existencias
     Entonces todos los productos listados contienen "AMARO"

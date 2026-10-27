@@ -9,6 +9,7 @@ Característica: RF-24 Consultar el kardex de un producto
     Dado Camila ingresó a la aplicación
     Y ella abre la sección "Existencias"
 
+  @visual
   Escenario: El saldo del kardex coincide con la existencia
     Cuando ella abre el kardex del primer producto listado
     Entonces el kardex es del producto elegido

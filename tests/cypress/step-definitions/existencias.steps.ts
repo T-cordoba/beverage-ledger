@@ -1,10 +1,12 @@
 import { Then, When } from '@badeball/cypress-cucumber-preprocessor';
+import { visualCheck } from '../support/scenario';
 
 const productLinks = () =>
   cy.contains('caption', 'Existencias por producto').parent().find('tbody a[href^="/stock/"]');
 
 Then('la tabla de existencias lista al menos un producto', () => {
   productLinks().should('have.length.greaterThan', 0);
+  if (visualCheck.open) cy.eyesCheckWindow({ tag: 'RF-22 — Existencias actuales' });
 });
 
 Then('el conteo de resultados tiene la forma {string}', (shape: string) => {
@@ -24,6 +26,7 @@ Then('todos los productos listados contienen {string}', (term: string) => {
       expect(link.textContent?.toUpperCase()).to.contain(term.toUpperCase());
     });
   });
+  if (visualCheck.open) cy.eyesCheckWindow({ tag: 'RF-23 — Existencias filtradas' });
 });
 
 When('ella abre el kardex del primer producto listado', () => {
@@ -50,4 +53,5 @@ Then('el saldo más reciente coincide con lo que hay en existencia', () => {
         .prev('p')
         .should('have.text', balance.trim());
     });
+  if (visualCheck.open) cy.eyesCheckWindow({ tag: 'RF-24 — Kardex del producto' });
 });

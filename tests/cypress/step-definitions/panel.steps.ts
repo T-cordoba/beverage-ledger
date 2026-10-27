@@ -1,4 +1,5 @@
 import { Then } from '@badeball/cypress-cucumber-preprocessor';
+import { visualCheck } from '../support/scenario';
 
 Then('ella ve la tarjeta {string}', (title: string) => {
   cy.contains('h2', title).should('be.visible');
@@ -10,6 +11,7 @@ Then('la tarjeta lista productos o dice {string}', (emptyNotice: string) => {
     const listsProducts = $main.find('li a[href^="/stock/"]').length > 0;
     expect(listsProducts || $main.text().includes(emptyNotice), 'productos o aviso').to.be.true;
   });
+  if (visualCheck.open) cy.eyesCheckWindow({ tag: 'RF-27 — Bajo mínimo' });
 });
 
 Then('la opción {string} queda marcada', (label: string) => {
@@ -19,4 +21,5 @@ Then('la opción {string} queda marcada', (label: string) => {
 Then('el ranking empieza en la posición 1', () => {
   cy.get('[aria-label="Cargando el reporte"]').should('not.exist');
   cy.get('main ul > li span.rounded-full').first().should('have.text', '1');
+  if (visualCheck.open) cy.eyesCheckWindow({ tag: 'RF-28 — Reporte de consumo' });
 });

@@ -1,4 +1,5 @@
 import { Then, When } from '@badeball/cypress-cucumber-preprocessor';
+import { visualCheck } from '../support/scenario';
 
 const draftSummary = (units: string) => cy.contains('button', `· ${units}`);
 
@@ -15,6 +16,7 @@ When('ella recarga la página', () => {
 
 Then('el resumen del borrador dice {string}', (units: string) => {
   draftSummary(units).should('be.visible');
+  if (visualCheck.open) cy.eyesCheckWindow({ tag: 'RF-19 — Borrador retomado' });
 });
 
 When('ella descarta el borrador', () => {
