@@ -8,6 +8,7 @@ Característica: RF-22 Consultar las existencias actuales
   Antecedentes:
     Dado Camila ingresó a la aplicación
 
+  @visual
   Escenario: Ver la tabla de existencias
     Cuando ella abre la sección "Existencias"
     Entonces ella ve el título "Existencias"

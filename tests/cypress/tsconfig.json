@@ -7,7 +7,7 @@
     "strict": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["cypress", "node"]
+    "types": ["cypress", "node", "@applitools/eyes-cypress"]
   },
   "include": ["**/*.ts"]
 }

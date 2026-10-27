@@ -1,8 +1,18 @@
 import { After, Before, Given, Then, When } from '@badeball/cypress-cucumber-preprocessor';
-import { api, authorised, scenario } from '../support/scenario';
+import { api, authorised, scenario, visualCheck } from '../support/scenario';
 
 Before(() => {
   for (const key of Object.keys(scenario)) delete scenario[key as keyof typeof scenario];
+});
+
+Before({ tags: '@visual' }, () => {
+  cy.eyesOpen({ appName: 'Beverage Ledger', testName: Cypress.currentTest.title });
+  visualCheck.open = true;
+});
+
+After({ tags: '@visual' }, () => {
+  visualCheck.open = false;
+  cy.eyesClose();
 });
 
 // A scenario that failed between confirming and voiding leaves the stock moved; void it here.

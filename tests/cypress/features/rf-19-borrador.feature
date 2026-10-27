@@ -5,6 +5,7 @@ Característica: RF-19 Guardar y retomar un borrador de movimiento
   Quiero que lo que capturé no se pierda si recargo la página
   Para no volver a contar una salida a medio registrar
 
+  @visual
   Escenario: El borrador sobrevive a una recarga y se puede descartar
     Dado Camila ingresó a la aplicación
     Cuando ella abre "Registrar una salida"
