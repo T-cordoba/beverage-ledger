@@ -1,0 +1,30 @@
+Ejecución: 15-suite-ui-actual
+Inicio: 2026-10-26T23:01:36.406Z  Fin: 2026-10-26T23:01:56.916Z
+Cypress 16.2.0 · chrome 155.0.8059.86 · front http://localhost:3000 · API http://localhost:3001
+Total: 19 · aprobadas 0 · fallidas 6 · pendientes 0 · omitidas 13
+
+tests\IA\Cypress-Studio-AI\RF15-outbound.cy.ts: 0/5 aprobadas
+  [failed] RF-15 Salida › Registrar una salida correcta (2173 ms)
+  [skipped] RF-15 Salida › Sin productos no aparece la barra Confirmar (0 ms)
+  [skipped] RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper (0 ms)
+  [skipped] RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas (0 ms)
+  [skipped] RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger (0 ms)
+tests\IA\Cypress-Studio-AI\RF16-inbound.cy.ts: 0/2 aprobadas
+  [failed] RF-16 Entrada › Registrar una entrada y verla en detalle e historial (1934 ms)
+  [skipped] RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver (0 ms)
+tests\IA\Cypress-Studio-AI\RF17-transfer.cy.ts: 0/4 aprobadas
+  [failed] RF-17 Traspaso › Origen y destino obligatorios (1865 ms)
+  [skipped] RF-17 Traspaso › El destino excluye al origen (0 ms)
+  [skipped] RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas (0 ms)
+  [skipped] RF-17 Traspaso › Cantidades del traspaso topadas por el origen (0 ms)
+tests\IA\Cypress-Studio-AI\RF18-adjustment.cy.ts: 0/2 aprobadas
+  [failed] RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres (1876 ms)
+  [skipped] RF-18 Ajuste › Registrar un ajuste con motivo válido (0 ms)
+tests\IA\Cypress-Studio-AI\RF20-cancellation.cy.ts: 0/3 aprobadas
+  [failed] RF-20 Anulación › Conservarlo cancela la anulación (1742 ms)
+  [skipped] RF-20 Anulación › Motivo obligatorio al anular (0 ms)
+  [skipped] RF-20 Anulación › Anular con motivo válido (0 ms)
+tests\IA\Cypress-Studio-AI\RF21-receipt.cy.ts: 0/3 aprobadas
+  [failed] RF-21 Comprobante › Descargar el PDF desde el historial (1779 ms)
+  [skipped] RF-21 Comprobante › Descargar el PDF desde el detalle (0 ms)
+  [skipped] RF-21 Comprobante › Descargar el PDF de un movimiento anulado (0 ms)

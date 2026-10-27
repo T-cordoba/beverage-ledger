@@ -9,9 +9,13 @@ Katalon en `tests/katalon`).
 
 | # | Herramienta | Carpeta | Estado |
 |---|---|---|---|
-| 1 | **Playwright Test Agents** (Planner, Generator, Healer con Claude Code) | [`Playwright-Test-Agents/`](Playwright-Test-Agents/README.md) | ✅ Implementada y ejecutada: 19/19 pruebas aprobadas |
-| 2 | **Cypress Cloud + Studio AI** (`cy.prompt`, proyecto Cloud `q79b5v`) | [`Cypress-Studio-AI/`](Cypress-Studio-AI/README.md) | ✅ Implementada y ejecutada: 19/19 pruebas aprobadas (Chrome, 2026-10-26) |
-| 3 | **Playwright MCP + GitHub Copilot** (Copilot en modo agente explora la app con `@playwright/mcp` y escribe las pruebas) | [`Playwright-MCP-Copilot/`](Playwright-MCP-Copilot/README.md) | ✅ Implementada y ejecutada: 19/19 pruebas aprobadas (2026-10-26) |
+| 1 | **Playwright Test Agents** (Planner, Generator, Healer con Claude Code) | [`Playwright-Test-Agents/`](Playwright-Test-Agents/README.md) | ✅ 19/19 contra la interfaz anterior; tras la reparación del Healer, 19/19 (+ seed) contra la del 24/10 |
+| 2 | **Cypress Cloud + Studio AI** (`cy.prompt`, proyecto Cloud `q79b5v`) | [`Cypress-Studio-AI/`](Cypress-Studio-AI/README.md) | ✅ 19/19 contra la interfaz anterior; tras correcciones manuales, 19/19 contra la del 24/10 (Chrome, 2026-10-26) |
+| 3 | **Playwright MCP + GitHub Copilot** (Copilot en modo agente explora la app con `@playwright/mcp` y escribe las pruebas) | [`Playwright-MCP-Copilot/`](Playwright-MCP-Copilot/README.md) | ✅ 19/19 contra la interfaz anterior (2026-10-26). ⚠️ Contra la del 24/10: solo se adoptó el login de Copilot; 6 pruebas siguen sin adaptar (ver su README) |
+
+La interfaz cambió el 24/10/2026 (commits de otro integrante). El detalle de cada
+ejecución y quién hizo cada cambio, si un agente de IA o a mano, está en el README de
+cada herramienta.
 
 ## Funcionalidades evaluadas
 

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Cypress Studio AI" tests="19" failures="0" time="335.128">
+  <testsuite name="tests\IA\Cypress-Studio-AI\RF15-outbound.cy.ts" tests="5" failures="0" skipped="0" time="75.900" timestamp="2026-10-26T23:36:13.346Z">
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF15-outbound.cy.ts" name="RF-15 Salida › Registrar una salida correcta" time="14.182"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF15-outbound.cy.ts" name="RF-15 Salida › Sin productos no aparece la barra Confirmar" time="2.646"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF15-outbound.cy.ts" name="RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper" time="5.666"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF15-outbound.cy.ts" name="RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas" time="4.706"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF15-outbound.cy.ts" name="RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger" time="48.618"></testcase>
+  </testsuite>
+  <testsuite name="tests\IA\Cypress-Studio-AI\RF16-inbound.cy.ts" tests="2" failures="0" skipped="0" time="56.412" timestamp="2026-10-26T23:37:31.541Z">
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF16-inbound.cy.ts" name="RF-16 Entrada › Registrar una entrada y verla en detalle e historial" time="17.880"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF16-inbound.cy.ts" name="RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver" time="38.482"></testcase>
+  </testsuite>
+  <testsuite name="tests\IA\Cypress-Studio-AI\RF17-transfer.cy.ts" tests="4" failures="0" skipped="0" time="71.757" timestamp="2026-10-26T23:38:29.769Z">
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF17-transfer.cy.ts" name="RF-17 Traspaso › Origen y destino obligatorios" time="11.619"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF17-transfer.cy.ts" name="RF-17 Traspaso › El destino excluye al origen" time="4.068"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF17-transfer.cy.ts" name="RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas" time="45.615"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF17-transfer.cy.ts" name="RF-17 Traspaso › Cantidades del traspaso topadas por el origen" time="10.382"></testcase>
+  </testsuite>
+  <testsuite name="tests\IA\Cypress-Studio-AI\RF18-adjustment.cy.ts" tests="2" failures="0" skipped="0" time="37.280" timestamp="2026-10-26T23:39:43.441Z">
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF18-adjustment.cy.ts" name="RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres" time="8.952"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF18-adjustment.cy.ts" name="RF-18 Ajuste › Registrar un ajuste con motivo válido" time="28.294"></testcase>
+  </testsuite>
+  <testsuite name="tests\IA\Cypress-Studio-AI\RF20-cancellation.cy.ts" tests="3" failures="0" skipped="0" time="66.625" timestamp="2026-10-26T23:40:22.709Z">
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF20-cancellation.cy.ts" name="RF-20 Anulación › Conservarlo cancela la anulación" time="10.587"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF20-cancellation.cy.ts" name="RF-20 Anulación › Motivo obligatorio al anular" time="8.587"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF20-cancellation.cy.ts" name="RF-20 Anulación › Anular con motivo válido" time="47.388"></testcase>
+  </testsuite>
+  <testsuite name="tests\IA\Cypress-Studio-AI\RF21-receipt.cy.ts" tests="3" failures="0" skipped="0" time="27.154" timestamp="2026-10-26T23:41:31.319Z">
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF21-receipt.cy.ts" name="RF-21 Comprobante › Descargar el PDF desde el historial" time="8.454"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF21-receipt.cy.ts" name="RF-21 Comprobante › Descargar el PDF desde el detalle" time="9.656"></testcase>
+    <testcase classname="tests\IA\Cypress-Studio-AI\RF21-receipt.cy.ts" name="RF-21 Comprobante › Descargar el PDF de un movimiento anulado" time="9.001"></testcase>
+  </testsuite>
+</testsuites>

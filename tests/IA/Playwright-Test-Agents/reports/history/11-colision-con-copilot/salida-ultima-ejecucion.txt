@@ -1,0 +1,234 @@
+
+Running 19 tests using 1 worker
+
+  ✓   1 [chromium] › tests\IA\Playwright-Test-Agents\RF15-outbound.spec.ts:10:7 › RF-15 Salida › Registrar una salida correcta (10.8s)
+  ✓   2 [chromium] › tests\IA\Playwright-Test-Agents\RF15-outbound.spec.ts:63:7 › RF-15 Salida › Sin productos no aparece la barra Confirmar (2.9s)
+  ✓   3 [chromium] › tests\IA\Playwright-Test-Agents\RF15-outbound.spec.ts:87:7 › RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper (6.7s)
+  ✓   4 [chromium] › tests\IA\Playwright-Test-Agents\RF15-outbound.spec.ts:127:7 › RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas (5.4s)
+  ✓   5 [chromium] › tests\IA\Playwright-Test-Agents\RF15-outbound.spec.ts:172:7 › RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger (46.6s)
+  ✓   6 [chromium] › tests\IA\Playwright-Test-Agents\RF16-inbound.spec.ts:10:7 › RF-16 Entrada › Registrar una entrada y verla en detalle e historial (46.2s)
+  ✓   7 [chromium] › tests\IA\Playwright-Test-Agents\RF16-inbound.spec.ts:65:7 › RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver (12.4s)
+  ✓   8 [chromium] › tests\IA\Playwright-Test-Agents\RF17-transfer.spec.ts:12:7 › RF-17 Traspaso › Origen y destino obligatorios (6.0s)
+  ✓   9 [chromium] › tests\IA\Playwright-Test-Agents\RF17-transfer.spec.ts:42:7 › RF-17 Traspaso › El destino excluye al origen (4.5s)
+  ✘  10 [chromium] › tests\IA\Playwright-Test-Agents\RF17-transfer.spec.ts:77:7 › RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas (49.8s)
+  ✘  11 [chromium] › tests\IA\Playwright-Test-Agents\RF17-transfer.spec.ts:169:7 › RF-17 Traspaso › Cantidades del traspaso topadas por el origen (16.2s)
+  ✘  12 [chromium] › tests\IA\Playwright-Test-Agents\RF18-adjustment.spec.ts:9:7 › RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres (16.6s)
+  ✓  13 [chromium] › tests\IA\Playwright-Test-Agents\RF18-adjustment.spec.ts:56:7 › RF-18 Ajuste › Registrar un ajuste con motivo válido (18.9s)
+  ✓  14 [chromium] › tests\IA\Playwright-Test-Agents\RF20-cancellation.spec.ts:54:7 › RF-20 Anulación › Conservarlo cancela la anulación (22.7s)
+  ✓  15 [chromium] › tests\IA\Playwright-Test-Agents\RF20-cancellation.spec.ts:81:7 › RF-20 Anulación › Motivo obligatorio al anular (27.3s)
+  ✘  16 [chromium] › tests\IA\Playwright-Test-Agents\RF20-cancellation.spec.ts:120:7 › RF-20 Anulación › Anular con motivo válido (16.4s)
+  ✘  17 [chromium] › tests\IA\Playwright-Test-Agents\RF21-receipt.spec.ts:36:7 › RF-21 Comprobante › Descargar el PDF desde el historial (16.3s)
+  ✘  18 [chromium] › tests\IA\Playwright-Test-Agents\RF21-receipt.spec.ts:53:7 › RF-21 Comprobante › Descargar el PDF desde el detalle (16.2s)
+  ✓  19 [chromium] › tests\IA\Playwright-Test-Agents\RF21-receipt.spec.ts:71:7 › RF-21 Comprobante › Descargar el PDF de un movimiento anulado (10.9s)
+
+
+  1) [chromium] › tests\IA\Playwright-Test-Agents\RF17-transfer.spec.ts:77:7 › RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas 
+
+    Error: expect(locator).toBeEnabled() failed
+
+    Locator: getByRole('combobox', { name: 'Desde' })
+    Expected: enabled
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeEnabled" getByRole('combobox', { name: 'Desde' }) with timeout 15000ms
+      - waiting for getByRole('combobox', { name: 'Desde' })
+
+
+      83 |     const chooseEnds = async () => {
+      84 |       await page.goto('/movements/new/transfer');
+    > 85 |       await expect(from).toBeEnabled();
+         |                          ^
+      86 |       await from.click();
+      87 |       await page.getByRole('option', { name: SOURCE_OPTION }).click();
+      88 |       await expect(page.getByRole('listbox')).toHaveCount(0);
+        at chooseEnds (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\RF17-transfer.spec.ts:85:26)
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\RF17-transfer.spec.ts:118:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests\IA\Playwright-Test-Agents\reports\artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests\IA\Playwright-Test-Agents\reports\artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    tests\IA\Playwright-Test-Agents\reports\artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace tests\IA\Playwright-Test-Agents\reports\artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › tests\IA\Playwright-Test-Agents\RF17-transfer.spec.ts:169:7 › RF-17 Traspaso › Cantidades del traspaso topadas por el origen 
+
+    Error: expect(locator).toBeEnabled() failed
+
+    Locator: getByRole('combobox', { name: 'Desde' })
+    Expected: enabled
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeEnabled" getByRole('combobox', { name: 'Desde' }) with timeout 15000ms
+      - waiting for getByRole('combobox', { name: 'Desde' })
+
+
+      171 |     await page.goto('/movements/new/transfer');
+      172 |     const from = page.getByRole('combobox', { name: 'Desde' });
+    > 173 |     await expect(from).toBeEnabled();
+          |                        ^
+      174 |     await from.click();
+      175 |     await page.getByRole('option', { name: SOURCE_OPTION }).click();
+      176 |     await expect(page.getByRole('listbox')).toHaveCount(0);
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\RF17-transfer.spec.ts:173:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests\IA\Playwright-Test-Agents\reports\artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests\IA\Playwright-Test-Agents\reports\artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    tests\IA\Playwright-Test-Agents\reports\artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace tests\IA\Playwright-Test-Agents\reports\artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [chromium] › tests\IA\Playwright-Test-Agents\RF18-adjustment.spec.ts:9:7 › RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Registrar un ajuste' })
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Registrar un ajuste' }) with timeout 15000ms
+      - waiting for getByRole('heading', { name: 'Registrar un ajuste' })
+
+
+      10 |     // 1. Ir a /movements/new/adjustment, añadir una cantidad con signo a un producto y dejar 'Motivo' vacío.
+      11 |     await page.goto('/movements/new/adjustment');
+    > 12 |     await expect(page.getByRole('heading', { name: 'Registrar un ajuste' })).toBeVisible();
+         |                                                                              ^
+      13 |
+      14 |     const card = page
+      15 |       .getByRole('listitem')
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\RF18-adjustment.spec.ts:12:78
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests\IA\Playwright-Test-Agents\reports\artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests\IA\Playwright-Test-Agents\reports\artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    tests\IA\Playwright-Test-Agents\reports\artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace tests\IA\Playwright-Test-Agents\reports\artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [chromium] › tests\IA\Playwright-Test-Agents\RF20-cancellation.spec.ts:120:7 › RF-20 Anulación › Anular con motivo válido 
+
+    TimeoutError: locator.innerText: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByRole('listitem').filter({ has: getByRole('button', { name: 'Añadir botella' }) }).first().getByRole('heading', { level: 3 })
+
+
+      160 |     .filter({ has: page.getByRole('button', { name: 'Añadir botella' }) })
+      161 |     .first();
+    > 162 |   return (await card.getByRole('heading', { level: 3 }).innerText()).trim();
+          |                                                         ^
+      163 | }
+      164 |
+        at firstInboundProductName (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\RF20-cancellation.spec.ts:162:57)
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\RF20-cancellation.spec.ts:124:47
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests\IA\Playwright-Test-Agents\reports\artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests\IA\Playwright-Test-Agents\reports\artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    tests\IA\Playwright-Test-Agents\reports\artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace tests\IA\Playwright-Test-Agents\reports\artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [chromium] › tests\IA\Playwright-Test-Agents\RF21-receipt.spec.ts:36:7 › RF-21 Comprobante › Descargar el PDF desde el historial 
+
+    TimeoutError: locator.innerText: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByRole('article').first().getByRole('link', { name: /^MOV-/ }).first()
+
+
+      38 |     await page.goto('/movements');
+      39 |     const first = page.getByRole('article').first();
+    > 40 |     const code = (await first.getByRole('link', { name: /^MOV-/ }).first().innerText()).trim();
+         |                                                                            ^
+      41 |     const pdfButton = first.getByRole('button', { name: 'PDF' });
+      42 |     await expect(pdfButton).toHaveAccessibleDescription(`Descargar ${code} en PDF`);
+      43 |
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\RF21-receipt.spec.ts:40:76
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests\IA\Playwright-Test-Agents\reports\artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests\IA\Playwright-Test-Agents\reports\artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    tests\IA\Playwright-Test-Agents\reports\artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace tests\IA\Playwright-Test-Agents\reports\artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) [chromium] › tests\IA\Playwright-Test-Agents\RF21-receipt.spec.ts:53:7 › RF-21 Comprobante › Descargar el PDF desde el detalle 
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByRole('article').first().getByRole('link', { name: 'Detalle' })
+
+
+      54 |     // 1. Abrir el detalle de un movimiento y pulsar el botón 'PDF'.
+      55 |     await page.goto('/movements');
+    > 56 |     await page.getByRole('article').first().getByRole('link', { name: 'Detalle' }).click();
+         |                                                                                    ^
+      57 |     await expect(page).toHaveURL(/\/movements\/[0-9a-f-]{36}$/);
+      58 |     const title = page.getByRole('heading', { level: 1 });
+      59 |     await expect(title).toHaveText(/^MOV-\d{4}-\d+$/);
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\RF21-receipt.spec.ts:56:84
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    tests\IA\Playwright-Test-Agents\reports\artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: tests\IA\Playwright-Test-Agents\reports\artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    tests\IA\Playwright-Test-Agents\reports\artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace tests\IA\Playwright-Test-Agents\reports\artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6 failed
+    [chromium] › tests\IA\Playwright-Test-Agents\RF17-transfer.spec.ts:77:7 › RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas 
+    [chromium] › tests\IA\Playwright-Test-Agents\RF17-transfer.spec.ts:169:7 › RF-17 Traspaso › Cantidades del traspaso topadas por el origen 
+    [chromium] › tests\IA\Playwright-Test-Agents\RF18-adjustment.spec.ts:9:7 › RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres 
+    [chromium] › tests\IA\Playwright-Test-Agents\RF20-cancellation.spec.ts:120:7 › RF-20 Anulación › Anular con motivo válido 
+    [chromium] › tests\IA\Playwright-Test-Agents\RF21-receipt.spec.ts:36:7 › RF-21 Comprobante › Descargar el PDF desde el historial 
+    [chromium] › tests\IA\Playwright-Test-Agents\RF21-receipt.spec.ts:53:7 › RF-21 Comprobante › Descargar el PDF desde el detalle 
+  13 passed (6.7m)

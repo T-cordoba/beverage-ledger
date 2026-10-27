@@ -4,3 +4,5 @@ reports/artifacts/
 reports/.refresh-log.json
 # The HTML report records every fill step's text, the test user's password included.
 reports/html/
+reports/history/*/html/
+reports/history/*/artifacts/

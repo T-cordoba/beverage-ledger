@@ -4,7 +4,35 @@ Entorno de todas las ejecuciones: front `next dev` en `http://localhost:3000`, A
 local en `http://localhost:3001`, Postgres desechable en Docker (`beverage-ledger-db`),
 usuario MANAGER local, Chromium (Playwright 1.63.0). Ningún dato de producción.
 
-## Última ejecución (vigente)
+## Adaptación a la interfaz del 24/10/2026 (26/10/2026)
+
+Los cambios de interfaz del 24/10 (campos obligatorios marcados, "historial de
+movimientos" en vez de "ledger", tope del stepper explicado en la tarjeta en vez de en
+un `title`, la captura ya no pide fecha) rompieron la suite generada contra la
+interfaz anterior:
+
+| Ejecución | Qué | Resultado |
+|---|---|---|
+| `history/09-ui-actual-sin-adaptar/` | La suite de `07`, sin cambios, contra la interfaz nueva | 0 ✓ · 19 ✘ (el login no encuentra "Contraseña") |
+| `history/10-login-adaptado-a-mano/` | Solo con `signIn()` adaptado a mano | 12 ✓ · 7 ✘ |
+| `history/12-healer-ui-actual/` | Última `test_run` completa del **Healer** tras reparar las 7 | **20 ✓** (las 19 y `seed.spec.ts`), 7,1 min |
+| `history/11-colision-con-copilot/` | La suite lanzada a la vez que Copilot ejecutaba la suya | 13 ✓ · 6 ✘ (límite de `/auth/refresh` compartido; no es un fallo de las pruebas) |
+
+`12` es la salida literal de la herramienta `test_run` del MCP en la sesión del Healer
+(`agents/logs/11-healer-ui-actual.*`); esa herramienta no escribe `junit.xml`. Los
+specs no cambiaron después de ella; la única ejecución posterior es `11`, invalidada
+por la colisión, y no se repitió.
+
+| Cambio | Autor |
+|---|---|
+| `signIn()` en `support/fixtures.ts`: `getByRole('textbox', { name: /^Contraseña/ })` | A mano (infraestructura que el Healer no toca) |
+| RF-15 (4 pruebas), RF-16 "Validación de la entrada", RF-17 "Registrar un traspaso…" y "Cantidades… topadas" | **Healer** (`agents/healer-ui-actual.prompt.md`) |
+
+Ninguna aserción se quitó sin reemplazo: los `title` del tope pasan a ser el texto
+exacto de la tarjeta, la fecha ausente se verifica (`Ahora` con `toHaveCount(0)` y el
+aviso nuevo), y RF-17 compara el destino contra su saldo leído antes del traspaso.
+
+## Última ejecución contra la interfaz anterior
 
 **07 — tras mover la carpeta de `IA/` a `tests/IA/`**, 25/10/2026, desde PowerShell en la raíz del repo:
 `npx playwright test --config=tests/IA/Playwright-Test-Agents/playwright.config.ts`.

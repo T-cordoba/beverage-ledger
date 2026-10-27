@@ -34,7 +34,7 @@ test.describe('RF-15 Salida', () => {
     await expect(dialog.getByRole('heading', { name: '¿Confirmar esta salida?' })).toBeVisible();
     await expect(
       dialog.getByText(
-        'Esto escribe 1 producto en el ledger y mueve 1 unidad — las cajas cuentan según su tamaño.',
+        'Esto registra 1 producto en el historial de movimientos y mueve 1 unidad — las cajas cuentan según su tamaño.',
       ),
     ).toBeVisible();
 
@@ -116,9 +116,11 @@ test.describe('RF-15 Salida', () => {
 
     await expect(card.getByText(`${stock} unidades en total`)).toBeVisible();
     await expect(addBottle).toBeDisabled();
-    await expect(addBottle).toHaveAttribute('title', 'Solo quedan 0 en esta bodega');
     await expect(addCase).toBeDisabled();
-    await expect(addCase).toHaveAttribute('title', 'Solo quedan 0 en esta bodega');
+    // The cap is now said in the card itself (a polite live region), not in a tooltip.
+    await expect(
+      card.getByText(`Ya tomaste las ${stock} unidades que hay en la bodega de origen.`),
+    ).toBeVisible();
     await expect(card.getByText(`${stock} en existencia · quedan 0`)).toBeVisible();
   });
 
@@ -149,7 +151,14 @@ test.describe('RF-15 Salida', () => {
 
     await expect(card.getByText(`${stock} en existencia · quedan ${leftover}`)).toBeVisible();
     await expect(addCase).toBeDisabled();
-    await expect(addCase).toHaveAttribute('title', `Solo quedan ${leftover} en esta bodega`);
+    // The reason is said in the card (live region), not in a tooltip.
+    await expect(
+      card.getByText(
+        leftover === 0
+          ? 'No hay existencias en la bodega de origen, así que no se puede sacar nada.'
+          : `${leftover === 1 ? 'Queda 1 unidad' : `Quedan ${leftover} unidades`}: no alcanza para otra caja, pero sí para botellas sueltas.`,
+      ),
+    ).toBeVisible();
 
     // 2. Cambiar la bodega a 'Barra E2E' y observar la existencia mostrada.
     await page.getByRole('combobox', { name: 'Bodega' }).click();
@@ -203,7 +212,7 @@ test.describe('RF-15 Salida', () => {
     await discardDialog.getByRole('button', { name: 'Descartar' }).click();
 
     await expect(page.getByRole('heading', { name: 'Borrador descartado' })).toBeVisible();
-    await expect(page.getByText('No se envió nada al ledger.')).toBeVisible();
+    await expect(page.getByText('No se registró nada.')).toBeVisible();
     await expect(card.getByText('0 unidades en total')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Confirmar', exact: true })).toHaveCount(0);
   });

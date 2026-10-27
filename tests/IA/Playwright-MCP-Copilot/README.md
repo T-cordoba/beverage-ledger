@@ -113,6 +113,28 @@ Ejecuciones reales contra el entorno local (26/10/2026), detalladas en
 
 Resumen por requisito: `evidencias/copilot/RF15-resumen.md` … `RF21-resumen.md`.
 
+Esas ejecuciones son contra la interfaz anterior al 24/10/2026; `reports/junit.xml`
+sigue siendo la de 19/19.
+
+### Interfaz del 24/10/2026: reparación incompleta
+
+| Ejecución (26/10/2026) | Resultado |
+|---|---|
+| `reports/history/02-login-adaptado-a-mano/`: `signIn()` adaptado a mano, specs sin tocar | 13 ✓ · 6 ✘ (los mismos 6 textos/`title` que en Playwright Test Agents) |
+| `reports/history/03-reparacion-copilot-no-adoptada/`: tras la sesión de Copilot con `.github/prompts/03-reparar-ui-actual.prompt.md` | 17 ✓ · 2 ✘ |
+
+En la sesión del prompt 03, Copilot (modo agente, MAI-Code-1.1-Flash) reescribió `signIn()`
+con `getByRole('textbox', { name: /Contraseña/i })`. Ese cambio se adoptó: con él las
+19 pruebas pasan el login en `03`. Sus cambios a `RF15`, `RF16` y `RF17` **no se
+adoptaron** porque debilitan aserciones, que el prompt prohibía: textos exactos
+reemplazados por `/1 producto/` o por alternativas como
+`/No se envió nada al ledger|Se descartó|Borrador descartado/`, y los `title` del tope
+eliminados sin una aserción equivalente. Por eso el JUnit de `03` no corresponde a los
+specs versionados. Los specs versionados siguen siendo los de 19/19 contra la interfaz
+anterior; con la interfaz actual se espera el resultado de `02`, que no se ha vuelto a
+ejecutar con el `signIn()` de Copilot. La sesión no se exportó porque quedó esperando un
+permiso sin cerrar.
+
 ## Evidencia de uso de la IA
 
 - `evidencias/copilot/00-smoke.*` y `01-verificar-conexion.*`: sesiones de Copilot

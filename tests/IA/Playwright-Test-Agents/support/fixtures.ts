@@ -13,8 +13,8 @@ export async function signIn(page: Page, email: string, password: string) {
   await waitForRefreshBudget();
   await page.goto('/login');
   await expect(async () => {
-    await page.getByLabel('Correo electrónico').fill(email);
-    await page.getByLabel('Contraseña', { exact: true }).fill(password);
+    await page.getByRole('textbox', { name: /^Correo electrónico/ }).fill(email);
+    await page.getByRole('textbox', { name: /^Contraseña/ }).fill(password);
     await page.getByRole('button', { name: 'Entrar' }).click();
     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
   }).toPass({ timeout: 30_000 });

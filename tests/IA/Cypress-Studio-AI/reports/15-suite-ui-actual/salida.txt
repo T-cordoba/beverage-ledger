@@ -1,0 +1,655 @@
+
+Warning: The forceHttp1 option is deprecated and will be removed in a future version of Cypress.
+
+Remove it from your configuration to use the default network path.
+
+Read the documentation for the forceHttp1 configuration option: https://docs.cypress.io/app/references/configuration#forceHttp1
+
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        16.2.0                                                                         │
+  │ Browser:        Chrome 155 (headless)                                                          │
+  │ Node Version:   v24.22.1 (C:\Program Files\nodejs\node.exe)                                    │
+  │ Specs:          6 found (RF15-outbound.cy.ts, RF16-inbound.cy.ts, RF17-transfer.cy.ts, RF18-ad │
+  │                 justment.cy.ts, RF20-cancellation.cy.ts, RF21-receipt.cy.ts)                   │
+  │ Searched:       C:/Users/admin/Desktop/University/Validacion y verificacion/beverage-ledger/te │
+  │                 sts/IA/Cypress-Studio-AI/*.cy.ts                                               │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  RF15-outbound.cy.ts                                                             (1 of 6)
+
+
+  RF-15 Salida
+    1) "before all" hook for "Registrar una salida correcta"
+
+
+  0 passing (2s)
+  1 failing
+
+  1) RF-15 Salida
+       "before all" hook for "Registrar una salida correcta":
+     Error: The following error originated from your application code, not from Cypress.
+
+  > Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload assetPrefix="" globalError={[...]}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="es" suppressHydrationWarning={true}>
+                          <head>
++                           <script dangerouslySetInnerHTML={{__html:"(function ..."}}>
+-                           {" "}
+                          ...
+                  ...
+
+When Cypress detects uncaught errors originating from your application it will automatically fail the current test.
+
+This behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.
+
+https://on.cypress.io/uncaught-exception-from-application
+
+This error occurred while creating the session. Because the session setup failed, we failed the test.
+
+Because this error occurred during a `before all` hook we are skipping the remaining tests in the current suite: `RF-15 Salida`
+      at throwOnHydrationMismatch (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:2892:56)
+      at beginWork (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:6178:918)
+      at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:886:74)
+      at performUnitOfWork (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8298:97)
+      at workLoopConcurrentByScheduler (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8294:58)
+      at renderRootConcurrent (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8276:71)
+      at performWorkOnRoot (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:7908:176)
+      at performWorkOnRootViaSchedulerTask (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8882:9)
+      at MessagePort.performWorkUntilDeadline (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_ec1f26f4._.js:2601:64)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        5                                                                                │
+  │ Passing:      0                                                                                │
+  │ Failing:      1                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      4                                                                                │
+  │ Screenshots:  1                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     2 seconds                                                                        │
+  │ Spec Ran:     RF15-outbound.cy.ts                                                              │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\test     (1262x624)
+     s\IA\Cypress-Studio-AI\reports\15-suite-ui-actual\screenshots\RF15-outbound.cy.t               
+     s\RF-15 Salida -- Registrar una salida correcta -- before all hook (failed).png                
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  RF16-inbound.cy.ts                                                              (2 of 6)
+
+
+  RF-16 Entrada
+    1) "before all" hook for "Registrar una entrada y verla en detalle e historial"
+
+
+  0 passing (2s)
+  1 failing
+
+  1) RF-16 Entrada
+       "before all" hook for "Registrar una entrada y verla en detalle e historial":
+     Error: The following error originated from your application code, not from Cypress.
+
+  > Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload assetPrefix="" globalError={[...]}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="es" suppressHydrationWarning={true}>
+                          <head>
++                           <script dangerouslySetInnerHTML={{__html:"(function ..."}}>
+-                           {" "}
+                          ...
+                  ...
+
+When Cypress detects uncaught errors originating from your application it will automatically fail the current test.
+
+This behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.
+
+https://on.cypress.io/uncaught-exception-from-application
+
+This error occurred while creating the session. Because the session setup failed, we failed the test.
+
+Because this error occurred during a `before all` hook we are skipping the remaining tests in the current suite: `RF-16 Entrada`
+      at throwOnHydrationMismatch (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:2892:56)
+      at beginWork (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:6178:918)
+      at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:886:74)
+      at performUnitOfWork (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8298:97)
+      at workLoopConcurrentByScheduler (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8294:58)
+      at renderRootConcurrent (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8276:71)
+      at performWorkOnRoot (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:7908:176)
+      at performWorkOnRootViaSchedulerTask (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8882:9)
+      at MessagePort.performWorkUntilDeadline (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_ec1f26f4._.js:2601:64)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      0                                                                                │
+  │ Failing:      1                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      1                                                                                │
+  │ Screenshots:  1                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 second                                                                         │
+  │ Spec Ran:     RF16-inbound.cy.ts                                                               │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\test     (1262x624)
+     s\IA\Cypress-Studio-AI\reports\15-suite-ui-actual\screenshots\RF16-inbound.cy.ts               
+     \RF-16 Entrada -- Registrar una entrada y verla en detalle e historial -- before               
+      all hook (failed).png                                                                         
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  RF17-transfer.cy.ts                                                             (3 of 6)
+
+
+  RF-17 Traspaso
+    1) "before all" hook for "Origen y destino obligatorios"
+
+
+  0 passing (2s)
+  1 failing
+
+  1) RF-17 Traspaso
+       "before all" hook for "Origen y destino obligatorios":
+     Error: The following error originated from your application code, not from Cypress.
+
+  > Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload assetPrefix="" globalError={[...]}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="es" suppressHydrationWarning={true}>
+                          <head>
++                           <script dangerouslySetInnerHTML={{__html:"(function ..."}}>
+-                           {" "}
+                          ...
+                  ...
+
+When Cypress detects uncaught errors originating from your application it will automatically fail the current test.
+
+This behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.
+
+https://on.cypress.io/uncaught-exception-from-application
+
+This error occurred while creating the session. Because the session setup failed, we failed the test.
+
+Because this error occurred during a `before all` hook we are skipping the remaining tests in the current suite: `RF-17 Traspaso`
+      at throwOnHydrationMismatch (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:2892:56)
+      at beginWork (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:6178:918)
+      at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:886:74)
+      at performUnitOfWork (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8298:97)
+      at workLoopConcurrentByScheduler (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8294:58)
+      at renderRootConcurrent (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8276:71)
+      at performWorkOnRoot (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:7908:176)
+      at performWorkOnRootViaSchedulerTask (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8882:9)
+      at MessagePort.performWorkUntilDeadline (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_ec1f26f4._.js:2601:64)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        4                                                                                │
+  │ Passing:      0                                                                                │
+  │ Failing:      1                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      3                                                                                │
+  │ Screenshots:  1                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 second                                                                         │
+  │ Spec Ran:     RF17-transfer.cy.ts                                                              │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\test     (1262x624)
+     s\IA\Cypress-Studio-AI\reports\15-suite-ui-actual\screenshots\RF17-transfer.cy.t               
+     s\RF-17 Traspaso -- Origen y destino obligatorios -- before all hook (failed).pn               
+     g                                                                                              
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  RF18-adjustment.cy.ts                                                           (4 of 6)
+
+
+  RF-18 Ajuste
+    1) "before all" hook for "Motivo obligatorio de al menos 4 caracteres"
+
+
+  0 passing (2s)
+  1 failing
+
+  1) RF-18 Ajuste
+       "before all" hook for "Motivo obligatorio de al menos 4 caracteres":
+     Error: The following error originated from your application code, not from Cypress.
+
+  > Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload assetPrefix="" globalError={[...]}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="es" suppressHydrationWarning={true}>
+                          <head>
++                           <script dangerouslySetInnerHTML={{__html:"(function ..."}}>
+-                           {" "}
+                          ...
+                  ...
+
+When Cypress detects uncaught errors originating from your application it will automatically fail the current test.
+
+This behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.
+
+https://on.cypress.io/uncaught-exception-from-application
+
+This error occurred while creating the session. Because the session setup failed, we failed the test.
+
+Because this error occurred during a `before all` hook we are skipping the remaining tests in the current suite: `RF-18 Ajuste`
+      at throwOnHydrationMismatch (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:2892:56)
+      at beginWork (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:6178:918)
+      at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:886:74)
+      at performUnitOfWork (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8298:97)
+      at workLoopConcurrentByScheduler (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8294:58)
+      at renderRootConcurrent (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8276:71)
+      at performWorkOnRoot (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:7908:176)
+      at performWorkOnRootViaSchedulerTask (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8882:9)
+      at MessagePort.performWorkUntilDeadline (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_ec1f26f4._.js:2601:64)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      0                                                                                │
+  │ Failing:      1                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      1                                                                                │
+  │ Screenshots:  1                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 second                                                                         │
+  │ Spec Ran:     RF18-adjustment.cy.ts                                                            │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\test     (1262x624)
+     s\IA\Cypress-Studio-AI\reports\15-suite-ui-actual\screenshots\RF18-adjustment.cy               
+     .ts\RF-18 Ajuste -- Motivo obligatorio de al menos 4 caracteres -- before all ho               
+     ok (failed).png                                                                                
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  RF20-cancellation.cy.ts                                                         (5 of 6)
+
+
+  RF-20 Anulación
+    1) "before all" hook for "Conservarlo cancela la anulación"
+
+
+  0 passing (2s)
+  1 failing
+
+  1) RF-20 Anulación
+       "before all" hook for "Conservarlo cancela la anulación":
+     Error: The following error originated from your application code, not from Cypress.
+
+  > Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload assetPrefix="" globalError={[...]}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="es" suppressHydrationWarning={true}>
+                          <head>
++                           <script dangerouslySetInnerHTML={{__html:"(function ..."}}>
+-                           {" "}
+                          ...
+                  ...
+
+When Cypress detects uncaught errors originating from your application it will automatically fail the current test.
+
+This behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.
+
+https://on.cypress.io/uncaught-exception-from-application
+
+This error occurred while creating the session. Because the session setup failed, we failed the test.
+
+Because this error occurred during a `before all` hook we are skipping the remaining tests in the current suite: `RF-20 Anulación`
+      at throwOnHydrationMismatch (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:2892:56)
+      at beginWork (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:6178:918)
+      at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:886:74)
+      at performUnitOfWork (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8298:97)
+      at workLoopConcurrentByScheduler (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8294:58)
+      at renderRootConcurrent (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8276:71)
+      at performWorkOnRoot (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:7908:176)
+      at performWorkOnRootViaSchedulerTask (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8882:9)
+      at MessagePort.performWorkUntilDeadline (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_ec1f26f4._.js:2601:64)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        3                                                                                │
+  │ Passing:      0                                                                                │
+  │ Failing:      1                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      2                                                                                │
+  │ Screenshots:  1                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 second                                                                         │
+  │ Spec Ran:     RF20-cancellation.cy.ts                                                          │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\test     (1262x624)
+     s\IA\Cypress-Studio-AI\reports\15-suite-ui-actual\screenshots\RF20-cancellation.               
+     cy.ts\RF-20 Anulación -- Conservarlo cancela la anulación -- before all hook (fa               
+     iled).png                                                                                      
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  RF21-receipt.cy.ts                                                              (6 of 6)
+
+
+  RF-21 Comprobante
+    1) "before all" hook for "Descargar el PDF desde el historial"
+
+
+  0 passing (2s)
+  1 failing
+
+  1) RF-21 Comprobante
+       "before all" hook for "Descargar el PDF desde el historial":
+     Error: The following error originated from your application code, not from Cypress.
+
+  > Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload assetPrefix="" globalError={[...]}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="es" suppressHydrationWarning={true}>
+                          <head>
++                           <script dangerouslySetInnerHTML={{__html:"(function ..."}}>
+-                           {" "}
+                          ...
+                  ...
+
+When Cypress detects uncaught errors originating from your application it will automatically fail the current test.
+
+This behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.
+
+https://on.cypress.io/uncaught-exception-from-application
+
+This error occurred while creating the session. Because the session setup failed, we failed the test.
+
+Because this error occurred during a `before all` hook we are skipping the remaining tests in the current suite: `RF-21 Comprobante`
+      at throwOnHydrationMismatch (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:2892:56)
+      at beginWork (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:6178:918)
+      at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:886:74)
+      at performUnitOfWork (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8298:97)
+      at workLoopConcurrentByScheduler (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8294:58)
+      at renderRootConcurrent (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8276:71)
+      at performWorkOnRoot (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:7908:176)
+      at performWorkOnRootViaSchedulerTask (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_react-dom_51467cd9._.js:8882:9)
+      at MessagePort.performWorkUntilDeadline (http://localhost:3000/_next/static/chunks/39f87_next_dist_compiled_ec1f26f4._.js:2601:64)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        3                                                                                │
+  │ Passing:      0                                                                                │
+  │ Failing:      1                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      2                                                                                │
+  │ Screenshots:  1                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 second                                                                         │
+  │ Spec Ran:     RF21-receipt.cy.ts                                                               │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\test     (1262x624)
+     s\IA\Cypress-Studio-AI\reports\15-suite-ui-actual\screenshots\RF21-receipt.cy.ts               
+     \RF-21 Comprobante -- Descargar el PDF desde el historial -- before all hook (fa               
+     iled).png                                                                                      
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✖  RF15-outbound.cy.ts                      00:02        5        -        1        -        4 │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✖  RF16-inbound.cy.ts                       00:01        2        -        1        -        1 │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✖  RF17-transfer.cy.ts                      00:01        4        -        1        -        3 │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✖  RF18-adjustment.cy.ts                    00:01        2        -        1        -        1 │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✖  RF20-cancellation.cy.ts                  00:01        3        -        1        -        2 │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✖  RF21-receipt.cy.ts                       00:01        3        -        1        -        2 │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✖  6 of 6 failed (100%)                     00:11       19        -        6        -       13  
+

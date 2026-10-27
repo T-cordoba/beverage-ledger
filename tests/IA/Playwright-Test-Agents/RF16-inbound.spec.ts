@@ -82,9 +82,9 @@ test.describe('RF-16 Entrada', () => {
     await card.getByRole('button', { name: 'Añadir botella' }).click();
     await expect(card.getByText('1 unidad en total')).toBeVisible();
 
-    // 3. Probar el selector 'Ocurrió el' (por defecto 'Ahora') y la nota.
-    await expect(page.getByRole('button', { name: 'Ahora' })).toBeVisible();
-    await expect(page.getByText('Déjalo vacío para registrarlo como ahora.')).toBeVisible();
+    // 3. La captura ya no pide fecha: se informa que se registra con la fecha y hora actuales.
+    await expect(page.getByText('Se registrará con la fecha y hora actuales.')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Ahora' })).toHaveCount(0);
     await page.getByRole('textbox', { name: 'Nota' }).fill('Entrada E2E');
 
     await page.getByRole('button', { name: 'Confirmar', exact: true }).click();

@@ -139,10 +139,10 @@ describe('RF-17 Traspaso', () => {
         cy.contains(`${units(stock)} en total`).should('be.visible');
         cy.contains(/quedan 0/).should('be.visible');
         for (const button of ['Añadir botella', 'Añadir caja']) {
-          cy.get(`button[aria-label="${button}"]`)
-            .should('be.disabled')
-            .and('have.attr', 'title', 'Solo quedan 0 en esta bodega');
+          cy.get(`button[aria-label="${button}"]`).should('be.disabled');
         }
+        // The cap is explained in the card itself (a live region), no longer in a tooltip.
+        cy.contains(`Ya tomaste las ${stock} unidades que hay en la bodega de origen.`).should('be.visible');
 
         for (let i = 0; i < bottles + 1; i++) cy.get('button[aria-label="Quitar botella"]').click();
         for (let i = 0; i < cases + 1; i++) cy.get('button[aria-label="Quitar caja"]').click();

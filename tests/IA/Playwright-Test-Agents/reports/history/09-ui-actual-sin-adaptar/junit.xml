@@ -1,0 +1,945 @@
+<testsuites id="" name="" tests="19" failures="0" skipped="0" errors="19" time="621.12109">
+<testsuite name="RF15-outbound.spec.ts" timestamp="2026-10-26T22:34:50.691Z" hostname="chromium" tests="5" failures="0" skipped="0" time="0.352" errors="5">
+<testcase name="RF-15 Salida › Registrar una salida correcta" classname="RF15-outbound.spec.ts" time="0.079">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF15-outbound.spec.ts:10:7 › RF-15 Salida › Registrar una salida correcta ───────────
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF15-outbound-RF-15-Salida-Registrar-una-salida-correcta-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="RF-15 Salida › Sin productos no aparece la barra Confirmar" classname="RF15-outbound.spec.ts" time="0.062">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF15-outbound.spec.ts:63:7 › RF-15 Salida › Sin productos no aparece la barra Confirmar 
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF15-outbound-RF-15-Salida-58f82--aparece-la-barra-Confirmar-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper" classname="RF15-outbound.spec.ts" time="0.064">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF15-outbound.spec.ts:87:7 › RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper 
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF15-outbound-RF-15-Salida-0a904--de-cero-y-tope-del-stepper-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas" classname="RF15-outbound.spec.ts" time="0.09">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF15-outbound.spec.ts:125:7 › RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas 
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF15-outbound-RF-15-Salida-c7bb8-e-compartido-botellas-cajas-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger" classname="RF15-outbound.spec.ts" time="0.057">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF15-outbound.spec.ts:163:7 › RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger 
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF15-outbound-RF-15-Salida-0b07b-ar-no-escriben-en-el-ledger-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="RF16-inbound.spec.ts" timestamp="2026-10-26T22:34:50.691Z" hostname="chromium" tests="2" failures="0" skipped="0" time="0.143" errors="2">
+<testcase name="RF-16 Entrada › Registrar una entrada y verla en detalle e historial" classname="RF16-inbound.spec.ts" time="0.084">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF16-inbound.spec.ts:10:7 › RF-16 Entrada › Registrar una entrada y verla en detalle e historial 
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF16-inbound-RF-16-Entrada-26955-erla-en-detalle-e-historial-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver" classname="RF16-inbound.spec.ts" time="0.059">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF16-inbound.spec.ts:65:7 › RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver 
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF16-inbound-RF-16-Entrada-177a0-líneas-y-diálogo-con-Volver-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="RF17-transfer.spec.ts" timestamp="2026-10-26T22:34:50.691Z" hostname="chromium" tests="4" failures="0" skipped="0" time="0.23" errors="4">
+<testcase name="RF-17 Traspaso › Origen y destino obligatorios" classname="RF17-transfer.spec.ts" time="0.055">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-Origen-y-destino-obligatorios-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-Origen-y-destino-obligatorios-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-Origen-y-destino-obligatorios-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF17-transfer.spec.ts:12:7 › RF-17 Traspaso › Origen y destino obligatorios ─────────
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF17-transfer-RF-17-Traspaso-Origen-y-destino-obligatorios-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF17-transfer-RF-17-Traspaso-Origen-y-destino-obligatorios-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF17-transfer-RF-17-Traspaso-Origen-y-destino-obligatorios-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF17-transfer-RF-17-Traspaso-Origen-y-destino-obligatorios-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="RF-17 Traspaso › El destino excluye al origen" classname="RF17-transfer.spec.ts" time="0.064">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-El-destino-excluye-al-origen-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-El-destino-excluye-al-origen-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspaso-El-destino-excluye-al-origen-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF17-transfer.spec.ts:42:7 › RF-17 Traspaso › El destino excluye al origen ──────────
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF17-transfer-RF-17-Traspaso-El-destino-excluye-al-origen-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF17-transfer-RF-17-Traspaso-El-destino-excluye-al-origen-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF17-transfer-RF-17-Traspaso-El-destino-excluye-al-origen-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF17-transfer-RF-17-Traspaso-El-destino-excluye-al-origen-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas" classname="RF17-transfer.spec.ts" time="0.056">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF17-transfer.spec.ts:77:7 › RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas 
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF17-transfer-RF-17-Traspa-59e71--y-verificar-las-dos-puntas-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="RF-17 Traspaso › Cantidades del traspaso topadas por el origen" classname="RF17-transfer.spec.ts" time="0.055">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF17-transfer.spec.ts:141:7 › RF-17 Traspaso › Cantidades del traspaso topadas por el origen 
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF17-transfer-RF-17-Traspa-a95db-spaso-topadas-por-el-origen-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="RF18-adjustment.spec.ts" timestamp="2026-10-26T22:34:50.691Z" hostname="chromium" tests="2" failures="0" skipped="0" time="0.134" errors="2">
+<testcase name="RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres" classname="RF18-adjustment.spec.ts" time="0.06">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF18-adjustment.spec.ts:9:7 › RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres 
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF18-adjustment-RF-18-Ajus-bcfbf-io-de-al-menos-4-caracteres-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="RF-18 Ajuste › Registrar un ajuste con motivo válido" classname="RF18-adjustment.spec.ts" time="0.074">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF18-adjustment.spec.ts:56:7 › RF-18 Ajuste › Registrar un ajuste con motivo válido ─
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF18-adjustment-RF-18-Ajus-0df86-un-ajuste-con-motivo-válido-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="RF20-cancellation.spec.ts" timestamp="2026-10-26T22:34:50.691Z" hostname="chromium" tests="3" failures="0" skipped="0" time="0.174" errors="3">
+<testcase name="RF-20 Anulación › Conservarlo cancela la anulación" classname="RF20-cancellation.spec.ts" time="0.061">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-63df8-rvarlo-cancela-la-anulación-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-63df8-rvarlo-cancela-la-anulación-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-63df8-rvarlo-cancela-la-anulación-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF20-cancellation.spec.ts:54:7 › RF-20 Anulación › Conservarlo cancela la anulación ─
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF20-cancellation-RF-20-An-63df8-rvarlo-cancela-la-anulación-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF20-cancellation-RF-20-An-63df8-rvarlo-cancela-la-anulación-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF20-cancellation-RF-20-An-63df8-rvarlo-cancela-la-anulación-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF20-cancellation-RF-20-An-63df8-rvarlo-cancela-la-anulación-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="RF-20 Anulación › Motivo obligatorio al anular" classname="RF20-cancellation.spec.ts" time="0.057">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-7414c-otivo-obligatorio-al-anular-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-7414c-otivo-obligatorio-al-anular-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-An-7414c-otivo-obligatorio-al-anular-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF20-cancellation.spec.ts:81:7 › RF-20 Anulación › Motivo obligatorio al anular ─────
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF20-cancellation-RF-20-An-7414c-otivo-obligatorio-al-anular-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF20-cancellation-RF-20-An-7414c-otivo-obligatorio-al-anular-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF20-cancellation-RF-20-An-7414c-otivo-obligatorio-al-anular-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF20-cancellation-RF-20-An-7414c-otivo-obligatorio-al-anular-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="RF-20 Anulación › Anular con motivo válido" classname="RF20-cancellation.spec.ts" time="0.056">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF20-cancellation.spec.ts:120:7 › RF-20 Anulación › Anular con motivo válido ────────
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF20-cancellation-RF-20-Anulación-Anular-con-motivo-válido-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="RF21-receipt.spec.ts" timestamp="2026-10-26T22:34:50.691Z" hostname="chromium" tests="3" failures="0" skipped="0" time="0.196" errors="3">
+<testcase name="RF-21 Comprobante › Descargar el PDF desde el historial" classname="RF21-receipt.spec.ts" time="0.065">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF21-receipt.spec.ts:36:7 › RF-21 Comprobante › Descargar el PDF desde el historial ─
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF21-receipt-RF-21-Comprob-727d5-r-el-PDF-desde-el-historial-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="RF-21 Comprobante › Descargar el PDF desde el detalle" classname="RF21-receipt.spec.ts" time="0.065">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF21-receipt.spec.ts:53:7 › RF-21 Comprobante › Descargar el PDF desde el detalle ───
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF21-receipt-RF-21-Comprob-ad302-gar-el-PDF-desde-el-detalle-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+<testcase name="RF-21 Comprobante › Descargar el PDF de un movimiento anulado" classname="RF21-receipt.spec.ts" time="0.066">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="locator.fill: Timeout 15000ms exceeded." type="Error">
+<![CDATA[  [chromium] › RF21-receipt.spec.ts:71:7 › RF-21 Comprobante › Descargar el PDF de un movimiento anulado 
+
+    Error: locator.fill: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Contraseña', { exact: true })
+
+
+    Call Log:
+    - Timeout 30000ms exceeded while waiting on the predicate
+
+       at support\fixtures.ts:20
+
+      18 |     await page.getByRole('button', { name: 'Entrar' }).click();
+      19 |     await expect(page).toHaveURL(/\/dashboard/, { timeout: 5_000 });
+    > 20 |   }).toPass({ timeout: 30_000 });
+         |      ^
+      21 | }
+      22 |
+      23 | type Ledger = {
+        at signIn (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:20:6)
+        at Object.exports.test._test.test.extend.managerContext.scope (C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-Test-Agents\support\fixtures.ts:46:7)
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF21-receipt-RF-21-Comprob-d73e9-DF-de-un-movimiento-anulado-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+</testsuites>

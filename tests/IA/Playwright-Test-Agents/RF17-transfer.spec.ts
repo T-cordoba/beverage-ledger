@@ -78,17 +78,44 @@ test.describe('RF-17 Traspaso', () => {
     test.skip(!WRITES_ALLOWED, WRITES_SKIPPED_REASON);
 
     // 1. Desde la bodega por defecto Hacia 'Barra E2E', añadir 1 botella, 'Confirmar' y confirmar en '¿Confirmar este traspaso?'.
-    await page.goto('/movements/new/transfer');
     const from = page.getByRole('combobox', { name: 'Desde' });
     const to = page.getByRole('combobox', { name: 'Hacia' });
-    await expect(from).toBeEnabled();
-    await from.click();
-    await page.getByRole('option', { name: SOURCE_OPTION }).click();
-    await expect(page.getByRole('listbox')).toHaveCount(0);
-    await expect(to).toBeEnabled();
-    await to.click();
+    const chooseEnds = async () => {
+      await page.goto('/movements/new/transfer');
+      await expect(from).toBeEnabled();
+      await from.click();
+      await page.getByRole('option', { name: SOURCE_OPTION }).click();
+      await expect(page.getByRole('listbox')).toHaveCount(0);
+      await expect(to).toBeEnabled();
+      await to.click();
+      await page.getByRole('option', { name: DATA.locations.destination }).click();
+      await expect(page.getByRole('listbox')).toHaveCount(0);
+    };
+    const unitsAt = (n: number) => new RegExp(`(^|\\D)${n} unidad`);
+
+    await chooseEnds();
+    const firstName = (
+      await page
+        .getByRole('listitem')
+        .filter({ has: page.getByRole('button', { name: 'Añadir botella' }) })
+        .first()
+        .getByRole('heading', { level: 3 })
+        .innerText()
+    ).trim();
+
+    // The destination no longer starts empty: read its balance before moving anything.
+    await page.goto('/stock');
+    await page.getByRole('searchbox', { name: 'Buscar existencias por producto' }).fill(firstName);
+    const balanceRow = page
+      .getByRole('row')
+      .filter({ has: page.getByRole('link', { name: firstName, exact: true }) });
+    await page.getByRole('combobox', { name: 'Filtrar por bodega' }).click();
     await page.getByRole('option', { name: DATA.locations.destination }).click();
     await expect(page.getByRole('listbox')).toHaveCount(0);
+    await expect(balanceRow).toContainText(/\d+ unidad/);
+    const destinationBefore = Number(/(\d+) unidad/.exec(await balanceRow.innerText())![1]);
+
+    await chooseEnds();
 
     // Primer producto con 'Añadir botella' habilitado; su existencia en el origen es el tope.
     const card = page
@@ -101,6 +128,7 @@ test.describe('RF-17 Traspaso', () => {
       ((await card.getByText(/\d+ en existencia/).innerText()).match(/(\d+) en existencia/) ?? [])[1],
     );
     expect(sourceBefore).toBeGreaterThan(0);
+    expect(productName).toBe(firstName);
 
     await card.getByRole('button', { name: 'Añadir botella' }).click();
     await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
@@ -130,12 +158,12 @@ test.describe('RF-17 Traspaso', () => {
     await locationFilter.click();
     await page.getByRole('option', { name: DATA.locations.destination }).click();
     await expect(page.getByRole('listbox')).toHaveCount(0);
-    await expect(row).toContainText('1 unidad');
+    await expect(row).toContainText(unitsAt(destinationBefore + 1));
 
     await locationFilter.click();
     await page.getByRole('option', { name: SOURCE_OPTION }).click();
     await expect(page.getByRole('listbox')).toHaveCount(0);
-    await expect(row).toContainText(`${sourceBefore - 1} unidad`);
+    await expect(row).toContainText(unitsAt(sourceBefore - 1));
   });
 
   test('Cantidades del traspaso topadas por el origen', async ({ page }) => {
@@ -184,9 +212,11 @@ test.describe('RF-17 Traspaso', () => {
     await expect(card.getByText(`${stock} unidades en total`, { exact: true })).toBeVisible();
     await expect(card.getByText(/quedan 0/)).toBeVisible();
     await expect(addBottle).toBeDisabled();
-    await expect(addBottle).toHaveAttribute('title', 'Solo quedan 0 en esta bodega');
     await expect(addCase).toBeDisabled();
-    await expect(addCase).toHaveAttribute('title', 'Solo quedan 0 en esta bodega');
+    // The cap is now said in the card itself (a polite live region), not in a tooltip.
+    await expect(
+      card.getByText(`Ya tomaste las ${stock} unidades que hay en la bodega de origen.`),
+    ).toBeVisible();
 
     // Quitar todo y una vez más: el contador no baja de cero y la barra desaparece.
     for (let i = 0; i < bottles; i++) await removeBottle.click();

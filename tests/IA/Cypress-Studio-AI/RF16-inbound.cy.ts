@@ -70,8 +70,9 @@ describe('RF-16 Entrada', () => {
       productCard().find('button[aria-label="Añadir botella"]').click();
       productCard().should('contain.text', '1 unidad en total');
 
-      cy.contains('button', /^Ahora$/).should('be.visible');
-      cy.contains('Déjalo vacío para registrarlo como ahora.').should('be.visible');
+      // The capture no longer asks for a date: it says the movement is stamped now.
+      cy.contains('Se registrará con la fecha y hora actuales.').should('be.visible');
+      cy.contains('button', /^Ahora$/).should('not.exist');
       // Studio AI: cy.prompt writes this step from plain language; the assertion after it checks the result.
       cy.prompt(['type "Entrada Cypress Studio AI" in the "Nota" field']);
       cy.byLabel('Nota').should('have.value', 'Entrada Cypress Studio AI');

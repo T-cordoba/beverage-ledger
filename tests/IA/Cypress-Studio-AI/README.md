@@ -79,9 +79,35 @@ Chrome 155 (26/10/2026). Cada una tiene su carpeta en `reports/`:
 | `10-suite-completa/` | Las 19 | 19 ✓ |
 | `11-RF15-forceHttp1/` | RF-15 tras activar `forceHttp1` | 5 ✓ |
 | `12-` / `13-` / `14-suite-forceHttp1/` | Las 19, tres veces seguidas | 19 ✓ en cada una |
+| `15-suite-ui-actual/` | Las 19 de `14`, sin cambios, contra la interfaz del 24/10/2026 | 0 ✓ · 6 ✘ · 13 omitidas (error de hidratación en la primera visita de cada spec) |
+| `18-suite-reparada/` | Las 19 tras las correcciones manuales de abajo | **19 ✓** |
 
-**Resultado vigente: 19/19** (`14-suite-forceHttp1/`), estable en tres ejecuciones
-completas seguidas.
+`01`–`14` se ejecutaron contra la interfaz anterior al 24/10; `18` es la única
+ejecución contra la interfaz actual. Las sondas de diagnóstico intermedias (`00`–`02`,
+`16`, `17`) quedan solo en local.
+
+## Adaptación a la interfaz del 24/10/2026 (a mano)
+
+Las correcciones de `18` las hice a mano; `cy.prompt` no reparó nada. Los seis pasos
+`cy.prompt` siguen igual.
+
+- **Hidratación (`support/e2e.ts`).** El proxy de Cypress reescribe `<head>` y deja un
+  nodo de texto en blanco delante del `<script>` de preferencias que `layout.tsx`
+  pone primero; React lo ve al hidratar y lanza "Hydration failed" en todas las pruebas.
+  Un `window:before:load` quita solo un nodo de texto en blanco al inicio de `<head>`. No
+  se filtra ninguna excepción: cualquier otro desajuste con el HTML del servidor sigue
+  haciendo fallar la prueba. No se tocó `src/`.
+- **Textos nuevos.** "Esto registra 1 producto en el historial de movimientos…" y
+  "No se registró nada." (RF-15).
+- **Tope del stepper.** El `title` "Solo quedan N en esta bodega" ya no existe; se
+  verifica el texto exacto que la tarjeta muestra ahora ("Ya tomaste las N unidades…",
+  "Quedan N unidades: no alcanza para otra caja…") y se mantiene `be.disabled` (RF-15, RF-17).
+- **Sin fecha en la captura.** RF-16 comprueba "Se registrará con la fecha y hora
+  actuales." y que el botón "Ahora" ya no exista.
+
+**Resultado vigente: 19/19** contra la interfaz actual (`18-suite-reparada/`, una
+ejecución) y 19/19 contra la anterior (`14-suite-forceHttp1/`, estable en tres
+ejecuciones completas seguidas).
 
 ## Problemas encontrados y corregidos
 

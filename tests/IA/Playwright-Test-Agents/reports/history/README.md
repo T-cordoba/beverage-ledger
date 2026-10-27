@@ -18,8 +18,15 @@ está en `reports/` y, una vez archivada, también aquí.
 | `05-completa-19de19-powershell/` | Las 19, desde PowerShell, tras los últimos ajustes del código | 19 ✓ | junit, json, salida, capturas, trazas |
 | `06-tras-reorganizacion/` | Las 19, desde PowerShell, tras mover los archivos a esta estructura | 19 ✓ | junit, json, salida, HTML (con trazas), capturas |
 | `07-tras-mover-a-tests/` | Las 19, desde PowerShell, tras mover la carpeta de `IA/` a `tests/IA/` | 19 ✓ | junit, json, salida, HTML (con trazas), capturas |
+| `09-ui-actual-sin-adaptar/` | 26/10: la suite de `07` contra la interfaz del 24/10 | 0 ✓ · 19 ✘ (login) | junit, salida |
+| `10-login-adaptado-a-mano/` | 26/10: con `signIn()` adaptado a mano | 12 ✓ · 7 ✘ | junit, salida |
+| `11-colision-con-copilot/` | 26/10: tras el Healer, pero a la vez que la suite de Copilot | 13 ✓ · 6 ✘ (429 por el límite compartido) | junit, salida |
+| `12-healer-ui-actual/` | 26/10: última `test_run` del Healer tras reparar las 7 | 20 ✓ (19 + seed) | salida de la herramienta |
 
 Notas:
+
+- `08-sin-credenciales/` (19 errores por faltar `TEST_USER_*`) y el HTML de cada
+  ejecución quedan solo en local: el HTML registra la contraseña de los pasos `fill`.
 
 - El HTML de `05` se perdió: el comando `--list` lo reescribió vacío (Playwright
   ejecuta los reporters configurados incluso al listar). Queda como

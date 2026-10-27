@@ -16,6 +16,22 @@ declare global {
   }
 }
 
+/**
+ * Cypress's proxy rewrites `<head>` into `<head> <script>…</script>` and that script
+ * removes itself, leaving a whitespace text node the server never sent (Next renders
+ * `<head><meta…` with nothing in between). The app's layout puts its preferences
+ * <script> first in <head>, so React meets that node on hydration and throws
+ * "Hydration failed" for something only Cypress added. Only a whitespace text node
+ * at the very start of <head> is removed, and uncaught errors are not filtered: any
+ * other mismatch with the server HTML still fails the test.
+ */
+Cypress.on('window:before:load', (win) => {
+  const first = win.document.head?.firstChild;
+  if (first?.nodeType !== win.Node.TEXT_NODE || first.textContent?.trim()) return;
+  first.remove();
+  Cypress.log({ name: 'hidratación', message: 'quitado el espacio que el proxy de Cypress deja en <head>' });
+});
+
 // The latest access token the app got, so the cleanup voids without buying another.
 let accessToken: string | undefined;
 

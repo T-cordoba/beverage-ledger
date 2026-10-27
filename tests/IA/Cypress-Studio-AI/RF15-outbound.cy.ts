@@ -43,7 +43,7 @@ describe('RF-15 Salida', () => {
       barButton('Confirmar').click();
       dialog().within(() => {
         cy.contains('¿Confirmar esta salida?').should('be.visible');
-        cy.contains('Esto escribe 1 producto en el ledger y mueve 1 unidad').should('be.visible');
+        cy.contains('Esto registra 1 producto en el historial de movimientos y mueve 1 unidad').should('be.visible');
         cy.contains('button', /^Confirmar$/).click();
       });
 
@@ -88,10 +88,10 @@ describe('RF-15 Salida', () => {
 
         cy.contains(`${units(stock)} en total`).should('be.visible');
         for (const button of ['Añadir botella', 'Añadir caja']) {
-          cy.get(`button[aria-label="${button}"]`)
-            .should('be.disabled')
-            .and('have.attr', 'title', 'Solo quedan 0 en esta bodega');
+          cy.get(`button[aria-label="${button}"]`).should('be.disabled');
         }
+        // The cap is explained in the card itself (a live region), no longer in a tooltip.
+        cy.contains(`Ya tomaste las ${stock} unidades que hay en la bodega de origen.`).should('be.visible');
         cy.contains(`${stock} en existencia · quedan 0`).should('be.visible');
       });
     });
@@ -105,9 +105,12 @@ describe('RF-15 Salida', () => {
       productCard(name).within(() => {
         for (let i = 0; i < stock - leftover; i++) cy.get('button[aria-label="Añadir botella"]').click();
         cy.contains(`${stock} en existencia · quedan ${leftover}`).should('be.visible');
-        cy.get('button[aria-label="Añadir caja"]')
-          .should('be.disabled')
-          .and('have.attr', 'title', `Solo quedan ${leftover} en esta bodega`);
+        cy.get('button[aria-label="Añadir caja"]').should('be.disabled');
+        cy.contains(
+          leftover === 0
+            ? 'No hay existencias en la bodega de origen, así que no se puede sacar nada.'
+            : `${leftover === 1 ? 'Queda 1 unidad' : `Quedan ${leftover} unidades`}: no alcanza para otra caja, pero sí para botellas sueltas.`,
+        ).should('be.visible');
       });
 
       cy.byLabel('Bodega').choose('Barra E2E').should('contain.text', 'Barra E2E');
@@ -152,7 +155,7 @@ describe('RF-15 Salida', () => {
       barButton('Descartar').click();
       dialog().contains('button', /^Descartar$/).click();
       cy.contains('Borrador descartado').should('be.visible');
-      cy.contains('No se envió nada al ledger.').should('be.visible');
+      cy.contains('No se registró nada.').should('be.visible');
       productCard().should('contain.text', '0 unidades en total');
       cy.contains('main button', /^Confirmar$/).should('not.exist');
     });

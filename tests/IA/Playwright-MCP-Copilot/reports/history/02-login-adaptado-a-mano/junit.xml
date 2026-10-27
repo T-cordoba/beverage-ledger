@@ -1,0 +1,361 @@
+<testsuites id="" name="" tests="19" failures="6" skipped="0" errors="0" time="431.035782">
+<testsuite name="RF15-outbound.pw.ts" timestamp="2026-10-26T22:54:04.755Z" hostname="chromium" tests="5" failures="4" skipped="0" time="89.302" errors="0">
+<testcase name="RF-15 Salida › Registrar una salida correcta" classname="RF15-outbound.pw.ts" time="17.377">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound.pw.ts-RF-15--c7bb6-gistrar-una-salida-correcta-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound.pw.ts-RF-15--c7bb6-gistrar-una-salida-correcta-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF15-outbound.pw.ts-RF-15--c7bb6-gistrar-una-salida-correcta-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<![CDATA[  [chromium] › RF15-outbound.pw.ts:5:7 › RF-15 Salida › Registrar una salida correcta ──────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('dialog').getByText('Esto escribe 1 producto en el ledger y mueve 1 unidad — las cajas cuentan según su tamaño.')
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('dialog').getByText('Esto escribe 1 producto en el ledger y mueve 1 unidad — las cajas cuentan según su tamaño.') with timeout 15000ms
+      - waiting for getByRole('dialog').getByText('Esto escribe 1 producto en el ledger y mueve 1 unidad — las cajas cuentan según su tamaño.')
+
+
+      30 |         'Esto escribe 1 producto en el ledger y mueve 1 unidad — las cajas cuentan según su tamaño.',
+      31 |       ),
+    > 32 |     ).toBeVisible();
+         |       ^
+      33 |
+      34 |     await dialog.getByRole('button', { name: 'Confirmar' }).click();
+      35 |     await expect(page).toHaveURL(/\/movements\/[0-9a-f-]{36}$/);
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:32:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound.pw.ts-RF-15--c7bb6-gistrar-una-salida-correcta-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF15-outbound.pw.ts-RF-15--c7bb6-gistrar-una-salida-correcta-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound.pw.ts-RF-15--c7bb6-gistrar-una-salida-correcta-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF15-outbound.pw.ts-RF-15--c7bb6-gistrar-una-salida-correcta-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+<testcase name="RF-15 Salida › Sin productos no aparece la barra Confirmar" classname="RF15-outbound.pw.ts" time="2.03">
+</testcase>
+<testcase name="RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper" classname="RF15-outbound.pw.ts" time="19.922">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound.pw.ts-RF-15--dd8b3--de-cero-y-tope-del-stepper-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound.pw.ts-RF-15--dd8b3--de-cero-y-tope-del-stepper-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF15-outbound.pw.ts-RF-15--dd8b3--de-cero-y-tope-del-stepper-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toHaveAttribute(expected) failed" type="expect.toHaveAttribute">
+<![CDATA[  [chromium] › RF15-outbound.pw.ts:74:7 › RF-15 Salida › Cantidades incorrectas: quitar por debajo de cero y tope del stepper 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('listitem').filter({ hasText: 'en existencia' }).filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir botella' })
+    Expected: "Solo quedan 0 en esta bodega"
+    Received: ""
+    Timeout:  15000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('listitem').filter({ hasText: 'en existencia' }).filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir botella' }) with timeout 15000ms
+      - waiting for getByRole('listitem').filter({ hasText: 'en existencia' }).filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir botella' })
+        33 × locator resolved to <button disabled aria-label="Añadir botella" class="inline-flex items-center justify-center whitespace-nowrap transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 bg-accent text-background shadow-panel hover:bg-accent-hover h-8 w-8 rounded-lg text-base font-light">+</button>
+           - unexpected value "null"
+
+
+      101 |     await expect(card.getByText(`${stock} unidades en total`)).toBeVisible();
+      102 |     await expect(addBottle).toBeDisabled();
+    > 103 |     await expect(addBottle).toHaveAttribute('title', 'Solo quedan 0 en esta bodega');
+          |                             ^
+      104 |     await expect(addCase).toBeDisabled();
+      105 |     await expect(addCase).toHaveAttribute('title', 'Solo quedan 0 en esta bodega');
+      106 |     await expect(card.getByText(`${stock} en existencia · quedan 0`)).toBeVisible();
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:103:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound.pw.ts-RF-15--dd8b3--de-cero-y-tope-del-stepper-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF15-outbound.pw.ts-RF-15--dd8b3--de-cero-y-tope-del-stepper-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound.pw.ts-RF-15--dd8b3--de-cero-y-tope-del-stepper-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF15-outbound.pw.ts-RF-15--dd8b3--de-cero-y-tope-del-stepper-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+<testcase name="RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas" classname="RF15-outbound.pw.ts" time="18.176">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toHaveAttribute(expected) failed" type="expect.toHaveAttribute">
+<![CDATA[  [chromium] › RF15-outbound.pw.ts:109:7 › RF-15 Salida › Inventario insuficiente por tope compartido botellas/cajas 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('listitem').filter({ hasText: 'en existencia' }).filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir caja' })
+    Expected: "Solo quedan 11 en esta bodega"
+    Received: ""
+    Timeout:  15000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('listitem').filter({ hasText: 'en existencia' }).filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir caja' }) with timeout 15000ms
+      - waiting for getByRole('listitem').filter({ hasText: 'en existencia' }).filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir caja' })
+        33 × locator resolved to <button disabled aria-label="Añadir caja" class="inline-flex items-center justify-center whitespace-nowrap transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 bg-accent text-background shadow-panel hover:bg-accent-hover h-8 w-8 rounded-lg text-base font-light">+</button>
+           - unexpected value "null"
+
+
+      131 |     await expect(card.getByText(`${stock} en existencia · quedan ${leftover}`)).toBeVisible();
+      132 |     await expect(addCase).toBeDisabled();
+    > 133 |     await expect(addCase).toHaveAttribute('title', `Solo quedan ${leftover} en esta bodega`);
+          |                           ^
+      134 |
+      135 |     await page.getByRole('combobox', { name: 'Bodega' }).click();
+      136 |     await page.getByRole('option', { name: 'Barra E2E' }).click();
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:133:27
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF15-outbound.pw.ts-RF-15--f6c0c-e-compartido-botellas-cajas-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+<testcase name="RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger" classname="RF15-outbound.pw.ts" time="31.797">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF15-outbound.pw.ts-RF-15--e4b8f-ar-no-escriben-en-el-ledger-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF15-outbound.pw.ts-RF-15--e4b8f-ar-no-escriben-en-el-ledger-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF15-outbound.pw.ts-RF-15--e4b8f-ar-no-escriben-en-el-ledger-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<![CDATA[  [chromium] › RF15-outbound.pw.ts:143:7 › RF-15 Salida › Volver del diálogo y Descartar no escriben en el ledger 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('No se envió nada al ledger.')
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('No se envió nada al ledger.') with timeout 15000ms
+      - waiting for getByText('No se envió nada al ledger.')
+
+
+      181 |
+      182 |     await expect(page.getByRole('heading', { name: 'Borrador descartado' })).toBeVisible();
+    > 183 |     await expect(page.getByText('No se envió nada al ledger.')).toBeVisible();
+          |                                                                 ^
+      184 |     await expect(card.getByText('0 unidades en total')).toBeVisible();
+      185 |     await expect(page.getByRole('button', { name: 'Confirmar', exact: true })).toHaveCount(0);
+      186 |   });
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-MCP-Copilot\RF15-outbound.pw.ts:183:65
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound.pw.ts-RF-15--e4b8f-ar-no-escriben-en-el-ledger-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF15-outbound.pw.ts-RF-15--e4b8f-ar-no-escriben-en-el-ledger-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF15-outbound.pw.ts-RF-15--e4b8f-ar-no-escriben-en-el-ledger-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF15-outbound.pw.ts-RF-15--e4b8f-ar-no-escriben-en-el-ledger-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="RF16-inbound.pw.ts" timestamp="2026-10-26T22:54:04.755Z" hostname="chromium" tests="2" failures="1" skipped="0" time="56.923" errors="0">
+<testcase name="RF-16 Entrada › Registrar una entrada y verla en detalle e historial" classname="RF16-inbound.pw.ts" time="27.766">
+</testcase>
+<testcase name="RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver" classname="RF16-inbound.pw.ts" time="29.157">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<![CDATA[  [chromium] › RF16-inbound.pw.ts:56:7 › RF-16 Entrada › Validación de la entrada: sin líneas y diálogo con Volver 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Ahora' })
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Ahora' }) with timeout 15000ms
+      - waiting for getByRole('button', { name: 'Ahora' })
+
+
+      72 |     await expect(card.getByText('1 unidad en total')).toBeVisible();
+      73 |
+    > 74 |     await expect(page.getByRole('button', { name: 'Ahora' })).toBeVisible();
+         |                                                               ^
+      75 |     await expect(page.getByText('Déjalo vacío para registrarlo como ahora.')).toBeVisible();
+      76 |     await page.getByRole('textbox', { name: 'Nota' }).fill('Entrada E2E');
+      77 |
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-MCP-Copilot\RF16-inbound.pw.ts:74:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF16-inbound.pw.ts-RF-16-E-edfed-líneas-y-diálogo-con-Volver-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="RF17-transfer.pw.ts" timestamp="2026-10-26T22:54:04.755Z" hostname="chromium" tests="4" failures="1" skipped="0" time="86.458" errors="0">
+<testcase name="RF-17 Traspaso › Origen y destino obligatorios" classname="RF17-transfer.pw.ts" time="5.273">
+</testcase>
+<testcase name="RF-17 Traspaso › El destino excluye al origen" classname="RF17-transfer.pw.ts" time="3.641">
+</testcase>
+<testcase name="RF-17 Traspaso › Registrar un traspaso y verificar las dos puntas" classname="RF17-transfer.pw.ts" time="55.085">
+</testcase>
+<testcase name="RF-17 Traspaso › Cantidades del traspaso topadas por el origen" classname="RF17-transfer.pw.ts" time="22.459">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF17-transfer.pw.ts-RF-17--861d1-spaso-topadas-por-el-origen-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|artifacts\RF17-transfer.pw.ts-RF-17--861d1-spaso-topadas-por-el-origen-chromium\error-context.md]]
+
+[[ATTACHMENT|artifacts\RF17-transfer.pw.ts-RF-17--861d1-spaso-topadas-por-el-origen-chromium\trace.zip]]
+]]>
+</system-out>
+<failure message="expect(locator).toHaveAttribute(expected) failed" type="expect.toHaveAttribute">
+<![CDATA[  [chromium] › RF17-transfer.pw.ts:145:7 › RF-17 Traspaso › Cantidades del traspaso topadas por el origen 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('listitem').filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir botella' })
+    Expected: "Solo quedan 0 en esta bodega"
+    Received: ""
+    Timeout:  15000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('listitem').filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir botella' }) with timeout 15000ms
+      - waiting for getByRole('listitem').filter({ has: getByRole('heading', { name: 'ABSOLUTE ELYX', exact: true }) }).getByRole('button', { name: 'Añadir botella' })
+        33 × locator resolved to <button disabled aria-label="Añadir botella" class="inline-flex items-center justify-center whitespace-nowrap transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 bg-accent text-background shadow-panel hover:bg-accent-hover h-8 w-8 rounded-lg text-base font-light">+</button>
+           - unexpected value "null"
+
+
+      185 |     await expect(card.getByText(/quedan 0/)).toBeVisible();
+      186 |     await expect(addBottle).toBeDisabled();
+    > 187 |     await expect(addBottle).toHaveAttribute('title', 'Solo quedan 0 en esta bodega');
+          |                             ^
+      188 |     await expect(addCase).toBeDisabled();
+      189 |     await expect(addCase).toHaveAttribute('title', 'Solo quedan 0 en esta bodega');
+      190 |
+        at C:\Users\admin\Desktop\University\Validacion y verificacion\beverage-ledger\tests\IA\Playwright-MCP-Copilot\RF17-transfer.pw.ts:187:29
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    reports\artifacts\RF17-transfer.pw.ts-RF-17--861d1-spaso-topadas-por-el-origen-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: reports\artifacts\RF17-transfer.pw.ts-RF-17--861d1-spaso-topadas-por-el-origen-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    reports\artifacts\RF17-transfer.pw.ts-RF-17--861d1-spaso-topadas-por-el-origen-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace reports\artifacts\RF17-transfer.pw.ts-RF-17--861d1-spaso-topadas-por-el-origen-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="RF18-adjustment.pw.ts" timestamp="2026-10-26T22:54:04.755Z" hostname="chromium" tests="2" failures="0" skipped="0" time="31.33" errors="0">
+<testcase name="RF-18 Ajuste › Motivo obligatorio de al menos 4 caracteres" classname="RF18-adjustment.pw.ts" time="3.009">
+</testcase>
+<testcase name="RF-18 Ajuste › Registrar un ajuste con motivo válido" classname="RF18-adjustment.pw.ts" time="28.321">
+</testcase>
+</testsuite>
+<testsuite name="RF20-cancellation.pw.ts" timestamp="2026-10-26T22:54:04.755Z" hostname="chromium" tests="3" failures="0" skipped="0" time="99.479" errors="0">
+<testcase name="RF-20 Anulación › Conservarlo cancela la anulación" classname="RF20-cancellation.pw.ts" time="28.959">
+</testcase>
+<testcase name="RF-20 Anulación › Motivo obligatorio al anular" classname="RF20-cancellation.pw.ts" time="9.328">
+</testcase>
+<testcase name="RF-20 Anulación › Anular con motivo válido" classname="RF20-cancellation.pw.ts" time="61.192">
+</testcase>
+</testsuite>
+<testsuite name="RF21-receipt.pw.ts" timestamp="2026-10-26T22:54:04.755Z" hostname="chromium" tests="3" failures="0" skipped="0" time="36.099" errors="0">
+<testcase name="RF-21 Comprobante › Descargar el PDF desde el historial" classname="RF21-receipt.pw.ts" time="7.088">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt.pw.ts-RF-21-C-f1e8e-r-el-PDF-desde-el-historial-chromium\attachments\MOV-2026-000921-pdf-910c9529fab5a69e9ee84279a5001e1eef89f45e.pdf]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-21 Comprobante › Descargar el PDF desde el detalle" classname="RF21-receipt.pw.ts" time="18.729">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt.pw.ts-RF-21-C-a9f26-gar-el-PDF-desde-el-detalle-chromium\attachments\MOV-2026-000921-pdf-3660e28a90c63f4629ecf1e3b123061126f30656.pdf]]
+]]>
+</system-out>
+</testcase>
+<testcase name="RF-21 Comprobante › Descargar el PDF de un movimiento anulado" classname="RF21-receipt.pw.ts" time="10.282">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts\RF21-receipt.pw.ts-RF-21-C-89952-DF-de-un-movimiento-anulado-chromium\attachments\MOV-2026-000922-pdf-1bd608023b9be7f905555b9bd20cdf11f8d0ecd9.pdf]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>
